@@ -19,6 +19,16 @@ const config: StorybookConfig = {
   viteFinal: async (config) => ({
     ...config,
     base: process.env.STORYBOOK_BASE ?? config.base,
+    build: {
+      ...config.build,
+      // One stylesheet instead of one per component chunk. Split CSS is
+      // requested by the preload helper as `assets/Foo.css` relative to a
+      // module that already lives in `assets/`, which on a Pages subpath
+      // resolves to `assets/assets/Foo.css` and 404s. The story then renders
+      // unstyled with no error on the page — the only symptom is Times New
+      // Roman. Not splitting removes the class of bug rather than the instance.
+      cssCodeSplit: false,
+    },
   }),
   typescript: { reactDocgen: 'react-docgen-typescript' },
   docs: { autodocs: 'tag' },
