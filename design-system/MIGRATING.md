@@ -3,6 +3,18 @@
 Bindery is migrated. This is what that took, in the order it took it, so the next
 app does not rediscover it.
 
+### Installing it
+
+The package is in a subdirectory, so a git-tag install does not work — npm looks
+for `package.json` at the repo root and fails. Use the tarball from the release:
+
+```bash
+npm i https://github.com/matdemers1/d3-design-system/releases/download/v0.1.0/d3cloud-ui-0.1.0.tgz
+```
+
+For active development against both at once, a `file:` link is faster — read the
+React note below before you do.
+
 ## The order that worked
 
 1. **Token bridge first, components second.** One `index.css` that maps the app's

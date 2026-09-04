@@ -90,9 +90,28 @@ an implementation detail apps must not select on.
 - **major** — a removed or renamed export, a changed default, a token whose
   meaning moves
 
-Tag releases `v0.1.0`. Apps install from the tag; the `file:../../d3-ui` link is
-for local development only and brings its own hazards (see
-`bindery/web/vite.config.ts` for the two it has already caused).
+Tag releases `v0.1.0`.
+
+**Apps cannot install from the git tag.** The package lives in `d3-ui/`, and npm
+has no subdirectory support for git dependencies — `npm i github:…#v0.1.0` fails
+with ENOENT on a `package.json` it looks for at the repo root. That claim was in
+this document before anybody tried it.
+
+What works today:
+
+```bash
+# from the tarball attached to the GitHub release
+npm i https://github.com/matdemers1/d3-design-system/releases/download/v0.1.0/d3cloud-ui-0.1.0.tgz
+```
+
+`npm pack` in `d3-ui/` produces that tarball; attach it to the release when you
+cut the tag. The `file:../../d3-design-system/d3-ui` link stays the local
+development path and brings its own hazards — see `bindery/web/vite.config.ts`
+for the two it has already caused.
+
+If installing by name ever matters more than avoiding a registry, the options
+are publishing to npm or to GitHub Packages, or moving the package to the repo
+root. None is needed while one app consumes it.
 
 ## Deprecation
 
