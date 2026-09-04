@@ -57,7 +57,7 @@ Two gates run on every verify:
   and the copy vendored into the library must match the original.
 - **`check-usage.mjs`** — bans raw hex, raw Tailwind palette classes, off-scale
   values, primitive tokens and shadows. Run it against any app:
-  `node design-system/scripts/check-usage.mjs src`
+  `npx d3-check-usage src`
 
 ## Status
 

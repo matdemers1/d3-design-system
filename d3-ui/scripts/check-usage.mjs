@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 /**
  * The rules the audit exists because nobody was enforcing.
  *
@@ -6,7 +7,11 @@
  * happens when the only thing standing between a developer and a raw hex is a
  * convention written down somewhere. So this is a gate, not a guideline.
  *
- *   node scripts/check-usage.mjs <dir> [<dir>…]
+ *   npx d3-check-usage <dir> [<dir>…]
+ *
+ * It ships inside the package rather than beside the design record, because a
+ * gate that lives in a sibling directory is a gate that fails in CI: Bindery's
+ * lint called it across repositories and its build went red on the first push.
  *
  * Scans .ts/.tsx/.js/.jsx/.css. Anything genuinely exceptional carries
  * `d3-allow: <reason>` in a comment on the same line or the line above — the

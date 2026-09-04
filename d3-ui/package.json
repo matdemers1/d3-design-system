@@ -1,13 +1,14 @@
 {
   "name": "@d3cloud/ui",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "The D3 Cloud component library. Consumed by Bindery, App B, App C and App A.",
   "type": "module",
   "license": "UNLICENSED",
   "private": false,
   "files": [
     "dist",
-    "src/tokens"
+    "src/tokens",
+    "scripts"
   ],
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -21,6 +22,9 @@
     "./theme.css": "./src/tokens/build/theme.css",
     "./tokens/*": "./src/tokens/*",
     "./tokens.css": "./src/tokens/build/tokens.css"
+  },
+  "bin": {
+    "d3-check-usage": "./scripts/check-usage.mjs"
   },
   "sideEffects": [
     "*.css"
@@ -40,7 +44,7 @@
     "verify": "npm run check:tokens && npm run check:usage && npm run typecheck && npm run test && npm run build",
     "check:dist": "node scripts/check-dist.mjs",
     "check:tokens": "node ../design-system/scripts/check-tokens.mjs",
-    "check:usage": "node ../design-system/scripts/check-usage.mjs src"
+    "check:usage": "node scripts/check-usage.mjs src"
   },
   "peerDependencies": {
     "react": "^18.2.0 || ^19.0.0",

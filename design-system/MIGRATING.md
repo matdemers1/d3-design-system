@@ -28,7 +28,9 @@ React note below before you do.
    `SegmentedControl`/`Tabs` → forms. Buttons are the biggest count and the
    lowest risk; forms are the fiddliest and benefit from everything learned first.
 4. **Turn the gate on last**, once it passes: add
-   `node ../../design-system/scripts/check-usage.mjs src` to the app's `lint`.
+   `d3-check-usage src` to the app's `lint`. It ships in the package, so it
+   works anywhere the package installs — including CI, which a path into a
+   sibling directory does not.
 
 ## What to expect, by the numbers
 

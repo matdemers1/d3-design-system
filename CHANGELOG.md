@@ -4,6 +4,23 @@ Semver. The public surface is what `d3-ui/src/index.ts` exports plus the token
 names; CSS class names (`.d3-btn`, `.d3-seg`) are an implementation detail and
 apps must not select on them.
 
+## v0.1.1 — 2026-09-04
+
+**The usage gate now ships inside the package**, as the `d3-check-usage` bin.
+
+It previously lived in `design-system/scripts/` and apps ran it by relative
+path. That works on a machine with both repositories checked out beside each
+other and nowhere else: Bindery's CI went red on the first push after adopting
+the library, with `Cannot find module '…/d3-design-system/design-system/
+scripts/check-usage.mjs'`. A gate that only runs on the author's laptop is not
+a gate.
+
+```bash
+npx d3-check-usage src
+```
+
+No component or token changes.
+
 ## v0.1.0 — 2026-09-04
 
 First tag. Everything below is new, so this reads as a description rather than

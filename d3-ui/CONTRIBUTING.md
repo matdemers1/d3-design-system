@@ -35,7 +35,7 @@ raw Tailwind palette classes, off-scale values on a scale the system owns,
 primitive `--p-*` tokens, and shadows. Run it against any app:
 
 ```bash
-node design-system/scripts/check-usage.mjs src
+npx d3-check-usage src
 ```
 
 It deliberately says nothing about `grid-cols-[1fr_22rem]` or `max-h-[80vh]` —
@@ -132,7 +132,7 @@ Cheap to run, and each line exists because something went wrong once.
 
 - [ ] `npm run verify` in the library, and `npm run lint` in every app that has
       adopted it
-- [ ] `node design-system/scripts/check-usage.mjs src` in every app **including
+- [ ] `npx d3-check-usage src` in every app **including
       the ones not yet migrated** — the number should only ever fall
 - [ ] Count the exemptions. A `d3-allow` that has been there a year is either a
       missing token or a rule that is wrong
