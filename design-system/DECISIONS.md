@@ -1025,3 +1025,17 @@ Storybook is at **https://matdemers1.github.io/d3-design-system**, built by Acti
 The tell was in the build output the whole time: `[vite:dts] Declaration files built` during `storybook:build`, which has no business generating type declarations. I read past it twice. **`viteFinal` now starts from that config and takes the library parts back out**, which is a fix for the class rather than the instance.
 
 Verified on the live site rather than assumed: zero doubled requests, Inter actually loaded (`document.fonts` reports `loaded`, not merely declared), `--color-accent` resolving, and Button measuring 34px — the same measurement discipline the components were built under.
+
+---
+
+### D-057 · v0.1.0, and two things the tag exposed
+**Date:** 2026-09-04
+Tagged `v0.1.0` at `939619c`, with a `CHANGELOG.md` the contribution guide's deprecation policy had been referring to for a document that did not exist.
+
+**The published tarball shipped the fonts without their licences.** `files` lists `dist` and `src/tokens`, and the OFL texts were added under `design-system/tokens/fonts/` — outside the package. So the repository was compliant and **the artifact people would actually install was not**. Found by unpacking the tarball rather than by reading the config.
+
+**"Apps install from the tag" was never true, and both documents said it.** The package lives in `d3-ui/`, and npm has no subdirectory support for git dependencies: `npm i github:matdemers1/d3-design-system#v0.1.0` fails with ENOENT on a `package.json` it looks for at the repo root. Nobody had run it. Corrected in `CONTRIBUTING.md` and `MIGRATING.md`, and the working path — the tarball attached to the release — is now the documented one, tested by installing from the public URL exactly as written.
+
+**The tag was moved once, deliberately.** Its first position shipped the licence defect. It was minutes old with no consumers and no release attached, so re-pointing it was better than leaving an artifact that violates the OFL reachable by version number. That is the only circumstance in which a published tag should move, and it will not happen again for a tag anybody could have installed.
+
+Verified end to end from the release URL: `@d3cloud/ui@0.1.0`, the entry importing its own stylesheet, `.d3-btn` present in the CSS, types emitted, and both OFL files packed.
