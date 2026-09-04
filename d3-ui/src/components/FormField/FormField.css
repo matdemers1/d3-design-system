@@ -1,0 +1,29 @@
+/* A column, not a block. The Label is inline-flex (it carries an "optional"
+   suffix on its own baseline) and a self-labelling control like Checkbox has an
+   inline root — as siblings in a block they share a line and collide. */
+.d3-ff {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  margin: 0;
+}
+/* A group of self-labelling controls stacks with its own rhythm. */
+.d3-ff[role='group'] > .d3-cbx { margin-bottom: var(--space-8); }
+.d3-ff[role='group'] > .d3-cbx:last-of-type { margin-bottom: 0; }
+.d3-ff__help {
+  align-self: flex-start;
+  font-size: var(--text-12);
+  line-height: var(--leading-12);
+  color: var(--color-text-faint);
+  margin: var(--space-6) 0 0;
+}
+.d3-ff__error {
+  align-self: flex-start;
+  font-size: var(--text-12);
+  line-height: var(--leading-12);
+  color: var(--color-danger);
+  margin: var(--space-6) 0 0;
+  display: flex;
+  gap: var(--space-6);
+  align-items: flex-start;
+}

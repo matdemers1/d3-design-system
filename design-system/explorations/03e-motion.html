@@ -1,0 +1,289 @@
+<title>3e · Motion</title>
+<style>
+
+:root{--pg:#0e0e11;--pn:#16161b;--pn2:#1d1d24;--ln:#2c2c36;--tx:#e8e8ee;--dim:#9a9aa8;--dim2:#6e6e7e;--hot:#ff5c5c;--ok:#3ecf8e}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pg);color:var(--tx);
+font:14px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1500px;margin:0 auto;padding:0 28px 110px}
+header.top{padding:56px 0 28px;border-bottom:1px solid var(--ln)}
+.eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim2);font-weight:650;margin:0 0 12px}
+h1{font-size:46px;line-height:1.02;margin:0 0 6px;letter-spacing:-.035em;font-weight:650}
+.tagline{font-size:19px;color:var(--dim);margin:0 0 22px;letter-spacing:-.01em}
+.rationale{max-width:74ch;font-size:15px;color:#c7c7d2;line-height:1.68;margin:0}
+.rationale em{color:var(--tx);font-style:italic}
+h3{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim2);margin:56px 0 14px;font-weight:650}
+h3 span{color:var(--dim);letter-spacing:0;text-transform:none;font-weight:400;margin-left:10px;font-size:12.5px}
+.frame{border:1px solid var(--ln);border-radius:14px;overflow:hidden;position:relative;background:#000}
+.mode{display:flex;align-items:center;gap:8px;padding:9px 14px;background:var(--pn2);
+border-bottom:1px solid var(--ln);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+color:var(--dim2);font-weight:650}
+.cols2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.tok{display:grid;grid-template-columns:repeat(auto-fill,minmax(132px,1fr));gap:8px}
+.tk{border:1px solid var(--ln);border-radius:8px;overflow:hidden;background:var(--pn)}
+.tk .c{height:46px}
+.tk .m{padding:6px 8px;font:11px/1.45 ui-monospace,Menlo,monospace;color:var(--dim)}
+.tk .m b{display:block;color:var(--tx);font-weight:600;letter-spacing:-.01em}
+table.spec{width:100%;border-collapse:collapse;font-size:13px}
+table.spec th{text-align:left;font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+color:var(--dim2);padding:0 12px 9px;border-bottom:1px solid var(--ln);font-weight:650}
+table.spec td{padding:9px 12px;border-bottom:1px solid var(--pn2);color:var(--dim)}
+table.spec td b{color:var(--tx);font-weight:600}
+.mono{font-family:ui-monospace,Menlo,monospace}
+.pass{color:var(--ok);font-weight:600}
+.note{border-left:3px solid var(--dim2);background:#ffffff08;padding:13px 16px;border-radius:0 8px 8px 0;
+margin:16px 0 0;color:#c9c9d4;font-size:13.5px;line-height:1.65}
+.note b{color:#fff}
+.nav{display:flex;gap:9px;flex-wrap:wrap;margin:26px 0 0}
+.nav a{border:1px solid var(--ln);border-radius:999px;padding:7px 15px;color:var(--dim);
+text-decoration:none;font-size:13px;background:var(--pn)}
+.nav a.here{background:var(--tx);color:#111;border-color:var(--tx);font-weight:600}
+footer{margin-top:70px;padding-top:24px;border-top:1px solid var(--ln);color:var(--dim2);font-size:12.5px}
+
+
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:8px}
+.dcard{border:1px solid var(--ln);border-radius:13px;overflow:hidden;background:#000}
+.dcard .dh{padding:8px 13px;background:var(--pn2);border-bottom:1px solid var(--ln);
+font:11px/1 ui-monospace,Menlo,monospace;color:var(--dim2);letter-spacing:.11em;text-transform:uppercase}
+.tierhd{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:0 0 16px}
+.tierhd .th{border:1px solid var(--ln);border-radius:12px;padding:14px 16px;background:var(--pn)}
+.tierhd .th b{display:block;font-size:16px;letter-spacing:-.015em;margin-bottom:4px}
+.tierhd .th .sp{font:11px/1.5 ui-monospace,Menlo,monospace;color:var(--dim2);display:block;margin-bottom:8px}
+.tierhd .th p{margin:0;font-size:12.5px;color:var(--dim);line-height:1.55}
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th{text-align:left;font:650 11px/1 ui-monospace,Menlo,monospace;color:var(--dim2);
+letter-spacing:.09em;padding:0 12px 10px;border-bottom:1px solid var(--ln);text-transform:uppercase}
+.tbl td{padding:9px 12px;border-bottom:1px solid var(--pn2);color:var(--dim);vertical-align:top}
+.tbl td b{color:var(--tx)} .tbl td.num{font-family:ui-monospace,Menlo,monospace;font-size:12px}
+.bad{color:#ff6b6b;font-weight:600}
+
+.ui{  --bg-sunken: #080a0d;
+  --bg: #101117;
+  --surface: #191b23;
+  --surface-raised: #2c303b;
+  --surface-hover: #242731;
+  --border: #2c303b;
+  --border-field: #747888;
+  --border-float: #747888;
+  --text: #f0f2f7;
+  --text-muted: #b9bdcb;
+  --text-faint: #999ead;
+  --accent: #978cff;
+  --accent-hover: #b8b4ff;
+  --accent-contrast: #0a0225;
+  --accent-muted: #1c0252;
+  --success: #70d6a1;
+  --warning: #e7b45d;
+  --danger: #fc6568;
+  --info: #87c3ff;
+  --focus: #978cff;
+  --rad-sm: 8px; --rad-md: 10px; --rad-lg: 14px; --rad-full: 999px;
+  --dur-1: 90ms; --dur-2: 140ms; --dur-3: 200ms; --dur-4: 280ms; --dur-5: 420ms;
+  --ease-out: cubic-bezier(0.2, 0.7, 0.3, 1);
+  --ease-in: cubic-bezier(0.5, 0, 0.9, 0.4);
+  --ease-spring: cubic-bezier(0.22, 1.2, 0.36, 1);
+  --ease-linear: linear;
+}
+
+.ui{font-family:'Inter',ui-sans-serif,system-ui,sans-serif;font-size:13px;color:var(--text);
+background:var(--bg);line-height:1.5}
+.ui *{box-sizing:border-box}
+.stage{position:relative;height:186px;overflow:hidden;padding:14px;background:var(--bg)}
+.card{background:var(--surface);border-radius:var(--rad-lg);padding:12px;height:100%}
+.float{background:var(--surface-raised);border:1px solid var(--border-float);
+border-radius:var(--rad-lg)}
+.row{display:flex;align-items:center;gap:9px;padding:0 10px;height:34px;border-radius:var(--rad-md);
+font-size:12px;color:var(--text-muted);overflow:hidden}
+.btn{border:0;border-radius:var(--rad-md);padding:6px 12px;font-size:12px;font-weight:600;
+background:var(--accent);color:var(--accent-contrast)}
+.btn.ghost{background:var(--surface-raised);color:var(--text);font-weight:500}
+.pill{font-size:10px;background:var(--surface-raised);color:var(--text-muted);
+border-radius:var(--rad-full);padding:3px 8px}
+.abs{position:absolute}
+.scrim{position:absolute;inset:0;background:rgba(0,0,0,.58)}
+
+/* ---------------- MODAL ---------------- */
+@keyframes mo-a{0%,6%{opacity:0}14%,86%{opacity:1}94%,100%{opacity:0}}
+@keyframes mo-a-p{0%,6%{opacity:0;transform:translate(-50%,-46%)}
+ 14%,86%{opacity:1;transform:translate(-50%,-50%)}94%,100%{opacity:0;transform:translate(-50%,-46%)}}
+@keyframes mo-b-p{0%,6%{opacity:0;transform:translate(-50%,-38%) scale(.96)}
+ 16%,86%{opacity:1;transform:translate(-50%,-50%) scale(1)}94%,100%{opacity:0;transform:translate(-50%,-44%) scale(.98)}}
+@keyframes mo-c-p{0%,6%{opacity:0;transform:translate(-50%,-30%) scale(.9)}
+ 18%{transform:translate(-50%,-52%) scale(1.02)}24%,86%{opacity:1;transform:translate(-50%,-50%) scale(1)}
+ 94%,100%{opacity:0;transform:translate(-50%,-40%) scale(.94)}}
+.d-a .m-scrim{animation:mo-a 5s var(--ease-out) infinite}
+.d-a .m-panel{animation:mo-a-p 5s var(--ease-out) infinite}
+.d-b .m-scrim{animation:mo-a 5s var(--ease-out) infinite}
+.d-b .m-panel{animation:mo-b-p 5s var(--ease-spring) infinite}
+.d-c .m-scrim{animation:mo-a 5s var(--ease-out) infinite}
+.d-c .m-panel{animation:mo-c-p 5s var(--ease-spring) infinite}
+
+/* ---------------- MENU ---------------- */
+@keyframes me-a{0%,8%{opacity:0}16%,84%{opacity:1}92%,100%{opacity:0}}
+@keyframes me-b{0%,8%{opacity:0;transform:translateY(-6px) scale(.97)}
+ 18%,84%{opacity:1;transform:translateY(0) scale(1)}92%,100%{opacity:0;transform:translateY(-4px) scale(.98)}}
+@keyframes me-c{0%,8%{opacity:0;transform:translateY(-10px) scale(.9);transform-origin:top right}
+ 20%{transform:translateY(1px) scale(1.02)}26%,84%{opacity:1;transform:translateY(0) scale(1)}
+ 92%,100%{opacity:0;transform:translateY(-8px) scale(.92)}}
+.d-a .m-menu{animation:me-a 5s var(--ease-out) infinite}
+.d-b .m-menu{animation:me-b 5s var(--ease-out) infinite}
+.d-c .m-menu{animation:me-c 5s var(--ease-spring) infinite;transform-origin:top right}
+@keyframes mi-c{0%,20%{opacity:0;transform:translateX(6px)}30%,86%{opacity:1;transform:translateX(0)}
+ 92%,100%{opacity:0}}
+.d-c .m-menu .mi{animation:mi-c 5s var(--ease-out) infinite}
+.d-c .m-menu .mi:nth-child(2){animation-delay:.04s}
+.d-c .m-menu .mi:nth-child(3){animation-delay:.08s}
+.d-c .m-menu .mi:nth-child(4){animation-delay:.12s}
+.mi{padding:6px 9px;border-radius:var(--rad-md);color:var(--text-muted);font-size:12px}
+.mi.on{background:var(--accent-muted);color:var(--accent);font-weight:600}
+
+/* ---------------- TOAST ---------------- */
+@keyframes to-a{0%,10%{opacity:0}18%,80%{opacity:1}90%,100%{opacity:0}}
+@keyframes to-b{0%,10%{opacity:0;transform:translateY(14px)}20%,80%{opacity:1;transform:translateY(0)}
+ 90%,100%{opacity:0;transform:translateY(8px)}}
+@keyframes to-c{0%,10%{opacity:0;transform:translateY(26px) scale(.94)}
+ 22%{transform:translateY(-3px) scale(1.01)}28%,78%{opacity:1;transform:translateY(0) scale(1)}
+ 88%,100%{opacity:0;transform:translateX(40px) scale(.96)}}
+.d-a .m-toast{animation:to-a 5s var(--ease-out) infinite}
+.d-b .m-toast{animation:to-b 5s var(--ease-out) infinite}
+.d-c .m-toast{animation:to-c 5s var(--ease-spring) infinite}
+@keyframes tick{0%,24%{stroke-dashoffset:22}36%,100%{stroke-dashoffset:0}}
+.d-c .m-toast svg path{stroke-dasharray:22;animation:tick 5s var(--ease-out) infinite}
+
+/* ---------------- TABS ---------------- */
+.tabs{display:inline-flex;background:var(--surface-raised);border-radius:var(--rad-md);
+padding:3px;position:relative;gap:2px}
+.tabs .t{padding:5px 12px;border-radius:calc(var(--rad-md) - 3px);font-size:12px;
+color:var(--text-muted);position:relative;z-index:1}
+.tabs .glide{position:absolute;top:3px;bottom:3px;border-radius:calc(var(--rad-md) - 3px);
+background:var(--accent-muted);z-index:0}
+@keyframes tab-a{0%,45%{left:3px;width:52px}50%,95%{left:57px;width:74px}100%{left:3px;width:52px}}
+@keyframes tab-b{0%,42%{left:3px;width:52px}52%,94%{left:57px;width:74px}100%{left:3px;width:52px}}
+.d-a .glide{animation:tab-a 5s steps(1) infinite}
+.d-b .glide{animation:tab-b 5s var(--ease-out) infinite}
+.d-c .glide{animation:tab-b 5s var(--ease-spring) infinite}
+@keyframes tab-txt{0%,45%{color:var(--accent);font-weight:600}50%,95%{color:var(--text-muted);font-weight:400}
+ 100%{color:var(--accent);font-weight:600}}
+@keyframes tab-txt2{0%,45%{color:var(--text-muted);font-weight:400}50%,95%{color:var(--accent);font-weight:600}
+ 100%{color:var(--text-muted);font-weight:400}}
+.t1{animation:tab-txt 5s steps(1) infinite}
+.t2{animation:tab-txt2 5s steps(1) infinite}
+
+/* ---------------- LIST LOAD ---------------- */
+@keyframes li-a{0%,10%{opacity:0}20%,92%{opacity:1}100%{opacity:0}}
+@keyframes li-b{0%,10%{opacity:0;transform:translateY(7px)}22%,92%{opacity:1;transform:translateY(0)}100%{opacity:0}}
+@keyframes li-c{0%,10%{opacity:0;transform:translateY(16px) scale(.98)}
+ 24%,92%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0}}
+.d-a .li{animation:li-a 5s var(--ease-out) infinite}
+.d-b .li{animation:li-b 5s var(--ease-out) infinite}
+.d-c .li{animation:li-c 5s var(--ease-spring) infinite}
+.d-b .li:nth-child(2){animation-delay:.05s}.d-b .li:nth-child(3){animation-delay:.1s}
+.d-b .li:nth-child(4){animation-delay:.15s}
+.d-c .li:nth-child(2){animation-delay:.08s}.d-c .li:nth-child(3){animation-delay:.16s}
+.d-c .li:nth-child(4){animation-delay:.24s}
+
+/* ---------------- ROW DISMISS ---------------- */
+@keyframes rm-a{0%,30%{opacity:1;height:34px;margin-bottom:4px}
+ 42%,100%{opacity:0;height:0;margin-bottom:0}}
+@keyframes rm-b{0%,30%{opacity:1;height:34px;margin-bottom:4px;transform:translateX(0)}
+ 38%{opacity:0;transform:translateX(-16px)}50%,100%{opacity:0;height:0;margin-bottom:0}}
+@keyframes rm-c{0%,30%{opacity:1;height:34px;margin-bottom:4px;transform:translateX(0) scale(1)}
+ 36%{transform:translateX(8px) scale(1.01)}46%{opacity:0;transform:translateX(-70px) scale(.94)}
+ 58%,100%{opacity:0;height:0;margin-bottom:0}}
+.d-a .gone{animation:rm-a 5s var(--ease-out) infinite}
+.d-b .gone{animation:rm-b 5s var(--ease-in) infinite}
+.d-c .gone{animation:rm-c 5s var(--ease-spring) infinite}
+
+@media (prefers-reduced-motion: reduce){
+  .ui *,.ui *::before,.ui *::after{animation-duration:.001ms !important;
+    animation-iteration-count:1 !important;transition-duration:.001ms !important}
+  .rm-note{display:block !important}
+}
+.rm-note{display:none}
+
+</style>
+<div class='wrap'>
+<header class="top"><p class="eyebrow">Phase 3 · Foundations</p>
+<h1>3e — Motion</h1>
+<p class="tagline">Three levels of ambition, running live. Same interactions, same tokens,
+different nerve.</p>
+<p class="rationale">You said you want to lean into this, so rather than write a duration table and
+call it a decision, here are the five interactions that carry the most motion in these apps, built
+at three intensities and looping side by side. One thing shapes all of them: <b>Bindery and App A
+both poll.</b> Rows repaint on their own every few seconds, so animation has to go big in the chrome
+— layers, navigation, state changes, feedback — and stay near zero in live data. Every tier below
+respects that; they differ in how much they do with the room that leaves.</p></header>
+<div class="tierhd">
+<div class="th"><b>Measured</b><span class="sp">120–200ms · ease-out · fade and small travel · no stagger, no overshoot</span><p>What the brief signed off. Motion confirms, never performs.</p></div>
+<div class="th"><b>Confident</b><span class="sp">160–320ms · a soft spring on entrances · staggered lists · the tab pill travels</span><p>Motion explains where things came from. The recommendation if you want more without amending the brief.</p></div>
+<div class="th"><b>Expressive</b><span class="sp">200–460ms · real overshoot · choreographed sequences · counters roll · rows fly out</span><p>Genuinely characterful. Amends the &quot;strongly restrained&quot; slider in BRIEF.md — worth doing knowingly.</p></div>
+</div>
+<h3>What ships <span>Expressive everywhere except the menu family</span></h3>
+<div class="note" style="border-left-color:#8f80f7"><b>Expressive</b> for modal, toast, tab switch,
+list load and row dismissal. <b>Confident</b> for dropdown menus &mdash; and, by the same reasoning,
+for popovers and tooltips. A menu is opened dozens of times an hour; a choreographed entrance with
+staggered items is charming the tenth time and tiring the hundredth. A modal is occasional, so it can
+afford the theatre. The shipped tier is outlined in violet in each row below.</div>
+<h3>Modal <span>the layer that most wants to be felt arriving</span></h3><div class="three">
+<div class="dcard"><div class="dh" style="display:flex">Measured</div><div class="ui d-a"><div class="stage"><div class="card"><div class="row">Export fails silently on files over 50 MB</div><div class="row">SSO login loops back to the sign-in page</div></div><div class="scrim m-scrim"></div><div class="abs float m-panel" style="top:50%;left:50%;width:190px;padding:14px"><div style="font-weight:650;font-size:13px;margin-bottom:10px">Dismiss 3 items</div><div style="display:flex;gap:6px;justify-content:flex-end"><button class="btn ghost">Cancel</button><button class="btn">Dismiss</button></div></div></div></div></div>
+<div class="dcard"><div class="dh" style="display:flex">Confident</div><div class="ui d-b"><div class="stage"><div class="card"><div class="row">Export fails silently on files over 50 MB</div><div class="row">SSO login loops back to the sign-in page</div></div><div class="scrim m-scrim"></div><div class="abs float m-panel" style="top:50%;left:50%;width:190px;padding:14px"><div style="font-weight:650;font-size:13px;margin-bottom:10px">Dismiss 3 items</div><div style="display:flex;gap:6px;justify-content:flex-end"><button class="btn ghost">Cancel</button><button class="btn">Dismiss</button></div></div></div></div></div>
+<div class="dcard" style="border-color:#978cff;border-width:2px"><div class="dh" style="display:flex">Expressive<span style="margin-left:auto;color:#978cff;font-weight:700">SHIPS</span></div><div class="ui d-c"><div class="stage"><div class="card"><div class="row">Export fails silently on files over 50 MB</div><div class="row">SSO login loops back to the sign-in page</div></div><div class="scrim m-scrim"></div><div class="abs float m-panel" style="top:50%;left:50%;width:190px;padding:14px"><div style="font-weight:650;font-size:13px;margin-bottom:10px">Dismiss 3 items</div><div style="display:flex;gap:6px;justify-content:flex-end"><button class="btn ghost">Cancel</button><button class="btn">Dismiss</button></div></div></div></div></div>
+</div>
+<h3>Dropdown menu <span>opened constantly — this is the one that stays calm</span></h3><div class="three">
+<div class="dcard"><div class="dh" style="display:flex">Measured</div><div class="ui d-a"><div class="stage"><div class="card"><div style="display:flex;justify-content:flex-end"><span class="pill">•••</span></div><div class="row">Export fails silently…</div></div><div class="abs float m-menu" style="top:44px;right:26px;width:132px;padding:5px"><div class="mi on">Assign to me</div><div class="mi">Merge with…</div><div class="mi">Backlog</div><div class="mi">Dismiss</div></div></div></div></div>
+<div class="dcard" style="border-color:#978cff;border-width:2px"><div class="dh" style="display:flex">Confident<span style="margin-left:auto;color:#978cff;font-weight:700">SHIPS</span></div><div class="ui d-b"><div class="stage"><div class="card"><div style="display:flex;justify-content:flex-end"><span class="pill">•••</span></div><div class="row">Export fails silently…</div></div><div class="abs float m-menu" style="top:44px;right:26px;width:132px;padding:5px"><div class="mi on">Assign to me</div><div class="mi">Merge with…</div><div class="mi">Backlog</div><div class="mi">Dismiss</div></div></div></div></div>
+<div class="dcard"><div class="dh" style="display:flex">Expressive</div><div class="ui d-c"><div class="stage"><div class="card"><div style="display:flex;justify-content:flex-end"><span class="pill">•••</span></div><div class="row">Export fails silently…</div></div><div class="abs float m-menu" style="top:44px;right:26px;width:132px;padding:5px"><div class="mi on">Assign to me</div><div class="mi">Merge with…</div><div class="mi">Backlog</div><div class="mi">Dismiss</div></div></div></div></div>
+</div>
+<h3>Toast <span>the only motion that appears without you asking for it</span></h3><div class="three">
+<div class="dcard"><div class="dh" style="display:flex">Measured</div><div class="ui d-a"><div class="stage"><div class="card"><div class="row">CSV export drops the last column</div><div class="row">Docs link in the footer 404s</div></div><div class="abs float m-toast" style="bottom:14px;right:14px;width:186px;padding:10px 12px;display:flex;gap:9px;align-items:center"><svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="#978cff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5 6.3 11.8 13 5"/></svg><div><b style="font-size:12px">3 items dismissed</b></div></div></div></div></div>
+<div class="dcard"><div class="dh" style="display:flex">Confident</div><div class="ui d-b"><div class="stage"><div class="card"><div class="row">CSV export drops the last column</div><div class="row">Docs link in the footer 404s</div></div><div class="abs float m-toast" style="bottom:14px;right:14px;width:186px;padding:10px 12px;display:flex;gap:9px;align-items:center"><svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="#978cff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5 6.3 11.8 13 5"/></svg><div><b style="font-size:12px">3 items dismissed</b></div></div></div></div></div>
+<div class="dcard" style="border-color:#978cff;border-width:2px"><div class="dh" style="display:flex">Expressive<span style="margin-left:auto;color:#978cff;font-weight:700">SHIPS</span></div><div class="ui d-c"><div class="stage"><div class="card"><div class="row">CSV export drops the last column</div><div class="row">Docs link in the footer 404s</div></div><div class="abs float m-toast" style="bottom:14px;right:14px;width:186px;padding:10px 12px;display:flex;gap:9px;align-items:center"><svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="#978cff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5 6.3 11.8 13 5"/></svg><div><b style="font-size:12px">3 items dismissed</b></div></div></div></div></div>
+</div>
+<h3>Tab switch <span>A steps between states; B and C move the pill</span></h3><div class="three">
+<div class="dcard"><div class="dh" style="display:flex">Measured</div><div class="ui d-a"><div class="stage" style="display:flex;align-items:center;justify-content:center"><div class="tabs"><span class="glide"></span><span class="t t1">Inbox</span><span class="t t2">In Review</span><span class="t">Backlog</span></div></div></div></div>
+<div class="dcard"><div class="dh" style="display:flex">Confident</div><div class="ui d-b"><div class="stage" style="display:flex;align-items:center;justify-content:center"><div class="tabs"><span class="glide"></span><span class="t t1">Inbox</span><span class="t t2">In Review</span><span class="t">Backlog</span></div></div></div></div>
+<div class="dcard" style="border-color:#978cff;border-width:2px"><div class="dh" style="display:flex">Expressive<span style="margin-left:auto;color:#978cff;font-weight:700">SHIPS</span></div><div class="ui d-c"><div class="stage" style="display:flex;align-items:center;justify-content:center"><div class="tabs"><span class="glide"></span><span class="t t1">Inbox</span><span class="t t2">In Review</span><span class="t">Backlog</span></div></div></div></div>
+</div>
+<h3>List load <span>first paint only — never on a poll</span></h3><div class="three">
+<div class="dcard"><div class="dh" style="display:flex">Measured</div><div class="ui d-a"><div class="stage"><div class="card" style="padding:8px"><div class="row li">Export fails silently on files over 50 MB</div><div class="row li">SSO login loops back to the sign-in page</div><div class="row li">CSV export drops the last column</div><div class="row li">Webhook retries fire twice on 5xx</div></div></div></div></div>
+<div class="dcard"><div class="dh" style="display:flex">Confident</div><div class="ui d-b"><div class="stage"><div class="card" style="padding:8px"><div class="row li">Export fails silently on files over 50 MB</div><div class="row li">SSO login loops back to the sign-in page</div><div class="row li">CSV export drops the last column</div><div class="row li">Webhook retries fire twice on 5xx</div></div></div></div></div>
+<div class="dcard" style="border-color:#978cff;border-width:2px"><div class="dh" style="display:flex">Expressive<span style="margin-left:auto;color:#978cff;font-weight:700">SHIPS</span></div><div class="ui d-c"><div class="stage"><div class="card" style="padding:8px"><div class="row li">Export fails silently on files over 50 MB</div><div class="row li">SSO login loops back to the sign-in page</div><div class="row li">CSV export drops the last column</div><div class="row li">Webhook retries fire twice on 5xx</div></div></div></div></div>
+</div>
+<h3>Row dismissed <span>the row leaves, so the list does not just blink</span></h3><div class="three">
+<div class="dcard"><div class="dh" style="display:flex">Measured</div><div class="ui d-a"><div class="stage"><div class="card" style="padding:8px"><div class="row gone" style="background:var(--accent-muted);color:var(--accent)">Export fails silently on files over 50 MB</div><div class="row">SSO login loops back to the sign-in page</div><div class="row">CSV export drops the last column</div></div></div></div></div>
+<div class="dcard"><div class="dh" style="display:flex">Confident</div><div class="ui d-b"><div class="stage"><div class="card" style="padding:8px"><div class="row gone" style="background:var(--accent-muted);color:var(--accent)">Export fails silently on files over 50 MB</div><div class="row">SSO login loops back to the sign-in page</div><div class="row">CSV export drops the last column</div></div></div></div></div>
+<div class="dcard" style="border-color:#978cff;border-width:2px"><div class="dh" style="display:flex">Expressive<span style="margin-left:auto;color:#978cff;font-weight:700">SHIPS</span></div><div class="ui d-c"><div class="stage"><div class="card" style="padding:8px"><div class="row gone" style="background:var(--accent-muted);color:var(--accent)">Export fails silently on files over 50 MB</div><div class="row">SSO login loops back to the sign-in page</div><div class="row">CSV export drops the last column</div></div></div></div></div>
+</div>
+<h3>Durations and easings <span>shared by all three tiers — only the choices differ</span></h3>
+<table class="tbl"><thead><tr><th>Token</th><th class="num">Value</th><th>Used for</th></tr></thead><tbody>
+<tr><td class="num"><b>--dur-1</b></td><td class="num">90ms</td><td>colour and opacity on hover — the eye should not notice it</td></tr>
+<tr><td class="num"><b>--dur-2</b></td><td class="num">140ms</td><td>small state changes: checkbox, chip, focus ring</td></tr>
+<tr><td class="num"><b>--dur-3</b></td><td class="num">200ms</td><td>menus, popovers, tooltips entering</td></tr>
+<tr><td class="num"><b>--dur-4</b></td><td class="num">280ms</td><td>modal, drawer, sidebar collapse</td></tr>
+<tr><td class="num"><b>--dur-5</b></td><td class="num">420ms</td><td>toast, row removal, anything with travel across the screen</td></tr>
+<tr><td class="num"><b>--ease-out</b></td><td class="num">cubic-bezier(.2,.7,.3,1)</td><td>everything entering — decelerates into place</td></tr>
+<tr><td class="num"><b>--ease-in</b></td><td class="num">cubic-bezier(.5,0,.9,.4)</td><td>everything leaving — accelerates away</td></tr>
+<tr><td class="num"><b>--ease-spring</b></td><td class="num">cubic-bezier(.22,1.2,.36,1)</td><td>tiers B and C only — a small overshoot on arrival</td></tr>
+<tr><td class="num"><b>--ease-linear</b></td><td class="num">linear</td><td>progress bars and spinners only — never on a transform</td></tr>
+</tbody></table>
+<h3>What never animates <span>the same list in all three tiers</span></h3>
+<table class="tbl"><thead><tr><th>Never</th><th>Because</th></tr></thead><tbody>
+<tr><td><b>A table row whose <i>content</i> changed on a poll</b></td><td>Bindery and App A repoll lists. Animating a value that updates on its own turns a quiet screen into a slot machine. New rows may enter on first paint; a changed cell just changes.</td></tr>
+<tr><td><b>Anything on a route change in a data view</b></td><td>Fading a table on every navigation makes the app feel slower than it is, and it delays the thing the user came to read.</td></tr>
+<tr><td><b>Text reflow, column widths, table layout</b></td><td>Layout animation is the most expensive kind and the least readable. Columns drop at a breakpoint; they do not slide.</td></tr>
+<tr><td><b>The focus ring</b></td><td>It must appear on the same frame as the key press. A 140ms fade on focus is a 140ms lie about where you are.</td></tr>
+<tr><td><b>Validation errors appearing</b></td><td>An error that animates in reads as decoration. It should already be there when the user looks.</td></tr>
+<tr><td><b>Skeletons, beyond one slow shimmer</b></td><td>A loading state that draws attention to itself competes with the content it is standing in for.</td></tr>
+</tbody></table>
+<h3>Reduced motion <span>not a downgrade path — a supported mode</span></h3>
+<div class="note"><b>Every tier collapses to the same thing under <code>prefers-reduced-motion</code>:</b>
+opacity only, 1ms, no transform. This page honours it too — if your system is set to reduce motion,
+every demo above is already still, and that is the correct rendering, not a broken one.
+<br><br>One constraint inherited from App D, which is out of scope as a product but got this
+right: <b>entrances animate <i>from</i> an offset <i>to</i> the element's natural state, using
+<code>animation-fill-mode: backwards</code></b> — never <code>forwards</code>. A retained transform
+turns the wrapper into a containing block, which silently breaks every <code>position: fixed</code>
+overlay inside it. That bug costs an afternoon to find and one line to prevent.</div>
+<div class="rm-note note" style="border-left-color:#66d9a0"><b>Reduced motion is currently on in your
+system settings</b> — the demos above are intentionally static.</div>
+<footer><b>design-system/explorations/03e-motion.html</b> — Phase 3e. Three tiers, live. Pick one, or mix per interaction.</footer></div>

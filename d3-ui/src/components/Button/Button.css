@@ -1,0 +1,79 @@
+.d3-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-6);
+  border: 0;
+  border-radius: var(--radius-md);
+  font-family: inherit;
+  font-weight: var(--weight-semibold);
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  /* No margin, ever. Spacing belongs to the parent — this is the single most
+     common reason a component library cannot be composed. */
+  margin: 0;
+  transition: background-color var(--motion-hover), color var(--motion-hover);
+}
+
+.d3-btn--sm { height: 28px; padding: 0 var(--space-8);  font-size: var(--text-12); }
+.d3-btn--md { height: 34px; padding: 0 var(--space-16); font-size: var(--text-13); }
+.d3-btn--lg { height: 40px; padding: 0 var(--space-20); font-size: var(--text-14); }
+
+.d3-btn--primary        { background: var(--color-accent); color: var(--color-accent-contrast); }
+.d3-btn--primary:hover:not(:disabled)   { background: var(--color-accent-hover); }
+.d3-btn--secondary      { background: var(--color-surface-raised); color: var(--color-text);
+                          font-weight: var(--weight-medium); }
+.d3-btn--secondary:hover:not(:disabled) { background: var(--color-surface-hover); }
+.d3-btn--ghost          { background: transparent; color: var(--color-text-muted);
+                          font-weight: var(--weight-medium); }
+.d3-btn--ghost:hover:not(:disabled)     { background: var(--color-surface-raised);
+                                          color: var(--color-text); }
+.d3-btn--danger         { background: var(--color-danger); color: var(--color-accent-contrast); }
+.d3-btn--danger:hover:not(:disabled)    { filter: brightness(1.06); }
+.d3-btn--danger-ghost   { background: transparent; color: var(--color-danger); }
+.d3-btn--danger-ghost:hover:not(:disabled) { background: var(--color-surface-raised); }
+
+.d3-btn:disabled { opacity: 0.42; cursor: not-allowed; }
+.d3-btn:active:not(:disabled) { filter: brightness(0.94); }
+
+/* One focus treatment, no component overrides (D-023). */
+.d3-btn:focus-visible {
+  outline: var(--focus-width) solid var(--color-focus);
+  outline-offset: var(--focus-offset);
+}
+
+/* Loading keeps the button focusable so focus is not lost mid-action, and the
+   label does not change so the button does not resize. */
+.d3-btn[aria-busy='true'] { cursor: progress; }
+
+.d3-btn__icon { display: inline-flex; flex: none; }
+
+/* A toggle is a button that stays down.
+   The held state is the accent tint, not the raised ground — and the reason is
+   worth keeping, because the obvious choice is wrong twice over. `secondary`
+   already rests on `surface-raised`, so a raised pressed state is byte-identical
+   to its resting state; `ghost` uses `surface-raised` for hover, so a raised
+   pressed state is indistinguishable from a pointer passing over it.
+
+   It also differs from a chosen segment on purpose. Inside a SegmentedControl
+   one option is always chosen, so accent would be permanently lit and would
+   stop meaning anything. A standalone toggle being on is the exception, which
+   is exactly when D-016 says a hue is earned.
+
+   The ring is an inset shadow because `.d3-btn` sets `border: 0` — a
+   `border-color` here would have styled a border that does not exist, which is
+   what the first version of this rule did.
+
+   Defined for secondary and ghost; see the `pressed` prop for why not primary. */
+.d3-btn--secondary[aria-pressed='true'],
+.d3-btn--ghost[aria-pressed='true'] {
+  background: var(--color-accent-muted);
+  color: var(--color-accent);
+  box-shadow: inset 0 0 0 var(--border-width) var(--color-accent);
+}
+.d3-btn--secondary[aria-pressed='true']:hover:not(:disabled),
+.d3-btn--ghost[aria-pressed='true']:hover:not(:disabled) {
+  background: var(--color-accent-muted);
+  filter: brightness(1.25);
+}

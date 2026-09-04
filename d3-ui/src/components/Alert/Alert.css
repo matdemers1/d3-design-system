@@ -1,0 +1,33 @@
+.d3-alrt {
+  display: flex;
+  gap: var(--space-12);
+  align-items: flex-start;
+  background: var(--color-surface-raised);
+  border-radius: var(--radius-lg);
+  padding: var(--space-12) var(--space-16);
+  margin: 0;
+}
+.d3-alrt__icon { flex: none; margin-top: 1px; display: flex; }
+.d3-alrt__body { flex: 1; min-width: 0; }
+.d3-alrt__title { font-size: var(--text-13); font-weight: var(--weight-semibold); margin: 0 0 2px; }
+.d3-alrt__message { font-size: var(--text-12); color: var(--color-text-muted); margin: 0;
+  line-height: var(--leading-12); }
+.d3-alrt__actions { margin-top: var(--space-8); display: flex; gap: var(--space-8); }
+
+/* A banner spans its container instead of sitting inside it. It keeps the
+   raised ground — elevation is tone — and trades its radius for a boundary at
+   the edge it meets, because a full-width strip is part of the panel rather
+   than a card floating above it. */
+.d3-alrt--flush {
+  border-radius: 0;
+  border-bottom: var(--border-width) solid var(--color-border);
+}
+
+/* Alert is where success, warning and info are allowed to be colours. D-016
+   took hue away from *status* because seven statuses exceed what colour can
+   carry; messaging is the opposite case — one alert, on screen, where the tone
+   is the point. */
+.d3-alrt--danger  .d3-alrt__icon, .d3-alrt--danger  .d3-alrt__title { color: var(--color-danger); }
+.d3-alrt--warning .d3-alrt__icon, .d3-alrt--warning .d3-alrt__title { color: var(--color-warning); }
+.d3-alrt--success .d3-alrt__icon, .d3-alrt--success .d3-alrt__title { color: var(--color-success); }
+.d3-alrt--info    .d3-alrt__icon, .d3-alrt--info    .d3-alrt__title { color: var(--color-info); }

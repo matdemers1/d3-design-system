@@ -1,0 +1,96 @@
+{
+  "$description": "Iconography. Lucide (ISC), 24x24 grid, stroke-based. Stroke-width is a function of size so the rendered line stays in a 1.17-1.50px band at every size.",
+  "icon": {
+    "library": {
+      "$type": "string",
+      "$value": "lucide-react",
+      "$description": "ISC. Already vendored in Bindery.",
+      "$extensions": {
+        "d3": {
+          "emit": false,
+          "why": "The package name. Not a style value."
+        }
+      }
+    },
+    "size": {
+      "14": {
+        "$type": "dimension",
+        "$value": "14px",
+        "$description": "inline with 11-12px metadata; the smallest icon the system allows",
+        "$extensions": {
+          "d3.strokeWidth": 2.0,
+          "d3.renderedStroke": 1.17
+        }
+      },
+      "16": {
+        "$type": "dimension",
+        "$value": "16px",
+        "$description": "the default - inline with 14px body, buttons, table cells",
+        "$extensions": {
+          "d3.strokeWidth": 1.8,
+          "d3.renderedStroke": 1.2
+        }
+      },
+      "20": {
+        "$type": "dimension",
+        "$value": "20px",
+        "$description": "sidebar navigation, toolbar actions",
+        "$extensions": {
+          "d3.strokeWidth": 1.6,
+          "d3.renderedStroke": 1.33
+        }
+      },
+      "24": {
+        "$type": "dimension",
+        "$value": "24px",
+        "$description": "section headers, empty states, standing alone",
+        "$extensions": {
+          "d3.strokeWidth": 1.5,
+          "d3.renderedStroke": 1.5
+        }
+      }
+    },
+    "strokeWidth": {
+      "14": {
+        "$type": "number",
+        "$value": 2.0
+      },
+      "16": {
+        "$type": "number",
+        "$value": 1.8
+      },
+      "20": {
+        "$type": "number",
+        "$value": 1.6
+      },
+      "24": {
+        "$type": "number",
+        "$value": 1.5
+      }
+    }
+  },
+  "$extensions": {
+    "d3.pairing": "The icon box is one step larger than the text size: 12px text takes a 14px icon, 14px text takes 16px. A stroke glyph reads lighter than a letterform of the same height, so matching the em box makes the icon look shrunken.",
+    "d3.alignment": "display:inline-flex; align-items:center. Never vertical-align, never a margin-top.",
+    "d3.icon-only-allowed": [
+      "non-destructive and reversible",
+      "in a persistent, learnable location",
+      "has an aria-label, always",
+      "has a tooltip on hover and on keyboard focus",
+      "is one of a small learnable set: close, search, expand, more, edit"
+    ],
+    "d3.icon-only-forbidden": [
+      "anything destructive",
+      "anything that spends money or messages a person",
+      "anything appearing only a handful of times",
+      "the primary action of a page or dialog",
+      "anywhere the icon is the only signal of a state"
+    ],
+    "d3.animated": [
+      "disclosure chevron rotating 180deg over 200ms",
+      "loading spinner, 1s linear",
+      "confirmation check drawing once - never looping in production"
+    ],
+    "d3.custom": "Only when Lucide has no equivalent. Same constraints: 24x24 viewBox, stroke-based, round caps and joins, 2-unit nominal stroke, no fills except where the shape is the meaning."
+  }
+}

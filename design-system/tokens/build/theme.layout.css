@@ -1,0 +1,19 @@
+/* GENERATED — Tailwind v4 layout theme. Phase 3c. */
+@import "./layout.css";
+
+@theme inline {
+  /* One base unit drives every padding, margin and gap utility:
+     p-1 is 4px, p-3 is 12px, p-5 is 20px. */
+  --spacing: 4px;
+
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: initial;   /* dropped — unused in all four apps */
+
+  --container-form: var(--container-form);
+  --container-prose: var(--container-prose);
+  --container-narrow: var(--container-narrow);
+  --container-wide: var(--container-wide);
+}

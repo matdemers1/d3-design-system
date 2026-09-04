@@ -1,0 +1,16 @@
+/* The system's single Tailwind entry point. Import this and nothing else.
+
+   Phase 3 foundations, complete:
+     3a colour · 3b typography · 3c spacing and layout
+     3d shape and elevation · 3e motion · 3f iconography
+
+   3g voice and content ships as tokens/content.json — it governs strings, not
+   styles, so it has no stylesheet. Its formatters land in Phase 5 with the
+   components (see content.json → $extensions.d3.formatters). */
+@import "tailwindcss";
+@import "./theme.color.css";
+@import "./theme.type.css";
+@import "./theme.layout.css";
+@import "./theme.shape.css";
+@import "./theme.motion.css";
+@import "./theme.icon.css";

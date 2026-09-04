@@ -1,0 +1,584 @@
+<!doctype html>
+<html lang="en" data-theme="dark"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Alert · before and after</title>
+<style>
+/* GENERATED from the JSON token sources — do not edit by hand. Phase 3a. */
+
+/* Primitives are exposed for reference and tooling only. Component code must
+   use the --color-* semantic names; a lint rule bans --p-* outside this file. */
+
+:root {
+  --p-neutral-50: #f9fafd;
+  --p-neutral-100: #f0f2f7;
+  --p-neutral-200: #dbdee7;
+  --p-neutral-300: #b9bdcb;
+  --p-neutral-400: #999ead;
+  --p-neutral-500: #747888;
+  --p-neutral-600: #515563;
+  --p-neutral-700: #2c303b;
+  --p-neutral-800: #242731;
+  --p-neutral-900: #191b23;
+  --p-neutral-950: #101117;
+  --p-neutral-975: #080a0d;
+  --p-violet-50: #f9f9ff;
+  --p-violet-100: #f0f0ff;
+  --p-violet-200: #dadaff;
+  --p-violet-300: #b8b4ff;
+  --p-violet-400: #978cff;
+  --p-violet-500: #745aec;
+  --p-violet-600: #5432be;
+  --p-violet-700: #320084;
+  --p-violet-800: #29036e;
+  --p-violet-900: #1c0252;
+  --p-violet-950: #120239;
+  --p-violet-975: #0a0225;
+  --p-green-50: #eefff5;
+  --p-green-100: #d8fce7;
+  --p-green-200: #adf0ca;
+  --p-green-300: #70d6a1;
+  --p-green-400: #2eb97c;
+  --p-green-500: #00905b;
+  --p-green-600: #00663f;
+  --p-green-700: #003b23;
+  --p-green-800: #00311c;
+  --p-green-900: #002312;
+  --p-green-950: #00170b;
+  --p-green-975: #000e05;
+  --p-amber-50: #fff9f0;
+  --p-amber-100: #fff0d8;
+  --p-amber-200: #fcd8a0;
+  --p-amber-300: #e7b45d;
+  --p-amber-400: #cd920f;
+  --p-amber-500: #9e6f00;
+  --p-amber-600: #714e00;
+  --p-amber-700: #422c00;
+  --p-amber-800: #372400;
+  --p-amber-900: #271900;
+  --p-amber-950: #1a0f00;
+  --p-amber-975: #110800;
+  --p-red-50: #fff8f8;
+  --p-red-100: #ffedec;
+  --p-red-200: #ffd1cf;
+  --p-red-300: #ffa09c;
+  --p-red-400: #fc6568;
+  --p-red-500: #d33441;
+  --p-red-600: #a20022;
+  --p-red-700: #610010;
+  --p-red-800: #51000c;
+  --p-red-900: #3c0006;
+  --p-red-950: #2a0003;
+  --p-red-975: #1c0001;
+  --p-blue-50: #f6fbff;
+  --p-blue-100: #e8f3ff;
+  --p-blue-200: #c5e2ff;
+  --p-blue-300: #87c3ff;
+  --p-blue-400: #4ea4f3;
+  --p-blue-500: #177ccc;
+  --p-blue-600: #005896;
+  --p-blue-700: #003259;
+  --p-blue-800: #00294b;
+  --p-blue-900: #001d37;
+  --p-blue-950: #001227;
+  --p-blue-975: #000a1a;
+}
+
+/* Dark is the primary mode (D-011).
+
+   The theme selectors are element-scoped, not :root-scoped, so a subtree can
+   carry its own mode: <div data-theme="light"> inside a dark app is a light
+   island, and custom properties inherit to it correctly. That also removes the
+   need for anything to mutate documentElement at runtime (D-037). */
+:root, [data-theme="dark"] {
+  --color-bg-sunken: #080a0d;
+  --color-bg: #101117;
+  --color-surface: #191b23;
+  --color-surface-raised: #2c303b;
+  --color-surface-hover: #242731;
+  --color-border: #2c303b;
+  --color-border-field: #747888;
+  --color-border-float: #747888;
+  --color-text: #f0f2f7;
+  --color-text-muted: #b9bdcb;
+  --color-text-faint: #999ead;
+  --color-accent: #978cff;
+  --color-accent-hover: #b8b4ff;
+  --color-accent-contrast: #0a0225;
+  --color-accent-muted: #1c0252;
+  --color-success: #70d6a1;
+  --color-danger-muted: #3c0006;
+  --color-warning-muted: #271900;
+  --color-success-muted: #002312;
+  --color-info-muted: #001d37;
+  --color-warning: #e7b45d;
+  --color-danger: #fc6568;
+  --color-info: #87c3ff;
+  --color-focus: #978cff;
+}
+
+[data-theme="light"] {
+  --color-bg-sunken: #dbdee7;
+  --color-bg: #f0f2f7;
+  --color-surface: #f9fafd;
+  --color-surface-raised: #ffffff;
+  --color-surface-hover: #f0f2f7;
+  --color-border: #dbdee7;
+  --color-border-field: #747888;
+  --color-border-float: #747888;
+  --color-text: #101117;
+  --color-text-muted: #2c303b;
+  --color-text-faint: #515563;
+  --color-accent: #5432be;
+  --color-accent-hover: #320084;
+  --color-accent-contrast: #ffffff;
+  --color-accent-muted: #f0f0ff;
+  --color-success: #00663f;
+  --color-danger-muted: #ffedec;
+  --color-warning-muted: #fff0d8;
+  --color-success-muted: #d8fce7;
+  --color-info-muted: #e8f3ff;
+  --color-warning: #714e00;
+  --color-danger: #a20022;
+  --color-info: #005896;
+  --color-focus: #5432be;
+}
+
+/* Follow the OS only when no explicit theme has been set anywhere. */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) {
+    --color-bg-sunken: #dbdee7;
+    --color-bg: #f0f2f7;
+    --color-surface: #f9fafd;
+    --color-surface-raised: #ffffff;
+    --color-surface-hover: #f0f2f7;
+    --color-border: #dbdee7;
+    --color-border-field: #747888;
+    --color-border-float: #747888;
+    --color-text: #101117;
+    --color-text-muted: #2c303b;
+    --color-text-faint: #515563;
+    --color-accent: #5432be;
+    --color-accent-hover: #320084;
+    --color-accent-contrast: #ffffff;
+    --color-accent-muted: #f0f0ff;
+    --color-success: #00663f;
+    --color-danger-muted: #ffedec;
+    --color-warning-muted: #fff0d8;
+    --color-success-muted: #d8fce7;
+    --color-info-muted: #e8f3ff;
+    --color-warning: #714e00;
+    --color-danger: #a20022;
+    --color-info: #005896;
+    --color-focus: #5432be;
+  }
+}
+
+:root { color-scheme: dark; }
+[data-theme="light"] { color-scheme: light; }
+[data-theme="dark"] { color-scheme: dark; }
+@media (prefers-color-scheme: light) { :root:not([data-theme]) { color-scheme: light; } }
+/* GENERATED from tokens/typography.json — do not edit by hand. Phase 3b. */
+/* Inter and JetBrains Mono, SIL OFL 1.1, self-hosted. No app previously loaded
+   the face it declared; these files are the fix. */
+
+@font-face {
+  font-family: 'Inter';
+  src: url('../fonts/inter-var-latin.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('../fonts/inter-var-latin-ext.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('../fonts/jetbrains-mono-var-latin.woff2') format('woff2');
+  font-weight: 100 800;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('../fonts/jetbrains-mono-var-latin-ext.woff2') format('woff2');
+  font-weight: 100 800;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF;
+}
+
+:root {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --text-11: 11px;  --leading-11: 1.3;
+  --text-12: 12px;  --leading-12: 1.5;
+  --text-13: 13px;  --leading-13: 1.4;
+  --text-14: 14px;  --leading-14: 1.55;
+  --text-16: 16px;  --leading-16: 1.5;
+  --text-20: 20px;  --leading-20: 1.35;
+  --text-24: 24px;  --leading-24: 1.25;
+
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-title: 650;
+
+  --measure-body: 65ch;
+  --measure-cell: 38ch;
+  --measure-helper: 50ch;
+}
+
+html {
+  font-family: var(--font-sans);
+  font-size: var(--text-14);
+  line-height: var(--leading-14);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Every number in this system lives in a column, and two of the four apps poll —
+   so figures are tabular by default rather than by opt-in. */
+table td, table th, .tabular, [data-numeric] {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+}
+
+/* GENERATED from tokens/shape.json — do not edit by hand. Phase 3d. */
+
+:root {
+  --radius-xs: 6px;
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-full: 999px;
+
+  --border-width: 1px;
+
+  --focus-width: 2px;
+  --focus-offset: 2px;
+
+  --scrim: rgba(0, 0, 0, 0.58);
+}
+
+/* Elevation is tone; detachment is a boundary. There is no --shadow-* token,
+   and adding one is a design change, not a tweak (D-015, D-023).
+
+   Resting surface  → a tone step, no border.
+   Floating layer   → surface-raised + 1px border-float.
+   Modal            → the above, plus a scrim.
+
+   The boundary exists because in light mode the tonal ladder terminates at
+   white: a menu over a white card has no lighter step left. Running one
+   mechanism in both modes beats running two. */
+
+.elevated,
+[data-elevation="floating"] {
+  background: var(--color-surface-raised);
+  border: var(--border-width) solid var(--color-border-float);
+  box-shadow: none;
+}
+
+/* :focus-visible, never :focus — this is what keeps keyboard focus styling
+   switched on once mouse users are in the room. outline rather than a
+   box-shadow ring, so the offset reveals the surface behind the control and a
+   violet ring stays visible on a violet button. */
+:focus-visible {
+  outline: var(--focus-width) solid var(--color-focus);
+  outline-offset: var(--focus-offset);
+}
+:focus:not(:focus-visible) { outline: none; }
+
+@media (prefers-contrast: more) {
+  :focus-visible { outline-width: 3px; }
+}
+/* GENERATED from tokens/layout.json — do not edit by hand. Phase 3c. */
+
+:root {
+  --space-2: 2px;
+  --space-4: 4px;
+  --space-6: 6px;
+  --space-8: 8px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-20: 20px;
+  --space-24: 24px;
+  --space-32: 32px;
+  --space-40: 40px;
+  --space-48: 48px;
+  --space-64: 64px;
+
+  --container-form: 480px;
+  --container-prose: 65ch;
+  --container-narrow: 672px;
+  --container-wide: 1280px;
+
+  --sidebar-width: 240px;
+  --sidebar-collapsed: 64px;
+  --row-height: 48px;
+  --cell-pad-y: 12px;
+  --cell-pad-x: 16px;
+  --card-pad: 20px;
+  --page-pad: 24px;
+  --grid-gutter: 24px;
+}
+
+@media (min-width: 1024px) { :root { --page-pad: 32px; } }
+
+/* Breakpoints are consumed as media queries, not custom properties — a custom
+   property cannot be used in a media condition. Four, not six: the four apps
+   reference xl once and 2xl never, and a breakpoint nobody uses is a state
+   somebody still has to test.
+     sm 640px · md 768px · lg 1024px · xl 1280px
+   lg is the shell breakpoint: below it the sidebar is an off-canvas drawer. */
+
+/* GENERATED from tokens/motion.json — do not edit by hand. Phase 3e. */
+
+:root {
+  --dur-1: 90ms;
+  --dur-2: 140ms;
+  --dur-3: 200ms;
+  --dur-4: 280ms;
+  --dur-5: 420ms;
+
+  --ease-out: cubic-bezier(0.2, 0.7, 0.3, 1);
+  --ease-in: cubic-bezier(0.5, 0, 0.9, 0.4);
+  --ease-spring: cubic-bezier(0.22, 1.2, 0.36, 1);
+  --ease-linear: linear;
+
+  --motion-modal-enter: 420ms var(--ease-spring);
+  --motion-modal-exit: 200ms var(--ease-in);
+  --motion-menu-enter: 200ms var(--ease-out);
+  --motion-menu-exit: 140ms var(--ease-in);
+  --motion-popover-enter: 200ms var(--ease-out);
+  --motion-tooltip-enter: 140ms var(--ease-out);
+  --motion-toast-enter: 420ms var(--ease-spring);
+  --motion-toast-exit: 280ms var(--ease-in);
+  --motion-tab-glide: 280ms var(--ease-spring);
+  --motion-list-enter: 280ms var(--ease-spring);
+  --motion-row-exit: 420ms var(--ease-spring);
+  --motion-hover: 90ms var(--ease-out);
+  --motion-drawer: 280ms var(--ease-out);
+}
+
+/* Entrances animate FROM an offset TO the element's natural state and use
+   backwards fill — never forwards. A retained transform turns the wrapper into
+   a containing block, which silently breaks every position:fixed overlay
+   inside it. Inherited from App D, which found it the hard way. */
+@keyframes rise      { from { opacity: 0; transform: translateY(10px); } }
+@keyframes rise-far  { from { opacity: 0; transform: translateY(26px) scale(.94); } }
+@keyframes drop-in   { from { opacity: 0; transform: translateY(-6px) scale(.97); } }
+@keyframes fade      { from { opacity: 0; } }
+
+.enter-modal   { animation: rise-far var(--motion-modal-enter) backwards; }
+.enter-menu    { animation: drop-in  var(--motion-menu-enter) backwards; }
+.enter-popover { animation: drop-in  var(--motion-popover-enter) backwards; }
+.enter-tooltip { animation: fade     var(--motion-tooltip-enter) backwards; }
+.enter-toast   { animation: rise-far var(--motion-toast-enter) backwards; }
+
+/* First paint only. Never bind this to a poll response. */
+.enter-list > * { animation: rise var(--motion-list-enter) backwards; }
+.enter-list > *:nth-child(1) { animation-delay: 0ms; }
+.enter-list > *:nth-child(2) { animation-delay: 80ms; }
+.enter-list > *:nth-child(3) { animation-delay: 160ms; }
+.enter-list > *:nth-child(4) { animation-delay: 240ms; }
+.enter-list > *:nth-child(5) { animation-delay: 320ms; }
+.enter-list > *:nth-child(n+6) { animation-delay: 400ms; }
+
+/* Reduced motion is a supported mode, not a downgrade path: opacity only. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+.d3-alrt {
+  display: flex;
+  gap: var(--space-12);
+  align-items: flex-start;
+  background: var(--color-surface-raised);
+  border-radius: var(--radius-lg);
+  padding: var(--space-12) var(--space-16);
+  margin: 0;
+}
+.d3-alrt__icon { flex: none; margin-top: 1px; display: flex; }
+.d3-alrt__body { flex: 1; min-width: 0; }
+.d3-alrt__title { font-size: var(--text-13); font-weight: var(--weight-semibold); margin: 0 0 2px; }
+.d3-alrt__message { font-size: var(--text-12); color: var(--color-text-muted); margin: 0;
+  line-height: var(--leading-12); }
+.d3-alrt__actions { margin-top: var(--space-8); display: flex; gap: var(--space-8); }
+
+/* A banner spans its container instead of sitting inside it. It keeps the
+   raised ground — elevation is tone — and trades its radius for a boundary at
+   the edge it meets, because a full-width strip is part of the panel rather
+   than a card floating above it. */
+.d3-alrt--flush {
+  border-radius: 0;
+  border-bottom: var(--border-width) solid var(--color-border);
+}
+
+/* Alert is where success, warning and info are allowed to be colours. D-016
+   took hue away from *status* because seven statuses exceed what colour can
+   carry; messaging is the opposite case — one alert, on screen, where the tone
+   is the point. */
+.d3-alrt--danger  .d3-alrt__icon, .d3-alrt--danger  .d3-alrt__title { color: var(--color-danger); }
+.d3-alrt--warning .d3-alrt__icon, .d3-alrt--warning .d3-alrt__title { color: var(--color-warning); }
+.d3-alrt--success .d3-alrt__icon, .d3-alrt--success .d3-alrt__title { color: var(--color-success); }
+.d3-alrt--info    .d3-alrt__icon, .d3-alrt--info    .d3-alrt__title { color: var(--color-info); }
+
+.d3-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-6);
+  border: 0;
+  border-radius: var(--radius-md);
+  font-family: inherit;
+  font-weight: var(--weight-semibold);
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  /* No margin, ever. Spacing belongs to the parent — this is the single most
+     common reason a component library cannot be composed. */
+  margin: 0;
+  transition: background-color var(--motion-hover), color var(--motion-hover);
+}
+
+.d3-btn--sm { height: 28px; padding: 0 var(--space-8);  font-size: var(--text-12); }
+.d3-btn--md { height: 34px; padding: 0 var(--space-16); font-size: var(--text-13); }
+.d3-btn--lg { height: 40px; padding: 0 var(--space-20); font-size: var(--text-14); }
+
+.d3-btn--primary        { background: var(--color-accent); color: var(--color-accent-contrast); }
+.d3-btn--primary:hover:not(:disabled)   { background: var(--color-accent-hover); }
+.d3-btn--secondary      { background: var(--color-surface-raised); color: var(--color-text);
+                          font-weight: var(--weight-medium); }
+.d3-btn--secondary:hover:not(:disabled) { background: var(--color-surface-hover); }
+.d3-btn--ghost          { background: transparent; color: var(--color-text-muted);
+                          font-weight: var(--weight-medium); }
+.d3-btn--ghost:hover:not(:disabled)     { background: var(--color-surface-raised);
+                                          color: var(--color-text); }
+.d3-btn--danger         { background: var(--color-danger); color: var(--color-accent-contrast); }
+.d3-btn--danger:hover:not(:disabled)    { filter: brightness(1.06); }
+.d3-btn--danger-ghost   { background: transparent; color: var(--color-danger); }
+.d3-btn--danger-ghost:hover:not(:disabled) { background: var(--color-surface-raised); }
+
+.d3-btn:disabled { opacity: 0.42; cursor: not-allowed; }
+.d3-btn:active:not(:disabled) { filter: brightness(0.94); }
+
+/* One focus treatment, no component overrides (D-023). */
+.d3-btn:focus-visible {
+  outline: var(--focus-width) solid var(--color-focus);
+  outline-offset: var(--focus-offset);
+}
+
+/* Loading keeps the button focusable so focus is not lost mid-action, and the
+   label does not change so the button does not resize. */
+.d3-btn[aria-busy='true'] { cursor: progress; }
+
+.d3-btn__icon { display: inline-flex; flex: none; }
+
+
+/* Bindery's tinted message box, as it was: a coloured ground, a coloured
+   border and coloured body text — reproduced here from the real utilities. */
+.old { border-radius: 10px; border: 1px solid color-mix(in oklch, var(--color-danger) 40%, transparent);
+       background: color-mix(in oklch, var(--color-danger-muted) 40%, transparent);
+       padding: 16px; font-size: 13px; color: var(--color-danger); }
+.old.warn { border-color: color-mix(in oklch, var(--color-warning) 40%, transparent);
+            background: color-mix(in oklch, var(--color-warning-muted) 20%, transparent);
+            color: var(--color-warning); }
+.old p { margin: 0; }
+.old p + p { margin-top: 4px; }
+.old .t { font-weight: 600; }
+.old-flush { border: 0; border-bottom: 1px solid var(--color-border);
+             background: color-mix(in oklch, var(--color-warning-muted) 20%, transparent);
+             padding: 16px; font-size: 13px; color: var(--color-warning); border-radius: 0; }
+
+* { box-sizing: border-box; }
+body { margin: 0; padding: 40px; background: var(--color-bg); color: var(--color-text);
+        font-family: Inter, ui-sans-serif, system-ui, sans-serif; }
+h1 { font-size: 20px; font-weight: 600; margin: 0 0 8px; }
+h2 { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em;
+      color: var(--color-text-muted); margin: 0 0 12px; }
+h2.sec { margin-top: 48px; font-size: 15px; text-transform: none; letter-spacing: 0;
+          color: var(--color-text); }
+.lede { max-width: 62ch; font-size: 13px; line-height: 1.6; color: var(--color-text-muted); margin: 0 0 28px; }
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; max-width: 980px; }
+section > * + * { margin-top: 12px; }
+.panel { border: 1px solid var(--color-border); border-radius: 12px; overflow: hidden;
+          background: var(--color-surface); }
+.phead { padding: 12px 16px; font-size: 13px; font-weight: 600; }
+.pbody { padding: 16px; font-size: 12px; color: var(--color-text-muted); }
+.note { max-width: 68ch; margin-top: 40px; padding: 16px; border-left: 2px solid var(--color-border);
+         font-size: 13px; line-height: 1.65; color: var(--color-text-muted); }
+code { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: .92em;
+        background: var(--color-surface-raised); padding: 1px 5px; border-radius: 4px; }
+</style></head><body>
+
+<h1>Alert · what 24 messages used to look like, and what they look like now</h1>
+<p class="lede">Bindery drew every message as a tinted box: a coloured ground, a coloured border,
+and coloured body text. The system draws an alert as a <strong>raised surface with a coloured title</strong> —
+elevation is tone, and colour is spent on the one word that carries the meaning rather than on the whole
+region. This is the change, at real size, in Bindery's own tokens.</p>
+
+<div class="grid">
+  <section>
+    <h2>Before</h2>
+    <div class="old"><p class="t">That did not work.</p><p>The vault is locked. Unlock it to search inside.</p></div>
+    <div class="old warn"><p class="t">This passphrase cannot be recovered.</p>
+      <p>It is not stored anywhere — only a key wrapped with it is.</p></div>
+  </section>
+  <section>
+    <h2>After</h2>
+    <div class="d3-alrt d3-alrt--danger"><div class="d3-alrt__body">
+      <p class="d3-alrt__title">That did not work.</p>
+      <div class="d3-alrt__message">The vault is locked. Unlock it to search inside.</div>
+      <div class="d3-alrt__actions"><button class="d3-btn d3-btn--danger-ghost d3-btn--sm">Try again</button></div>
+    </div></div>
+    <div class="d3-alrt d3-alrt--warning"><div class="d3-alrt__body">
+      <p class="d3-alrt__title">This passphrase cannot be recovered.</p>
+      <div class="d3-alrt__message">It is not stored anywhere — only a key wrapped with it is.</div>
+    </div></div>
+  </section>
+</div>
+
+<h2 class="sec">The banner — a new <code>flush</code> placement, not a new component</h2>
+<p class="lede">Two places put a message edge-to-edge under a panel header. A boxed alert with a radius
+floating inside a flush panel fights the header's rhythm, so <code>flush</code> keeps the raised ground
+and trades the radius for a boundary at the edge it meets.</p>
+
+<div class="grid">
+  <section>
+    <h2>Before</h2>
+    <div class="panel">
+      <div class="phead">Activity</div>
+      <div class="old-flush">412 entries are still being written — what you are reading is slightly behind.</div>
+      <div class="pbody">normalize · page · segment · embed</div>
+    </div>
+  </section>
+  <section>
+    <h2>After</h2>
+    <div class="panel">
+      <div class="phead">Activity</div>
+      <div class="d3-alrt d3-alrt--warning d3-alrt--flush"><div class="d3-alrt__body">
+        <div class="d3-alrt__message">412 entries are still being written — what you are reading is slightly behind.</div>
+      </div></div>
+      <div class="pbody">normalize · page · segment · embed</div>
+    </div>
+  </section>
+</div>
+
+<p class="note"><strong>The trade being made.</strong> The tinted version is louder, and on a screen holding one
+message that is not a fault. It stops working when a screen holds several — Trust and Admin each show three or
+four at once — because a wall of coloured grounds has no hierarchy left to spend. Colour on the title alone keeps
+the tone legible and lets the eye find <em>which</em> message is the urgent one.</p>
+
+</body></html>

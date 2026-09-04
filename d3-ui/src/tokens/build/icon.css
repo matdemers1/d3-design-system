@@ -1,0 +1,43 @@
+/* Hand-maintained against tokens/icon.json, and checked against it by
+   `scripts/check-tokens.mjs` — every value here must exist in the JSON, and
+   every emitted token there must appear here. The comments in this file carry
+   the reasoning behind the numbers, which is why it is written rather than
+   generated: no generator can reproduce them, and they are most of its value.
+
+   Phase 3f. */
+
+/* Lucide defaults to stroke-width 2 in a 24px viewBox, which renders a 0.92px line
+   at 11px - under one device pixel, so it blurs on any 1x display. Bindery renders
+   icons at eight sizes all at the default stroke; its icon weight varies 45% across
+   one screen. Pairing each size with its own stroke keeps the rendered line inside
+   a 1.17-1.50px band. */
+
+:root {
+  --icon-14: 14px;
+  --icon-16: 16px;
+  --icon-20: 20px;
+  --icon-24: 24px;
+  --icon-stroke-14: 2.0;
+  --icon-stroke-16: 1.8;
+  --icon-stroke-20: 1.6;
+  --icon-stroke-24: 1.5;
+}
+
+/* Alignment is flex, never vertical-align or a hand-tuned margin - those break
+   the moment someone changes a line-height. */
+.icon { display: inline-flex; align-items: center; flex: none; }
+.icon-14 { width: 14px; height: 14px; stroke-width: 2.0; }
+.icon-16 { width: 16px; height: 16px; stroke-width: 1.8; }
+.icon-20 { width: 20px; height: 20px; stroke-width: 1.6; }
+.icon-24 { width: 24px; height: 24px; stroke-width: 1.5; }
+
+/* The three animated icon states, and there are no others. */
+@keyframes icon-spin { to { transform: rotate(360deg); } }
+.icon-spin { animation: icon-spin 1s var(--ease-linear) infinite; }
+.icon-disclosure { transition: transform var(--motion-menu-enter); }
+.icon-disclosure[data-open="true"] { transform: rotate(180deg); }
+
+@media (prefers-reduced-motion: reduce) {
+  .icon-spin { animation-duration: 1.8s; }
+  .icon-disclosure { transition: none; }
+}

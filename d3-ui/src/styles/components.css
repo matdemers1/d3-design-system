@@ -1,0 +1,12 @@
+/* Component base. Imported by the library entry point, so it ships — it is not
+   a Storybook-only file.
+
+   Every element this library renders is border-box. Heights in this system are
+   OUTER heights: an Input declared 34px must measure 34px so it lines up with a
+   Button declared 34px. Relying on the UA default does not work, because
+   browsers default <button> to border-box and <div> to content-box — which is
+   exactly how an Input ended up 36px next to a 34px Button in every filter bar. */
+[class^='d3-'],
+[class*=' d3-'] {
+  box-sizing: border-box;
+}

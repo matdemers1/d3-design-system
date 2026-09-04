@@ -1,0 +1,68 @@
+/* Hand-maintained against tokens/motion.json, and checked against it by
+   `scripts/check-tokens.mjs` — every value here must exist in the JSON, and
+   every emitted token there must appear here. The comments in this file carry
+   the reasoning behind the numbers, which is why it is written rather than
+   generated: no generator can reproduce them, and they are most of its value.
+
+   Phase 3e. */
+
+:root {
+  --dur-1: 90ms;
+  --dur-2: 140ms;
+  --dur-3: 200ms;
+  --dur-4: 280ms;
+  --dur-5: 420ms;
+
+  --ease-out: cubic-bezier(0.2, 0.7, 0.3, 1);
+  --ease-in: cubic-bezier(0.5, 0, 0.9, 0.4);
+  --ease-spring: cubic-bezier(0.22, 1.2, 0.36, 1);
+  --ease-linear: linear;
+
+  --motion-modal-enter: 420ms var(--ease-spring);
+  --motion-modal-exit: 200ms var(--ease-in);
+  --motion-menu-enter: 200ms var(--ease-out);
+  --motion-menu-exit: 140ms var(--ease-in);
+  --motion-popover-enter: 200ms var(--ease-out);
+  --motion-tooltip-enter: 140ms var(--ease-out);
+  --motion-toast-enter: 420ms var(--ease-spring);
+  --motion-toast-exit: 280ms var(--ease-in);
+  --motion-tab-glide: 280ms var(--ease-spring);
+  --motion-list-enter: 280ms var(--ease-spring);
+  --motion-row-exit: 420ms var(--ease-spring);
+  --motion-hover: 90ms var(--ease-out);
+  --motion-drawer: 280ms var(--ease-out);
+}
+
+/* Entrances animate FROM an offset TO the element's natural state and use
+   backwards fill — never forwards. A retained transform turns the wrapper into
+   a containing block, which silently breaks every position:fixed overlay
+   inside it. Inherited from App D, which found it the hard way. */
+@keyframes rise      { from { opacity: 0; transform: translateY(10px); } }
+@keyframes rise-far  { from { opacity: 0; transform: translateY(26px) scale(.94); } }
+@keyframes drop-in   { from { opacity: 0; transform: translateY(-6px) scale(.97); } }
+@keyframes fade      { from { opacity: 0; } }
+
+.enter-modal   { animation: rise-far var(--motion-modal-enter) backwards; }
+.enter-menu    { animation: drop-in  var(--motion-menu-enter) backwards; }
+.enter-popover { animation: drop-in  var(--motion-popover-enter) backwards; }
+.enter-tooltip { animation: fade     var(--motion-tooltip-enter) backwards; }
+.enter-toast   { animation: rise-far var(--motion-toast-enter) backwards; }
+
+/* First paint only. Never bind this to a poll response. */
+.enter-list > * { animation: rise var(--motion-list-enter) backwards; }
+.enter-list > *:nth-child(1) { animation-delay: 0ms; }
+.enter-list > *:nth-child(2) { animation-delay: 80ms; }
+.enter-list > *:nth-child(3) { animation-delay: 160ms; }
+.enter-list > *:nth-child(4) { animation-delay: 240ms; }
+.enter-list > *:nth-child(5) { animation-delay: 320ms; }
+.enter-list > *:nth-child(n+6) { animation-delay: 400ms; }
+
+/* Reduced motion is a supported mode, not a downgrade path: opacity only. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

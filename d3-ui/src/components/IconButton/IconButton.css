@@ -1,0 +1,37 @@
+.d3-ibtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  margin: 0;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: background-color var(--motion-hover), color var(--motion-hover);
+}
+.d3-ibtn:hover:not(:disabled) { background: var(--color-surface-raised); color: var(--color-text); }
+.d3-ibtn--secondary { background: var(--color-surface-raised); color: var(--color-text); }
+.d3-ibtn--secondary:hover:not(:disabled) { background: var(--color-surface-hover); }
+
+/* 28px at the smallest size clears WCAG 2.2 AA 2.5.8 (24x24) with room. */
+.d3-ibtn--sm { width: 28px; height: 28px; }
+.d3-ibtn--md { width: 34px; height: 34px; }
+.d3-ibtn--lg { width: 40px; height: 40px; }
+
+.d3-ibtn:disabled { opacity: 0.42; cursor: not-allowed; }
+.d3-ibtn[aria-busy='true'] { cursor: progress; }
+.d3-ibtn:focus-visible {
+  outline: var(--focus-width) solid var(--color-focus);
+  outline-offset: var(--focus-offset);
+}
+
+/* Held down, matching Button — one tone for "this control is on", whatever
+   shape it takes. See Button.css for why this is the accent tint rather than
+   the raised ground. */
+.d3-ibtn[aria-pressed='true'] {
+  background: var(--color-accent-muted);
+  color: var(--color-accent);
+  box-shadow: inset 0 0 0 var(--border-width) var(--color-accent);
+}
+.d3-ibtn[aria-pressed='true']:hover:not(:disabled) { filter: brightness(1.25); }

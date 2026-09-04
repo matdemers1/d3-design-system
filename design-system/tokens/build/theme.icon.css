@@ -1,0 +1,9 @@
+/* GENERATED - Tailwind v4 icon theme. Phase 3f. */
+@import "./icon.css";
+
+@theme inline {
+  --size-icon-14: var(--icon-14);
+  --size-icon-16: var(--icon-16);
+  --size-icon-20: var(--icon-20);
+  --size-icon-24: var(--icon-24);
+}

@@ -1,0 +1,177 @@
+<title>4a · Component Inventory</title>
+<style>
+
+:root{--pg:#0e0e11;--pn:#16161b;--pn2:#1d1d24;--ln:#2c2c36;--tx:#e8e8ee;--dim:#9a9aa8;--dim2:#6e6e7e;--hot:#ff5c5c;--ok:#3ecf8e}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pg);color:var(--tx);
+font:14px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1500px;margin:0 auto;padding:0 28px 110px}
+header.top{padding:56px 0 28px;border-bottom:1px solid var(--ln)}
+.eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim2);font-weight:650;margin:0 0 12px}
+h1{font-size:46px;line-height:1.02;margin:0 0 6px;letter-spacing:-.035em;font-weight:650}
+.tagline{font-size:19px;color:var(--dim);margin:0 0 22px;letter-spacing:-.01em}
+.rationale{max-width:74ch;font-size:15px;color:#c7c7d2;line-height:1.68;margin:0}
+.rationale em{color:var(--tx);font-style:italic}
+h3{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim2);margin:56px 0 14px;font-weight:650}
+h3 span{color:var(--dim);letter-spacing:0;text-transform:none;font-weight:400;margin-left:10px;font-size:12.5px}
+.frame{border:1px solid var(--ln);border-radius:14px;overflow:hidden;position:relative;background:#000}
+.mode{display:flex;align-items:center;gap:8px;padding:9px 14px;background:var(--pn2);
+border-bottom:1px solid var(--ln);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+color:var(--dim2);font-weight:650}
+.cols2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.tok{display:grid;grid-template-columns:repeat(auto-fill,minmax(132px,1fr));gap:8px}
+.tk{border:1px solid var(--ln);border-radius:8px;overflow:hidden;background:var(--pn)}
+.tk .c{height:46px}
+.tk .m{padding:6px 8px;font:11px/1.45 ui-monospace,Menlo,monospace;color:var(--dim)}
+.tk .m b{display:block;color:var(--tx);font-weight:600;letter-spacing:-.01em}
+table.spec{width:100%;border-collapse:collapse;font-size:13px}
+table.spec th{text-align:left;font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+color:var(--dim2);padding:0 12px 9px;border-bottom:1px solid var(--ln);font-weight:650}
+table.spec td{padding:9px 12px;border-bottom:1px solid var(--pn2);color:var(--dim)}
+table.spec td b{color:var(--tx);font-weight:600}
+.mono{font-family:ui-monospace,Menlo,monospace}
+.pass{color:var(--ok);font-weight:600}
+.note{border-left:3px solid var(--dim2);background:#ffffff08;padding:13px 16px;border-radius:0 8px 8px 0;
+margin:16px 0 0;color:#c9c9d4;font-size:13.5px;line-height:1.65}
+.note b{color:#fff}
+.nav{display:flex;gap:9px;flex-wrap:wrap;margin:26px 0 0}
+.nav a{border:1px solid var(--ln);border-radius:999px;padding:7px 15px;color:var(--dim);
+text-decoration:none;font-size:13px;background:var(--pn)}
+.nav a.here{background:var(--tx);color:#111;border-color:var(--tx);font-weight:600}
+footer{margin-top:70px;padding-top:24px;border-top:1px solid var(--ln);color:var(--dim2);font-size:12.5px}
+
+
+.mx{width:100%;border-collapse:collapse;font-size:12.5px}
+.mx th{text-align:left;font:650 10px/1.3 ui-monospace,Menlo,monospace;color:var(--dim2);
+letter-spacing:.09em;padding:0 9px 9px;border-bottom:1px solid var(--ln);text-transform:uppercase}
+.mx td{padding:8px 9px;border-bottom:1px solid var(--pn2);color:var(--dim);vertical-align:top}
+.mx td b{color:var(--tx)}
+.mx tr.in td{background:#8f80f70e}
+.mx tr.in td:first-child{box-shadow:inset 3px 0 0 #8f80f7}
+.mx .n{font-family:ui-monospace,Menlo,monospace;text-align:right;white-space:nowrap}
+.mx .tier{font-family:ui-monospace,Menlo,monospace;color:var(--dim2)}
+.mx .cx{font-family:ui-monospace,Menlo,monospace;text-align:center}
+.mx .dep{font-size:11px;color:var(--dim2)}
+.mx .yes{color:#8f80f7;font-weight:700;font-family:ui-monospace,Menlo,monospace}
+.mx .no{color:var(--dim2);font-family:ui-monospace,Menlo,monospace}
+.bar{height:5px;border-radius:3px;background:#8f80f7;display:inline-block;vertical-align:middle}
+.cut{border:1px solid var(--ln);border-radius:12px;overflow:hidden;margin-top:8px}
+.cut .r{display:grid;grid-template-columns:190px 1fr;gap:0;border-top:1px solid var(--pn2)}
+.cut .r:first-child{border-top:0}
+.cut .r > div{padding:11px 15px}
+.cut .r .k{background:var(--pn);color:#ff9d9d;font:600 12.5px/1.4 ui-monospace,Menlo,monospace}
+.cut .r .w{color:var(--dim);font-size:12.5px;line-height:1.6}
+.big{display:flex;gap:26px;flex-wrap:wrap;margin:22px 0 8px}
+.big div{background:var(--pn);border:1px solid var(--ln);border-radius:12px;padding:16px 20px;flex:1;min-width:180px}
+.big b{display:block;font-size:34px;letter-spacing:-.03em;color:#8f80f7;line-height:1}
+.big span{display:block;color:var(--dim);font-size:12px;margin-top:7px;line-height:1.5}
+.panel{background:var(--pn);border:1px solid var(--ln);border-radius:13px;padding:20px 22px}
+
+</style>
+<div class='wrap'>
+<header class="top"><p class="eyebrow">Phase 4a · Inventory</p>
+<h1>What to build, and what to refuse to build.</h1>
+<p class="tagline">Thirty-eight component concepts, counted across the four apps. Twenty of them ship.</p>
+<p class="rationale">Every number here is measured, not estimated: each concept was matched against
+the source of all four apps and counted by instance and by app. <b>One caveat matters more than the
+counts.</b> This measures what <i>exists</i>, not what is <i>needed</i> — Toast scores two uses, and
+App A alone has 107 error-surface call sites rendering as inline alerts. Demand data tells you what
+duplication costs today; it cannot tell you what is missing. Both are used below.</p>
+<div class="big">
+<div><b>1,456</b><span>component instances across the four apps</span></div>
+<div><b>20</b><span>components in v1</span></div>
+<div><b>82%</b><span>of all instances covered by those 20</span></div>
+<div><b>18</b><span>concepts explicitly cut</span></div>
+</div></header>
+<h3>What the count turned up</h3><div class="panel"><p style="margin:0 0 13px;color:var(--dim);font-size:13.5px;line-height:1.7"><b style="color:#ff9d9d">All four of App B's dialogs are inaccessible.</b> <code>AddMemberDialog</code>, <code>NewDMDialog</code>, <code>SafetyNumberDialog</code> and <code>ProfileModal</code> have no <code>role="dialog"</code>, no <code>aria-modal</code>, no Escape handler and no focus management — a keyboard user tabs straight out of the dialog into the page behind it. Bindery's <code>Modal.tsx</code> does all four correctly; App A gets them free from MUI. This is the Radix decision (D-009) justifying itself before a line is written.</p><p style="margin:0 0 13px;color:var(--dim);font-size:13.5px;line-height:1.7"><b style="color:var(--tx)">Bindery has 42 bare <code>title=</code> attributes doing the job of a tooltip.</b> A native title attribute does not appear on keyboard focus, cannot be styled, and is invisible to touch. That is 42 pieces of guidance most users never see.</p><p style="margin:0;color:var(--dim);font-size:13.5px;line-height:1.7"><b style="color:var(--tx)">App C duplicates within itself.</b> Five badge families (<code>badge</code>, <code>priority-badge</code>, <code>stage-badge</code>, <code>memory-type-badge</code>, <code>memory-count-badge</code>) and three dropdown families (<code>status-dropdown</code>, <code>inline-dropdown</code>, <code>enhance-menu</code>) in one 1,469-line stylesheet. Not every duplication problem is between apps.</p></div>
+<h3>The matrix <span>violet rows ship in v1</span></h3>
+<table class="mx"><thead><tr><th>Component</th><th class="tier">Tier</th><th class="n">Apps</th><th class="n">Uses</th><th>Replaces</th><th class="cx">Cx</th><th>Dependency</th><th class="cx">v1</th></tr></thead><tbody>
+<tr class="in"><td><b>Button</b></td><td class="tier">T0</td><td class="n">4</td><td class="n">345 <span class="bar" style="width:70px"></span></td><td>151 recipes in Bindery, 76 MUI Buttons, PM .btn ×7</td><td class="cx">M</td><td class="dep">—</td><td class="cx"><span class=yes>✓</span></td></tr>
+<tr class="in"><td><b>Input</b></td><td class="tier">T0</td><td class="n">4</td><td class="n">143 <span class="bar" style="width:29px"></span></td><td>59 Bindery recipes, 51 MUI TextFields, PM global input rule</td><td class="cx">M</td><td class="dep">—</td><td class="cx"><span class=yes>✓</span></td></tr>
+<tr class="in"><td><b>Label</b></td><td class="tier">T0</td><td class="n">4</td><td class="n">72 <span class="bar" style="width:14px"></span></td><td>72 bare &lt;label&gt; + MUI InputLabel</td><td class="cx">L</td><td class="dep">—</td><td class="cx"><span class=yes>✓</span></td></tr>
+<tr class="in"><td><b>Link</b></td><td class="tier">T0</td><td class="n">4</td><td class="n">68 <span class="bar" style="width:13px"></span></td><td>68 &lt;a&gt; and react-router &lt;Link&gt;</td><td class="cx">L</td><td class="dep">—</td><td class="cx"><span class=yes>✓</span></td></tr>
+<tr class="in"><td><b>Badge / chip</b></td><td class="tier">T0</td><td class="n">3</td><td class="n">48 <span class="bar" style="width:9px"></span></td><td>44 MUI Chips, PM 5 badge families, Bindery VersionBadge/SourceBadge</td><td class="cx">M</td><td class="dep">—</td><td class="cx"><span class=yes>✓</span></td></tr>
+<tr class=""><td><b>Divider</b></td><td class="tier">T0</td><td class="n">3</td><td class="n">41 <span class="bar" style="width:8px"></span></td><td>41 border-t / &lt;hr&gt; / MUI Divider</td><td class="cx">L</td><td class="dep">—</td><td class="cx"><span class=no>·</span></td></tr>
+<tr class="in"><td><b>Select</b></td><td class="tier">T0</td><td class="n">4</td><td class="n">36 <span class="bar" style="width:7px"></span></td><td>PM status-dropdown + inline-dropdown + enhance-menu, MUI Select</td><td class="cx">H</td><td class="dep">Radix Select</td><td class="cx"><span class=yes>✓</span></td></tr>
+<tr class="in"><td><b>Spinner</b></td><td class="tier">T0</td><td class="n">3</td><td class="n">32 <span class="bar" style="width:6px"></span></td><td>23 MUI CircularProgress, 9 animate-spin</td><td class="cx">L</td><td class="dep">—</td><td class="cx"><span class=yes>✓</span></td></tr>
+<tr class="in"><td><b>Icon button</b></td><td class="tier">T0</td><td class="n">3</td><td class="n">26 <span class="bar" style="width:5px"></span></td><td>16 MUI IconButtons + ad-hoc padded buttons</td><td class="cx">L</td><td class="dep">—</td><td class="cx"><span class=yes>✓</span></td></tr>
+<tr class="in"><td><b>Skeleton</b></td><td class="tier">T0</td><td class="n">4</td><td class="n">18 <span class="bar" style="width:3px"></span></td><td>App A TableSkeleton, PM .skeleton, Bindery States.tsx</td><td class="cx">L</td><td class="dep">—</td><td class="cx"><span class=yes>✓</span></td></tr>
+<tr class="in"><td><b>Avatar</b></td><td class="tier">T0</td><td class="n">3</td><td class="n">16 <span class="bar" style="width:3px"></span></td><td>App B Avatar.tsx, PM .sidebar-user-avatar, MUI Avatar</td><td class="cx">L</td><td class="dep">—</td><td class="cx"><span class=yes>✓</span></td></tr>
+<tr class="in"><td><b>Checkbox</b></td><td class="tier">T0</td><td class="n">3</td><td class="n">11 <span class="bar" style="width:2px"></span></td><td>MUI Checkbox, Bindery hand-rolled boxes</td><td class="cx">M</td><td class="dep">Radix Checkbox</td><td class="cx"><span class=yes>✓</span></td></tr>
+<tr class="in"><td><b>Textarea</b></td><td class="tier">T0</td><td class="n">3</td><td class="n">6 <span class="bar" style="width:2px"></span></td><td>6 bare &lt;textarea&gt;</td><td class="cx">L</td><td class="dep">—</td><td class="cx"><span class=yes>✓</span></td></tr>
+<tr class=""><td><b>Switch / toggle</b></td><td class="tier">T0</td><td class="n">1</td><td class="n">3 <span class="bar" style="width:2px"></span></td><td>PM .view-toggle</td><td class="cx">L</td><td class="dep">Radix Switch</td><td class="cx"><span class=no>·</span></td></tr>
+<tr class=""><td><b>Radio</b></td><td class="tier">T0</td><td class="n">1</td><td class="n">1 <span class="bar" style="width:2px"></span></td><td>1 use, Bindery</td><td class="cx">L</td><td class="dep">Radix RadioGroup</td><td class="cx"><span class=no>·</span></td></tr>
+<tr class="in"><td><b>Card / panel</b></td><td class="tier">T1</td><td class="n">3</td><td class="n">109 <span class="bar" style="width:22px"></span></td><td>Bindery 243 card recipes, PM .panel/.content-card, MUI Paper</td><td class="cx">L</td><td class="dep">—</td><td class="cx"><span class=yes>✓</span></td></tr>
+<tr class="in"><td><b>Tooltip</b></td><td class="tier">T1</td><td class="n">3</td><td class="n">61 <span class="bar" style="width:12px"></span></td><td>MUI Tooltip + 42 bare title= attributes in Bindery</td><td class="cx">M</td><td class="dep">Radix Tooltip</td><td class="cx"><span class=yes>✓</span></td></tr>
+<tr class="in"><td><b>Alert / banner</b></td><td class="tier">T1</td><td class="n">3</td><td class="n">46 <span class="bar" style="width:9px"></span></td><td>24 App A ErrorAlert, 19 Bindery, PM .alert</td><td class="cx">L</td><td class="dep">—</td><td class="cx"><span class=yes>✓</span></td></tr>
+<tr class="in"><td><b>Tabs</b></td><td class="tier">T1</td><td class="n">4</td><td class="n">34 <span class="bar" style="width:6px"></span></td><td>MUI Tabs, PM .section-tabs, Bindery ad-hoc</td><td class="cx">M</td><td class="dep">Radix Tabs</td><td class="cx"><span class=yes>✓</span></td></tr>
+<tr class=""><td><b>Popover</b></td><td class="tier">T1</td><td class="n">2</td><td class="n">26 <span class="bar" style="width:5px"></span></td><td>Bindery WhyPanel/MetadataPanel/SimilarItemsPanel</td><td class="cx">M</td><td class="dep">Radix Popover</td><td class="cx"><span class=no>·</span></td></tr>
+<tr class=""><td><b>Table</b></td><td class="tier">T1</td><td class="n">3</td><td class="n">21 <span class="bar" style="width:4px"></span></td><td>MUI Table, 2 bare &lt;table&gt;</td><td class="cx">M</td><td class="dep">—</td><td class="cx"><span class=no>·</span></td></tr>
+<tr class="in"><td><b>Modal / dialog</b></td><td class="tier">T1</td><td class="n">2</td><td class="n">14 <span class="bar" style="width:2px"></span></td><td>Bindery Modal.tsx, MUI Dialog ×3, App B ×4 (no a11y)</td><td class="cx">M</td><td class="dep">Radix Dialog</td><td class="cx"><span class=yes>✓</span></td></tr>
+<tr class=""><td><b>Accordion</b></td><td class="tier">T1</td><td class="n">3</td><td class="n">10 <span class="bar" style="width:2px"></span></td><td>MUI Accordion, PM .content-collapsible</td><td class="cx">M</td><td class="dep">Radix Accordion</td><td class="cx"><span class=no>·</span></td></tr>
+<tr class=""><td><b>Pagination</b></td><td class="tier">T1</td><td class="n">1</td><td class="n">10 <span class="bar" style="width:2px"></span></td><td>App A cursor &quot;Load more&quot;</td><td class="cx">L</td><td class="dep">—</td><td class="cx"><span class=no>·</span></td></tr>
+<tr class=""><td><b>Drawer</b></td><td class="tier">T1</td><td class="n">3</td><td class="n">8 <span class="bar" style="width:2px"></span></td><td>Bindery off-canvas, PM .sidebar-overlay, MUI Drawer</td><td class="cx">M</td><td class="dep">Radix Dialog</td><td class="cx"><span class=no>·</span></td></tr>
+<tr class=""><td><b>Dropdown menu</b></td><td class="tier">T1</td><td class="n">2</td><td class="n">8 <span class="bar" style="width:2px"></span></td><td>PM 3 dropdown families, MUI Menu</td><td class="cx">M</td><td class="dep">Radix DropdownMenu</td><td class="cx"><span class=no>·</span></td></tr>
+<tr class="in"><td><b>Form field wrapper</b></td><td class="tier">T1</td><td class="n">1</td><td class="n">5 <span class="bar" style="width:2px"></span></td><td>5 MUI FormControl; everywhere else label+input+error is hand-wired</td><td class="cx">M</td><td class="dep">—</td><td class="cx"><span class=yes>✓</span></td></tr>
+<tr class=""><td><b>Command palette</b></td><td class="tier">T1</td><td class="n">1</td><td class="n">4 <span class="bar" style="width:2px"></span></td><td>Bindery features/palette/CommandPalette.tsx</td><td class="cx">H</td><td class="dep">Radix Dialog + cmdk</td><td class="cx"><span class=no>·</span></td></tr>
+<tr class=""><td><b>Toast</b></td><td class="tier">T1</td><td class="n">1</td><td class="n">2 <span class="bar" style="width:2px"></span></td><td>nothing — 107 App A error sites render as inline alerts</td><td class="cx">M</td><td class="dep">Radix Toast</td><td class="cx"><span class=no>·</span></td></tr>
+<tr class=""><td><b>Breadcrumb</b></td><td class="tier">T1</td><td class="n">—</td><td class="n">0 <span class="bar" style="width:2px"></span></td><td>nothing — no app has one</td><td class="cx">L</td><td class="dep">—</td><td class="cx"><span class=no>·</span></td></tr>
+<tr class="in"><td><b>Page header</b></td><td class="tier">T2</td><td class="n">3</td><td class="n">81 <span class="bar" style="width:16px"></span></td><td>Bindery PageHeader.tsx, App A variant=&quot;h5&quot;, PM .page-header</td><td class="cx">L</td><td class="dep">—</td><td class="cx"><span class=yes>✓</span></td></tr>
+<tr class=""><td><b>Data table (full)</b></td><td class="tier">T2</td><td class="n">1</td><td class="n">32 <span class="bar" style="width:6px"></span></td><td>App A InboxPage sort/select/bulk</td><td class="cx">H</td><td class="dep">—</td><td class="cx"><span class=no>·</span></td></tr>
+<tr class=""><td><b>Filter bar</b></td><td class="tier">T2</td><td class="n">3</td><td class="n">31 <span class="bar" style="width:6px"></span></td><td>Bindery 24 sites, App A filter row, PM</td><td class="cx">M</td><td class="dep">—</td><td class="cx"><span class=no>·</span></td></tr>
+<tr class="in"><td><b>Empty state</b></td><td class="tier">T2</td><td class="n">4</td><td class="n">26 <span class="bar" style="width:5px"></span></td><td>App A EmptyState, Bindery States.tsx, PM .empty-block, inline everywhere</td><td class="cx">L</td><td class="dep">—</td><td class="cx"><span class=yes>✓</span></td></tr>
+<tr class=""><td><b>Settings layout</b></td><td class="tier">T2</td><td class="n">3</td><td class="n">21 <span class="bar" style="width:4px"></span></td><td>App A SettingsPage, Bindery SettingsPage, App B admin/Settings</td><td class="cx">M</td><td class="dep">—</td><td class="cx"><span class=no>·</span></td></tr>
+<tr class=""><td><b>Auth screens</b></td><td class="tier">T2</td><td class="n">4</td><td class="n">17 <span class="bar" style="width:3px"></span></td><td>4 login/register pairs</td><td class="cx">M</td><td class="dep">—</td><td class="cx"><span class=no>·</span></td></tr>
+<tr class=""><td><b>Wizard / stepper</b></td><td class="tier">T2</td><td class="n">1</td><td class="n">17 <span class="bar" style="width:3px"></span></td><td>App A FeedbackWizard + 5 steps</td><td class="cx">H</td><td class="dep">—</td><td class="cx"><span class=no>·</span></td></tr>
+<tr class=""><td><b>App shell + nav</b></td><td class="tier">T2</td><td class="n">4</td><td class="n">7 <span class="bar" style="width:2px"></span></td><td>4 shells: Layout+PortalLayout, Shell.tsx, Sidebar+AdminLayout, sidebar-layout</td><td class="cx">H</td><td class="dep">—</td><td class="cx"><span class=no>·</span></td></tr>
+</tbody></table>
+<h3>The v1, and the line it draws</h3><div class="panel">
+<p style="margin:0 0 14px;font-size:16px;color:var(--tx);letter-spacing:-.015em;font-weight:600">
+v1 is everything inside the content area. v2 is the frame.</p>
+<p style="margin:0 0 14px;color:var(--dim);font-size:13.5px;line-height:1.7">
+That is the whole scoping principle, and it is what makes the cut list coherent rather than
+arbitrary. Buttons, fields, cards, badges, modals, tooltips and empty states are things that appear
+<i>within</i> a page, they are identical across all four apps, and getting them wrong is cheap to
+fix. The shell, the drawer, the auth screens and the settings layout are the page <i>frame</i> —
+they carry routing, auth state and per-app navigation, and unifying them first would mean the first
+thing the system ever does is the riskiest thing it will ever do.</p>
+<p style="margin:0;color:var(--dim);font-size:13.5px;line-height:1.7">
+Twenty components. <b style="color:var(--tx)">1197 of 1456 measured instances — 82%.</b>
+The brief asked for roughly 60% of the value; the data says twenty components buy considerably more
+than that, because the distribution is brutally top-heavy. Button alone is 345 instances — 24% of
+everything, in one component.</p></div>
+<h3>What gets cut, and why <span>eighteen refusals</span></h3><div class="cut">
+<div class="r"><div class="k">Divider<br><span style="color:var(--dim2);font-weight:400;font-size:11px">41 uses · 3 app(s)</span></div><div class="w">It is a 1px border in the <code>border</code> token. Wrapping a CSS property in a React component is ceremony, not reuse.</div></div>
+<div class="r"><div class="k">Breadcrumb<br><span style="color:var(--dim2);font-weight:400;font-size:11px">0 uses · 0 app(s)</span></div><div class="w">Zero uses in four apps. Adding it would invent a navigation pattern none of these products has.</div></div>
+<div class="r"><div class="k">Radio<br><span style="color:var(--dim2);font-weight:400;font-size:11px">1 uses · 1 app(s)</span></div><div class="w">One use, in Bindery. A Select covers the same job until a second app disagrees.</div></div>
+<div class="r"><div class="k">Switch / toggle<br><span style="color:var(--dim2);font-weight:400;font-size:11px">3 uses · 1 app(s)</span></div><div class="w">Three uses, App C only — and its <code>.view-toggle</code> is really a segmented control, not a switch.</div></div>
+<div class="r"><div class="k">Command palette<br><span style="color:var(--dim2);font-weight:400;font-size:11px">4 uses · 1 app(s)</span></div><div class="w">The most complex component on this list, with exactly one consumer. Bindery's works. Building it for one app is how a design system becomes a hobby.</div></div>
+<div class="r"><div class="k">Pagination<br><span style="color:var(--dim2);font-weight:400;font-size:11px">10 uses · 1 app(s)</span></div><div class="w">App A only, and it is a cursor-based &ldquo;Load more&rdquo; — which is a Button.</div></div>
+<div class="r"><div class="k">Wizard / stepper<br><span style="color:var(--dim2);font-weight:400;font-size:11px">17 uses · 1 app(s)</span></div><div class="w">Seventeen uses, all App A. A large T2 pattern serving one app; revisit if a second one needs it.</div></div>
+<div class="r"><div class="k">Data table (full)<br><span style="color:var(--dim2);font-weight:400;font-size:11px">32 uses · 1 app(s)</span></div><div class="w">Sorting, selection and bulk actions exist only in App A's inbox. The v1 primitives make its cells consistent without the system owning its behaviour.</div></div>
+<div class="r"><div class="k">Toast<br><span style="color:var(--dim2);font-weight:400;font-size:11px">2 uses · 1 app(s)</span></div><div class="w">Deferred, but <b>flagged</b>: App A has 107 error-surface call sites rendering as inline alerts. Alert covers v1; Toast is the first thing into v2.</div></div>
+<div class="r"><div class="k">Dropdown menu<br><span style="color:var(--dim2);font-weight:400;font-size:11px">8 uses · 2 app(s)</span></div><div class="w">Eight uses across two apps — but App C has three dropdown families internally. Low volume, real duplication. First into v2 alongside Toast.</div></div>
+<div class="r"><div class="k">Popover<br><span style="color:var(--dim2);font-weight:400;font-size:11px">26 uses · 2 app(s)</span></div><div class="w">Bindery's &ldquo;panels&rdquo; are layout regions, not popovers. Reclassifying them is a Bindery decision, not a system one.</div></div>
+<div class="r"><div class="k">Accordion<br><span style="color:var(--dim2);font-weight:400;font-size:11px">10 uses · 3 app(s)</span></div><div class="w">Ten uses. <code>&lt;details&gt;</code> is adequate until a second app needs controlled state.</div></div>
+<div class="r"><div class="k">Table<br><span style="color:var(--dim2);font-weight:400;font-size:11px">21 uses · 3 app(s)</span></div><div class="w">The v1 Card, Badge and Skeleton make a table look right. Owning table markup means owning column sizing, sticky headers and virtualisation — that is a v2 project.</div></div>
+<div class="r"><div class="k">Drawer<br><span style="color:var(--dim2);font-weight:400;font-size:11px">8 uses · 3 app(s)</span></div><div class="w">Belongs with the shell, and the shell is v2.</div></div>
+<div class="r"><div class="k">Filter bar<br><span style="color:var(--dim2);font-weight:400;font-size:11px">31 uses · 3 app(s)</span></div><div class="w">A composition of Input, Select and Button — all in v1. It becomes a component once the composition repeats identically, not before.</div></div>
+<div class="r"><div class="k">App shell + nav<br><span style="color:var(--dim2);font-weight:400;font-size:11px">7 uses · 4 app(s)</span></div><div class="w">Four shells is the single largest duplication in the audit, and the single riskiest thing to unify first. It is v2 by design, not by neglect.</div></div>
+<div class="r"><div class="k">Auth screens<br><span style="color:var(--dim2);font-weight:400;font-size:11px">17 uses · 4 app(s)</span></div><div class="w">Four login/register pairs, but they differ in real ways — App B bootstraps encryption keys at signup. Compose from v1 primitives first.</div></div>
+<div class="r"><div class="k">Settings layout<br><span style="color:var(--dim2);font-weight:400;font-size:11px">21 uses · 3 app(s)</span></div><div class="w">A page layout, not a component. Waits for the shell.</div></div>
+</div>
+<div class="note"><b>Two of these cuts are deferrals with a date, not refusals.</b> <b>Toast</b> and <b>Dropdown menu</b> are the first two components of v2 — Toast because 107 inline error alerts is a real gap the audit found and Alert only half-covers it, and Dropdown menu because App C is maintaining three of them. Everything else on this list waits for a second app to ask.</div>
+<h3>What happens next</h3><div class="panel">
+<p style="margin:0 0 12px;color:var(--dim);font-size:13.5px;line-height:1.7">
+Phase 4b is the specs, and no code is written until they are approved. Each one covers:
+<b style="color:var(--tx)">anatomy · variants · sizes · every state</b> (default, hover,
+focus-visible, active, disabled, loading, error, read-only, empty) <b style="color:var(--tx)">·
+accessibility contract</b> (role, keyboard map, ARIA, focus management) <b style="color:var(--tx)">·
+responsive behaviour · content guidance · do/don't pairs</b>.</p>
+<p style="margin:0;color:var(--dim);font-size:13.5px;line-height:1.7">
+They come in four batches so they can be approved without reading twenty specs at once:
+<b style="color:var(--tx)">Batch 1</b> Button, IconButton, Link, Badge, Spinner, Skeleton, Avatar ·
+<b style="color:var(--tx)">Batch 2</b> Input, Textarea, Select, Checkbox, Label, FormField ·
+<b style="color:var(--tx)">Batch 3</b> Card, Modal, Tooltip, Tabs, Alert ·
+<b style="color:var(--tx)">Batch 4</b> EmptyState, PageHeader.</p></div>
+<footer><b>design-system/explorations/04a-inventory.html</b> — Phase 4a. Counts measured from App A, Bindery, App B and App C at HEAD.</footer></div>

@@ -1,0 +1,13 @@
+/* The library's stylesheet. Plain CSS custom properties and @font-face — no
+   Tailwind, no build step required of the consumer.
+
+   App C uses hand-written CSS and no Tailwind at all, so a library
+   whose components depended on Tailwind utilities could not ship there. The
+   components consume these custom properties directly; apps that also want
+   utilities matching the system import theme.css alongside this. */
+@import "./color.css";
+@import "./type.css";
+@import "./layout.css";
+@import "./shape.css";
+@import "./motion.css";
+@import "./icon.css";

@@ -1,0 +1,130 @@
+{
+  "$description": "Motion. Expressive tier everywhere except the menu family (menu, popover, tooltip), which is Confident because those open dozens of times an hour. Guardrails in $extensions apply at every tier.",
+  "duration": {
+    "1": {
+      "$type": "duration",
+      "$value": "90ms",
+      "$description": "hover colour and opacity"
+    },
+    "2": {
+      "$type": "duration",
+      "$value": "140ms",
+      "$description": "small state changes; tooltip enter"
+    },
+    "3": {
+      "$type": "duration",
+      "$value": "200ms",
+      "$description": "menu and popover enter"
+    },
+    "4": {
+      "$type": "duration",
+      "$value": "280ms",
+      "$description": "tab pill, drawer, sidebar collapse, list stagger base"
+    },
+    "5": {
+      "$type": "duration",
+      "$value": "420ms",
+      "$description": "modal, toast, row removal \u2014 anything that travels"
+    }
+  },
+  "easing": {
+    "out": {
+      "$type": "cubicBezier",
+      "$value": "cubic-bezier(0.2, 0.7, 0.3, 1)",
+      "$description": "everything entering"
+    },
+    "in": {
+      "$type": "cubicBezier",
+      "$value": "cubic-bezier(0.5, 0, 0.9, 0.4)",
+      "$description": "everything leaving"
+    },
+    "spring": {
+      "$type": "cubicBezier",
+      "$value": "cubic-bezier(0.22, 1.2, 0.36, 1)",
+      "$description": "arrival with overshoot \u2014 the Expressive tier"
+    },
+    "linear": {
+      "$type": "cubicBezier",
+      "$value": "linear",
+      "$description": "progress and spinners only, never a transform"
+    }
+  },
+  "pattern": {
+    "modal-enter": {
+      "$type": "string",
+      "$value": "420ms {easing.spring}",
+      "$description": "Expressive \u2014 rises and settles with overshoot"
+    },
+    "modal-exit": {
+      "$type": "string",
+      "$value": "200ms {easing.in}",
+      "$description": "leaves without ceremony"
+    },
+    "menu-enter": {
+      "$type": "string",
+      "$value": "200ms {easing.out}",
+      "$description": "Confident \u2014 opened constantly, so no overshoot and no item stagger"
+    },
+    "menu-exit": {
+      "$type": "string",
+      "$value": "140ms {easing.in}",
+      "$description": ""
+    },
+    "popover-enter": {
+      "$type": "string",
+      "$value": "200ms {easing.out}",
+      "$description": "follows the menu ruling"
+    },
+    "tooltip-enter": {
+      "$type": "string",
+      "$value": "140ms {easing.out}",
+      "$description": "fastest of the family \u2014 appears on hover"
+    },
+    "toast-enter": {
+      "$type": "string",
+      "$value": "420ms {easing.spring}",
+      "$description": "Expressive \u2014 it arrives unasked, so it should be felt"
+    },
+    "toast-exit": {
+      "$type": "string",
+      "$value": "280ms {easing.in}",
+      "$description": "slides out"
+    },
+    "tab-glide": {
+      "$type": "string",
+      "$value": "280ms {easing.spring}",
+      "$description": "Expressive \u2014 the pill travels between tabs"
+    },
+    "list-enter": {
+      "$type": "string",
+      "$value": "280ms {easing.spring}",
+      "$description": "Expressive \u2014 first paint only, 80ms stagger, never on a poll"
+    },
+    "row-exit": {
+      "$type": "string",
+      "$value": "420ms {easing.spring}",
+      "$description": "Expressive \u2014 a dismissed row leaves so the list does not blink"
+    },
+    "hover": {
+      "$type": "string",
+      "$value": "90ms {easing.out}",
+      "$description": "colour only"
+    },
+    "drawer": {
+      "$type": "string",
+      "$value": "280ms {easing.out}",
+      "$description": "sidebar and off-canvas drawer"
+    }
+  },
+  "$extensions": {
+    "d3.never-animate": [
+      "a table row whose content changed on a poll \u2014 Bindery and App A both repoll",
+      "route changes inside a data view",
+      "text reflow, column widths, table layout \u2014 columns drop at a breakpoint, they do not slide",
+      "the focus ring \u2014 it must appear on the same frame as the keypress",
+      "validation errors appearing",
+      "skeletons, beyond one slow shimmer"
+    ],
+    "d3.fill-mode": "Entrances animate FROM an offset TO the natural state with animation-fill-mode: backwards, never forwards. A retained transform makes the wrapper a containing block and silently breaks every position:fixed overlay inside it."
+  }
+}

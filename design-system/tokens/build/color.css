@@ -1,0 +1,180 @@
+/* Hand-maintained against the JSON token sources, and checked against it by
+   `scripts/check-tokens.mjs` — every value here must exist in the JSON, and
+   every emitted token there must appear here. The comments in this file carry
+   the reasoning behind the numbers, which is why it is written rather than
+   generated: no generator can reproduce them, and they are most of its value.
+
+   Phase 3a. */
+
+/* Primitives are exposed for reference and tooling only. Component code must
+   use the --color-* semantic names; a lint rule bans --p-* outside this file. */
+
+:root {
+  --p-neutral-50: #f9fafd;
+  --p-neutral-100: #f0f2f7;
+  --p-neutral-200: #dbdee7;
+  --p-neutral-300: #b9bdcb;
+  --p-neutral-400: #999ead;
+  --p-neutral-500: #747888;
+  --p-neutral-600: #515563;
+  --p-neutral-700: #2c303b;
+  --p-neutral-800: #242731;
+  --p-neutral-900: #191b23;
+  --p-neutral-950: #101117;
+  --p-neutral-975: #080a0d;
+  --p-violet-50: #f9f9ff;
+  --p-violet-100: #f0f0ff;
+  --p-violet-200: #dadaff;
+  --p-violet-300: #b8b4ff;
+  --p-violet-400: #978cff;
+  --p-violet-500: #745aec;
+  --p-violet-600: #5432be;
+  --p-violet-700: #320084;
+  --p-violet-800: #29036e;
+  --p-violet-900: #1c0252;
+  --p-violet-950: #120239;
+  --p-violet-975: #0a0225;
+  --p-green-50: #eefff5;
+  --p-green-100: #d8fce7;
+  --p-green-200: #adf0ca;
+  --p-green-300: #70d6a1;
+  --p-green-400: #2eb97c;
+  --p-green-500: #00905b;
+  --p-green-600: #00663f;
+  --p-green-700: #003b23;
+  --p-green-800: #00311c;
+  --p-green-900: #002312;
+  --p-green-950: #00170b;
+  --p-green-975: #000e05;
+  --p-amber-50: #fff9f0;
+  --p-amber-100: #fff0d8;
+  --p-amber-200: #fcd8a0;
+  --p-amber-300: #e7b45d;
+  --p-amber-400: #cd920f;
+  --p-amber-500: #9e6f00;
+  --p-amber-600: #714e00;
+  --p-amber-700: #422c00;
+  --p-amber-800: #372400;
+  --p-amber-900: #271900;
+  --p-amber-950: #1a0f00;
+  --p-amber-975: #110800;
+  --p-red-50: #fff8f8;
+  --p-red-100: #ffedec;
+  --p-red-200: #ffd1cf;
+  --p-red-300: #ffa09c;
+  --p-red-400: #fc6568;
+  --p-red-500: #d33441;
+  --p-red-600: #a20022;
+  --p-red-700: #610010;
+  --p-red-800: #51000c;
+  --p-red-900: #3c0006;
+  --p-red-950: #2a0003;
+  --p-red-975: #1c0001;
+  --p-blue-50: #f6fbff;
+  --p-blue-100: #e8f3ff;
+  --p-blue-200: #c5e2ff;
+  --p-blue-300: #87c3ff;
+  --p-blue-400: #4ea4f3;
+  --p-blue-500: #177ccc;
+  --p-blue-600: #005896;
+  --p-blue-700: #003259;
+  --p-blue-800: #00294b;
+  --p-blue-900: #001d37;
+  --p-blue-950: #001227;
+  --p-blue-975: #000a1a;
+}
+
+/* Dark is the primary mode (D-011).
+
+   The theme selectors are element-scoped, not :root-scoped, so a subtree can
+   carry its own mode: <div data-theme="light"> inside a dark app is a light
+   island, and custom properties inherit to it correctly. That also removes the
+   need for anything to mutate documentElement at runtime (D-037). */
+:root, [data-theme="dark"] {
+  --color-bg-sunken: #080a0d;
+  --color-bg: #101117;
+  --color-surface: #191b23;
+  --color-surface-raised: #2c303b;
+  --color-surface-hover: #242731;
+  --color-border: #2c303b;
+  --color-border-field: #747888;
+  --color-border-float: #747888;
+  --color-text: #f0f2f7;
+  --color-text-muted: #b9bdcb;
+  --color-text-faint: #999ead;
+  --color-accent: #978cff;
+  --color-accent-hover: #b8b4ff;
+  --color-accent-contrast: #0a0225;
+  --color-accent-muted: #1c0252;
+  --color-success: #70d6a1;
+  --color-danger-muted: #3c0006;
+  --color-warning-muted: #271900;
+  --color-success-muted: #002312;
+  --color-info-muted: #001d37;
+  --color-warning: #e7b45d;
+  --color-danger: #fc6568;
+  --color-info: #87c3ff;
+  --color-focus: #978cff;
+}
+
+[data-theme="light"] {
+  --color-bg-sunken: #dbdee7;
+  --color-bg: #f0f2f7;
+  --color-surface: #f9fafd;
+  --color-surface-raised: #ffffff;
+  --color-surface-hover: #f0f2f7;
+  --color-border: #dbdee7;
+  --color-border-field: #747888;
+  --color-border-float: #747888;
+  --color-text: #101117;
+  --color-text-muted: #2c303b;
+  --color-text-faint: #515563;
+  --color-accent: #5432be;
+  --color-accent-hover: #320084;
+  --color-accent-contrast: #ffffff;
+  --color-accent-muted: #f0f0ff;
+  --color-success: #00663f;
+  --color-danger-muted: #ffedec;
+  --color-warning-muted: #fff0d8;
+  --color-success-muted: #d8fce7;
+  --color-info-muted: #e8f3ff;
+  --color-warning: #714e00;
+  --color-danger: #a20022;
+  --color-info: #005896;
+  --color-focus: #5432be;
+}
+
+/* Follow the OS only when no explicit theme has been set anywhere. */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) {
+    --color-bg-sunken: #dbdee7;
+    --color-bg: #f0f2f7;
+    --color-surface: #f9fafd;
+    --color-surface-raised: #ffffff;
+    --color-surface-hover: #f0f2f7;
+    --color-border: #dbdee7;
+    --color-border-field: #747888;
+    --color-border-float: #747888;
+    --color-text: #101117;
+    --color-text-muted: #2c303b;
+    --color-text-faint: #515563;
+    --color-accent: #5432be;
+    --color-accent-hover: #320084;
+    --color-accent-contrast: #ffffff;
+    --color-accent-muted: #f0f0ff;
+    --color-success: #00663f;
+    --color-danger-muted: #ffedec;
+    --color-warning-muted: #fff0d8;
+    --color-success-muted: #d8fce7;
+    --color-info-muted: #e8f3ff;
+    --color-warning: #714e00;
+    --color-danger: #a20022;
+    --color-info: #005896;
+    --color-focus: #5432be;
+  }
+}
+
+:root { color-scheme: dark; }
+[data-theme="light"] { color-scheme: light; }
+[data-theme="dark"] { color-scheme: dark; }
+@media (prefers-color-scheme: light) { :root:not([data-theme]) { color-scheme: light; } }

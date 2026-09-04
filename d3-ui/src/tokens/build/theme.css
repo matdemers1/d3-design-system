@@ -1,0 +1,13 @@
+/* OPTIONAL. Tailwind v4 utilities matching the system, for apps that use
+   Tailwind — Bindery and App B do; App C does not.
+
+   This is not required by @d3cloud/ui components. Import "@d3cloud/ui/tokens.css"
+   for the components themselves; add this only if you also want utilities. */
+@import "tailwindcss";
+@import "./tokens.css";
+@import "./theme.color.css";
+@import "./theme.type.css";
+@import "./theme.layout.css";
+@import "./theme.shape.css";
+@import "./theme.motion.css";
+@import "./theme.icon.css";

@@ -1,0 +1,253 @@
+<title>3d · Shape &amp; Elevation</title>
+<style>
+
+:root{--pg:#0e0e11;--pn:#16161b;--pn2:#1d1d24;--ln:#2c2c36;--tx:#e8e8ee;--dim:#9a9aa8;--dim2:#6e6e7e;--hot:#ff5c5c;--ok:#3ecf8e}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pg);color:var(--tx);
+font:14px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1500px;margin:0 auto;padding:0 28px 110px}
+header.top{padding:56px 0 28px;border-bottom:1px solid var(--ln)}
+.eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim2);font-weight:650;margin:0 0 12px}
+h1{font-size:46px;line-height:1.02;margin:0 0 6px;letter-spacing:-.035em;font-weight:650}
+.tagline{font-size:19px;color:var(--dim);margin:0 0 22px;letter-spacing:-.01em}
+.rationale{max-width:74ch;font-size:15px;color:#c7c7d2;line-height:1.68;margin:0}
+.rationale em{color:var(--tx);font-style:italic}
+h3{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim2);margin:56px 0 14px;font-weight:650}
+h3 span{color:var(--dim);letter-spacing:0;text-transform:none;font-weight:400;margin-left:10px;font-size:12.5px}
+.frame{border:1px solid var(--ln);border-radius:14px;overflow:hidden;position:relative;background:#000}
+.mode{display:flex;align-items:center;gap:8px;padding:9px 14px;background:var(--pn2);
+border-bottom:1px solid var(--ln);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+color:var(--dim2);font-weight:650}
+.cols2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.tok{display:grid;grid-template-columns:repeat(auto-fill,minmax(132px,1fr));gap:8px}
+.tk{border:1px solid var(--ln);border-radius:8px;overflow:hidden;background:var(--pn)}
+.tk .c{height:46px}
+.tk .m{padding:6px 8px;font:11px/1.45 ui-monospace,Menlo,monospace;color:var(--dim)}
+.tk .m b{display:block;color:var(--tx);font-weight:600;letter-spacing:-.01em}
+table.spec{width:100%;border-collapse:collapse;font-size:13px}
+table.spec th{text-align:left;font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+color:var(--dim2);padding:0 12px 9px;border-bottom:1px solid var(--ln);font-weight:650}
+table.spec td{padding:9px 12px;border-bottom:1px solid var(--pn2);color:var(--dim)}
+table.spec td b{color:var(--tx);font-weight:600}
+.mono{font-family:ui-monospace,Menlo,monospace}
+.pass{color:var(--ok);font-weight:600}
+.note{border-left:3px solid var(--dim2);background:#ffffff08;padding:13px 16px;border-radius:0 8px 8px 0;
+margin:16px 0 0;color:#c9c9d4;font-size:13.5px;line-height:1.65}
+.note b{color:#fff}
+.nav{display:flex;gap:9px;flex-wrap:wrap;margin:26px 0 0}
+.nav a{border:1px solid var(--ln);border-radius:999px;padding:7px 15px;color:var(--dim);
+text-decoration:none;font-size:13px;background:var(--pn)}
+.nav a.here{background:var(--tx);color:#111;border-color:var(--tx);font-weight:600}
+footer{margin-top:70px;padding-top:24px;border-top:1px solid var(--ln);color:var(--dim2);font-size:12.5px}
+
+
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.fr2{border:1px solid var(--ln);border-radius:13px;overflow:hidden;background:#000}
+.fr2 .fh{padding:9px 14px;background:var(--pn2);border-bottom:1px solid var(--ln);
+font:11px/1 ui-monospace,Menlo,monospace;color:var(--dim2);letter-spacing:.11em;text-transform:uppercase}
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th{text-align:left;font:650 11px/1 ui-monospace,Menlo,monospace;color:var(--dim2);
+letter-spacing:.09em;padding:0 12px 10px;border-bottom:1px solid var(--ln);text-transform:uppercase}
+.tbl td{padding:9px 12px;border-bottom:1px solid var(--pn2);color:var(--dim);vertical-align:middle}
+.tbl td b{color:var(--tx)} .tbl td.num{font-family:ui-monospace,Menlo,monospace;font-size:12px}
+.ladder{display:flex;gap:0;border-radius:12px;overflow:hidden;margin-bottom:10px}
+.ladder div{flex:1;padding:16px 12px;font:11px/1.5 ui-monospace,Menlo,monospace}
+.radrow{display:flex;align-items:center;gap:16px;padding:10px 0;border-bottom:1px solid var(--pn2)}
+.radrow .sq{width:56px;height:40px;background:var(--dim2);flex:none}
+.radrow .k{width:130px;font:12px/1 ui-monospace,Menlo,monospace;color:var(--tx)}
+.pass{color:#66d9a0;font-weight:600}
+
+
+.ui{font-family:'Inter',ui-sans-serif,system-ui,sans-serif;font-size:14px;color:var(--text);
+background:var(--bg);line-height:1.5}
+.ui *{box-sizing:border-box}
+.ui button{font:inherit;color:inherit;cursor:pointer;border:0}
+.ui .btn{border-radius:var(--rad-md);padding:8px 14px;font-size:13px;font-weight:600}
+.ui .btn.primary{background:var(--accent);color:var(--accent-contrast)}
+.ui .btn.ghost{background:var(--surface-raised);color:var(--text);font-weight:500}
+.ui .field{background:var(--surface);border:1px solid var(--border-field);
+border-radius:var(--rad-md);padding:8px 12px;color:var(--text-faint)}
+.ui .card{background:var(--surface);border-radius:var(--rad-lg);padding:16px}
+.ui .chip{display:inline-block;background:var(--surface-raised);color:var(--text-muted);
+border-radius:var(--rad-full);padding:4px 11px;font-size:11px;font-weight:600}
+.ui .cb{width:17px;height:17px;border-radius:var(--rad-xs);background:var(--accent);
+display:inline-flex;align-items:center;justify-content:center;color:var(--accent-contrast);font-size:10px}
+
+/* --- the elevation model: tone for depth, a boundary for detachment --- */
+.ui .float{background:var(--surface-raised);border:1px solid var(--border-float);
+border-radius:var(--rad-lg);box-shadow:none}
+.ui .menu{width:196px;padding:6px;font-size:13px}
+.ui .menu .mi{padding:7px 10px;border-radius:var(--rad-md);color:var(--text-muted)}
+.ui .menu .mi.on{background:var(--accent-muted);color:var(--accent);font-weight:600}
+.ui .menu .sep{height:1px;background:var(--border);margin:5px 8px}
+.ui .tip{padding:6px 10px;font-size:12px;border-radius:var(--rad-sm);color:var(--text);white-space:nowrap}
+.ui .toast{padding:12px 14px;width:280px;display:flex;gap:10px;align-items:flex-start}
+.ui .toast b{display:block;font-size:13px;margin-bottom:2px}
+.ui .toast span{font-size:12px;color:var(--text-muted)}
+.ui .modal{width:300px;padding:20px}
+.ui .scrim{position:absolute;inset:0;background:rgba(0,0,0,.58)}
+
+.stagebox{position:relative;height:270px;overflow:hidden;padding:18px}
+.stagebox .row{display:flex;align-items:center;gap:10px;padding:0 12px;height:44px;
+border-radius:var(--rad-md);font-size:13px}
+.stagebox .row.hov{background:var(--surface-hover)}
+.abs{position:absolute}
+
+/* --- focus ring --- */
+.ui .fr{outline:2px solid var(--focus);outline-offset:2px}
+.surfstrip{display:flex;flex-wrap:wrap;gap:0;border-radius:12px;overflow:hidden}
+.surfcell{padding:18px 16px;flex:1 1 150px;display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+.surfcell .lab{font:10.5px/1 ui-monospace,Menlo,monospace;opacity:.75;letter-spacing:.05em}
+
+.ui.dark{  --bg-sunken: #080a0d;
+  --bg: #101117;
+  --surface: #191b23;
+  --surface-raised: #2c303b;
+  --surface-hover: #242731;
+  --border: #2c303b;
+  --border-field: #747888;
+  --border-float: #747888;
+  --text: #f0f2f7;
+  --text-muted: #b9bdcb;
+  --text-faint: #999ead;
+  --accent: #978cff;
+  --accent-hover: #b8b4ff;
+  --accent-contrast: #0a0225;
+  --accent-muted: #1c0252;
+  --success: #70d6a1;
+  --warning: #e7b45d;
+  --danger: #fc6568;
+  --info: #87c3ff;
+  --focus: #978cff;
+  --rad-xs: 6px;
+  --rad-sm: 8px;
+  --rad-md: 10px;
+  --rad-lg: 14px;
+  --rad-full: 999px;}
+.ui.light{  --bg-sunken: #dbdee7;
+  --bg: #f0f2f7;
+  --surface: #f9fafd;
+  --surface-raised: #ffffff;
+  --surface-hover: #f0f2f7;
+  --border: #dbdee7;
+  --border-field: #747888;
+  --border-float: #747888;
+  --text: #101117;
+  --text-muted: #2c303b;
+  --text-faint: #515563;
+  --accent: #5432be;
+  --accent-hover: #320084;
+  --accent-contrast: #ffffff;
+  --accent-muted: #f0f0ff;
+  --success: #00663f;
+  --warning: #714e00;
+  --danger: #a20022;
+  --info: #005896;
+  --focus: #5432be;
+  --rad-xs: 6px;
+  --rad-sm: 8px;
+  --rad-md: 10px;
+  --rad-lg: 14px;
+  --rad-full: 999px;}
+</style>
+<div class='wrap'>
+<header class="top"><p class="eyebrow">Phase 3 · Foundations</p>
+<h1>3d — Shape &amp; elevation</h1>
+<p class="tagline">Five radii, one border weight, no shadows anywhere, and a focus ring proved on
+every surface it can land on.</p>
+<p class="rationale">This is the sub-phase that has to make good on D-015. Quiet was locked partly
+because it has no shadows at all — depth is tone, and a surface that is nearer is a step lighter.
+That is easy for a card and hard for the five components that conventionally reach for a shadow:
+menu, popover, tooltip, toast and modal. It is hardest in light mode, where the tonal ladder ends
+at white and there is nowhere lighter to go. The answer below is one added rule, not an
+exception.</p></header>
+<h3>The elevation model</h3>
+<div style="background:var(--pn);border:1px solid var(--ln);border-radius:12px;padding:22px 24px;margin-bottom:18px">
+<div style="font-size:19px;font-weight:600;letter-spacing:-.02em;margin-bottom:6px;color:var(--tx)">
+Elevation is tone. Detachment is a boundary.</div>
+<p style="margin:0 0 14px;color:var(--dim);max-width:82ch;line-height:1.65">
+<b style="color:var(--tx)">Resting surfaces</b> — the shell, the page, a card, a hovered row — differ
+by tone alone and carry no border. <b style="color:var(--tx)">Floating layers</b> — menu, popover,
+tooltip, toast, modal — sit at <code>surface-raised</code> <i>and</i> carry a 1px
+<code>border-float</code> at 3:1. A modal adds a scrim; nothing else does.</p>
+<p style="margin:0;color:var(--dim);max-width:82ch;line-height:1.65">
+The boundary is not decoration and it is not a shadow in disguise. It exists because in light mode
+the tonal ladder terminates at white: a menu opening over a white card has no lighter step available.
+Rather than run two different elevation mechanisms in the two modes, the boundary applies in both —
+which also makes a menu legible when it opens <i>inside</i> a modal, where tone has already been
+spent.</p></div>
+<h3>The tonal ladder <span>nearer is lighter in dark, nearer is whiter in light</span></h3>
+<div style="font:11px/1 ui-monospace,Menlo,monospace;color:var(--dim2);letter-spacing:.11em;text-transform:uppercase;margin:14px 0 8px">dark</div>
+<div class="ladder">
+<div style="background:#080a0d;color:#f0f2f7"><b>bg-sunken</b><br>#080a0d<br><span style="opacity:.6">neutral-975</span></div>
+<div style="background:#101117;color:#f0f2f7"><b>bg</b><br>#101117<br><span style="opacity:.6">neutral-950</span></div>
+<div style="background:#191b23;color:#f0f2f7"><b>surface</b><br>#191b23<br><span style="opacity:.6">neutral-900</span></div>
+<div style="background:#242731;color:#f0f2f7"><b>surface-hover</b><br>#242731<br><span style="opacity:.6">neutral-800</span></div>
+<div style="background:#2c303b;color:#f0f2f7"><b>surface-raised</b><br>#2c303b<br><span style="opacity:.6">neutral-700</span></div>
+</div>
+<div style="font:11px/1 ui-monospace,Menlo,monospace;color:var(--dim2);letter-spacing:.11em;text-transform:uppercase;margin:14px 0 8px">light</div>
+<div class="ladder">
+<div style="background:#dbdee7;color:#101117"><b>bg-sunken</b><br>#dbdee7<br><span style="opacity:.6">neutral-200</span></div>
+<div style="background:#f0f2f7;color:#101117"><b>bg</b><br>#f0f2f7<br><span style="opacity:.6">neutral-100</span></div>
+<div style="background:#f9fafd;color:#101117"><b>surface</b><br>#f9fafd<br><span style="opacity:.6">neutral-50</span></div>
+<div style="background:#f0f2f7;color:#101117"><b>surface-hover</b><br>#f0f2f7<br><span style="opacity:.6">neutral-100</span></div>
+<div style="background:#ffffff;color:#101117"><b>surface-raised</b><br>#ffffff<br><span style="opacity:.6">white</span></div>
+</div>
+<div class="note"><b>A correction from 3a.</b> The first mapping had <code>surface-raised</code> at <code>neutral-800</code> and <code>surface-hover</code> at <code>neutral-700</code> — which meant a floating panel was <i>darker</i> than a hovered row, so a tooltip over a hovered row sat below it tonally. In a system where tone is the only depth cue that is not a nitpick, it is the mechanism failing. The two are now swapped and the ladder is monotonic. 124 pairs re-validated, zero failures.</div>
+<h3>The five components that usually need a shadow <span>rendered with <code>box-shadow: none</code> in both modes</span></h3>
+<h3 style="margin-top:34px;font-size:13px;color:var(--dim);letter-spacing:0;text-transform:none">Dropdown menu <span>opens over a card — the case tone alone can still handle</span></h3><div class="two">
+<div class="fr2"><div class="fh">dark</div><div class="ui dark stagebox"><div class="card" style="height:100%"><div style="font-weight:600;margin-bottom:10px">Feedback detail</div><div style="font-size:13px;color:var(--text-muted)">Export fails silently on files over 50&nbsp;MB</div></div><div class="abs float menu" style="top:52px;right:34px"><div class="mi on">Assign to me</div><div class="mi">Merge with…</div><div class="mi">Send to backlog</div><div class="sep"></div><div class="mi">Dismiss</div></div></div></div>
+<div class="fr2"><div class="fh">light</div><div class="ui light stagebox"><div class="card" style="height:100%"><div style="font-weight:600;margin-bottom:10px">Feedback detail</div><div style="font-size:13px;color:var(--text-muted)">Export fails silently on files over 50&nbsp;MB</div></div><div class="abs float menu" style="top:52px;right:34px"><div class="mi on">Assign to me</div><div class="mi">Merge with…</div><div class="mi">Send to backlog</div><div class="sep"></div><div class="mi">Dismiss</div></div></div></div>
+</div>
+<h3 style="margin-top:34px;font-size:13px;color:var(--dim);letter-spacing:0;text-transform:none">Tooltip <span>opens over a <i>hovered</i> row — the case that broke before the swap</span></h3><div class="two">
+<div class="fr2"><div class="fh">dark</div><div class="ui dark stagebox"><div class="card" style="height:100%;padding:8px"><div class="row">Export fails silently on files over 50 MB</div><div class="row hov">SSO login loops back to the sign-in page</div><div class="row">CSV export drops the last column</div></div><div class="abs float tip" style="top:74px;left:120px">Reported by 18 people · Acme Corp</div></div></div>
+<div class="fr2"><div class="fh">light</div><div class="ui light stagebox"><div class="card" style="height:100%;padding:8px"><div class="row">Export fails silently on files over 50 MB</div><div class="row hov">SSO login loops back to the sign-in page</div><div class="row">CSV export drops the last column</div></div><div class="abs float tip" style="top:74px;left:120px">Reported by 18 people · Acme Corp</div></div></div>
+</div>
+<h3 style="margin-top:34px;font-size:13px;color:var(--dim);letter-spacing:0;text-transform:none">Toast <span>floats over the page with nothing beneath it to borrow contrast from</span></h3><div class="two">
+<div class="fr2"><div class="fh">dark</div><div class="ui dark stagebox"><div class="card" style="height:100%"><div style="font-weight:600;margin-bottom:10px">Inbox</div><div class="row hov">CSV export drops the last column</div><div class="row">Docs link in the footer 404s</div></div><div class="abs float toast" style="bottom:18px;right:18px"><span class="cb">✓</span><div><b>3 items dismissed</b><span>Undo · they stay searchable</span></div></div></div></div>
+<div class="fr2"><div class="fh">light</div><div class="ui light stagebox"><div class="card" style="height:100%"><div style="font-weight:600;margin-bottom:10px">Inbox</div><div class="row hov">CSV export drops the last column</div><div class="row">Docs link in the footer 404s</div></div><div class="abs float toast" style="bottom:18px;right:18px"><span class="cb">✓</span><div><b>3 items dismissed</b><span>Undo · they stay searchable</span></div></div></div></div>
+</div>
+<h3 style="margin-top:34px;font-size:13px;color:var(--dim);letter-spacing:0;text-transform:none">Modal <span>the only floating layer that gets a scrim</span></h3><div class="two">
+<div class="fr2"><div class="fh">dark</div><div class="ui dark stagebox"><div class="card" style="height:100%"><div style="font-weight:600;margin-bottom:10px">Inbox</div><div class="row">Export fails silently on files over 50 MB</div><div class="row">SSO login loops back to the sign-in page</div></div><div class="scrim"></div><div class="abs float modal" style="top:50%;left:50%;transform:translate(-50%,-50%)"><div style="font-weight:650;font-size:16px;margin-bottom:6px">Dismiss 3 items</div><div style="font-size:13px;color:var(--text-muted);margin-bottom:16px">They leave the inbox and stay searchable.</div><div style="display:flex;gap:8px;justify-content:flex-end"><button class="btn ghost">Cancel</button><button class="btn primary">Dismiss</button></div></div></div></div>
+<div class="fr2"><div class="fh">light</div><div class="ui light stagebox"><div class="card" style="height:100%"><div style="font-weight:600;margin-bottom:10px">Inbox</div><div class="row">Export fails silently on files over 50 MB</div><div class="row">SSO login loops back to the sign-in page</div></div><div class="scrim"></div><div class="abs float modal" style="top:50%;left:50%;transform:translate(-50%,-50%)"><div style="font-weight:650;font-size:16px;margin-bottom:6px">Dismiss 3 items</div><div style="font-size:13px;color:var(--text-muted);margin-bottom:16px">They leave the inbox and stay searchable.</div><div style="display:flex;gap:8px;justify-content:flex-end"><button class="btn ghost">Cancel</button><button class="btn primary">Dismiss</button></div></div></div></div>
+</div>
+<h3 style="margin-top:34px;font-size:13px;color:var(--dim);letter-spacing:0;text-transform:none">Menu inside a modal <span>the hard one — tone is already spent, the boundary carries it</span></h3><div class="two">
+<div class="fr2"><div class="fh">dark</div><div class="ui dark stagebox"><div class="card" style="height:100%"><div style="font-weight:600">Inbox</div></div><div class="scrim"></div><div class="abs float modal" style="top:34px;left:50%;transform:translateX(-50%)"><div style="font-weight:650;font-size:16px;margin-bottom:14px">Dismiss 3 items</div><div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:6px">Reason</div><div class="field">Duplicate</div></div><div class="abs float menu" style="top:132px;left:50%;transform:translateX(-50%);width:262px"><div class="mi on">Duplicate</div><div class="mi">Won't fix</div><div class="mi">Not a bug</div><div class="mi">Out of scope</div></div></div></div>
+<div class="fr2"><div class="fh">light</div><div class="ui light stagebox"><div class="card" style="height:100%"><div style="font-weight:600">Inbox</div></div><div class="scrim"></div><div class="abs float modal" style="top:34px;left:50%;transform:translateX(-50%)"><div style="font-weight:650;font-size:16px;margin-bottom:14px">Dismiss 3 items</div><div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:6px">Reason</div><div class="field">Duplicate</div></div><div class="abs float menu" style="top:132px;left:50%;transform:translateX(-50%);width:262px"><div class="mi on">Duplicate</div><div class="mi">Won't fix</div><div class="mi">Not a bug</div><div class="mi">Out of scope</div></div></div></div>
+</div>
+<h3>Radius <span>five steps</span></h3>
+<div class="radrow"><span class="k">--rad-xs</span><span class="sq" style="border-radius:6px;background:#978cff"></span><span class="num" style="font-family:ui-monospace,Menlo,monospace;font-size:12px;color:var(--dim);width:56px">6px</span><span style="color:var(--dim);font-size:12.5px">checkbox, keyboard hint, badge on an icon</span></div>
+<div class="radrow"><span class="k">--rad-sm</span><span class="sq" style="border-radius:8px;background:#978cff"></span><span class="num" style="font-family:ui-monospace,Menlo,monospace;font-size:12px;color:var(--dim);width:56px">8px</span><span style="color:var(--dim);font-size:12.5px">chip, status pill on a square corner, small control</span></div>
+<div class="radrow"><span class="k">--rad-md</span><span class="sq" style="border-radius:10px;background:#978cff"></span><span class="num" style="font-family:ui-monospace,Menlo,monospace;font-size:12px;color:var(--dim);width:56px">10px</span><span style="color:var(--dim);font-size:12.5px">button, input, select, menu item, tab</span></div>
+<div class="radrow"><span class="k">--rad-lg</span><span class="sq" style="border-radius:14px;background:#978cff"></span><span class="num" style="font-family:ui-monospace,Menlo,monospace;font-size:12px;color:var(--dim);width:56px">14px</span><span style="color:var(--dim);font-size:12.5px">card, table container, modal, menu panel</span></div>
+<div class="radrow"><span class="k">--rad-full</span><span class="sq" style="border-radius:999px;background:#978cff"></span><span class="num" style="font-family:ui-monospace,Menlo,monospace;font-size:12px;color:var(--dim);width:56px">999px</span><span style="color:var(--dim);font-size:12.5px">pill, avatar, switch, vote count</span></div>
+<div class="note"><b>Borders have one weight: 1px.</b> There is no 2px border anywhere in the system. Selection is a fill (<code>accent-muted</code>), not a thicker outline; the focus ring is an <code>outline</code>, not a border. Two roles, one weight: <code>border</code> is a decorative divider with no contrast requirement, and <code>border-field</code> / <code>border-float</code> are findable boundaries held to 3:1.</div>
+<h3>The focus ring <span>2px <code>outline</code>, 2px offset, always the accent — on every surface a focusable thing can sit on</span></h3>
+<div style="font:11px/1 ui-monospace,Menlo,monospace;color:var(--dim2);letter-spacing:.11em;text-transform:uppercase;margin:16px 0 8px">dark</div>
+<div class="ui dark surfstrip">
+<div class="surfcell" style="background:#101117"><span class="lab" style="color:#b9bdcb">bg</span><button class="btn primary fr">Save</button><span class="field fr" style="font-size:12px">Search</span><span class="cb fr">✓</span></div>
+<div class="surfcell" style="background:#080a0d"><span class="lab" style="color:#b9bdcb">bg-sunken</span><button class="btn primary fr">Save</button><span class="field fr" style="font-size:12px">Search</span><span class="cb fr">✓</span></div>
+<div class="surfcell" style="background:#191b23"><span class="lab" style="color:#b9bdcb">surface</span><button class="btn primary fr">Save</button><span class="field fr" style="font-size:12px">Search</span><span class="cb fr">✓</span></div>
+<div class="surfcell" style="background:#242731"><span class="lab" style="color:#b9bdcb">surface-hover</span><button class="btn primary fr">Save</button><span class="field fr" style="font-size:12px">Search</span><span class="cb fr">✓</span></div>
+<div class="surfcell" style="background:#2c303b"><span class="lab" style="color:#b9bdcb">surface-raised</span><button class="btn primary fr">Save</button><span class="field fr" style="font-size:12px">Search</span><span class="cb fr">✓</span></div>
+<div class="surfcell" style="background:#1c0252"><span class="lab" style="color:#b9bdcb">accent-muted</span><button class="btn primary fr">Save</button><span class="field fr" style="font-size:12px">Search</span><span class="cb fr">✓</span></div>
+</div>
+<div style="font:11px/1 ui-monospace,Menlo,monospace;color:var(--dim2);letter-spacing:.11em;text-transform:uppercase;margin:16px 0 8px">light</div>
+<div class="ui light surfstrip">
+<div class="surfcell" style="background:#f0f2f7"><span class="lab" style="color:#2c303b">bg</span><button class="btn primary fr">Save</button><span class="field fr" style="font-size:12px">Search</span><span class="cb fr">✓</span></div>
+<div class="surfcell" style="background:#dbdee7"><span class="lab" style="color:#2c303b">bg-sunken</span><button class="btn primary fr">Save</button><span class="field fr" style="font-size:12px">Search</span><span class="cb fr">✓</span></div>
+<div class="surfcell" style="background:#f9fafd"><span class="lab" style="color:#2c303b">surface</span><button class="btn primary fr">Save</button><span class="field fr" style="font-size:12px">Search</span><span class="cb fr">✓</span></div>
+<div class="surfcell" style="background:#f0f2f7"><span class="lab" style="color:#2c303b">surface-hover</span><button class="btn primary fr">Save</button><span class="field fr" style="font-size:12px">Search</span><span class="cb fr">✓</span></div>
+<div class="surfcell" style="background:#ffffff"><span class="lab" style="color:#2c303b">surface-raised</span><button class="btn primary fr">Save</button><span class="field fr" style="font-size:12px">Search</span><span class="cb fr">✓</span></div>
+<div class="surfcell" style="background:#f0f0ff"><span class="lab" style="color:#2c303b">accent-muted</span><button class="btn primary fr">Save</button><span class="field fr" style="font-size:12px">Search</span><span class="cb fr">✓</span></div>
+</div>
+<table class="tbl" style="margin-top:20px"><thead><tr><th>Focus ring against</th><th class="num">dark</th><th class="num">light</th><th>Floor</th><th>Result</th></tr></thead><tbody>
+<tr><td><b>bg</b></td><td class="num">6.74:1</td><td class="num">7.28:1</td><td class="num">3.0</td><td class="pass">pass</td></tr>
+<tr><td><b>bg-sunken</b></td><td class="num">7.09:1</td><td class="num">6.06:1</td><td class="num">3.0</td><td class="pass">pass</td></tr>
+<tr><td><b>surface</b></td><td class="num">6.14:1</td><td class="num">7.81:1</td><td class="num">3.0</td><td class="pass">pass</td></tr>
+<tr><td><b>surface-hover</b></td><td class="num">5.33:1</td><td class="num">7.28:1</td><td class="num">3.0</td><td class="pass">pass</td></tr>
+<tr><td><b>surface-raised</b></td><td class="num">4.71:1</td><td class="num">8.15:1</td><td class="num">3.0</td><td class="pass">pass</td></tr>
+<tr><td><b>accent-muted</b></td><td class="num">6.37:1</td><td class="num">7.22:1</td><td class="num">3.0</td><td class="pass">pass</td></tr>
+</tbody></table>
+<div class="note"><b>Why an outline and not a box-shadow ring.</b> The 2px offset reveals the surface behind the element, which is what separates the ring from a filled control — a violet ring drawn tight against a violet button would vanish. Using <code>outline</code> also keeps the no-shadow rule literal rather than technically-honoured-via-<code>box-shadow</code>. And it is <code>:focus-visible</code>, never <code>:focus</code> — the distinction Bindery and App D both got right, and the reason keyboard focus styling survives contact with mouse users.</div>
+<footer><b>design-system/explorations/03d-shape-elevation.html</b> — Phase 3d. Radii, border weights, the shadow-free elevation model and the focus ring.</footer></div>

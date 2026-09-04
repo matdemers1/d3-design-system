@@ -1,0 +1,14 @@
+/* GENERATED — Tailwind v4 motion theme. Phase 3e. */
+@import "./motion.css";
+
+@theme inline {
+  --ease-out: var(--ease-out);
+  --ease-in: var(--ease-in);
+  --ease-spring: var(--ease-spring);
+  --ease-linear: var(--ease-linear);
+  --duration-1: var(--dur-1);
+  --duration-2: var(--dur-2);
+  --duration-3: var(--dur-3);
+  --duration-4: var(--dur-4);
+  --duration-5: var(--dur-5);
+}

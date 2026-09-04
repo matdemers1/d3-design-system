@@ -1,0 +1,36 @@
+.d3-bdg {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-6);
+  border-radius: var(--radius-full);
+  font-weight: var(--weight-semibold);
+  white-space: nowrap;
+  margin: 0;
+}
+.d3-bdg--sm { height: 20px; padding: 0 var(--space-8);  font-size: var(--text-11); }
+.d3-bdg--md { height: 24px; padding: 0 var(--space-12); font-size: var(--text-12); }
+
+/* Three tones, and there is no `color` prop. D-016: a status earns a hue only
+   if seeing it should change what you do next. App A ships seven statuses,
+   already past what colour can distinguish, and App C proved the
+   failure mode by growing five badge families. */
+.d3-bdg--neutral   { background: var(--color-surface-raised); color: var(--color-text-muted); }
+.d3-bdg--attention { background: var(--color-accent-muted);   color: var(--color-accent); }
+.d3-bdg--danger    { background: var(--color-surface-raised); color: var(--color-danger); }
+
+.d3-bdg--count {
+  background: var(--color-accent);
+  color: var(--color-accent-contrast);
+  font-variant-numeric: tabular-nums;
+  min-width: 22px;
+  justify-content: center;
+  padding: 0 var(--space-8);
+}
+.d3-bdg--count-quiet {
+  background: var(--color-surface-raised);
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+  min-width: 22px;
+  justify-content: center;
+  padding: 0 var(--space-8);
+}

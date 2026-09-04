@@ -1,0 +1,68 @@
+/* The spinner is a graph, not a wheel — see Spinner.tsx for why.
+   Two animations at a 2:1 period so they never beat against each other:
+   the substrate settles over 2400ms, the signal relays over 1200ms. */
+
+.d3-spn { display: inline-block; flex: none; line-height: 0; }
+.d3-spn > svg { display: block; width: 100%; height: 100%; overflow: visible; }
+
+.d3-spn--sm { width: 14px; height: 14px; }
+.d3-spn--md { width: 16px; height: 16px; }
+.d3-spn--lg { width: 20px; height: 20px; }
+.d3-spn--xl { width: 24px; height: 24px; }
+
+.d3-spn__edge {
+  stroke: var(--color-accent);
+  fill: none;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  /* Structure, not signal: the edges stay dim so that lighting one is a 3.3x
+     step and reads as movement. The *shape* is carried by the nodes. */
+  opacity: 0.35;
+  animation: d3-spin-hop 1200ms var(--ease-linear) infinite;
+}
+.d3-spn__node {
+  fill: var(--color-accent);
+  r: 2.5;
+  /* The nodes are the part that must always be visible. A spinner is a status
+     indicator, so its resting form is held to the same 3:1 the system asks of
+     any control boundary: 0.75 measures 4.03:1 on surface, 3.32:1 on raised and
+     4.39:1 in light. At the 0.16 this shipped with for an afternoon it was
+     1.29:1 — present in the DOM and invisible on the screen. */
+  opacity: 0.75;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: d3-spin-wake 1200ms var(--ease-linear) infinite;
+}
+/* A third of the cycle apart, so the signal arrives at each node in turn. */
+.d3-spn__edge--2, .d3-spn__node--2 { animation-delay: -400ms; }
+.d3-spn__edge--3, .d3-spn__node--3 { animation-delay: -800ms; }
+
+.d3-spn__g {
+  transform-origin: 12px 12px;
+  animation: d3-spin-settle 2400ms var(--ease-spring) infinite;
+}
+
+/* Sits inside a filled accent button, where the accent itself would vanish. */
+.d3-spn--on-accent .d3-spn__edge { stroke: var(--color-accent-contrast); }
+.d3-spn--on-accent .d3-spn__node { fill: var(--color-accent-contrast); }
+
+@keyframes d3-spin-hop  { 0%, 58%, 100% { opacity: 0.35; } 16% { opacity: 1; } }
+/* 0.75 to 1 is too small a step to see on its own, so arrival is mostly the
+   size change; the opacity just stops it looking like a wobble. */
+@keyframes d3-spin-wake {
+  0%, 54%, 100% { opacity: 0.75; transform: scale(1); }
+  10%           { opacity: 1;    transform: scale(1.3); }
+}
+@keyframes d3-spin-settle {
+  0%, 100% { transform: rotate(0deg)   scale(1); }
+  50%      { transform: rotate(120deg) scale(0.66); }
+}
+
+/* A frozen spinner reads as a hung request, so it slows rather than stopping
+   (D-024). The 2:1 ratio is preserved, or the two would start beating. */
+@media (prefers-reduced-motion: reduce) {
+  .d3-spn__edge, .d3-spn__node { animation-duration: 2600ms; }
+  .d3-spn__edge--2, .d3-spn__node--2 { animation-delay: -866ms; }
+  .d3-spn__edge--3, .d3-spn__node--3 { animation-delay: -1733ms; }
+  .d3-spn__g { animation-duration: 5200ms; }
+}

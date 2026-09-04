@@ -1,0 +1,25 @@
+/* GENERATED — Tailwind v4 type theme. Phase 3b. */
+@import "./type.css";
+
+@theme inline {
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+  --text-11: var(--text-11);
+  --text-11--line-height: var(--leading-11);
+  --text-12: var(--text-12);
+  --text-12--line-height: var(--leading-12);
+  --text-13: var(--text-13);
+  --text-13--line-height: var(--leading-13);
+  --text-14: var(--text-14);
+  --text-14--line-height: var(--leading-14);
+  --text-16: var(--text-16);
+  --text-16--line-height: var(--leading-16);
+  --text-20: var(--text-20);
+  --text-20--line-height: var(--leading-20);
+  --text-24: var(--text-24);
+  --text-24--line-height: var(--leading-24);
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-title: 650;
+}

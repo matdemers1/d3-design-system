@@ -1,0 +1,20 @@
+/* GENERATED — Tailwind v4 shape theme. Phase 3d. */
+@import "./shape.css";
+
+@theme inline {
+  --radius-xs: var(--radius-xs);
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-full: var(--radius-full);
+
+  /* No --shadow-* keys: the system has no shadows. Tailwind's default
+     shadow utilities are switched off so shadow-md cannot be reached for. */
+  --shadow-2xs: initial;
+  --shadow-xs: initial;
+  --shadow-sm: initial;
+  --shadow-md: initial;
+  --shadow-lg: initial;
+  --shadow-xl: initial;
+  --shadow-2xl: initial;
+}

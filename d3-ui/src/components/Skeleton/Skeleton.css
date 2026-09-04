@@ -1,0 +1,20 @@
+@keyframes d3-shimmer {
+  0%   { opacity: 0.55; }
+  50%  { opacity: 1; }
+  100% { opacity: 0.55; }
+}
+.d3-skl {
+  background: var(--color-surface-raised);
+  border-radius: var(--radius-sm);
+  /* One slow shimmer and nothing more (D-024) — a loading state that draws
+     attention to itself competes with the content it stands in for. */
+  animation: d3-shimmer 1800ms var(--ease-out) infinite;
+  flex: none;
+}
+.d3-skl--text   { height: 12px; border-radius: 4px; }
+.d3-skl--circle { border-radius: 50%; }
+.d3-skl__lines  { display: flex; flex-direction: column; gap: var(--space-8); }
+
+@media (prefers-reduced-motion: reduce) {
+  .d3-skl { animation: none; opacity: 0.8; }
+}

@@ -1,0 +1,197 @@
+{
+  "$description": "Semantic aliases (dark). This is the only layer components may use.",
+  "color": {
+    "bg-sunken": {
+      "$type": "color",
+      "$value": "{color.neutral.975}",
+      "$description": "sidebar / inset ground",
+      "$extensions": {
+        "d3.resolved": "#080a0d"
+      }
+    },
+    "bg": {
+      "$type": "color",
+      "$value": "{color.neutral.950}",
+      "$description": "page ground",
+      "$extensions": {
+        "d3.resolved": "#101117"
+      }
+    },
+    "surface": {
+      "$type": "color",
+      "$value": "{color.neutral.900}",
+      "$description": "card, table, field fill",
+      "$extensions": {
+        "d3.resolved": "#191b23"
+      }
+    },
+    "surface-raised": {
+      "$type": "color",
+      "$value": "{color.neutral.700}",
+      "$description": "modal, menu, chip \u2014 one tonal step nearer",
+      "$extensions": {
+        "d3.resolved": "#2c303b"
+      }
+    },
+    "surface-hover": {
+      "$type": "color",
+      "$value": "{color.neutral.800}",
+      "$description": "row and item hover",
+      "$extensions": {
+        "d3.resolved": "#242731"
+      }
+    },
+    "border": {
+      "$type": "color",
+      "$value": "{color.neutral.700}",
+      "$description": "divider \u2014 decorative separation only",
+      "$extensions": {
+        "d3.resolved": "#2c303b"
+      }
+    },
+    "border-field": {
+      "$type": "color",
+      "$value": "{color.neutral.500}",
+      "$description": "form-control boundary \u2014 3:1, WCAG 1.4.11",
+      "$extensions": {
+        "d3.resolved": "#747888"
+      }
+    },
+    "border-float": {
+      "$type": "color",
+      "$value": "{color.neutral.500}",
+      "$description": "edge of a floating layer \u2014 3:1, the thing that replaces a shadow",
+      "$extensions": {
+        "d3.resolved": "#747888"
+      }
+    },
+    "text": {
+      "$type": "color",
+      "$value": "{color.neutral.100}",
+      "$description": "body",
+      "$extensions": {
+        "d3.resolved": "#f0f2f7"
+      }
+    },
+    "text-muted": {
+      "$type": "color",
+      "$value": "{color.neutral.300}",
+      "$description": "secondary",
+      "$extensions": {
+        "d3.resolved": "#b9bdcb"
+      }
+    },
+    "text-faint": {
+      "$type": "color",
+      "$value": "{color.neutral.400}",
+      "$description": "tertiary, labels, metadata",
+      "$extensions": {
+        "d3.resolved": "#999ead"
+      }
+    },
+    "accent": {
+      "$type": "color",
+      "$value": "{color.violet.400}",
+      "$description": "the one accent \u2014 action, selection, links",
+      "$extensions": {
+        "d3.resolved": "#978cff"
+      }
+    },
+    "accent-hover": {
+      "$type": "color",
+      "$value": "{color.violet.300}",
+      "$description": "accent, hovered",
+      "$extensions": {
+        "d3.resolved": "#b8b4ff"
+      }
+    },
+    "accent-contrast": {
+      "$type": "color",
+      "$value": "{color.violet.975}",
+      "$description": "label on an accent fill",
+      "$extensions": {
+        "d3.resolved": "#0a0225"
+      }
+    },
+    "accent-muted": {
+      "$type": "color",
+      "$value": "{color.violet.900}",
+      "$description": "accent tint \u2014 selection, active nav, bulk bar",
+      "$extensions": {
+        "d3.resolved": "#1c0252"
+      }
+    },
+    "success": {
+      "$type": "color",
+      "$value": "{color.green.300}",
+      "$description": "confirmation messaging",
+      "$extensions": {
+        "d3.resolved": "#70d6a1"
+      }
+    },
+    "danger-muted": {
+      "$type": "color",
+      "$value": "{color.red.900}",
+      "$description": "tinted ground for a destructive region",
+      "$extensions": {
+        "d3.resolved": "#3c0006"
+      }
+    },
+    "warning-muted": {
+      "$type": "color",
+      "$value": "{color.amber.900}",
+      "$description": "tinted ground for a caution region",
+      "$extensions": {
+        "d3.resolved": "#271900"
+      }
+    },
+    "success-muted": {
+      "$type": "color",
+      "$value": "{color.green.900}",
+      "$description": "tinted ground for a confirmation region",
+      "$extensions": {
+        "d3.resolved": "#002312"
+      }
+    },
+    "info-muted": {
+      "$type": "color",
+      "$value": "{color.blue.900}",
+      "$description": "tinted ground for an informational region",
+      "$extensions": {
+        "d3.resolved": "#001d37"
+      }
+    },
+    "warning": {
+      "$type": "color",
+      "$value": "{color.amber.300}",
+      "$description": "caution messaging",
+      "$extensions": {
+        "d3.resolved": "#e7b45d"
+      }
+    },
+    "danger": {
+      "$type": "color",
+      "$value": "{color.red.400}",
+      "$description": "destructive and critical",
+      "$extensions": {
+        "d3.resolved": "#fc6568"
+      }
+    },
+    "info": {
+      "$type": "color",
+      "$value": "{color.blue.300}",
+      "$description": "neutral informational messaging",
+      "$extensions": {
+        "d3.resolved": "#87c3ff"
+      }
+    },
+    "focus": {
+      "$type": "color",
+      "$value": "{color.violet.400}",
+      "$description": "focus ring \u2014 always the accent",
+      "$extensions": {
+        "d3.resolved": "#978cff"
+      }
+    }
+  }
+}

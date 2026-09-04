@@ -1,0 +1,53 @@
+.d3-modal__scrim {
+  position: fixed;
+  inset: 0;
+  background: var(--scrim);
+  z-index: 40;
+  animation: d3-scrim-in var(--dur-3) var(--ease-out) backwards;
+}
+@keyframes d3-scrim-in { from { opacity: 0; } }
+
+.d3-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 50;
+  /* Floating layer: surface-raised plus a 3:1 boundary, and no shadow (D-023). */
+  background: var(--color-surface-raised);
+  border: var(--border-width) solid var(--color-border-float);
+  border-radius: var(--radius-lg);
+  box-shadow: none;
+  padding: var(--space-20);
+  width: min(380px, calc(100vw - var(--space-32)));
+  max-height: calc(100vh - var(--space-48));
+  overflow-y: auto;
+  /* Expressive tier — rises and settles with overshoot (D-024). */
+  animation: d3-modal-in var(--motion-modal-enter) backwards;
+}
+@keyframes d3-modal-in {
+  from { opacity: 0; transform: translate(-50%, -38%) scale(0.94); }
+}
+/* Leaving is quicker than arriving and has no overshoot — everything entering
+   decelerates into place, everything leaving accelerates away (D-024). */
+@keyframes d3-modal-out {
+  to { opacity: 0; transform: translate(-50%, -44%) scale(0.97); }
+}
+@keyframes d3-scrim-out { to { opacity: 0; } }
+.d3-modal[data-state='closed'] { animation: d3-modal-out var(--motion-modal-exit) forwards; }
+.d3-modal__scrim[data-state='closed'] { animation: d3-scrim-out var(--motion-modal-exit) forwards; }
+.d3-modal--sm { width: min(300px, calc(100vw - var(--space-32))); }
+.d3-modal--lg { width: min(560px, calc(100vw - var(--space-32))); }
+
+@media (prefers-reduced-motion: reduce) {
+  .d3-modal, .d3-modal__scrim { animation-duration: 0.01ms; }
+}
+
+.d3-modal__head { display: flex; align-items: flex-start; gap: var(--space-8);
+  margin-bottom: var(--space-6); }
+.d3-modal__title { font-size: var(--text-16); font-weight: var(--weight-semibold);
+  letter-spacing: -0.015em; margin: 0; flex: 1; }
+.d3-modal__desc { font-size: var(--text-13); color: var(--color-text-muted);
+  margin: 0 0 var(--space-16); line-height: var(--leading-13); }
+.d3-modal__footer { display: flex; justify-content: flex-end; gap: var(--space-8);
+  margin-top: var(--space-16); }

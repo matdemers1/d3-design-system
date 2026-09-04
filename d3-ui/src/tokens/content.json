@@ -1,0 +1,76 @@
+{
+  "$description": "Voice and content rules. Not visual tokens \u2014 these govern strings, and they are here so a linter and a reviewer can both cite them.",
+  "casing": {
+    "rule": "Sentence case for everything a person reads: buttons, form labels, headings, navigation, dialog titles, menu items, empty states, tooltips.",
+    "capitals": "First letter and proper nouns only (GitHub, Claude, Bindery, Acme Corp).",
+    "exception": "The 11px uppercase micro-label is a CSS text-transform treatment, not a casing rule. The source string stays sentence case so it stays translatable. Never type an uppercase string."
+  },
+  "date": {
+    "relative": "Up to 7 days: just now \u00b7 14 minutes ago \u00b7 2 hours ago \u00b7 yesterday.",
+    "absolute": "After 7 days: 12 Aug (this year) \u00b7 12 Aug 2025 (other years).",
+    "full": "12 Aug 2026, 14:32 \u2014 used in detail views and in the title attribute of every relative time.",
+    "options": "{ day: 'numeric', month: 'short', year: 'numeric' }",
+    "rule": "The month is always a word. Pin the options and let the locale choose the order. Never call toLocaleDateString() bare; never hard-code a locale.",
+    "audit": "31 bare toLocale*() calls across the four apps; exactly one passes options."
+  },
+  "number": {
+    "count": "toLocaleString() grouping, tabular figures \u2014 1,204",
+    "bytes": "base-1024 maths with KB/MB/GB labels; 1 decimal below 10, 0 above \u2014 8.0 MB, 54.8 MB, 311 KB",
+    "durationMs": "under 1s show ms \u2014 184 ms, never 0.18 s",
+    "durationS": "under 60s show one decimal \u2014 2.4 s; over a minute use m:ss \u2014 3:07",
+    "percent": "no decimals unless under 1% \u2014 78%, 0.4%",
+    "currency": "no rule yet \u2014 none of the four apps handles money. When one does: Intl.NumberFormat with the currency code shown for anything that is not the user's own.",
+    "audit": "23 references to 1024 and four different toFixed precisions (0, 1, 2, 4) across the apps."
+  },
+  "error": {
+    "structure": [
+      "what happened",
+      "why, if we know",
+      "what to do next \u2014 as a control, not a sentence"
+    ],
+    "never": [
+      "an internal identifier: parameter name, class name, key type",
+      "blaming the user \u2014 describe the state instead",
+      "a dead end with no next action where one exists"
+    ]
+  },
+  "emptyState": {
+    "structure": [
+      "a heading naming what is absent",
+      "one line of context",
+      "an action, if one genuinely exists"
+    ],
+    "never": "\"No items\" \u2014 that is a status code, not an empty state.",
+    "distinguish": "nothing exists yet vs nothing matched the filter \u2014 different situations, different next steps. The four apps currently render both as \"No items\"."
+  },
+  "button": {
+    "rule": "Verb first; object when it is not obvious from context.",
+    "destructive": "Name the object and the count \u2014 \"Dismiss 3 items\", never \"Confirm\". The count is the last chance to notice the wrong rows are selected.",
+    "cancel": "Always \"Cancel\". Never \"Nevermind\", \"Go back\", \"Close\".",
+    "never": [
+      "OK",
+      "Yes / No on a destructive dialog",
+      "Submit",
+      "a bare \"Save\" where the object is unclear"
+    ]
+  },
+  "forbidden": {
+    "Oops / Whoops / Uh oh": "Something failed and the interface is being cute about it.",
+    "Simply, just, easy": "If it were simple the user would not be reading an instruction.",
+    "Please (in errors and labels)": "Politeness padding reads as delay.",
+    "Are you sure?": "Almost always. Say what will happen instead.",
+    "Invalid": "A judgement, not a description. Say what was expected.",
+    "Error occurred": "Every error occurred. Say which one.",
+    "Loading\u2026 as a lone state": "Use a skeleton of the thing being loaded."
+  },
+  "$extensions": {
+    "d3.implementation": "The date, byte, duration and percentage formatters are a single shared module. Signatures are fixed here; the implementation lands in Phase 5 with the components, per the no-production-code-before-Phase-5 rule.",
+    "d3.formatters": [
+      "formatDate(d: Date, style: \"relative\" | \"short\" | \"full\"): string",
+      "formatBytes(n: number): string",
+      "formatDuration(ms: number): string",
+      "formatCount(n: number): string",
+      "formatPercent(n: number): string"
+    ]
+  }
+}

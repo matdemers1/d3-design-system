@@ -1,0 +1,45 @@
+/* Hand-maintained against tokens/layout.json, and checked against it by
+   `scripts/check-tokens.mjs` — every value here must exist in the JSON, and
+   every emitted token there must appear here. The comments in this file carry
+   the reasoning behind the numbers, which is why it is written rather than
+   generated: no generator can reproduce them, and they are most of its value.
+
+   Phase 3c. */
+
+:root {
+  --space-2: 2px;
+  --space-4: 4px;
+  --space-6: 6px;
+  --space-8: 8px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-20: 20px;
+  --space-24: 24px;
+  --space-32: 32px;
+  --space-40: 40px;
+  --space-48: 48px;
+  --space-64: 64px;
+
+  --container-form: 480px;
+  --container-prose: 65ch;
+  --container-narrow: 672px;
+  --container-wide: 1280px;
+
+  --sidebar-width: 240px;
+  --sidebar-collapsed: 64px;
+  --row-height: 48px;
+  --cell-pad-y: 12px;
+  --cell-pad-x: 16px;
+  --card-pad: 20px;
+  --page-pad: 24px;
+  --grid-gutter: 24px;
+}
+
+@media (min-width: 1024px) { :root { --page-pad: 32px; } }
+
+/* Breakpoints are consumed as media queries, not custom properties — a custom
+   property cannot be used in a media condition. Four, not six: the four apps
+   reference xl once and 2xl never, and a breakpoint nobody uses is a state
+   somebody still has to test.
+     sm 640px · md 768px · lg 1024px · xl 1280px
+   lg is the shell breakpoint: below it the sidebar is an off-canvas drawer. */

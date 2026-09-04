@@ -1,0 +1,73 @@
+.d3-tabs__list {
+  position: relative;
+  display: inline-flex;
+  gap: 2px;
+  background: var(--color-surface-raised);
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  max-width: 100%;
+  /* Tabs scroll when they overflow. They never wrap to a second row (row
+     position stops meaning anything) and never collapse into a Select (which
+     hides where you are). */
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+/* The pill travels between tabs — Expressive tier, 280ms spring (D-024).
+   Position is written by the component as custom properties, so the transition
+   is pure CSS and honours prefers-reduced-motion via the global rule. */
+.d3-tabs__glide {
+  position: absolute;
+  top: var(--space-4);
+  bottom: var(--space-4);
+  left: 0;
+  width: 0;
+  border-radius: calc(var(--radius-md) - 4px);
+  background: var(--color-accent-muted);
+  transform: translateX(var(--d3-glide-x, 0px));
+  width: var(--d3-glide-w, 0px);
+  transition: transform var(--motion-tab-glide), width var(--motion-tab-glide);
+  pointer-events: none;
+  z-index: 0;
+}
+/* On first paint the pill must appear where it belongs, not slide in from the
+   left edge. */
+.d3-tabs__glide[data-init='true'] { transition: none; }
+
+.d3-tabs__tab {
+  position: relative;
+  z-index: 1;
+  /* inline-flex so an icon and its label sit on one baseline with a real gap,
+     the same way a segment does. */
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-6);
+  padding: var(--space-6) var(--space-12);
+  border-radius: calc(var(--radius-md) - 4px);
+  font-size: var(--text-13);
+  font-family: inherit;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  margin: 0;
+  transition: color var(--motion-hover);
+}
+.d3-tabs__tab[data-state='active'] {
+  color: var(--color-accent);
+  font-weight: var(--weight-semibold);
+}
+.d3-tabs__tab:hover:not([data-state='active']) { color: var(--color-text); }
+.d3-tabs__tab:focus-visible {
+  outline: var(--focus-width) solid var(--color-focus);
+  outline-offset: var(--focus-offset);
+}
+.d3-tabs__count { margin-left: var(--space-6); font-size: var(--text-11);
+  opacity: 0.7; font-variant-numeric: tabular-nums; }
+.d3-tabs__panel { margin-top: var(--space-16); }
+.d3-tabs__panel:focus-visible {
+  outline: var(--focus-width) solid var(--color-focus);
+  outline-offset: var(--focus-offset);
+}
+.d3-tabs__icon { display: flex; flex: none; }

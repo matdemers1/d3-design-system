@@ -1,0 +1,65 @@
+.d3-ph {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-16);
+  flex-wrap: wrap;
+  margin: 0;
+}
+.d3-ph__lead { flex: 1; min-width: 0; }
+.d3-ph__back {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
+  font-size: var(--text-12);
+  color: var(--color-text-muted);
+  text-decoration: none;
+  margin-bottom: var(--space-6);
+  border-radius: 3px;
+}
+.d3-ph__back:hover { color: var(--color-text); }
+.d3-ph__back:focus-visible {
+  outline: var(--focus-width) solid var(--color-focus);
+  outline-offset: var(--focus-offset);
+}
+.d3-ph__title {
+  font-size: var(--text-24);
+  line-height: var(--leading-24);
+  font-weight: var(--weight-title);
+  letter-spacing: -0.022em;
+  margin: 0;
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-8);
+  flex-wrap: wrap;
+}
+/* Programmatically focused on route change. tabindex="-1" makes that possible;
+   the ring is :focus-visible only, so it does not flash on a mouse click. */
+.d3-ph__title:focus { outline: none; }
+.d3-ph__title:focus-visible {
+  outline: var(--focus-width) solid var(--color-focus);
+  outline-offset: var(--focus-offset);
+}
+.d3-ph__count {
+  font-size: var(--text-13);
+  font-weight: var(--weight-regular);
+  color: var(--color-text-faint);
+  font-variant-numeric: tabular-nums;
+}
+.d3-ph__desc {
+  font-size: var(--text-13);
+  color: var(--color-text-muted);
+  margin: var(--space-6) 0 0;
+  max-width: var(--measure-body);
+  line-height: var(--leading-13);
+}
+.d3-ph__actions { display: flex; gap: var(--space-8); align-items: center; flex: none; }
+
+/* Actions wrap; they never collapse into a menu. If there are more than two,
+   the SECONDARY ones collapse and the primary stays visible — never the other
+   way round. Hiding a page's primary action behind an overflow menu on a phone
+   is how a feature stops existing. */
+@media (max-width: 640px) {
+  .d3-ph { flex-direction: column; align-items: stretch; }
+  .d3-ph__actions { width: 100%; }
+  .d3-ph__actions > * { flex: 1; }
+}

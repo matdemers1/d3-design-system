@@ -1,0 +1,192 @@
+{
+  "$description": "Spacing and layout. 4px base. No compact density mode (D-007) \u2014 a list row, table row and message row each get their own vertical rhythm inside their component spec, not a global toggle.",
+  "space": {
+    "2": {
+      "$type": "dimension",
+      "$value": "2px",
+      "$extensions": {
+        "d3.multiple": 0.5
+      }
+    },
+    "4": {
+      "$type": "dimension",
+      "$value": "4px",
+      "$extensions": {
+        "d3.multiple": 1
+      }
+    },
+    "6": {
+      "$type": "dimension",
+      "$value": "6px",
+      "$extensions": {
+        "d3.multiple": 1.5
+      }
+    },
+    "8": {
+      "$type": "dimension",
+      "$value": "8px",
+      "$extensions": {
+        "d3.multiple": 2
+      }
+    },
+    "12": {
+      "$type": "dimension",
+      "$value": "12px",
+      "$extensions": {
+        "d3.multiple": 3
+      }
+    },
+    "16": {
+      "$type": "dimension",
+      "$value": "16px",
+      "$extensions": {
+        "d3.multiple": 4
+      }
+    },
+    "20": {
+      "$type": "dimension",
+      "$value": "20px",
+      "$extensions": {
+        "d3.multiple": 5
+      }
+    },
+    "24": {
+      "$type": "dimension",
+      "$value": "24px",
+      "$extensions": {
+        "d3.multiple": 6
+      }
+    },
+    "32": {
+      "$type": "dimension",
+      "$value": "32px",
+      "$extensions": {
+        "d3.multiple": 8
+      }
+    },
+    "40": {
+      "$type": "dimension",
+      "$value": "40px",
+      "$extensions": {
+        "d3.multiple": 10
+      }
+    },
+    "48": {
+      "$type": "dimension",
+      "$value": "48px",
+      "$extensions": {
+        "d3.multiple": 12
+      }
+    },
+    "64": {
+      "$type": "dimension",
+      "$value": "64px",
+      "$extensions": {
+        "d3.multiple": 16
+      }
+    }
+  },
+  "breakpoint": {
+    "sm": {
+      "$type": "dimension",
+      "$value": "640px",
+      "$extensions": {
+        "d3": {
+          "emit": false,
+          "why": "Tailwind owns breakpoints; they are media queries, not custom properties."
+        }
+      }
+    },
+    "md": {
+      "$type": "dimension",
+      "$value": "768px",
+      "$extensions": {
+        "d3": {
+          "emit": false,
+          "why": "Tailwind owns breakpoints; they are media queries, not custom properties."
+        }
+      }
+    },
+    "lg": {
+      "$type": "dimension",
+      "$value": "1024px",
+      "$extensions": {
+        "d3": {
+          "emit": false,
+          "why": "Tailwind owns breakpoints; they are media queries, not custom properties."
+        }
+      }
+    },
+    "xl": {
+      "$type": "dimension",
+      "$value": "1280px"
+    }
+  },
+  "container": {
+    "form": {
+      "$type": "dimension",
+      "$value": "480px"
+    },
+    "prose": {
+      "$type": "dimension",
+      "$value": "65ch"
+    },
+    "narrow": {
+      "$type": "dimension",
+      "$value": "672px"
+    },
+    "wide": {
+      "$type": "dimension",
+      "$value": "1280px"
+    }
+  },
+  "layout": {
+    "sidebar": {
+      "$type": "dimension",
+      "$value": "240px"
+    },
+    "sidebarCollapsed": {
+      "$type": "dimension",
+      "$value": "64px"
+    },
+    "rowHeight": {
+      "$type": "dimension",
+      "$value": "48px"
+    },
+    "cellPaddingY": {
+      "$type": "dimension",
+      "$value": "12px"
+    },
+    "cellPaddingX": {
+      "$type": "dimension",
+      "$value": "16px"
+    },
+    "cardPadding": {
+      "$type": "dimension",
+      "$value": "20px"
+    },
+    "pagePadding": {
+      "$type": "dimension",
+      "$value": "24px",
+      "$description": "32px at lg and above"
+    },
+    "pagePaddingLg": {
+      "$type": "dimension",
+      "$value": "32px"
+    },
+    "gridColumns": {
+      "$type": "number",
+      "$value": 12,
+      "$extensions": {
+        "d3": {
+          "emit": false,
+          "why": "A documented constant the layouts are built on, not a value any rule reads."
+        }
+      }
+    },
+    "gridGutter": {
+      "$type": "dimension",
+      "$value": "24px"
+    }
+  }
+}

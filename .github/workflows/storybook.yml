@@ -1,0 +1,64 @@
+# Builds Storybook and publishes it to GitHub Pages.
+#
+# The gates run first and the deploy is a separate job that needs them, so a
+# broken token value or a raw hex stops the publish rather than shipping a
+# Storybook that disagrees with the system it documents.
+name: Storybook
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deploy at a time, and never cancel one midway: a half-published Pages site
+# is worse than a stale one.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: d3-ui
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: d3-ui/package-lock.json
+
+      - run: npm ci
+
+      # tokens → usage → typecheck → tests → build → dist check.
+      # `check:tokens` reads ../design-system, which is why both live in one repo.
+      - name: Verify
+        run: npm run verify
+
+      - name: Build Storybook
+        run: npm run storybook:build
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: d3-ui/storybook-static
+
+  deploy:
+    # Pull requests build and verify, but only main publishes.
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@v4

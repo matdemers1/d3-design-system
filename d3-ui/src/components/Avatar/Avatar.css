@@ -1,0 +1,22 @@
+.d3-avt {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  /* A single neutral treatment in v1 — no per-user colour. Hashing an id into a
+     hue would generate ~20 unmeasured colour pairs in a system whose premise is
+     that every pair is measured. Per-user tinting is v2, with a validated tint
+     ramp or not at all (D-030). */
+  background: var(--color-surface-raised);
+  color: var(--color-text-muted);
+  font-weight: var(--weight-semibold);
+  overflow: hidden;
+  flex: none;
+  margin: 0;
+  user-select: none;
+}
+.d3-avt--xs { width: 20px; height: 20px; font-size: 9px; }
+.d3-avt--sm { width: 24px; height: 24px; font-size: 10px; }
+.d3-avt--md { width: 32px; height: 32px; font-size: var(--text-12); }
+.d3-avt--lg { width: 40px; height: 40px; font-size: var(--text-14); }
+.d3-avt__img { width: 100%; height: 100%; object-fit: cover; display: block; }

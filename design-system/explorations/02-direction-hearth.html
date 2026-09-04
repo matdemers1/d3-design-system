@@ -1,0 +1,401 @@
+<title>Hearth — Direction</title>
+<style>
+
+:root{--pg:#0e0e11;--pn:#16161b;--pn2:#1d1d24;--ln:#2c2c36;--tx:#e8e8ee;--dim:#9a9aa8;--dim2:#6e6e7e;--hot:#ff5c5c;--ok:#3ecf8e}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pg);color:var(--tx);
+font:14px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1500px;margin:0 auto;padding:0 28px 110px}
+header.top{padding:56px 0 28px;border-bottom:1px solid var(--ln)}
+.eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim2);font-weight:650;margin:0 0 12px}
+h1{font-size:46px;line-height:1.02;margin:0 0 6px;letter-spacing:-.035em;font-weight:650}
+.tagline{font-size:19px;color:var(--dim);margin:0 0 22px;letter-spacing:-.01em}
+.rationale{max-width:74ch;font-size:15px;color:#c7c7d2;line-height:1.68;margin:0}
+.rationale em{color:var(--tx);font-style:italic}
+h3{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim2);margin:56px 0 14px;font-weight:650}
+h3 span{color:var(--dim);letter-spacing:0;text-transform:none;font-weight:400;margin-left:10px;font-size:12.5px}
+.frame{border:1px solid var(--ln);border-radius:14px;overflow:hidden;position:relative;background:#000}
+.mode{display:flex;align-items:center;gap:8px;padding:9px 14px;background:var(--pn2);
+border-bottom:1px solid var(--ln);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+color:var(--dim2);font-weight:650}
+.cols2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.tok{display:grid;grid-template-columns:repeat(auto-fill,minmax(132px,1fr));gap:8px}
+.tk{border:1px solid var(--ln);border-radius:8px;overflow:hidden;background:var(--pn)}
+.tk .c{height:46px}
+.tk .m{padding:6px 8px;font:11px/1.45 ui-monospace,Menlo,monospace;color:var(--dim)}
+.tk .m b{display:block;color:var(--tx);font-weight:600;letter-spacing:-.01em}
+table.spec{width:100%;border-collapse:collapse;font-size:13px}
+table.spec th{text-align:left;font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+color:var(--dim2);padding:0 12px 9px;border-bottom:1px solid var(--ln);font-weight:650}
+table.spec td{padding:9px 12px;border-bottom:1px solid var(--pn2);color:var(--dim)}
+table.spec td b{color:var(--tx);font-weight:600}
+.mono{font-family:ui-monospace,Menlo,monospace}
+.pass{color:var(--ok);font-weight:600}
+.note{border-left:3px solid var(--dim2);background:#ffffff08;padding:13px 16px;border-radius:0 8px 8px 0;
+margin:16px 0 0;color:#c9c9d4;font-size:13.5px;line-height:1.65}
+.note b{color:#fff}
+.nav{display:flex;gap:9px;flex-wrap:wrap;margin:26px 0 0}
+.nav a{border:1px solid var(--ln);border-radius:999px;padding:7px 15px;color:var(--dim);
+text-decoration:none;font-size:13px;background:var(--pn)}
+.nav a.here{background:var(--tx);color:#111;border-color:var(--tx);font-weight:600}
+footer{margin-top:70px;padding-top:24px;border-top:1px solid var(--ln);color:var(--dim2);font-size:12.5px}
+
+
+.ds *{box-sizing:border-box}
+.ds{font-family:var(--font);font-size:var(--base);color:var(--text);background:var(--canvas);
+line-height:1.5;-webkit-font-smoothing:antialiased}
+.ds button,.ds input{font:inherit;color:inherit}
+.ds input{outline:none}
+
+/* ---------- shell ---------- */
+.ds .app{display:grid;grid-template-columns:236px 1fr;min-height:640px}
+.ds .side{background:var(--sunken);padding:18px 12px}
+.ds .brand{display:flex;align-items:center;gap:9px;padding:4px 10px 20px;font-weight:600;
+font-size:calc(var(--base) + 1px);letter-spacing:-.01em}
+.ds .brand svg{color:var(--accent)}
+.ds .navgroup{padding:16px 10px 6px;font-size:11px;font-weight:650;letter-spacing:.1em;
+text-transform:uppercase;color:var(--faint)}
+.ds .navitem{display:flex;align-items:center;padding:8px 10px;border-radius:var(--radSm);
+color:var(--muted);font-size:calc(var(--base) - 1px);margin-bottom:1px}
+.ds .navitem.on{background:var(--accentSoft);color:var(--accent);font-weight:600}
+.ds .navcount{margin-left:auto;font-size:11px;font-weight:600;background:var(--accent);
+color:var(--onAccent);border-radius:var(--radPill);padding:1px 7px}
+
+.ds .main{padding:26px 30px 40px;min-width:0}
+.ds .pagetitle{margin:0 0 16px;font-size:calc(var(--base) + 10px);font-weight:650;letter-spacing:-.02em}
+
+/* ---------- tabs (segmented, filled) ---------- */
+.ds .tabs{display:inline-flex;gap:2px;background:var(--raised);padding:3px;
+border-radius:var(--radMd);margin-bottom:18px;flex-wrap:wrap}
+.ds .tab{border:0;background:transparent;color:var(--muted);padding:6px 13px;
+border-radius:calc(var(--radMd) - 3px);font-size:calc(var(--base) - 1px);cursor:pointer}
+.ds .tab.on{background:var(--accentSoft);color:var(--accent);font-weight:600}
+
+/* ---------- search ---------- */
+.ds .searchwrap{position:relative;display:flex;align-items:center;margin-bottom:7px}
+.ds .searchwrap .si{position:absolute;left:12px;color:var(--faint);display:flex}
+.ds .searchwrap input{width:100%;background:var(--surface);border:1px solid var(--field);
+border-radius:var(--radMd);padding:10px 74px 10px 34px}
+.ds .clear{position:absolute;right:8px;border:0;background:transparent;color:var(--accent);
+font-size:calc(var(--base) - 2px);font-weight:600;padding:5px 8px;border-radius:var(--radSm);cursor:pointer}
+.ds .searchmeta{margin:0 0 16px;font-size:calc(var(--base) - 2px);color:var(--muted)}
+.ds .searchmeta b{color:var(--text);font-weight:600}
+.ds .searchmeta .dim{color:var(--faint)}
+
+/* ---------- filters ---------- */
+.ds .filters{display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.ds .select{display:inline-flex;align-items:center;gap:7px;background:var(--surface);
+border:1px solid var(--field);border-radius:var(--radMd);padding:8px 11px;
+font-size:calc(var(--base) - 1px);color:var(--text);cursor:pointer}
+.ds .select svg{color:var(--faint)}
+.ds .select.full{width:100%;justify-content:space-between;margin-bottom:20px}
+.ds .count{margin-left:auto;font-size:calc(var(--base) - 1px);color:var(--muted)}
+
+/* ---------- bulk bar ---------- */
+.ds .bulkbar{display:flex;align-items:center;gap:8px;background:var(--accentSoft);
+border-radius:var(--radMd);padding:9px 12px;margin-bottom:14px}
+.ds .bulkn{font-size:calc(var(--base) - 1px);font-weight:600;color:var(--accent);margin-right:4px}
+.ds .kbd{margin-left:auto;font:600 10.5px/1 ui-monospace,SFMono-Regular,Menlo,monospace;
+color:var(--faint);background:var(--raised);border-radius:4px;padding:4px 6px;letter-spacing:.04em}
+
+/* ---------- buttons ---------- */
+.ds .btn{border:0;border-radius:var(--radMd);padding:8px 14px;font-size:calc(var(--base) - 1px);
+font-weight:600;cursor:pointer;white-space:nowrap}
+.ds .btn.primary{background:var(--accent);color:var(--onAccent)}
+.ds .btn.primary:hover{background:var(--accentHover)}
+.ds .btn.ghost{background:var(--raised);color:var(--text);font-weight:500}
+.ds .btn.ghost:hover{background:var(--hover)}
+.ds .btn.danger{background:var(--danger);color:var(--onAccent)}
+.ds .btn.danger-ghost{background:transparent;color:var(--danger);font-weight:600}
+.ds .btn.link{background:transparent;color:var(--accent);padding-left:4px;padding-right:4px}
+.ds .btn[disabled]{opacity:.42;cursor:default}
+
+/* ---------- table ---------- */
+.ds .tablecard{background:var(--surface);border-radius:var(--radLg);overflow:hidden;
+box-shadow:var(--shadowRaised)}
+.ds .tablebare{background:transparent}
+.ds table{width:100%;border-collapse:collapse}
+.ds thead th{text-align:left;font-size:11px;font-weight:650;letter-spacing:.09em;
+text-transform:uppercase;color:var(--faint);padding:11px 16px}
+.ds .tablebare thead th{padding-left:0}
+.ds .tablebare tbody td:first-child{padding-left:0}
+.ds tbody tr{height:var(--rowH)}
+.ds tbody td{padding:var(--cellPad);vertical-align:middle}
+.ds .zebra tbody tr:nth-child(even){background:var(--surface)}
+.ds tbody tr:hover{background:var(--hover)}
+.ds tbody tr.sel{background:var(--accentSoft)}
+.ds tbody tr.focus td:first-child{box-shadow:inset 3px 0 0 var(--accent)}
+.ds th.cbcol,.ds td.cbcol{width:44px;padding-right:0}
+.ds th.tycol,.ds td.tycol{width:30px;padding-left:0;padding-right:0}
+.ds td.num,.ds th.num{text-align:right;width:74px}
+.ds .who{color:var(--muted);font-size:calc(var(--base) - 1px);white-space:nowrap}
+
+.ds .desc{display:flex;align-items:center;gap:10px;min-width:0}
+.ds .descbody{min-width:0}
+.ds .sum{font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:38ch}
+.ds .ref{font:11.5px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--faint);margin-top:1px}
+.ds .ty{display:flex;color:var(--faint)}
+.ds .pri{width:8px;height:8px;border-radius:50%;flex:none}
+.ds .pri-critical{background:var(--danger)}
+.ds .pri-high{background:var(--warning)}
+.ds .pri-medium{background:var(--muted)}
+.ds .pri-low{background:var(--faint)}
+.ds .votes{display:inline-block;min-width:26px;text-align:center;background:var(--raised);
+color:var(--muted);border-radius:var(--radPill);padding:3px 8px;font-size:calc(var(--base) - 2px);font-weight:600}
+.ds .votes.hot{background:var(--accent);color:var(--onAccent)}
+
+/* ---------- chips ---------- */
+.ds .chip{display:inline-flex;align-items:center;gap:6px;background:var(--raised);
+border-radius:var(--radPill);padding:4px 11px;font-size:calc(var(--base) - 3px);
+font-weight:600;white-space:nowrap}
+.ds .chip-neutral{color:var(--muted)}
+.ds .chip-attention{color:var(--accent);background:var(--accentSoft)}
+.ds .chip-dim{color:var(--faint)}
+.ds .chip-info{color:var(--info)}
+.ds .chip-warning{color:var(--warning)}
+.ds .chip-success{color:var(--success)}
+.ds .chip-danger{color:var(--danger)}
+.ds .chipdot{width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.8;flex:none}
+.ds .prichip{display:inline-flex;align-items:center;gap:7px;font-size:calc(var(--base) - 2px);
+color:var(--muted);background:var(--raised);border-radius:var(--radPill);padding:5px 12px}
+
+/* ---------- controls ---------- */
+.ds .cb{width:17px;height:17px;border-radius:calc(var(--radSm) - 3px);background:var(--surface);
+border:1px solid var(--field);display:inline-flex;align-items:center;justify-content:center;
+color:var(--onAccent);flex:none}
+.ds .cb.on{background:var(--accent);border-color:var(--accent)}
+.ds .cb.mixed i{width:8px;height:2px;border-radius:1px;background:var(--accent);display:block}
+.ds .switch{width:34px;height:19px;border-radius:var(--radPill);background:var(--field);
+display:inline-flex;align-items:center;padding:2px;flex:none}
+.ds .switch.on{background:var(--accent);justify-content:flex-end}
+.ds .switch i{width:15px;height:15px;border-radius:50%;background:var(--surface);display:block}
+.ds .strip input{background:var(--surface);border:1px solid var(--field);
+border-radius:var(--radMd);padding:8px 12px;min-width:190px}
+
+/* ---------- modal ---------- */
+.ds .scrim{position:absolute;inset:0;background:rgba(0,0,0,.58);border-radius:inherit}
+.ds .modal{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:min(420px,88%);
+background:var(--raised);border-radius:var(--radLg);padding:var(--cardPad);box-shadow:var(--shadowModal)}
+.ds .modal h2{margin:0 0 8px;font-size:calc(var(--base) + 3px);font-weight:650;letter-spacing:-.015em}
+.ds .modalsub{margin:0 0 20px;font-size:calc(var(--base) - 1px);color:var(--muted);line-height:1.55}
+.ds .flabel{display:block;font-size:calc(var(--base) - 2px);font-weight:600;color:var(--muted);margin-bottom:7px}
+.ds .modalacts{display:flex;justify-content:flex-end;gap:9px}
+.ds .more{display:flex;justify-content:center;margin-top:20px}
+
+/* ---------- focus ---------- */
+.ds .focusring{outline:2px solid var(--accent);outline-offset:2px}
+
+/* ---------- component strip ---------- */
+.ds .strip{padding:22px 24px;display:grid;gap:18px}
+.ds .sgroup{display:grid;gap:9px}
+.ds .slabel{font-size:11px;font-weight:650;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
+.ds .srow{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+
+.ds.dark{  --canvas: #17151a;
+  --surface: #201d24;
+  --raised: #28242e;
+  --hover: #302b37;
+  --sunken: #120f15;
+  --edge: #2f2a37;
+  --field: #756d7e;
+  --text: #ece7e4;
+  --muted: #a79fa8;
+  --faint: #928a96;
+  --accent: #6ea8fe;
+  --accentHover: #8bbaff;
+  --onAccent: #0b1729;
+  --accentSoft: #1e2a40;
+  --success: #4fc98a;
+  --warning: #e3ae5c;
+  --danger: #f4767a;
+  --info: #6ea8fe;
+  --radSm: 10px;
+  --radMd: 14px;
+  --radLg: 20px;
+  --radPill: 999px;
+  --rowH: 46px;
+  --cellPad: 12px 16px;
+  --cardPad: 22px;
+  --base: 14px;
+  --shadowRaised: 0 1px 2px rgba(0,0,0,.28), 0 8px 24px -12px rgba(0,0,0,.55);
+  --shadowModal: 0 24px 64px -20px rgba(0,0,0,.72), 0 2px 8px rgba(0,0,0,.35);
+  --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;}
+.ds.light{  --canvas: #faf7f5;
+  --surface: #ffffff;
+  --raised: #ffffff;
+  --hover: #f2eeec;
+  --sunken: #efeae7;
+  --edge: #e8e1dd;
+  --field: #968b86;
+  --text: #1f1b1e;
+  --muted: #5c545a;
+  --faint: #786e74;
+  --accent: #1f63cf;
+  --accentHover: #1a54b3;
+  --onAccent: #ffffff;
+  --accentSoft: #e7effc;
+  --success: #137a51;
+  --warning: #8a5806;
+  --danger: #c2363b;
+  --info: #1f63cf;
+  --radSm: 10px;
+  --radMd: 14px;
+  --radLg: 20px;
+  --radPill: 999px;
+  --rowH: 46px;
+  --cellPad: 12px 16px;
+  --cardPad: 22px;
+  --base: 14px;
+  --shadowRaised: 0 1px 2px rgba(0,0,0,.28), 0 8px 24px -12px rgba(0,0,0,.55);
+  --shadowModal: 0 24px 64px -20px rgba(0,0,0,.72), 0 2px 8px rgba(0,0,0,.35);
+  --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;}
+</style>
+<div class="wrap">
+<header class="top"><p class="eyebrow">Phase 2 · Direction</p>
+<h1>Hearth</h1><p class="tagline">Warm ground, cool accent. Soft light does the lifting.</p>
+<p class="rationale">Hearth is the one that keeps the company's existing blue and puts it somewhere unexpected: on a warm, brown-tinted neutral rather than the blue-grey every dark UI defaults to. That single move is what stops #3b82f6 from reading as generic — the accent stays cool and institutional while the ground stays soft. It is also the only direction that uses shadow, and it uses exactly two steps: resting and raised. Radii are the largest of the three. This is the most tactile option and the only one with brand continuity to d3cloud.io already built in.</p><div class="nav"><a class="" href="02-direction-quiet.html">Quiet</a><a class="" href="02-direction-signal.html">Signal</a><a class="here" href="02-direction-hearth.html">Hearth</a><a class="" href="02-compare.html">Compare all three</a></div></header>
+<h3>The screen <span>App A · Inbox — filter bar, data table, bulk selection, dismiss modal. Real labels and columns from InboxPage.jsx.</span></h3>
+<div class="frame"><div class="mode">Dark — primary mode</div><div class="ds dark" style="position:relative"><div class="app ">
+<aside class="side"><div class="brand"><svg viewBox="0 0 64 64" width="19" height="19" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 18 10 32l12 14"/><path d="M42 18l12 14-12 14"/><path d="M36 14 28 50"/></svg><span>App A</span></div>
+<div class="navgroup">Workspace</div>
+<div class="navitem">Dashboard</div>
+<div class="navitem on">Inbox<span class="navcount">48</span></div>
+<div class="navitem">Clusters</div>
+<div class="navgroup">Public pages</div>
+<div class="navitem">Submit feedback</div>
+<div class="navitem">Status &amp; voting</div>
+<div class="navgroup">Admin</div>
+<div class="navitem">AI</div>
+<div class="navitem">GitHub</div>
+<div class="navitem">Settings</div>
+<div class="navitem">Tenants</div>
+<div class="navitem">Users</div>
+<div class="navitem">Audit log</div>
+</aside>
+<main class="main">
+<h1 class="pagetitle">Inbox</h1>
+<div class="tabs"><button class="tab on">Inbox</button><button class="tab">In Review</button><button class="tab">Awaiting</button><button class="tab">Backlog</button><button class="tab">Dismissed</button><button class="tab">All</button></div>
+<div class="searchwrap"><span class="si"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="7.2" cy="7.2" r="4.2"/><path d="m10.4 10.4 2.6 2.6"/></svg></span><input readonly value="csv export" aria-label="Semantic search"><button class="clear">Clear</button></div>
+<p class="searchmeta">Found <b>12 items</b> for &ldquo;csv export&rdquo; in 184 ms <span class="dim">(embed 96 ms · query 88 ms)</span></p>
+<div class="filters"><button class="select">Type: All <svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6.5 8 10.5 12 6.5"/></svg></button><button class="select">Sort by: AI Priority <svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6.5 8 10.5 12 6.5"/></svg></button><span class="count">48 items</span></div>
+<div class="bulkbar"><span class="bulkn">3 selected</span><button class="btn danger-ghost">Dismiss</button><button class="btn ghost">Merge</button><button class="btn ghost">Clear</button><span class="kbd">D</span></div>
+<div class="tablecard">
+<table><thead><tr><th class="cbcol"><span class="cb mixed"><i></i></span></th><th class="tycol"></th><th>Description</th><th class="num">Votes</th><th>Submitter</th><th>Date</th><th>Status</th></tr></thead><tbody>
+<tr class="sel focus">
+<td class="cbcol"><span class="cb on"><svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5 6.3 11.8 13 5"/></svg></span></td>
+<td class="tycol"><span class="ty ty-bug"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="8" cy="9" r="3.5"/><path d="M8 5.5V4M4.5 9H3M13 9h-1.5M5.4 6.4 4.3 5.3M10.6 6.4l1.1-1.1M5.4 11.6l-1.1 1.1M10.6 11.6l1.1 1.1"/></svg></span></td>
+<td><div class="desc"><span class="pri pri-critical"></span><div class="descbody"><div class="sum">Export fails silently on files over 50 MB</div><div class="ref">FB-2841</div></div></div></td>
+<td class="num"><span class="votes hot">24</span></td>
+<td class="who">Dana Whitfield</td><td class="who">12 Aug</td>
+<td><span class="chip chip-info">New</span></td></tr>
+<tr class="sel">
+<td class="cbcol"><span class="cb on"><svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5 6.3 11.8 13 5"/></svg></span></td>
+<td class="tycol"><span class="ty ty-bug"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="8" cy="9" r="3.5"/><path d="M8 5.5V4M4.5 9H3M13 9h-1.5M5.4 6.4 4.3 5.3M10.6 6.4l1.1-1.1M5.4 11.6l-1.1 1.1M10.6 11.6l1.1 1.1"/></svg></span></td>
+<td><div class="desc"><span class="pri pri-critical"></span><div class="descbody"><div class="sum">SSO login loops back to the sign-in page</div><div class="ref">FB-2836</div></div></div></td>
+<td class="num"><span class="votes hot">18</span></td>
+<td class="who">Priya Raman</td><td class="who">12 Aug</td>
+<td><span class="chip chip-info">New</span></td></tr>
+<tr class="">
+<td class="cbcol"><span class="cb"></span></td>
+<td class="tycol"><span class="ty ty-feature"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2a4 4 0 0 0-2.4 7.2c.3.3.5.7.5 1.1v.2h3.8v-.2c0-.4.2-.8.5-1.1A4 4 0 0 0 8 2Z"/><path d="M6.6 13.2h2.8"/></svg></span></td>
+<td><div class="desc"><span class="pri pri-medium"></span><div class="descbody"><div class="sum">Add bulk tagging from the cluster view</div><div class="ref">FB-2829</div></div></div></td>
+<td class="num"><span class="votes hot">11</span></td>
+<td class="who">Marcus Bell</td><td class="who">11 Aug</td>
+<td><span class="chip chip-warning">In Review</span></td></tr>
+<tr class="sel">
+<td class="cbcol"><span class="cb on"><svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5 6.3 11.8 13 5"/></svg></span></td>
+<td class="tycol"><span class="ty ty-bug"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="8" cy="9" r="3.5"/><path d="M8 5.5V4M4.5 9H3M13 9h-1.5M5.4 6.4 4.3 5.3M10.6 6.4l1.1-1.1M5.4 11.6l-1.1 1.1M10.6 11.6l1.1 1.1"/></svg></span></td>
+<td><div class="desc"><span class="pri pri-high"></span><div class="descbody"><div class="sum">CSV export drops the last column</div><div class="ref">FB-2818</div></div></div></td>
+<td class="num"><span class="votes">9</span></td>
+<td class="who">Dana Whitfield</td><td class="who">11 Aug</td>
+<td><span class="chip chip-warning">In Review</span></td></tr>
+<tr class="">
+<td class="cbcol"><span class="cb"></span></td>
+<td class="tycol"><span class="ty ty-bug"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="8" cy="9" r="3.5"/><path d="M8 5.5V4M4.5 9H3M13 9h-1.5M5.4 6.4 4.3 5.3M10.6 6.4l1.1-1.1M5.4 11.6l-1.1 1.1M10.6 11.6l1.1 1.1"/></svg></span></td>
+<td><div class="desc"><span class="pri pri-medium"></span><div class="descbody"><div class="sum">Dark mode: status chips are unreadable</div><div class="ref">FB-2812</div></div></div></td>
+<td class="num"><span class="votes">7</span></td>
+<td class="who">Yuki Tanaka</td><td class="who">10 Aug</td>
+<td><span class="chip chip-warning">Awaiting Response</span></td></tr>
+<tr class="">
+<td class="cbcol"><span class="cb"></span></td>
+<td class="tycol"><span class="ty ty-bug"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="8" cy="9" r="3.5"/><path d="M8 5.5V4M4.5 9H3M13 9h-1.5M5.4 6.4 4.3 5.3M10.6 6.4l1.1-1.1M5.4 11.6l-1.1 1.1M10.6 11.6l1.1 1.1"/></svg></span></td>
+<td><div class="desc"><span class="pri pri-high"></span><div class="descbody"><div class="sum">Webhook retries fire twice on 5xx</div><div class="ref">FB-2807</div></div></div></td>
+<td class="num"><span class="votes">5</span></td>
+<td class="who">Sam Okafor</td><td class="who">10 Aug</td>
+<td><span class="chip chip-success">Backlog</span></td></tr>
+<tr class="">
+<td class="cbcol"><span class="cb"></span></td>
+<td class="tycol"><span class="ty ty-feature"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2a4 4 0 0 0-2.4 7.2c.3.3.5.7.5 1.1v.2h3.8v-.2c0-.4.2-.8.5-1.1A4 4 0 0 0 8 2Z"/><path d="M6.6 13.2h2.8"/></svg></span></td>
+<td><div class="desc"><span class="pri pri-low"></span><div class="descbody"><div class="sum">Let me filter the inbox by submitter</div><div class="ref">FB-2799</div></div></div></td>
+<td class="num"><span class="votes">4</span></td>
+<td class="who">Marcus Bell</td><td class="who">9 Aug</td>
+<td><span class="chip chip-success">Backlog</span></td></tr>
+<tr class="">
+<td class="cbcol"><span class="cb"></span></td>
+<td class="tycol"><span class="ty ty-general"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 8.6c0 2.3-2.5 4.2-5.5 4.2-.6 0-1.2-.1-1.7-.2L3 13.8l1.1-2.4A4.4 4.4 0 0 1 2.5 8.6C2.5 6.2 5 4.4 8 4.4s5.5 1.8 5.5 4.2Z"/></svg></span></td>
+<td><div class="desc"><span class="pri pri-low"></span><div class="descbody"><div class="sum">Docs link in the footer 404s</div><div class="ref">FB-2790</div></div></div></td>
+<td class="num"><span class="votes">2</span></td>
+<td class="who">Priya Raman</td><td class="who">9 Aug</td>
+<td><span class="chip chip-neutral">Dismissed</span></td></tr>
+</tbody></table></div>
+<div class="more"><button class="btn ghost">Load more</button></div>
+</main></div>
+<div class="scrim"></div><div class="modal" role="dialog" aria-modal="true"><h2>Dismiss 3 items</h2><p class="modalsub">They leave the inbox and stay searchable. This can be undone from the audit log.</p><label class="flabel" for="rsn">Reason</label><button class="select full" id="rsn">Duplicate <svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6.5 8 10.5 12 6.5"/></svg></button><div class="modalacts"><button class="btn ghost">Cancel</button><button class="btn danger">Dismiss 3 items</button></div></div></div></div>
+<h3>Palette <span>every pair below is measured; none ships under AA</span></h3>
+<div class="cols2">
+<div><div style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim2);font-weight:650;margin-bottom:10px">Dark</div><div class="tok"><div class="tk"><div class="c" style="background:#17151a"></div><div class="m"><b>canvas</b>#17151a<br><span style="color:var(--dim2)">page</span></div></div><div class="tk"><div class="c" style="background:#201d24"></div><div class="m"><b>surface</b>#201d24<br><span style="color:var(--dim2)">card / field fill</span></div></div><div class="tk"><div class="c" style="background:#28242e"></div><div class="m"><b>raised</b>#28242e<br><span style="color:var(--dim2)">raised / chip</span></div></div><div class="tk"><div class="c" style="background:#302b37"></div><div class="m"><b>hover</b>#302b37<br><span style="color:var(--dim2)">row hover</span></div></div><div class="tk"><div class="c" style="background:#120f15"></div><div class="m"><b>sunken</b>#120f15<br><span style="color:var(--dim2)">sidebar</span></div></div><div class="tk"><div class="c" style="background:#2f2a37"></div><div class="m"><b>edge</b>#2f2a37<br><span style="color:var(--dim2)">divider</span></div></div><div class="tk"><div class="c" style="background:#756d7e"></div><div class="m"><b>field</b>#756d7e<br><span style="color:var(--dim2)">field boundary — 3:1</span></div></div><div class="tk"><div class="c" style="background:#ece7e4"></div><div class="m"><b>text</b>#ece7e4<br><span style="color:var(--dim2)">body</span></div></div><div class="tk"><div class="c" style="background:#a79fa8"></div><div class="m"><b>muted</b>#a79fa8<br><span style="color:var(--dim2)">secondary</span></div></div><div class="tk"><div class="c" style="background:#928a96"></div><div class="m"><b>faint</b>#928a96<br><span style="color:var(--dim2)">tertiary</span></div></div><div class="tk"><div class="c" style="background:#6ea8fe"></div><div class="m"><b>accent</b>#6ea8fe<br><span style="color:var(--dim2)">accent</span></div></div><div class="tk"><div class="c" style="background:#8bbaff"></div><div class="m"><b>accentHover</b>#8bbaff<br><span style="color:var(--dim2)">accent hover</span></div></div><div class="tk"><div class="c" style="background:#0b1729"></div><div class="m"><b>onAccent</b>#0b1729<br><span style="color:var(--dim2)">on accent</span></div></div><div class="tk"><div class="c" style="background:#1e2a40"></div><div class="m"><b>accentSoft</b>#1e2a40<br><span style="color:var(--dim2)">accent tint</span></div></div><div class="tk"><div class="c" style="background:#4fc98a"></div><div class="m"><b>success</b>#4fc98a<br><span style="color:var(--dim2)">success</span></div></div><div class="tk"><div class="c" style="background:#e3ae5c"></div><div class="m"><b>warning</b>#e3ae5c<br><span style="color:var(--dim2)">warning</span></div></div><div class="tk"><div class="c" style="background:#f4767a"></div><div class="m"><b>danger</b>#f4767a<br><span style="color:var(--dim2)">danger</span></div></div><div class="tk"><div class="c" style="background:#6ea8fe"></div><div class="m"><b>info</b>#6ea8fe<br><span style="color:var(--dim2)">info</span></div></div></div></div>
+<div><div style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim2);font-weight:650;margin-bottom:10px">Light</div><div class="tok"><div class="tk"><div class="c" style="background:#faf7f5"></div><div class="m"><b>canvas</b>#faf7f5<br><span style="color:var(--dim2)">page</span></div></div><div class="tk"><div class="c" style="background:#ffffff"></div><div class="m"><b>surface</b>#ffffff<br><span style="color:var(--dim2)">card / field fill</span></div></div><div class="tk"><div class="c" style="background:#ffffff"></div><div class="m"><b>raised</b>#ffffff<br><span style="color:var(--dim2)">raised / chip</span></div></div><div class="tk"><div class="c" style="background:#f2eeec"></div><div class="m"><b>hover</b>#f2eeec<br><span style="color:var(--dim2)">row hover</span></div></div><div class="tk"><div class="c" style="background:#efeae7"></div><div class="m"><b>sunken</b>#efeae7<br><span style="color:var(--dim2)">sidebar</span></div></div><div class="tk"><div class="c" style="background:#e8e1dd"></div><div class="m"><b>edge</b>#e8e1dd<br><span style="color:var(--dim2)">divider</span></div></div><div class="tk"><div class="c" style="background:#968b86"></div><div class="m"><b>field</b>#968b86<br><span style="color:var(--dim2)">field boundary — 3:1</span></div></div><div class="tk"><div class="c" style="background:#1f1b1e"></div><div class="m"><b>text</b>#1f1b1e<br><span style="color:var(--dim2)">body</span></div></div><div class="tk"><div class="c" style="background:#5c545a"></div><div class="m"><b>muted</b>#5c545a<br><span style="color:var(--dim2)">secondary</span></div></div><div class="tk"><div class="c" style="background:#786e74"></div><div class="m"><b>faint</b>#786e74<br><span style="color:var(--dim2)">tertiary</span></div></div><div class="tk"><div class="c" style="background:#1f63cf"></div><div class="m"><b>accent</b>#1f63cf<br><span style="color:var(--dim2)">accent</span></div></div><div class="tk"><div class="c" style="background:#1a54b3"></div><div class="m"><b>accentHover</b>#1a54b3<br><span style="color:var(--dim2)">accent hover</span></div></div><div class="tk"><div class="c" style="background:#ffffff"></div><div class="m"><b>onAccent</b>#ffffff<br><span style="color:var(--dim2)">on accent</span></div></div><div class="tk"><div class="c" style="background:#e7effc"></div><div class="m"><b>accentSoft</b>#e7effc<br><span style="color:var(--dim2)">accent tint</span></div></div><div class="tk"><div class="c" style="background:#137a51"></div><div class="m"><b>success</b>#137a51<br><span style="color:var(--dim2)">success</span></div></div><div class="tk"><div class="c" style="background:#8a5806"></div><div class="m"><b>warning</b>#8a5806<br><span style="color:var(--dim2)">warning</span></div></div><div class="tk"><div class="c" style="background:#c2363b"></div><div class="m"><b>danger</b>#c2363b<br><span style="color:var(--dim2)">danger</span></div></div><div class="tk"><div class="c" style="background:#1f63cf"></div><div class="m"><b>info</b>#1f63cf<br><span style="color:var(--dim2)">info</span></div></div></div></div>
+</div>
+<table class="spec" style="margin-top:18px"><thead><tr><th>Pair (dark)</th><th>Ratio</th><th>Floor</th><th>Result</th></tr></thead><tbody>
+<tr><td><b>body on surface</b></td><td class="mono">13.56:1</td><td class="mono">4.5</td><td class="pass">pass</td></tr>
+<tr><td><b>secondary on surface</b></td><td class="mono">6.47:1</td><td class="mono">4.5</td><td class="pass">pass</td></tr>
+<tr><td><b>tertiary on surface</b></td><td class="mono">4.99:1</td><td class="mono">4.5</td><td class="pass">pass</td></tr>
+<tr><td><b>field boundary on surface</b></td><td class="mono">3.36:1</td><td class="mono">3.0</td><td class="pass">pass</td></tr>
+<tr><td><b>accent on surface</b></td><td class="mono">6.89:1</td><td class="mono">4.5</td><td class="pass">pass</td></tr>
+<tr><td><b>label on accent</b></td><td class="mono">7.44:1</td><td class="mono">4.5</td><td class="pass">pass</td></tr>
+<tr><td><b>danger on raised</b></td><td class="mono">5.59:1</td><td class="mono">4.5</td><td class="pass">pass</td></tr>
+</tbody></table>
+<h3>Type, spacing, shape, elevation</h3><div class="cols2">
+<div><table class="spec"><thead><tr><th>Size</th><th>Role</th><th>Specimen</th></tr></thead><tbody><tr><td class="mono"><b>12px</b></td><td>metadata</td><td style="font-size:12px;color:var(--tx);line-height:1.3">Requirements register</td></tr><tr><td class="mono"><b>13px</b></td><td>label</td><td style="font-size:13px;color:var(--tx);line-height:1.3">Requirements register</td></tr><tr><td class="mono"><b>14px</b></td><td>body — base</td><td style="font-size:14px;color:var(--tx);line-height:1.3">Requirements register</td></tr><tr><td class="mono"><b>16px</b></td><td>emphasis</td><td style="font-size:16px;color:var(--tx);line-height:1.3">Requirements register</td></tr><tr><td class="mono"><b>19px</b></td><td>section title</td><td style="font-size:19px;color:var(--tx);line-height:1.3">Requirements register</td></tr><tr><td class="mono"><b>23px</b></td><td>page title</td><td style="font-size:23px;color:var(--tx);line-height:1.3">Requirements register</td></tr></tbody></table></div>
+<div><table class="spec"><tbody>
+<tr><td><b>Base size</b></td><td class="mono">14px</td></tr>
+<tr><td><b>Weights</b></td><td>400 body · 500 emphasis · 600 heading and label</td></tr>
+<tr><td><b>Spacing scale</b></td><td class="mono">4 · 8 · 12 · 16 · 24 · 32 · 40 · 56</td></tr>
+<tr><td><b>Table row</b></td><td class="mono">46px · cell 12px 16px</td></tr>
+<tr><td><b>Radii</b></td><td class="mono">10px · 14px · 20px · pill</td></tr>
+<tr><td><b>Elevation</b></td><td>Soft diffuse shadow plus a small tonal lift. Two steps only: resting and raised.</td></tr>
+<tr><td><b>Status colour</b></td><td>Conventional — status carries hue</td></tr>
+</tbody></table></div>
+</div>
+<h3>Core components <span>the same strip in both modes — light is not an afterthought</span></h3>
+<div class="cols2">
+<div class="frame"><div class="mode">Dark</div><div class="ds dark"><div class="strip">
+<div class="sgroup"><span class="slabel">Buttons</span><div class="srow"><button class="btn primary">Save changes</button><button class="btn ghost">Cancel</button><button class="btn danger">Dismiss</button><button class="btn primary" disabled>Disabled</button><button class="btn link">Learn more</button></div></div>
+<div class="sgroup"><span class="slabel">Fields</span><div class="srow"><input readonly placeholder="Search feedback"><button class="select">Sort by: Newest <svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6.5 8 10.5 12 6.5"/></svg></button><span class="cb on"><svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5 6.3 11.8 13 5"/></svg></span><span class="cb"></span><span class="switch on"><i></i></span></div></div>
+<div class="sgroup"><span class="slabel">Status</span><div class="srow">
+<span class="chip chip-info">New</span>
+<span class="chip chip-warning">In Review</span>
+<span class="chip chip-success">Backlog</span>
+<span class="chip chip-neutral">Dismissed</span>
+<span class="chip chip-danger">Blocked</span>
+</div></div>
+<div class="sgroup"><span class="slabel">Priority</span><div class="srow prirow"><span class="prichip"><span class="pri pri-critical"></span>Critical</span><span class="prichip"><span class="pri pri-high"></span>High</span><span class="prichip"><span class="pri pri-medium"></span>Medium</span><span class="prichip"><span class="pri pri-low"></span>Low</span></div></div>
+<div class="sgroup"><span class="slabel">Focus ring</span><div class="srow"><button class="btn primary focusring">Focused</button><input readonly value="Focused field" class="focusring"><span class="cb on focusring"><svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5 6.3 11.8 13 5"/></svg></span></div></div>
+</div></div></div>
+<div class="frame"><div class="mode">Light</div><div class="ds light"><div class="strip">
+<div class="sgroup"><span class="slabel">Buttons</span><div class="srow"><button class="btn primary">Save changes</button><button class="btn ghost">Cancel</button><button class="btn danger">Dismiss</button><button class="btn primary" disabled>Disabled</button><button class="btn link">Learn more</button></div></div>
+<div class="sgroup"><span class="slabel">Fields</span><div class="srow"><input readonly placeholder="Search feedback"><button class="select">Sort by: Newest <svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6.5 8 10.5 12 6.5"/></svg></button><span class="cb on"><svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5 6.3 11.8 13 5"/></svg></span><span class="cb"></span><span class="switch on"><i></i></span></div></div>
+<div class="sgroup"><span class="slabel">Status</span><div class="srow">
+<span class="chip chip-info">New</span>
+<span class="chip chip-warning">In Review</span>
+<span class="chip chip-success">Backlog</span>
+<span class="chip chip-neutral">Dismissed</span>
+<span class="chip chip-danger">Blocked</span>
+</div></div>
+<div class="sgroup"><span class="slabel">Priority</span><div class="srow prirow"><span class="prichip"><span class="pri pri-critical"></span>Critical</span><span class="prichip"><span class="pri pri-high"></span>High</span><span class="prichip"><span class="pri pri-medium"></span>Medium</span><span class="prichip"><span class="pri pri-low"></span>Low</span></div></div>
+<div class="sgroup"><span class="slabel">Focus ring</span><div class="srow"><button class="btn primary focusring">Focused</button><input readonly value="Focused field" class="focusring"><span class="cb on focusring"><svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5 6.3 11.8 13 5"/></svg></span></div></div>
+</div></div></div>
+</div>
+<div class="note"><b>One rule worth naming.</b> The brief says the language is fills, not outlines — but a form control still needs a boundary a sighted user can find before focusing it (WCAG 1.4.11, 3:1). So in all three directions, <b>fields carry a 3:1 <span class="mono">field</span> border and nothing else does.</b> Cards, chips, badges, tabs and the table are pure fills. This is the same distinction Bindery arrived at independently with its <span class="mono">edge</span> / <span class="mono">field</span> split, and it is the one place the system is deliberately not flat.</div>
+<div class="note"><b>One thing these directions get wrong on purpose, for now.</b> The priority dot in the table carries its meaning by colour alone. All four steps now clear 3:1, so they are visible — but a colourblind user still cannot tell critical from high. The fix belongs in the component spec, not the palette: priority needs a shape or a label alongside the hue. Flagged for Phase 4.</div>
+<footer><b>design-system/explorations/02-direction-hearth.html</b> — Phase 2. One of three. Throwaway until a direction is locked.</footer></div>

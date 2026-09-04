@@ -1,0 +1,54 @@
+/* Hand-maintained against tokens/shape.json, and checked against it by
+   `scripts/check-tokens.mjs` — every value here must exist in the JSON, and
+   every emitted token there must appear here. The comments in this file carry
+   the reasoning behind the numbers, which is why it is written rather than
+   generated: no generator can reproduce them, and they are most of its value.
+
+   Phase 3d. */
+
+:root {
+  --radius-xs: 6px;
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-full: 999px;
+
+  --border-width: 1px;
+
+  --focus-width: 2px;
+  --focus-offset: 2px;
+
+  --scrim: rgba(0, 0, 0, 0.58);
+}
+
+/* Elevation is tone; detachment is a boundary. There is no --shadow-* token,
+   and adding one is a design change, not a tweak (D-015, D-023).
+
+   Resting surface  → a tone step, no border.
+   Floating layer   → surface-raised + 1px border-float.
+   Modal            → the above, plus a scrim.
+
+   The boundary exists because in light mode the tonal ladder terminates at
+   white: a menu over a white card has no lighter step left. Running one
+   mechanism in both modes beats running two. */
+
+.elevated,
+[data-elevation="floating"] {
+  background: var(--color-surface-raised);
+  border: var(--border-width) solid var(--color-border-float);
+  box-shadow: none;
+}
+
+/* :focus-visible, never :focus — this is what keeps keyboard focus styling
+   switched on once mouse users are in the room. outline rather than a
+   box-shadow ring, so the offset reveals the surface behind the control and a
+   violet ring stays visible on a violet button. */
+:focus-visible {
+  outline: var(--focus-width) solid var(--color-focus);
+  outline-offset: var(--focus-offset);
+}
+:focus:not(:focus-visible) { outline: none; }
+
+@media (prefers-contrast: more) {
+  :focus-visible { outline-width: 3px; }
+}

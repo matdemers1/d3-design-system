@@ -1,0 +1,556 @@
+<!doctype html>
+<html lang="en" data-theme="dark"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Spinner · candidates</title>
+<style>
+/* GENERATED from the JSON token sources — do not edit by hand. Phase 3a. */
+
+/* Primitives are exposed for reference and tooling only. Component code must
+   use the --color-* semantic names; a lint rule bans --p-* outside this file. */
+
+:root {
+  --p-neutral-50: #f9fafd;
+  --p-neutral-100: #f0f2f7;
+  --p-neutral-200: #dbdee7;
+  --p-neutral-300: #b9bdcb;
+  --p-neutral-400: #999ead;
+  --p-neutral-500: #747888;
+  --p-neutral-600: #515563;
+  --p-neutral-700: #2c303b;
+  --p-neutral-800: #242731;
+  --p-neutral-900: #191b23;
+  --p-neutral-950: #101117;
+  --p-neutral-975: #080a0d;
+  --p-violet-50: #f9f9ff;
+  --p-violet-100: #f0f0ff;
+  --p-violet-200: #dadaff;
+  --p-violet-300: #b8b4ff;
+  --p-violet-400: #978cff;
+  --p-violet-500: #745aec;
+  --p-violet-600: #5432be;
+  --p-violet-700: #320084;
+  --p-violet-800: #29036e;
+  --p-violet-900: #1c0252;
+  --p-violet-950: #120239;
+  --p-violet-975: #0a0225;
+  --p-green-50: #eefff5;
+  --p-green-100: #d8fce7;
+  --p-green-200: #adf0ca;
+  --p-green-300: #70d6a1;
+  --p-green-400: #2eb97c;
+  --p-green-500: #00905b;
+  --p-green-600: #00663f;
+  --p-green-700: #003b23;
+  --p-green-800: #00311c;
+  --p-green-900: #002312;
+  --p-green-950: #00170b;
+  --p-green-975: #000e05;
+  --p-amber-50: #fff9f0;
+  --p-amber-100: #fff0d8;
+  --p-amber-200: #fcd8a0;
+  --p-amber-300: #e7b45d;
+  --p-amber-400: #cd920f;
+  --p-amber-500: #9e6f00;
+  --p-amber-600: #714e00;
+  --p-amber-700: #422c00;
+  --p-amber-800: #372400;
+  --p-amber-900: #271900;
+  --p-amber-950: #1a0f00;
+  --p-amber-975: #110800;
+  --p-red-50: #fff8f8;
+  --p-red-100: #ffedec;
+  --p-red-200: #ffd1cf;
+  --p-red-300: #ffa09c;
+  --p-red-400: #fc6568;
+  --p-red-500: #d33441;
+  --p-red-600: #a20022;
+  --p-red-700: #610010;
+  --p-red-800: #51000c;
+  --p-red-900: #3c0006;
+  --p-red-950: #2a0003;
+  --p-red-975: #1c0001;
+  --p-blue-50: #f6fbff;
+  --p-blue-100: #e8f3ff;
+  --p-blue-200: #c5e2ff;
+  --p-blue-300: #87c3ff;
+  --p-blue-400: #4ea4f3;
+  --p-blue-500: #177ccc;
+  --p-blue-600: #005896;
+  --p-blue-700: #003259;
+  --p-blue-800: #00294b;
+  --p-blue-900: #001d37;
+  --p-blue-950: #001227;
+  --p-blue-975: #000a1a;
+}
+
+/* Dark is the primary mode (D-011).
+
+   The theme selectors are element-scoped, not :root-scoped, so a subtree can
+   carry its own mode: <div data-theme="light"> inside a dark app is a light
+   island, and custom properties inherit to it correctly. That also removes the
+   need for anything to mutate documentElement at runtime (D-037). */
+:root, [data-theme="dark"] {
+  --color-bg-sunken: #080a0d;
+  --color-bg: #101117;
+  --color-surface: #191b23;
+  --color-surface-raised: #2c303b;
+  --color-surface-hover: #242731;
+  --color-border: #2c303b;
+  --color-border-field: #747888;
+  --color-border-float: #747888;
+  --color-text: #f0f2f7;
+  --color-text-muted: #b9bdcb;
+  --color-text-faint: #999ead;
+  --color-accent: #978cff;
+  --color-accent-hover: #b8b4ff;
+  --color-accent-contrast: #0a0225;
+  --color-accent-muted: #1c0252;
+  --color-success: #70d6a1;
+  --color-danger-muted: #3c0006;
+  --color-warning-muted: #271900;
+  --color-success-muted: #002312;
+  --color-info-muted: #001d37;
+  --color-warning: #e7b45d;
+  --color-danger: #fc6568;
+  --color-info: #87c3ff;
+  --color-focus: #978cff;
+}
+
+[data-theme="light"] {
+  --color-bg-sunken: #dbdee7;
+  --color-bg: #f0f2f7;
+  --color-surface: #f9fafd;
+  --color-surface-raised: #ffffff;
+  --color-surface-hover: #f0f2f7;
+  --color-border: #dbdee7;
+  --color-border-field: #747888;
+  --color-border-float: #747888;
+  --color-text: #101117;
+  --color-text-muted: #2c303b;
+  --color-text-faint: #515563;
+  --color-accent: #5432be;
+  --color-accent-hover: #320084;
+  --color-accent-contrast: #ffffff;
+  --color-accent-muted: #f0f0ff;
+  --color-success: #00663f;
+  --color-danger-muted: #ffedec;
+  --color-warning-muted: #fff0d8;
+  --color-success-muted: #d8fce7;
+  --color-info-muted: #e8f3ff;
+  --color-warning: #714e00;
+  --color-danger: #a20022;
+  --color-info: #005896;
+  --color-focus: #5432be;
+}
+
+/* Follow the OS only when no explicit theme has been set anywhere. */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) {
+    --color-bg-sunken: #dbdee7;
+    --color-bg: #f0f2f7;
+    --color-surface: #f9fafd;
+    --color-surface-raised: #ffffff;
+    --color-surface-hover: #f0f2f7;
+    --color-border: #dbdee7;
+    --color-border-field: #747888;
+    --color-border-float: #747888;
+    --color-text: #101117;
+    --color-text-muted: #2c303b;
+    --color-text-faint: #515563;
+    --color-accent: #5432be;
+    --color-accent-hover: #320084;
+    --color-accent-contrast: #ffffff;
+    --color-accent-muted: #f0f0ff;
+    --color-success: #00663f;
+    --color-danger-muted: #ffedec;
+    --color-warning-muted: #fff0d8;
+    --color-success-muted: #d8fce7;
+    --color-info-muted: #e8f3ff;
+    --color-warning: #714e00;
+    --color-danger: #a20022;
+    --color-info: #005896;
+    --color-focus: #5432be;
+  }
+}
+
+:root { color-scheme: dark; }
+[data-theme="light"] { color-scheme: light; }
+[data-theme="dark"] { color-scheme: dark; }
+@media (prefers-color-scheme: light) { :root:not([data-theme]) { color-scheme: light; } }
+/* GENERATED from tokens/typography.json — do not edit by hand. Phase 3b. */
+/* Inter and JetBrains Mono, SIL OFL 1.1, self-hosted. No app previously loaded
+   the face it declared; these files are the fix. */
+
+@font-face {
+  font-family: 'Inter';
+  src: url('../fonts/inter-var-latin.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('../fonts/inter-var-latin-ext.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('../fonts/jetbrains-mono-var-latin.woff2') format('woff2');
+  font-weight: 100 800;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('../fonts/jetbrains-mono-var-latin-ext.woff2') format('woff2');
+  font-weight: 100 800;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF;
+}
+
+:root {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --text-11: 11px;  --leading-11: 1.3;
+  --text-12: 12px;  --leading-12: 1.5;
+  --text-13: 13px;  --leading-13: 1.4;
+  --text-14: 14px;  --leading-14: 1.55;
+  --text-16: 16px;  --leading-16: 1.5;
+  --text-20: 20px;  --leading-20: 1.35;
+  --text-24: 24px;  --leading-24: 1.25;
+
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-title: 650;
+
+  --measure-body: 65ch;
+  --measure-cell: 38ch;
+  --measure-helper: 50ch;
+}
+
+html {
+  font-family: var(--font-sans);
+  font-size: var(--text-14);
+  line-height: var(--leading-14);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Every number in this system lives in a column, and two of the four apps poll —
+   so figures are tabular by default rather than by opt-in. */
+table td, table th, .tabular, [data-numeric] {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+}
+
+/* GENERATED from tokens/shape.json — do not edit by hand. Phase 3d. */
+
+:root {
+  --radius-xs: 6px;
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-full: 999px;
+
+  --border-width: 1px;
+
+  --focus-width: 2px;
+  --focus-offset: 2px;
+
+  --scrim: rgba(0, 0, 0, 0.58);
+}
+
+/* Elevation is tone; detachment is a boundary. There is no --shadow-* token,
+   and adding one is a design change, not a tweak (D-015, D-023).
+
+   Resting surface  → a tone step, no border.
+   Floating layer   → surface-raised + 1px border-float.
+   Modal            → the above, plus a scrim.
+
+   The boundary exists because in light mode the tonal ladder terminates at
+   white: a menu over a white card has no lighter step left. Running one
+   mechanism in both modes beats running two. */
+
+.elevated,
+[data-elevation="floating"] {
+  background: var(--color-surface-raised);
+  border: var(--border-width) solid var(--color-border-float);
+  box-shadow: none;
+}
+
+/* :focus-visible, never :focus — this is what keeps keyboard focus styling
+   switched on once mouse users are in the room. outline rather than a
+   box-shadow ring, so the offset reveals the surface behind the control and a
+   violet ring stays visible on a violet button. */
+:focus-visible {
+  outline: var(--focus-width) solid var(--color-focus);
+  outline-offset: var(--focus-offset);
+}
+:focus:not(:focus-visible) { outline: none; }
+
+@media (prefers-contrast: more) {
+  :focus-visible { outline-width: 3px; }
+}
+/* GENERATED from tokens/layout.json — do not edit by hand. Phase 3c. */
+
+:root {
+  --space-2: 2px;
+  --space-4: 4px;
+  --space-6: 6px;
+  --space-8: 8px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-20: 20px;
+  --space-24: 24px;
+  --space-32: 32px;
+  --space-40: 40px;
+  --space-48: 48px;
+  --space-64: 64px;
+
+  --container-form: 480px;
+  --container-prose: 65ch;
+  --container-narrow: 672px;
+  --container-wide: 1280px;
+
+  --sidebar-width: 240px;
+  --sidebar-collapsed: 64px;
+  --row-height: 48px;
+  --cell-pad-y: 12px;
+  --cell-pad-x: 16px;
+  --card-pad: 20px;
+  --page-pad: 24px;
+  --grid-gutter: 24px;
+}
+
+@media (min-width: 1024px) { :root { --page-pad: 32px; } }
+
+/* Breakpoints are consumed as media queries, not custom properties — a custom
+   property cannot be used in a media condition. Four, not six: the four apps
+   reference xl once and 2xl never, and a breakpoint nobody uses is a state
+   somebody still has to test.
+     sm 640px · md 768px · lg 1024px · xl 1280px
+   lg is the shell breakpoint: below it the sidebar is an off-canvas drawer. */
+
+/* GENERATED from tokens/motion.json — do not edit by hand. Phase 3e. */
+
+:root {
+  --dur-1: 90ms;
+  --dur-2: 140ms;
+  --dur-3: 200ms;
+  --dur-4: 280ms;
+  --dur-5: 420ms;
+
+  --ease-out: cubic-bezier(0.2, 0.7, 0.3, 1);
+  --ease-in: cubic-bezier(0.5, 0, 0.9, 0.4);
+  --ease-spring: cubic-bezier(0.22, 1.2, 0.36, 1);
+  --ease-linear: linear;
+
+  --motion-modal-enter: 420ms var(--ease-spring);
+  --motion-modal-exit: 200ms var(--ease-in);
+  --motion-menu-enter: 200ms var(--ease-out);
+  --motion-menu-exit: 140ms var(--ease-in);
+  --motion-popover-enter: 200ms var(--ease-out);
+  --motion-tooltip-enter: 140ms var(--ease-out);
+  --motion-toast-enter: 420ms var(--ease-spring);
+  --motion-toast-exit: 280ms var(--ease-in);
+  --motion-tab-glide: 280ms var(--ease-spring);
+  --motion-list-enter: 280ms var(--ease-spring);
+  --motion-row-exit: 420ms var(--ease-spring);
+  --motion-hover: 90ms var(--ease-out);
+  --motion-drawer: 280ms var(--ease-out);
+}
+
+/* Entrances animate FROM an offset TO the element's natural state and use
+   backwards fill — never forwards. A retained transform turns the wrapper into
+   a containing block, which silently breaks every position:fixed overlay
+   inside it. Inherited from App D, which found it the hard way. */
+@keyframes rise      { from { opacity: 0; transform: translateY(10px); } }
+@keyframes rise-far  { from { opacity: 0; transform: translateY(26px) scale(.94); } }
+@keyframes drop-in   { from { opacity: 0; transform: translateY(-6px) scale(.97); } }
+@keyframes fade      { from { opacity: 0; } }
+
+.enter-modal   { animation: rise-far var(--motion-modal-enter) backwards; }
+.enter-menu    { animation: drop-in  var(--motion-menu-enter) backwards; }
+.enter-popover { animation: drop-in  var(--motion-popover-enter) backwards; }
+.enter-tooltip { animation: fade     var(--motion-tooltip-enter) backwards; }
+.enter-toast   { animation: rise-far var(--motion-toast-enter) backwards; }
+
+/* First paint only. Never bind this to a poll response. */
+.enter-list > * { animation: rise var(--motion-list-enter) backwards; }
+.enter-list > *:nth-child(1) { animation-delay: 0ms; }
+.enter-list > *:nth-child(2) { animation-delay: 80ms; }
+.enter-list > *:nth-child(3) { animation-delay: 160ms; }
+.enter-list > *:nth-child(4) { animation-delay: 240ms; }
+.enter-list > *:nth-child(5) { animation-delay: 320ms; }
+.enter-list > *:nth-child(n+6) { animation-delay: 400ms; }
+
+/* Reduced motion is a supported mode, not a downgrade path: opacity only. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── shared ─────────────────────────────────────────────────────── */
+.s     { display:inline-block; flex:none; vertical-align:middle; }
+.s.x14 { width:14px; height:14px; }
+.s.x16 { width:16px; height:16px; }
+.s.x20 { width:20px; height:20px; }
+.s.x24 { width:24px; height:24px; }
+@keyframes turn { to { transform: rotate(360deg); } }
+
+/* ── 0 · CONTROL — what ships today: a border with one lit edge ─── */
+.now { border-radius:50%; border:2px solid var(--color-surface-raised);
+       border-top-color:var(--color-accent); animation:turn 700ms linear infinite; }
+.now.x14 { border-width:1.6px; } .now.x24 { border-width:2.5px; }
+.oa .now { border-color: color-mix(in srgb, var(--color-accent-contrast) 30%, transparent);
+           border-top-color: var(--color-accent-contrast); }
+
+/* ── A · COMET — a conic tail chasing its own head ──────────────── */
+.comet { border-radius:50%;
+  background: conic-gradient(from 0turn, transparent 0deg, transparent 30deg,
+              color-mix(in srgb, var(--color-accent) 35%, transparent) 200deg,
+              var(--color-accent) 355deg, transparent 360deg);
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 2px));
+          mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 2px));
+  animation: turn 900ms linear infinite; }
+.comet.x14 { -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 1.6px), #000 calc(100% - 1.6px));
+                     mask: radial-gradient(farthest-side, transparent calc(100% - 1.6px), #000 calc(100% - 1.6px)); }
+.oa .comet { background: conic-gradient(from 0turn, transparent 0deg, transparent 30deg,
+             color-mix(in srgb, var(--color-accent-contrast) 35%, transparent) 200deg,
+             var(--color-accent-contrast) 355deg, transparent 360deg); }
+
+/* ── B · ARC — one stroke that breathes as it turns ─────────────── */
+.arc { animation: turn 1400ms linear infinite; }
+.arc circle { fill:none; stroke:var(--color-accent); stroke-width:2.5; stroke-linecap:round;
+              transform-origin:center; animation: arcdash 1400ms ease-in-out infinite; }
+.oa .arc circle { stroke: var(--color-accent-contrast); }
+@keyframes arcdash {
+  0%   { stroke-dasharray: 1 58; stroke-dashoffset: 0; }
+  50%  { stroke-dasharray: 40 58; stroke-dashoffset: -12; }
+  100% { stroke-dasharray: 1 58;  stroke-dashoffset: -58; }
+}
+
+/* ── C · ORBIT — three dots handing the turn to each other ──────── */
+.orbit { position:relative; animation: turn 1200ms linear infinite; }
+.orbit i { position:absolute; inset:0; }
+.orbit i::before { content:""; position:absolute; top:0; left:50%; width:26%; height:26%;
+  margin-left:-13%; border-radius:50%; background:var(--color-accent);
+  animation: breathe 1200ms ease-in-out infinite; }
+.orbit i:nth-child(2) { transform: rotate(120deg); }
+.orbit i:nth-child(3) { transform: rotate(240deg); }
+.orbit i:nth-child(2)::before { animation-delay:-400ms; }
+.orbit i:nth-child(3)::before { animation-delay:-800ms; }
+.oa .orbit i::before { background: var(--color-accent-contrast); }
+@keyframes breathe { 0%,100% { transform:scale(.55); opacity:.45; } 50% { transform:scale(1.15); opacity:1; } }
+
+/* ── D · TUMBLE — a chip turning over, corners softening ────────── */
+.tumble { background:var(--color-accent); animation: tumble 1100ms cubic-bezier(.6,0,.35,1) infinite; }
+.oa .tumble { background: var(--color-accent-contrast); }
+@keyframes tumble {
+  0%   { transform: rotate(0deg)   scale(1);   border-radius:32%; }
+  50%  { transform: rotate(180deg) scale(.72); border-radius:50%; }
+  100% { transform: rotate(360deg) scale(1);   border-radius:32%; }
+}
+
+/* the reduced-motion rule the system already has: slower, never frozen */
+.slow .now, .slow .comet { animation-duration: 1600ms; }
+.slow .arc, .slow .arc circle { animation-duration: 2600ms; }
+.slow .orbit { animation-duration: 2400ms; }
+.slow .orbit i::before { animation-duration: 2400ms; }
+.slow .orbit i:nth-child(2)::before { animation-delay:-800ms; }
+.slow .orbit i:nth-child(3)::before { animation-delay:-1600ms; }
+.slow .tumble { animation-duration: 2200ms; }
+
+* { box-sizing:border-box; }
+body { margin:0; padding:40px; background:var(--color-bg); color:var(--color-text);
+        font-family:Inter,ui-sans-serif,system-ui,sans-serif; }
+h1 { font-size:20px; font-weight:600; margin:0 0 10px; }
+h2 { font-size:14px; font-weight:600; margin:0 0 6px; }
+.lede { max-width:70ch; font-size:13px; line-height:1.65; color:var(--color-text-muted); margin:0 0 10px; }
+.cand { border:1px solid var(--color-border); border-radius:12px; padding:20px;
+         background:var(--color-surface); margin-top:20px; max-width:1000px; }
+.cap { max-width:74ch; font-size:12px; line-height:1.6; color:var(--color-text-muted); margin:0 0 18px; }
+.grid { display:grid; grid-template-columns:auto auto auto; gap:32px; align-items:start; }
+.lab { display:block; font-size:10px; text-transform:uppercase; letter-spacing:.07em;
+        color:var(--color-text-muted); margin-bottom:10px; }
+.bay { display:flex; align-items:center; gap:14px; min-height:32px; }
+.pill { display:inline-flex; align-items:center; gap:10px; background:var(--color-accent);
+         color:var(--color-accent-contrast); border-radius:var(--radius-md);
+         padding:0 14px; height:34px; font-size:13px; font-weight:600; }
+.pill b { font-weight:600; }
+.note { max-width:74ch; margin-top:36px; padding:16px; border-left:2px solid var(--color-border);
+         font-size:13px; line-height:1.65; color:var(--color-text-muted); }
+code { font-family:'JetBrains Mono',ui-monospace,monospace; font-size:.92em;
+        background:var(--color-surface-raised); padding:1px 5px; border-radius:4px; }
+</style></head><body>
+<h1>Spinner · four candidates and the one we ship</h1>
+<p class="lede">Every one below is live, at the four real sizes — <strong>14, 16, 20 and 24px</strong> — on the
+page ground and inside a primary button, with the reduced-motion version beside it. <strong>Judge them at
+14px.</strong> That is the size inside a small Button, and it is where most distinctive spinners quietly
+stop being legible.</p>
+<p class="lede">The third column is the accessibility rule the system already committed to (D-024): under
+<code>prefers-reduced-motion</code> a spinner <em>slows</em>, it never freezes — a frozen spinner reads as a
+hung request.</p>
+
+  <section class="cand">
+    <h2>Control — what ships today</h2>
+    <p class="cap">A ring with one lit edge, turning. It is the spinner every framework ships, and it is what the brief asked to replace.</p>
+    <div class="grid">
+      <div><span class="lab">on surface · 14 16 20 24</span><div class="bay"><span class="s x14 now"></span><span class="s x16 now"></span><span class="s x20 now"></span><span class="s x24 now"></span></div></div>
+      <div><span class="lab">on accent</span><div class="bay oa"><span class="pill"><span class="s x14 now"></span><span class="s x16 now"></span><span class="s x20 now"></span><span class="s x24 now"></span><b>Saving…</b></span></div></div>
+      <div><span class="lab">reduced motion</span><div class="bay slow"><span class="s x14 now"></span><span class="s x16 now"></span><span class="s x20 now"></span><span class="s x24 now"></span></div></div>
+    </div>
+  </section>
+  <section class="cand">
+    <h2>A · Comet</h2>
+    <p class="cap">A conic tail chasing its own head. Pure CSS, no extra element, and the gradient does the work that a dashed stroke would — so it stays crisp at 14px where a thin arc starts to shimmer.</p>
+    <div class="grid">
+      <div><span class="lab">on surface · 14 16 20 24</span><div class="bay"><span class="s x14 comet"></span><span class="s x16 comet"></span><span class="s x20 comet"></span><span class="s x24 comet"></span></div></div>
+      <div><span class="lab">on accent</span><div class="bay oa"><span class="pill"><span class="s x14 comet"></span><span class="s x16 comet"></span><span class="s x20 comet"></span><span class="s x24 comet"></span><b>Saving…</b></span></div></div>
+      <div><span class="lab">reduced motion</span><div class="bay slow"><span class="s x14 comet"></span><span class="s x16 comet"></span><span class="s x20 comet"></span><span class="s x24 comet"></span></div></div>
+    </div>
+  </section>
+  <section class="cand">
+    <h2>B · Arc</h2>
+    <p class="cap">One stroke that lengthens and shortens as it turns, so the rhythm is a breath rather than a rate. Needs an SVG child; the round cap is what keeps it from reading as a fragment.</p>
+    <div class="grid">
+      <div><span class="lab">on surface · 14 16 20 24</span><div class="bay"><svg class="s x14 arc" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/></svg><svg class="s x16 arc" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/></svg><svg class="s x20 arc" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/></svg><svg class="s x24 arc" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/></svg></div></div>
+      <div><span class="lab">on accent</span><div class="bay oa"><span class="pill"><svg class="s x14 arc" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/></svg><svg class="s x16 arc" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/></svg><svg class="s x20 arc" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/></svg><svg class="s x24 arc" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/></svg><b>Saving…</b></span></div></div>
+      <div><span class="lab">reduced motion</span><div class="bay slow"><svg class="s x14 arc" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/></svg><svg class="s x16 arc" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/></svg><svg class="s x20 arc" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/></svg><svg class="s x24 arc" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/></svg></div></div>
+    </div>
+  </section>
+  <section class="cand">
+    <h2>C · Orbit</h2>
+    <p class="cap">Three dots handing the turn to each other. The most obviously not-a-default of the four. At 14px each dot is under 4px, which is the size to judge it at.</p>
+    <div class="grid">
+      <div><span class="lab">on surface · 14 16 20 24</span><div class="bay"><span class="s x14 orbit"><i></i><i></i><i></i></span><span class="s x16 orbit"><i></i><i></i><i></i></span><span class="s x20 orbit"><i></i><i></i><i></i></span><span class="s x24 orbit"><i></i><i></i><i></i></span></div></div>
+      <div><span class="lab">on accent</span><div class="bay oa"><span class="pill"><span class="s x14 orbit"><i></i><i></i><i></i></span><span class="s x16 orbit"><i></i><i></i><i></i></span><span class="s x20 orbit"><i></i><i></i><i></i></span><span class="s x24 orbit"><i></i><i></i><i></i></span><b>Saving…</b></span></div></div>
+      <div><span class="lab">reduced motion</span><div class="bay slow"><span class="s x14 orbit"><i></i><i></i><i></i></span><span class="s x16 orbit"><i></i><i></i><i></i></span><span class="s x20 orbit"><i></i><i></i><i></i></span><span class="s x24 orbit"><i></i><i></i><i></i></span></div></div>
+    </div>
+  </section>
+  <section class="cand">
+    <h2>D · Tumble</h2>
+    <p class="cap">A chip turning over, corners softening to a circle at the halfway point and back. Geometric rather than circular — it belongs to a system that has a radius scale.</p>
+    <div class="grid">
+      <div><span class="lab">on surface · 14 16 20 24</span><div class="bay"><span class="s x14 tumble"></span><span class="s x16 tumble"></span><span class="s x20 tumble"></span><span class="s x24 tumble"></span></div></div>
+      <div><span class="lab">on accent</span><div class="bay oa"><span class="pill"><span class="s x14 tumble"></span><span class="s x16 tumble"></span><span class="s x20 tumble"></span><span class="s x24 tumble"></span><b>Saving…</b></span></div></div>
+      <div><span class="lab">reduced motion</span><div class="bay slow"><span class="s x14 tumble"></span><span class="s x16 tumble"></span><span class="s x20 tumble"></span><span class="s x24 tumble"></span></div></div>
+    </div>
+  </section>
+<p class="note"><strong>What does not change.</strong> Whichever wins keeps the same contract: <code>role="status"</code>
+with the label naming what is being waited for, or <code>aria-hidden</code> when adjacent text already says it;
+the four sizes; and the <code>on-accent</code> variant, because a spinner inside a filled button cannot use the
+raised-surface tone — it would be invisible.</p>
+</body></html>

@@ -1,0 +1,54 @@
+/* The trigger is an Input of the same size plus a chevron — they sit in the
+   same filter bars, so they are the same object. */
+.d3-sel {
+  justify-content: space-between;
+  cursor: pointer;
+  text-align: left;
+}
+.d3-sel__value { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.d3-sel[data-placeholder] .d3-sel__value { color: var(--color-text-faint); }
+
+/* A floating layer: surface-raised plus a 3:1 boundary, and no shadow (D-023). */
+.d3-sel__content {
+  background: var(--color-surface-raised);
+  border: var(--border-width) solid var(--color-border-float);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  min-width: var(--radix-select-trigger-width);
+  max-height: var(--radix-select-content-available-height);
+  box-shadow: none;
+  z-index: 50;
+  /* Confident tier: 200ms ease-out, no overshoot, no item stagger. A menu opened
+     dozens of times an hour must not perform (D-024). */
+  animation: d3-sel-in var(--motion-menu-enter) backwards;
+}
+@keyframes d3-sel-in { from { opacity: 0; transform: translateY(-6px) scale(0.97); } }
+@keyframes d3-sel-out { to { opacity: 0; transform: translateY(-4px) scale(0.98); } }
+.d3-sel__content[data-state='closed'] { animation: d3-sel-out var(--motion-menu-exit) forwards; }
+
+/* The disclosure chevron rotates 180deg on open — one of the three animated
+   icons the system allows (3f). */
+.d3-sel .d3-inp__affix { transition: transform var(--motion-menu-enter); }
+.d3-sel[data-state='open'] .d3-inp__affix { transform: rotate(180deg); }
+@media (prefers-reduced-motion: reduce) { .d3-sel__content { animation: none; } }
+
+.d3-sel__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  padding: var(--space-6) var(--space-8);
+  border-radius: var(--radius-md);
+  font-size: var(--text-13);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  outline: none;
+  user-select: none;
+}
+.d3-sel__item[data-highlighted] { background: var(--color-surface-hover); color: var(--color-text); }
+.d3-sel__item[data-state='checked'] { background: var(--color-accent-muted); color: var(--color-accent);
+  font-weight: var(--weight-semibold); }
+.d3-sel__item[data-disabled] { opacity: 0.42; cursor: not-allowed; }
+.d3-sel__tick { width: 14px; flex: none; display: inline-flex; opacity: 0; }
+.d3-sel__item[data-state='checked'] .d3-sel__tick { opacity: 1; }
+.d3-sel__desc { display: block; font-size: var(--text-12); color: var(--color-text-faint);
+  font-weight: var(--weight-regular); margin-top: 1px; }

@@ -1,0 +1,86 @@
+{
+  "$description": "Shape and elevation. Elevation is tone; detachment is a boundary. There is no shadow token in this system by design (D-015).",
+  "radius": {
+    "xs": {
+      "$type": "dimension",
+      "$value": "6px",
+      "$description": "checkbox, keyboard hint, badge on an icon"
+    },
+    "sm": {
+      "$type": "dimension",
+      "$value": "8px",
+      "$description": "chip, status pill, small control"
+    },
+    "md": {
+      "$type": "dimension",
+      "$value": "10px",
+      "$description": "button, input, select, menu item, tab"
+    },
+    "lg": {
+      "$type": "dimension",
+      "$value": "14px",
+      "$description": "card, table container, modal, menu panel"
+    },
+    "full": {
+      "$type": "dimension",
+      "$value": "999px",
+      "$description": "pill, avatar, switch, vote count"
+    }
+  },
+  "border": {
+    "width": {
+      "$type": "dimension",
+      "$value": "1px",
+      "$description": "the only border weight in the system"
+    }
+  },
+  "focus": {
+    "width": {
+      "$type": "dimension",
+      "$value": "2px"
+    },
+    "offset": {
+      "$type": "dimension",
+      "$value": "2px"
+    },
+    "style": {
+      "$type": "string",
+      "$value": "solid",
+      "$description": "applied as outline on :focus-visible, never :focus, never box-shadow",
+      "$extensions": {
+        "d3": {
+          "emit": false,
+          "why": "Composed into the focus outline shorthand rather than emitted on its own."
+        }
+      }
+    }
+  },
+  "elevation": {
+    "$description": "Deliberately not a shadow ramp. Resting surfaces differ by tone and carry no border; floating layers sit at surface-raised and carry a 1px border-float at 3:1. A modal adds a scrim; nothing else does.",
+    "resting": {
+      "$type": "string",
+      "$value": "surface tone step, no border",
+      "$extensions": {
+        "d3": {
+          "emit": false,
+          "why": "Prose: this states the elevation rule, and there is no shadow ramp to emit (D-015)."
+        }
+      }
+    },
+    "floating": {
+      "$type": "string",
+      "$value": "surface-raised + 1px border-float",
+      "$extensions": {
+        "d3": {
+          "emit": false,
+          "why": "Prose: this states the elevation rule, and there is no shadow ramp to emit (D-015)."
+        }
+      }
+    },
+    "scrim": {
+      "$type": "color",
+      "$value": "rgba(0,0,0,0.58)",
+      "$description": "modal only"
+    }
+  }
+}

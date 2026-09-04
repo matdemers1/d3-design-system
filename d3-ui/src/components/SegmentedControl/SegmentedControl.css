@@ -1,0 +1,78 @@
+/* The track is the page ground cut into the surface it sits on; the chosen
+   segment rides above it. Elevation is tone — there is no shadow here and
+   nowhere else in the system either. */
+.d3-seg {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  background: var(--color-bg);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 2px;
+  max-width: 100%;
+  /* Overflows by scrolling. It never wraps to a second row — a segmented
+     control on two rows has stopped being one control. */
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+/* Measured by the component and written as custom properties, so the travel is
+   a plain CSS transition and inherits prefers-reduced-motion from the global
+   rule. Same token as the Tabs pill: the two should feel like one idea. */
+.d3-seg__thumb {
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  left: 0;
+  width: var(--d3-seg-w, 0px);
+  transform: translateX(var(--d3-seg-x, 0px));
+  background: var(--color-surface-raised);
+  border-radius: calc(var(--radius-md) - 3px);
+  transition: transform var(--motion-tab-glide), width var(--motion-tab-glide);
+  pointer-events: none;
+  z-index: 0;
+}
+/* On first paint the thumb belongs where it belongs, not sliding in from the
+   left edge. */
+.d3-seg__thumb[data-init='true'] { transition: none; }
+
+.d3-seg__item {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-6);
+  flex: none;
+  border: 0;
+  background: none;
+  margin: 0;
+  border-radius: calc(var(--radius-md) - 3px);
+  font-family: inherit;
+  font-weight: var(--weight-medium);
+  white-space: nowrap;
+  cursor: pointer;
+  color: var(--color-text-muted);
+  transition: color var(--motion-hover);
+}
+.d3-seg--md .d3-seg__item { height: 28px; padding: 0 var(--space-12); font-size: var(--text-12); }
+.d3-seg--sm .d3-seg__item { height: 24px; padding: 0 var(--space-8);  font-size: var(--text-11); }
+
+.d3-seg__item:hover:not(:disabled) { color: var(--color-text); }
+.d3-seg__item[aria-checked='true'] { color: var(--color-text); }
+.d3-seg__item:disabled { opacity: 0.4; cursor: not-allowed; }
+/* A disabled option is still telling you the option exists, so it stays
+   readable rather than disappearing. */
+
+.d3-seg__item:focus-visible {
+  outline: var(--focus-width) solid var(--color-focus);
+  outline-offset: var(--focus-offset);
+}
+
+.d3-seg__icon { display: flex; flex: none; }
+.d3-seg__count {
+  font-variant-numeric: tabular-nums;
+  font-weight: var(--weight-regular);
+  color: var(--color-text-muted);
+}
+.d3-seg__item[aria-checked='true'] .d3-seg__count { color: inherit; opacity: 0.7; }

@@ -1,0 +1,221 @@
+<title>3g · Voice &amp; Content</title>
+<style>
+
+:root{--pg:#0e0e11;--pn:#16161b;--pn2:#1d1d24;--ln:#2c2c36;--tx:#e8e8ee;--dim:#9a9aa8;--dim2:#6e6e7e;--hot:#ff5c5c;--ok:#3ecf8e}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pg);color:var(--tx);
+font:14px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1500px;margin:0 auto;padding:0 28px 110px}
+header.top{padding:56px 0 28px;border-bottom:1px solid var(--ln)}
+.eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim2);font-weight:650;margin:0 0 12px}
+h1{font-size:46px;line-height:1.02;margin:0 0 6px;letter-spacing:-.035em;font-weight:650}
+.tagline{font-size:19px;color:var(--dim);margin:0 0 22px;letter-spacing:-.01em}
+.rationale{max-width:74ch;font-size:15px;color:#c7c7d2;line-height:1.68;margin:0}
+.rationale em{color:var(--tx);font-style:italic}
+h3{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim2);margin:56px 0 14px;font-weight:650}
+h3 span{color:var(--dim);letter-spacing:0;text-transform:none;font-weight:400;margin-left:10px;font-size:12.5px}
+.frame{border:1px solid var(--ln);border-radius:14px;overflow:hidden;position:relative;background:#000}
+.mode{display:flex;align-items:center;gap:8px;padding:9px 14px;background:var(--pn2);
+border-bottom:1px solid var(--ln);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+color:var(--dim2);font-weight:650}
+.cols2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.tok{display:grid;grid-template-columns:repeat(auto-fill,minmax(132px,1fr));gap:8px}
+.tk{border:1px solid var(--ln);border-radius:8px;overflow:hidden;background:var(--pn)}
+.tk .c{height:46px}
+.tk .m{padding:6px 8px;font:11px/1.45 ui-monospace,Menlo,monospace;color:var(--dim)}
+.tk .m b{display:block;color:var(--tx);font-weight:600;letter-spacing:-.01em}
+table.spec{width:100%;border-collapse:collapse;font-size:13px}
+table.spec th{text-align:left;font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+color:var(--dim2);padding:0 12px 9px;border-bottom:1px solid var(--ln);font-weight:650}
+table.spec td{padding:9px 12px;border-bottom:1px solid var(--pn2);color:var(--dim)}
+table.spec td b{color:var(--tx);font-weight:600}
+.mono{font-family:ui-monospace,Menlo,monospace}
+.pass{color:var(--ok);font-weight:600}
+.note{border-left:3px solid var(--dim2);background:#ffffff08;padding:13px 16px;border-radius:0 8px 8px 0;
+margin:16px 0 0;color:#c9c9d4;font-size:13.5px;line-height:1.65}
+.note b{color:#fff}
+.nav{display:flex;gap:9px;flex-wrap:wrap;margin:26px 0 0}
+.nav a{border:1px solid var(--ln);border-radius:999px;padding:7px 15px;color:var(--dim);
+text-decoration:none;font-size:13px;background:var(--pn)}
+.nav a.here{background:var(--tx);color:#111;border-color:var(--tx);font-weight:600}
+footer{margin-top:70px;padding-top:24px;border-top:1px solid var(--ln);color:var(--dim2);font-size:12.5px}
+
+
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th{text-align:left;font:650 11px/1 ui-monospace,Menlo,monospace;color:var(--dim2);
+letter-spacing:.09em;padding:0 12px 10px;border-bottom:1px solid var(--ln);text-transform:uppercase}
+.tbl td{padding:9px 12px;border-bottom:1px solid var(--pn2);color:var(--dim);vertical-align:top}
+.tbl td b{color:var(--tx)}
+.tbl td.was{color:#ff8f8f;font-family:ui-monospace,Menlo,monospace;font-size:11.5px}
+.tbl td.now{color:#8fe3b8;font-family:ui-monospace,Menlo,monospace;font-size:11.5px}
+.panel{background:var(--pn);border:1px solid var(--ln);border-radius:13px;padding:20px 22px}
+
+.ui{  --bg-sunken: #080a0d;
+  --bg: #101117;
+  --surface: #191b23;
+  --surface-raised: #2c303b;
+  --surface-hover: #242731;
+  --border: #2c303b;
+  --border-field: #747888;
+  --border-float: #747888;
+  --text: #f0f2f7;
+  --text-muted: #b9bdcb;
+  --text-faint: #999ead;
+  --accent: #978cff;
+  --accent-hover: #b8b4ff;
+  --accent-contrast: #0a0225;
+  --accent-muted: #1c0252;
+  --success: #70d6a1;
+  --warning: #e7b45d;
+  --danger: #fc6568;
+  --info: #87c3ff;
+  --focus: #978cff;
+  --rad-md:10px; --rad-lg:14px; --rad-full:999px;
+}
+
+.ui{font-family:'Inter',ui-sans-serif,system-ui,sans-serif;color:var(--text);line-height:1.5}
+.ui *{box-sizing:border-box}
+.ba{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--border);
+border-radius:var(--rad-lg);overflow:hidden;margin-bottom:2px}
+.ba>div{background:var(--surface);padding:12px 15px;font-size:13px}
+.ba .before{color:var(--text-faint);text-decoration:line-through;text-decoration-color:var(--danger)}
+.ba .after{color:var(--text)}
+.bahd{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-bottom:2px}
+.bahd>div{padding:8px 15px;font:650 10.5px/1 ui-monospace,Menlo,monospace;letter-spacing:.11em;
+text-transform:uppercase;color:var(--text-faint);background:var(--surface-raised)}
+.note2{padding:9px 15px;font-size:12px;color:var(--text-muted);background:var(--surface-raised);
+grid-column:1 / -1}
+.es{background:var(--surface);border-radius:var(--rad-lg);padding:26px 22px;text-align:center;
+display:flex;flex-direction:column;align-items:center;gap:7px}
+.es .ic{color:var(--text-faint)}
+.es b{font-size:15px;font-weight:600}
+.es span{font-size:13px;color:var(--text-muted);max-width:44ch}
+.es .act{margin-top:8px;background:var(--accent);color:var(--accent-contrast);border-radius:var(--rad-md);
+padding:7px 14px;font-size:12.5px;font-weight:600}
+.err{background:var(--surface);border-radius:var(--rad-lg);padding:14px 16px;display:flex;gap:11px;
+align-items:flex-start}
+.err .ic{color:var(--danger);flex:none;margin-top:1px}
+.err b{display:block;font-size:13.5px;font-weight:600;margin-bottom:3px}
+.err span{font-size:12.5px;color:var(--text-muted)}
+.err a{color:var(--accent);font-size:12.5px;font-weight:600;text-decoration:none;display:inline-block;margin-top:6px}
+.dt{width:100%;border-collapse:collapse;font-size:13px}
+.dt th{text-align:left;font:650 10.5px/1 ui-monospace,Menlo,monospace;letter-spacing:.1em;
+text-transform:uppercase;color:var(--text-faint);padding:0 14px 9px;border-bottom:1px solid var(--border)}
+.dt td{padding:9px 14px;border-bottom:1px solid var(--border);color:var(--text-muted)}
+.dt td.v{color:var(--text);font-variant-numeric:tabular-nums}
+.dt td.m{font-family:'JetBrains Mono',ui-monospace,Menlo,monospace;font-size:12px;color:var(--text)}
+
+</style>
+<div class='wrap'>
+<header class="top"><p class="eyebrow">Phase 3 · Foundations</p>
+<h1>3g — Voice &amp; content</h1>
+<p class="tagline">Casing, dates, numbers, errors, empty states and button labels — decided from the
+copy that is already in the four apps.</p>
+<p class="rationale">Two things the audit found are worth stating up front. <b>There are 31 bare
+<code>toLocaleDateString()</code> / <code>toLocaleString()</code> calls</b> across the four apps and
+exactly one that passes options — so the same timestamp renders <code>8/12/2026</code> for you and
+<code>12/08/2026</code> for a colleague in London, inside a table where that difference changes the
+meaning. And the error strings sit in two incompatible registers: <i>"Rate limit reached. Wait a
+moment and try again."</i> is genuinely good, while <i>"sender_device_id required for group
+decryption"</i> is a parameter name that reached a user. Every example below is a real string from
+the codebase.</p></header>
+<h3>Casing <span>sentence case everywhere, and that is the whole rule</span></h3>
+<table class="tbl"><thead><tr><th>Today</th><th>Ships</th><th>Where</th></tr></thead><tbody>
+<tr><td class="was" style="">Set Priority</td><td class="now">Set priority</td><td>button</td></tr>
+<tr><td class="was" style="">Add Repository</td><td class="now">Add repository</td><td>button</td></tr>
+<tr><td class="was" style="">Request More Info</td><td class="now">Request more info</td><td>button</td></tr>
+<tr><td class="num" style="color:var(--dim2)">Push to GitHub</td><td class="now">Push to GitHub</td><td>button — GitHub is a proper noun</td></tr>
+<tr><td class="was" style="">Back to Inbox</td><td class="now">Back to inbox</td><td>button</td></tr>
+<tr><td class="num" style="color:var(--dim2)">Mark all read</td><td class="now">Mark all read</td><td>already correct</td></tr>
+<tr><td class="was" style="">Confirm New Password</td><td class="now">Confirm new password</td><td>form label</td></tr>
+<tr><td class="was" style="">Current Password</td><td class="now">Current password</td><td>form label</td></tr>
+<tr><td class="was" style="">Display Name</td><td class="now">Display name</td><td>form label</td></tr>
+<tr><td class="was" style="">Email Domain</td><td class="now">Email domain</td><td>form label</td></tr>
+<tr><td class="was" style="">Claude Model</td><td class="now">Claude model</td><td>form label — Claude is a proper noun</td></tr>
+<tr><td class="was" style="">Active Users (30d)</td><td class="now">Active users (30 days)</td><td>stat label</td></tr>
+</tbody></table>
+<div class="note"><b>Sentence case for everything a person reads:</b> buttons, form labels, headings, navigation, dialog titles, menu items, empty states, tooltips. The only capitals are the first letter and proper nouns — GitHub, Claude, Acme Corp, Bindery. <b>The one exception is not a casing rule at all:</b> the 11px uppercase micro-label used for table headers and section labels is a <i>typographic treatment</i> applied via CSS <code>text-transform</code>, so the underlying string stays sentence case and stays translatable. Never type an uppercase string into the source.</div>
+<h3>Dates and time <span>relative up to a week, absolute after, always unambiguous</span></h3>
+<div class="ui"><table class="dt"><thead><tr><th>Age</th><th>In a list or table</th><th>On hover, and in detail views</th></tr></thead><tbody>
+<tr><td>Under a minute</td><td class="v">just now</td><td class="v">—</td></tr>
+<tr><td>Under an hour</td><td class="v">14 minutes ago</td><td class="v">—</td></tr>
+<tr><td>Today</td><td class="v">2 hours ago</td><td class="v">14:32</td></tr>
+<tr><td>Yesterday</td><td class="v">yesterday</td><td class="v">12 Aug, 14:32</td></tr>
+<tr><td>This year</td><td class="v">12 Aug</td><td class="v">12 Aug 2026, 14:32</td></tr>
+<tr><td>Another year</td><td class="v">12 Aug 2025</td><td class="v">12 Aug 2025, 14:32</td></tr>
+</tbody></table></div>
+<div class="note"><b>The month is always a word.</b> <code>12 Aug 2026</code> and
+<code>Aug 12, 2026</code> are both unambiguous; <code>8/12/2026</code> is not, and which one a user
+sees today depends on their OS. The rule is to pin the <i>options</i> and let the locale choose the
+order — <code>{ day: 'numeric', month: 'short', year: 'numeric' }</code> — never to call
+<code>toLocaleDateString()</code> bare and never to hard-code a locale.
+<br><br><b>Every relative time carries the absolute one in its <code>title</code>.</b> "2 hours ago"
+is easier to read and impossible to cite; the tooltip and the detail view give the timestamp.
+And relative time stops at a week — "47 days ago" is arithmetic the reader has to undo.</div>
+<h3>Numbers <span>one formatter, not twenty-three call sites</span></h3>
+<div class="ui"><table class="dt"><thead><tr><th>Kind</th><th>Renders as</th><th>Rule</th></tr></thead><tbody>
+<tr><td>Count</td><td class="v">1,204</td><td>grouped, tabular figures</td></tr>
+<tr><td>Count under 1,000</td><td class="v">118</td><td>no grouping</td></tr>
+<tr><td>Bytes</td><td class="v">54.8 MB</td><td>base-1024 maths, KB/MB/GB labels, 1 decimal under 10 and 0 above</td></tr>
+<tr><td>Bytes, small</td><td class="v">311 KB</td><td></td></tr>
+<tr><td>Duration under 1s</td><td class="v">184 ms</td><td>never “0.18 s”</td></tr>
+<tr><td>Duration</td><td class="v">2.4 s</td><td></td></tr>
+<tr><td>Duration over a minute</td><td class="v">3:07</td><td></td></tr>
+<tr><td>Percentage</td><td class="v">78%</td><td>no decimals unless under 1%</td></tr>
+<tr><td>Percentage, tiny</td><td class="v">0.4%</td><td></td></tr>
+<tr><td>Ratio / score</td><td class="v">4.5:1</td><td>contrast, as used throughout this system</td></tr>
+</tbody></table></div>
+<div class="note"><b>The audit found 23 references to <code>1024</code> and four different <code>toFixed()</code> precisions</b> — 0, 1, 2 and 4 — across the apps. Byte formatting is written once, in the system, and imported. Currency has no rule yet because none of the four apps handles money; when one does, it gets <code>Intl.NumberFormat</code> with the currency code shown for anything that is not the user's own.</div>
+<h3>Errors <span>what happened · why, if we know · what to do next</span></h3>
+<div class="bahd"><div>Today</div><div>Ships</div></div>
+<div class="ba"><div class="before" style="text-decoration:line-through">No identity key pair. Bootstrap keys first.</div><div class="after">This device isn’t set up for encrypted messages yet.<div style="color:#978cff;font-weight:600;font-size:12px;margin-top:5px">Set up this device →</div></div><div class="note2">Internal state leaked to the user. &quot;Bootstrap keys&quot; is an instruction to a developer.</div></div>
+<div class="ba"><div class="before" style="text-decoration:line-through">sender_device_id required for group decryption</div><div class="after">This message can’t be decrypted on this device.<div style="color:#978cff;font-weight:600;font-size:12px;margin-top:5px">Learn why →</div></div><div class="note2">A parameter name is not an error message.</div></div>
+<div class="ba"><div class="before" style="text-decoration:line-through">Unauthorized</div><div class="after">Your session has expired.<div style="color:#978cff;font-weight:600;font-size:12px;margin-top:5px">Sign in again →</div></div><div class="note2">True, and useless. No cause, no next step.</div></div>
+<div class="ba"><div class="before" style="text-decoration:line-through">Invalid credentials</div><div class="after">That email and password don’t match an account.</div><div class="note2">Says which pair failed without saying which one is wrong — correct, for a login form.</div></div>
+<div class="ba"><div class="before" style="text-decoration:none;color:var(--success)">Rate limit reached. Wait a moment and try again.</div><div class="after">Rate limit reached. Wait a moment and try again.</div><div class="note2">Already right. What happened, and what to do. Left alone.</div></div>
+<div class="ui" style="margin-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:14px">
+<div class="err"><span class="ic"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="" style="" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg></span>
+<div><b>This device isn’t set up for encrypted messages yet.</b>
+<span>Your keys live only on your devices, so a new one has to be set up before it can read a channel.</span>
+<a>Set up this device →</a></div></div>
+<div class="err"><span class="ic"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="" style="" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg></span>
+<div><b>Your session has expired.</b>
+<span>You were signed out after 30 days of inactivity.</span>
+<a>Sign in again →</a></div></div></div>
+<div class="note"><b>Three rules.</b> Never show an internal identifier — a parameter name, a class name, a key type. Never blame the user ("you entered an invalid…"); describe the state. And <b>always give the next action</b> where one exists, as a real control rather than a sentence telling someone to go and find it. An error with no next step is a dead end with punctuation.</div>
+<h3>Empty states <span>what is absent · why · what to do about it</span></h3>
+<div class="bahd"><div>Today</div><div>Ships</div></div>
+<div class="ba"><div class="before">No items</div><div class="after"><b>Nothing here yet</b><br><span style="color:#b9bdcb;font-size:12.5px">Feedback you receive will appear in this view.</span><br><span style="color:#978cff;font-weight:600;font-size:12px">Submit feedback →</span></div></div>
+<div class="ba"><div class="before">No feedback items found</div><div class="after"><b>No feedback matches “csv export”</b><br><span style="color:#b9bdcb;font-size:12.5px">Try the All tab, or clear the search.</span><br><span style="color:#978cff;font-weight:600;font-size:12px">Clear search →</span></div></div>
+<div class="ba"><div class="before">No users found</div><div class="after"><b>No users match that filter</b><br><span style="color:#b9bdcb;font-size:12.5px">Six users exist in this tenant.</span><br><span style="color:#978cff;font-weight:600;font-size:12px">Clear filters →</span></div></div>
+<div class="ba"><div class="before">No notifications</div><div class="after"><b>You’re all caught up</b><br><span style="color:#b9bdcb;font-size:12.5px">New activity on items you follow shows up here.</span></div></div>
+<div class="ba"><div class="before">No summary yet</div><div class="after"><b>Not summarised yet</b><br><span style="color:#b9bdcb;font-size:12.5px">This item hasn’t been through AI analysis.</span><br><span style="color:#978cff;font-weight:600;font-size:12px">Run analysis →</span></div></div>
+<div class="ui" style="margin-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:14px">
+<div class="es"><span class="ic"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="" style="" aria-hidden="true"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg></span>
+<b>Nothing here yet</b><span>Feedback you receive will appear in this view.</span>
+<span class="act">Submit feedback</span></div>
+<div class="es"><span class="ic"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="" style="" aria-hidden="true"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg></span>
+<b>No feedback matches “csv export”</b><span>Try the All tab, or clear the search.</span>
+<span class="act">Clear search</span></div></div>
+<div class="note"><b>An empty state has three parts and the first two are never optional.</b> A heading naming what is absent, one line of context, and an action if one genuinely exists. <b>"No items" is not an empty state</b> — it is a status code. Note also the distinction the rewrites make: <i>nothing exists yet</i> and <i>nothing matched your filter</i> are different situations with different next steps, and the four apps currently render both as "No items".</div>
+<h3>Button labels</h3>
+<table class="tbl"><thead><tr><th>Never</th><th>Instead</th><th>Why</th></tr></thead><tbody>
+<tr><td class="was">Confirm</td><td class="now">Dismiss 3 items</td><td>A destructive button names what it destroys, and how many.</td></tr>
+<tr><td class="was">OK</td><td class="now">Got it</td><td>“OK” answers a question nobody asked.</td></tr>
+<tr><td class="was">Yes / No</td><td class="now">Delete library / Keep library</td><td>Never Yes/No on a destructive dialog — the verb is the safety.</td></tr>
+<tr><td class="was">Submit</td><td class="now">Send feedback</td><td>“Submit” describes the form, not the outcome.</td></tr>
+<tr><td class="was">Save</td><td class="now">Save changes</td><td>Say what is saved when the object is not obvious.</td></tr>
+<tr><td class="was">Cancel</td><td class="now">Cancel</td><td>Always “Cancel”. Never “Nevermind”, “Go back”, “Close”.</td></tr>
+</tbody></table>
+<div class="note"><b>A button says what will happen, from the user's side.</b> Verb first, object when the object is not obvious from context. A destructive confirmation names the object and the count — <code>Dismiss 3 items</code>, not <code>Confirm</code> — because the count is the last chance to notice you selected the wrong rows. <b>Cancel is always "Cancel"</b>: it is the one label in the system that never gets rewritten, because a user scanning for the way out should not have to read.</div>
+<h3>Words this system does not use</h3><div class="panel">
+<table class="tbl"><tbody>
+<tr><td><b class="was">Oops / Whoops / Uh oh</b></td><td>Something failed and the interface is being cute about it. Say what happened.</td></tr>
+<tr><td><b class="was">Simply, just, easy</b></td><td>If it were simple the user would not be reading an instruction. It only ever tells someone their difficulty is their fault.</td></tr>
+<tr><td><b class="was">Please</b> (in errors and labels)</td><td>Politeness padding in an interface reads as delay. Keep it for genuine imposition.</td></tr>
+<tr><td><b class="was">Are you sure?</b></td><td>Almost always. Say what will happen instead: "This deletes 3 items and cannot be undone."</td></tr>
+<tr><td><b class="was">Invalid</b></td><td>A judgement, not a description. Say what was expected.</td></tr>
+<tr><td><b class="was">Error occurred</b></td><td>Every error occurred. Say which one.</td></tr>
+<tr><td><b class="was">Loading…</b> as a lone state</td><td>Use a skeleton of the thing being loaded. A spinner over a blank page hides how long it will take.</td></tr>
+</tbody></table></div>
+<footer><b>design-system/explorations/03g-voice-content.html</b> — Phase 3g. Every "today" string on this page is real, taken from App A, Bindery, App B or App C.</footer></div>

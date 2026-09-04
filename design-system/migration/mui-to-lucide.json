@@ -1,0 +1,115 @@
+{
+  "$description": "App A MUI icon migration (D-010, D-025). All 27 map one-to-one.",
+  "from": "@mui/icons-material",
+  "to": "lucide-react",
+  "map": {
+    "Add": {
+      "lucide": "plus",
+      "import": "Plus"
+    },
+    "ArrowBack": {
+      "lucide": "arrow-left",
+      "import": "ArrowLeft"
+    },
+    "BugReport": {
+      "lucide": "bug",
+      "import": "Bug"
+    },
+    "ChatBubbleOutline": {
+      "lucide": "message-circle",
+      "import": "MessageCircle"
+    },
+    "CheckCircle": {
+      "lucide": "circle-check",
+      "import": "CircleCheck"
+    },
+    "CheckCircleOutline": {
+      "lucide": "circle-check-big",
+      "import": "CircleCheckBig"
+    },
+    "Close": {
+      "lucide": "x",
+      "import": "X"
+    },
+    "CloudUpload": {
+      "lucide": "cloud-upload",
+      "import": "CloudUpload"
+    },
+    "Delete": {
+      "lucide": "trash-2",
+      "import": "Trash2"
+    },
+    "Download": {
+      "lucide": "download",
+      "import": "Download"
+    },
+    "Edit": {
+      "lucide": "pencil",
+      "import": "Pencil"
+    },
+    "Error": {
+      "lucide": "circle-alert",
+      "import": "CircleAlert"
+    },
+    "ExpandMore": {
+      "lucide": "chevron-down",
+      "import": "ChevronDown"
+    },
+    "InboxOutlined": {
+      "lucide": "inbox",
+      "import": "Inbox"
+    },
+    "Lightbulb": {
+      "lucide": "lightbulb",
+      "import": "Lightbulb"
+    },
+    "Notifications": {
+      "lucide": "bell",
+      "import": "Bell"
+    },
+    "OpenInNew": {
+      "lucide": "external-link",
+      "import": "ExternalLink"
+    },
+    "PlayArrow": {
+      "lucide": "play",
+      "import": "Play"
+    },
+    "Refresh": {
+      "lucide": "refresh-cw",
+      "import": "RefreshCw"
+    },
+    "Search": {
+      "lucide": "search",
+      "import": "Search"
+    },
+    "ThumbUp": {
+      "lucide": "thumbs-up",
+      "import": "ThumbsUp"
+    },
+    "TrendingDown": {
+      "lucide": "trending-down",
+      "import": "TrendingDown"
+    },
+    "TrendingFlat": {
+      "lucide": "move-right",
+      "import": "MoveRight"
+    },
+    "TrendingUp": {
+      "lucide": "trending-up",
+      "import": "TrendingUp"
+    },
+    "Visibility": {
+      "lucide": "eye",
+      "import": "Eye"
+    },
+    "VisibilityOff": {
+      "lucide": "eye-off",
+      "import": "EyeOff"
+    },
+    "Warning": {
+      "lucide": "triangle-alert",
+      "import": "TriangleAlert"
+    }
+  }
+}

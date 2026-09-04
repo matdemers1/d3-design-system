@@ -1,0 +1,54 @@
+.d3-inp {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  width: 100%;
+  margin: 0;
+  background: var(--color-surface);
+  /* The one place this system draws a boundary rather than a fill: a form
+     control needs an edge a sighted user can find before focusing it
+     (WCAG 1.4.11, 3:1). border-field is solved to clear that on every surface. */
+  border: var(--border-width) solid var(--color-border-field);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  font-family: inherit;
+  transition: border-color var(--motion-hover);
+}
+.d3-inp--sm { height: 28px; padding: 0 var(--space-8);  font-size: var(--text-12); }
+.d3-inp--md { height: 34px; padding: 0 var(--space-12); font-size: var(--text-13); }
+.d3-inp--lg { height: 40px; padding: 0 var(--space-12); font-size: var(--text-14); }
+
+.d3-inp:hover:not(.d3-inp--disabled) { border-color: var(--color-text-faint); }
+.d3-inp:has(> :focus-visible) {
+  border-color: var(--color-accent);
+  outline: var(--focus-width) solid var(--color-focus);
+  outline-offset: var(--focus-offset);
+}
+.d3-inp--invalid { border-color: var(--color-danger); }
+.d3-inp--disabled { opacity: 0.42; cursor: not-allowed; background: var(--color-bg); }
+/* Read-only is focusable, selectable and submitted — visually distinct from
+   disabled, which is none of those things. */
+.d3-inp--readonly { background: var(--color-bg); border-style: dashed; }
+
+.d3-inp__control {
+  flex: 1;
+  min-width: 0;
+  background: none;
+  border: 0;
+  outline: none;
+  color: inherit;
+  font: inherit;
+  padding: 0;
+}
+.d3-inp__control::placeholder { color: var(--color-text-faint); }
+.d3-inp__affix { display: flex; flex: none; color: var(--color-text-faint); }
+
+.d3-inp--area { height: auto; align-items: flex-start; padding: var(--space-8) var(--space-12); }
+.d3-inp--area .d3-inp__control {
+  /* Vertical only: `both` lets a user drag past the container and break the
+     layout; `none` removes a genuinely useful control. */
+  resize: vertical;
+  min-height: 56px;
+  line-height: var(--leading-14);
+  width: 100%;
+}
