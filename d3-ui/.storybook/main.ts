@@ -16,18 +16,27 @@ const config: StorybookConfig = {
   // to /assets/assets/… and 404s — the story then renders unstyled with no
   // error anyone would notice. An explicit base fixes it, and stays unset for
   // local builds so those keep working from the filesystem.
+  // Storybook merges the package's own vite.config.ts, which is a *library*
+  // build: `build.lib`, React and Radix externalised, and vite-plugin-dts.
+  // Inheriting that is what broke the published Storybook — asset references
+  // came out relative to the emitted module rather than to the base, so the
+  // preview asked for `assets/assets/style.css`, the story module failed to
+  // load, and the page rendered nothing with no error on it.
+  //
+  // So the app build starts from the library config with the library parts
+  // taken back out.
   viteFinal: async (config) => ({
     ...config,
     base: process.env.STORYBOOK_BASE ?? config.base,
+    plugins: (config.plugins ?? []).filter((p) => {
+      const name = p && typeof p === 'object' && 'name' in p ? String(p.name) : ''
+      return !name.includes('dts') && !name.startsWith('d3-')
+    }),
     build: {
       ...config.build,
-      // One stylesheet instead of one per component chunk. Split CSS is
-      // requested by the preload helper as `assets/Foo.css` relative to a
-      // module that already lives in `assets/`, which on a Pages subpath
-      // resolves to `assets/assets/Foo.css` and 404s. The story then renders
-      // unstyled with no error on the page — the only symptom is Times New
-      // Roman. Not splitting removes the class of bug rather than the instance.
+      lib: undefined,
       cssCodeSplit: false,
+      rollupOptions: { ...config.build?.rollupOptions, external: [], input: undefined },
     },
   }),
   typescript: { reactDocgen: 'react-docgen-typescript' },
