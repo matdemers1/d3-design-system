@@ -45,6 +45,9 @@ jobs:
         run: npm run verify
 
       - name: Build Storybook
+        # Pages serves this from a subpath, so the assets need an absolute base.
+        env:
+          STORYBOOK_BASE: /d3-design-system/
         run: npm run storybook:build
 
       - uses: actions/upload-pages-artifact@v3
