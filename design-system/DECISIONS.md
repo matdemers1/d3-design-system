@@ -1002,3 +1002,26 @@ Nine tokens legitimately reach no stylesheet — breakpoints, a package name, pr
 **Written, and deliberately short:** `d3-ui/CONTRIBUTING.md` (the gates, adding a component, semver, deprecation, a quarterly checklist where every line exists because something went wrong once) and `design-system/MIGRATING.md` (the order that worked, the numbers to expect, the four things that will bite, and a recipe→component mapping table). Plus six do/don't pairs as stories in `Guides/Using the system` — visual, and swept by axe like everything else.
 
 **Still open, and both cheap now and expensive later:** App A is JavaScript, where the library's guardrails (`kind`, `tone`, the required `label`) become runtime surprises rather than build errors; and D-017's `fg` vs `text` split, which works and is inconsistent, and gets harder to reverse with every app that adopts it.
+
+---
+
+### D-056 · Published: one repo, and Storybook on GitHub Pages
+**Date:** 2026-09-04
+`d3-ui` and `design-system` now share one repository — **matdemers1/d3-design-system**, public — because the library's gates run from `design-system/scripts/`, so splitting them breaks `npm run verify` for anyone who clones either half. Bindery's `file:` link and `fs.allow` moved with them.
+
+Storybook is at **https://matdemers1.github.io/d3-design-system**, built by Actions with `npm run verify` as a required step before the deploy job. A broken token value or a raw hex stops the publish rather than shipping a Storybook that disagrees with the system it documents.
+
+**Names.** Bindery stays named — it is the app the system was migrated into and the notes are specific to it. The other four in-scope apps are **App A–E**, with a legend at the top of `AUDIT.md`, and the out-of-scope ones are described rather than named. The reason is one I raised too late: my first question about going public said "publishes the audit", which understated it — the audit names and critiques an unreleased commercial product.
+
+**The anonymisation then broke the build, and CI caught it.** Replacing the lowercase substring `murmur` everywhere hit **`imurmurhash`**, a real transitive dependency, inside `package-lock.json` — `npm ci` 404'd on `iapp-ahash`, a package that has never existed. Blind substring replacement across a whole tree does this; generated files should not have been in scope. Repaired and proved with a real `npm ci`.
+
+**Fonts needed their licence before this could be public at all.** Inter and JetBrains Mono are SIL OFL 1.1, which requires the licence travel with the files, and neither had one. JetBrains' text was recoverable locally; Inter's copyright line was fetched from the canonical source rather than reconstructed, because a licence file is not a place to work from memory.
+
+**The published Storybook was broken three times, and only the third fix was the cause.**
+1. *Relative base.* Pages serves from `/d3-design-system/`, so a nested asset resolved to `assets/assets/…`. Setting an explicit base did not fix it.
+2. *CSS code-splitting.* Removing it made the tokens and fonts load — and the story still rendered nothing.
+3. **The actual cause: Storybook was inheriting the package's own `vite.config.ts`, which is a *library* build** — `build.lib`, React and Radix externalised, `vite-plugin-dts`. Asset references came out relative to the emitted module rather than to the base, so the preview requested `assets/assets/style.css`, the story module failed, and `#storybook-root` stayed empty.
+
+The tell was in the build output the whole time: `[vite:dts] Declaration files built` during `storybook:build`, which has no business generating type declarations. I read past it twice. **`viteFinal` now starts from that config and takes the library parts back out**, which is a fix for the class rather than the instance.
+
+Verified on the live site rather than assumed: zero doubled requests, Inter actually loaded (`document.fonts` reports `loaded`, not merely declared), `--color-accent` resolving, and Button measuring 34px — the same measurement discipline the components were built under.
