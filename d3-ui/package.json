@@ -1,6 +1,6 @@
 {
   "name": "@d3cloud/ui",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "The D3 Cloud component library. Consumed by Bindery, App B, App C and App A.",
   "type": "module",
   "license": "UNLICENSED",
