@@ -8,6 +8,18 @@ apps must not select on them.
 
 ### Added
 
+- **`CodeInput`** — one-time codes, PINs and recovery codes, one character per
+  box. A single transparent input owns the value, so paste, `one-time-code`
+  autofill and screen readers see one labelled field; the boxes are drawn and
+  `aria-hidden`. Numeric and alphanumeric modes, decorative `groups`, `masked`,
+  `md`/`lg` on the control ramp. Characters pop in, the active box carries a
+  caret, `status="error"` shakes the row and `status="success"` waves across it
+  — never the only signal, and under reduced motion the shake becomes a tinted
+  fill. First consumer: Bindery's sign-in and first-run setup.
+- **`PasswordInput`** — Input's geometry with a real reveal toggle inside the
+  boundary (keeps focus in the field; its name says what it will do), a
+  strength meter fed by the app's own `strength` prop (bars plus words; no
+  estimator dependency), and a Caps Lock warning while focused.
 - **Development-mode contract checks.** The guardrails that are types in
   TypeScript are now also checked at runtime for JavaScript callers: missing
   accessible names (IconButton `label`, Modal `title`, SegmentedControl and Tabs

@@ -91,6 +91,36 @@ describe('silent fallbacks', () => {
   })
 })
 
+describe('code and password entry', () => {
+  it('CodeInput with no name, checked against the real DOM', async () => {
+    render(<UI.CodeInput />)
+    await frame(); await frame()
+    expect(warned('CodeInput: this control has no accessible name')).toBe(true)
+  })
+
+  it('CodeInput with a length it cannot draw, or groups that do not add up', () => {
+    render(<UI.CodeInput aria-label="Code" length={0} />)
+    render(<UI.CodeInput aria-label="Code" length={6} groups={[4, 4]} />)
+    expect(warned('CodeInput: `length={0}`')).toBe(true)
+    expect(warned('CodeInput: `groups` adds up to 8')).toBe(true)
+    // Degrades rather than drawing nothing.
+    expect(document.querySelectorAll('.d3-code').length).toBe(2)
+  })
+
+  it('PasswordInput strength with no words, or a score out of range', () => {
+    render(<UI.PasswordInput aria-label="Password" strength={js<{ score: 0; label: string }>({ score: 9, label: '' })} />)
+    expect(warned('PasswordInput: `strength.score` is 9')).toBe(true)
+    expect(warned('PasswordInput: `strength.label` is empty')).toBe(true)
+  })
+
+  it('correct use warns about nothing', async () => {
+    render(<FormField label="Code"><UI.CodeInput length={12} groups={[4, 4, 4]} mode="alphanumeric" /></FormField>)
+    render(<FormField label="Password"><UI.PasswordInput strength={{ score: 3, label: 'Good' }} /></FormField>)
+    await frame(); await frame()
+    expect(warn).not.toHaveBeenCalled()
+  })
+})
+
 describe('contradictions', () => {
   it('pressed on a primary Button', () => {
     render(<Button variant="primary" pressed>Live</Button>)

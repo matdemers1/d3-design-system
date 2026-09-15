@@ -1,0 +1,162 @@
+/* CodeInput. One transparent input laid over a row of drawn boxes.
+   The row is the positioning context; the input covers it exactly, so a tap
+   anywhere on the boxes focuses the real control. */
+.d3-code {
+  position: relative;
+  display: flex;
+  width: 100%;
+  margin: 0;
+  font-family: var(--font-mono);
+  color: var(--color-fg);
+}
+/* The row's own height is the box height — measured by the geometry sweep
+   against the same 34/40 ramp as Input and Button. */
+.d3-code--md { height: 34px; font-size: var(--text-14); }
+.d3-code--lg { height: 40px; font-size: var(--text-16); }
+
+.d3-code__slots {
+  display: flex;
+  align-items: stretch;
+  gap: var(--space-6);
+  width: 100%;
+  height: 100%;
+}
+.d3-code--lg .d3-code__slots { gap: var(--space-8); }
+.d3-code--dense .d3-code__slots { gap: var(--space-4); }
+
+
+/* A group break: a short rule between groups, drawn, never typed. */
+.d3-code__sep {
+  flex: none;
+  align-self: center;
+  width: var(--space-8);
+  height: var(--border-width);
+  background: var(--color-fg-faint);
+}
+
+.d3-code__slot {
+  position: relative;
+  display: flex;
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 48px;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-surface);
+  /* Same boundary rule as Input: a form control needs an edge you can find
+     before focusing it (WCAG 1.4.11). */
+  border: var(--border-width) solid var(--color-border-field);
+  border-radius: var(--radius-md);
+  transition: border-color var(--motion-hover), background-color var(--motion-hover);
+}
+.d3-code--dense .d3-code__slot { border-radius: var(--radius-xs); }
+.d3-code--dense .d3-code__sep { width: var(--space-6); }
+
+/* Hover never outranks a verdict: a rejected or accepted row keeps its colour
+   under the pointer, which is exactly where the pointer is after clicking in. */
+.d3-code:hover:not(.d3-code--disabled, .d3-code--invalid, .d3-code--accept) .d3-code__slot:not(.d3-code__slot--active) {
+  border-color: var(--color-fg-faint);
+}
+.d3-code__slot--filled { border-color: var(--color-fg-faint); }
+
+/* The box the next character goes into. Accent edge always; the focus ring
+   only when the control is keyboard-focused, which for a text field is any
+   focus at all. */
+.d3-code .d3-code__slot--active { border-color: var(--color-accent); }
+.d3-code:has(> .d3-code__control:focus-visible) .d3-code__slot--active {
+  outline: var(--focus-width) solid var(--color-focus);
+  outline-offset: var(--focus-offset);
+}
+
+.d3-code__char {
+  display: block;
+  line-height: 1;
+  font-weight: 500;
+  /* Arrives from slightly small and below, and overshoots into place. Backwards
+     fill only, per the motion rules: nothing retains a transform. */
+  animation: d3-code-pop var(--dur-4) var(--ease-spring) backwards;
+}
+@keyframes d3-code-pop {
+  from { opacity: 0; transform: translateY(35%) scale(.55); }
+}
+
+.d3-code__caret {
+  width: var(--space-2);
+  height: 45%;
+  border-radius: var(--radius-full);
+  background: var(--color-accent);
+  animation: d3-code-blink 1100ms steps(1, end) infinite;
+}
+@keyframes d3-code-blink {
+  0%, 55% { opacity: 1; }
+  56%, 100% { opacity: 0; }
+}
+
+/* ---- rejection -------------------------------------------------------- */
+.d3-code--invalid .d3-code__slot,
+.d3-code--invalid .d3-code__slot--active { border-color: var(--color-danger); }
+.d3-code--reject .d3-code__slots {
+  animation: d3-code-shake var(--dur-5) var(--ease-out);
+}
+@keyframes d3-code-shake {
+  0%, 100% { transform: translateX(0); }
+  15% { transform: translateX(-8px); }
+  30% { transform: translateX(7px); }
+  45% { transform: translateX(-5px); }
+  60% { transform: translateX(4px); }
+  75% { transform: translateX(-2px); }
+}
+
+/* ---- acceptance: a wave, one box after another ------------------------- */
+.d3-code--accept .d3-code__slot {
+  border-color: var(--color-success);
+  animation: d3-code-wave var(--dur-5) var(--ease-spring) backwards;
+  animation-delay: calc(var(--d3-code-i, 0) * 45ms);
+}
+@keyframes d3-code-wave {
+  0% { transform: translateY(0); }
+  40% { transform: translateY(-6px); border-color: var(--color-success); background-color: var(--color-success-muted); }
+  100% { transform: translateY(0); }
+}
+
+.d3-code--disabled { opacity: .42; cursor: not-allowed; }
+.d3-code--disabled .d3-code__slot { background: var(--color-bg); }
+
+/* ---- the real control -------------------------------------------------- */
+.d3-code__control {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  /* Invisible text and caret — the boxes draw both. 16px so iOS does not zoom
+     the page when the field is focused. */
+  color: transparent;
+  caret-color: transparent;
+  font-size: var(--text-16);
+  letter-spacing: 1em;
+  cursor: text;
+  /* Autofill paints its own background; keep it off the drawing. */
+  -webkit-text-fill-color: transparent;
+}
+.d3-code__control::selection { background: transparent; }
+/* The ring belongs to the active box, drawn above. On the invisible input it
+   was a second ring around the entire row. */
+.d3-code__control:focus,
+.d3-code__control:focus-visible { outline: none; }
+.d3-code__control:disabled { cursor: not-allowed; }
+
+/* ---- reduced motion ----------------------------------------------------
+   The global rule already takes the travel out of every animation. That would
+   leave a rejection with no cue beyond a border colour, so here the shake is
+   replaced rather than removed: a tinted fill says "wrong" without moving, and
+   acceptance gets the matching tint. The caret stops blinking and stays on. */
+@media (prefers-reduced-motion: reduce) {
+  .d3-code--reject .d3-code__slot { background: var(--color-danger-muted); border-width: var(--focus-width); }
+  .d3-code--accept .d3-code__slot { background: var(--color-success-muted); }
+  .d3-code__caret { animation: none; }
+}

@@ -27,8 +27,10 @@ export * from './components/Tooltip'
 
 // Batch 2 — the form layer
 export * from './components/Checkbox'
+export * from './components/CodeInput'
 export * from './components/FormField'
 export * from './components/Input'
 export * from './components/Label'
+export * from './components/PasswordInput'
 export * from './components/Select'
 export * from './components/Textarea'
