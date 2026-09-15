@@ -4,7 +4,7 @@ import { __resetDevWarnings } from '../lib/dev'
 import * as UI from '../index'
 import {
   Alert, Avatar, Badge, Button, Checkbox, CountBadge, EmptyState, FormField, IconButton,
-  Input, Link, Modal, PageHeader, SegmentedControl, Tabs, Textarea, Tooltip, TooltipProvider,
+  Input, Link, Modal, PageHeader, SegmentedControl, Select, Tabs, Textarea, Tooltip, TooltipProvider,
 } from '../index'
 
 /**
@@ -224,5 +224,31 @@ describe('meaning never rests on colour alone', () => {
   it('an external Link shows a visible cue with no externalIcon passed', () => {
     const { container } = render(<Link href="https://example.com" external>Docs</Link>)
     expect(container.querySelector('.d3-lnk__ext svg')).not.toBeNull()
+  })
+})
+
+describe('Select accepts what a native <select> accepted', () => {
+  it('an option whose value is the empty string renders', () => {
+    // Radix throws on this. Bindery's log filter ("Everything" = "") crashed on first render.
+    expect(() => render(<Select aria-label="Level" value="" onValueChange={() => {}}
+      options={[{ value: '', label: 'Everything' }, { value: 'error', label: 'Errors only' }]} />)).not.toThrow()
+  })
+
+  it('shows the empty-string option as selected rather than as the placeholder', () => {
+    const { container } = render(<Select aria-label="Level" value="" onValueChange={() => {}} placeholder="Pick one"
+      options={[{ value: '', label: 'Everything' }, { value: 'error', label: 'Errors only' }]} />)
+    expect(container.querySelector('.d3-sel__value')?.textContent).toBe('Everything')
+  })
+
+  it('still shows the placeholder for value="" when no option is empty', () => {
+    const { container } = render(<Select aria-label="Level" value="" onValueChange={() => {}} placeholder="Pick one"
+      options={[{ value: 'warning', label: 'Warnings' }, { value: 'error', label: 'Errors only' }]} />)
+    expect(container.querySelector('.d3-sel__value')?.textContent).toBe('Pick one')
+  })
+
+  it('submits with a native form under its name', () => {
+    const { container } = render(<form><Select name="level" defaultValue="error"
+      options={[{ value: 'warning', label: 'Warnings' }, { value: 'error', label: 'Errors only' }]} aria-label="Level" /></form>)
+    expect(new FormData(container.querySelector('form')!).get('level')).toBe('error')
   })
 })

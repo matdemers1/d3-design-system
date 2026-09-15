@@ -25,8 +25,17 @@ apps must not select on them.
   control geometry, token resolution, font loading, axe with real colour
   contrast, and pixel baselines. Storybook does not publish unless they pass.
 - `@storybook/test-runner` removed; the browser suite supersedes it.
+- Select accepts `name` and `required`, so it submits with a native form like the
+  `<select>` it replaces.
 
 ### Fixed
+
+- **Select crashed on an option whose value is `""`** — Radix reserves the empty
+  string for "nothing selected". "Everything", "None" and "Any" are ordinary
+  options a native `<select>` allowed; they now work, translated at the boundary.
+- **Select's placeholder looked like a chosen value, and long labels widened the
+  trigger.** Radix drops `className` on its Value element, so both the
+  placeholder colour and the truncation rule had never applied.
 
 - **Six components crashed on a missing prop** instead of degrading: Avatar
   (`name`), CountBadge (`count`), Tabs and SegmentedControl (`items`), Select

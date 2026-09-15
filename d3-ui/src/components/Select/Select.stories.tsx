@@ -56,3 +56,25 @@ export const Sizes: Story = {
     </div>
   ),
 }
+
+/**
+ * A long label in a narrow place — a table cell or a toolbar. The value
+ * truncates with an ellipsis and the trigger keeps its width, so the chevron
+ * stays put. (For a while it did not: the truncation rule targeted a class that
+ * Radix silently dropped.)
+ */
+export const LongLabelInANarrowCell: Story = {
+  render: () => (
+    <div style={{ width: 180 }}>
+      <Select
+        aria-label="Correspondent"
+        defaultValue="nw"
+        options={[
+          { value: 'nw', label: 'Northwood Mutual Insurance Company of New England' },
+          { value: 'fg', label: 'Fenwick Garage' },
+        ]}
+      />
+    </div>
+  ),
+}
+

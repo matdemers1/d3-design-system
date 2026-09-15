@@ -25,6 +25,9 @@ export interface SelectProps {
   className?: string
   /** Accessible name when used outside a FormField — a toolbar or table cell. */
   'aria-label'?: string
+  /** Submitted with a native form, like the `<select>` this replaces. */
+  name?: string
+  required?: boolean
   chevronIcon?: React.ReactNode
   checkIcon?: React.ReactNode
 }
@@ -37,15 +40,31 @@ export interface SelectProps {
  * (a filtering combobox), an action on choose (a DropdownMenu — Select holds a
  * value, a menu performs an action), or multiple selection (checkboxes).
  */
+const EMPTY = '__d3-select-empty__'
+
 export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select(
   { options = [], value, defaultValue, onValueChange, placeholder = 'Select…', size = 'md',
-    disabled, invalid, className, chevronIcon, checkIcon, ...rest }, ref,
+    disabled, invalid, className, chevronIcon, checkIcon, name, required, ...rest }, ref,
 ) {
   const field = useFormField()
   const isInvalid = invalid ?? field?.invalid ?? false
+
+  // Radix reserves "" to mean "nothing selected, show the placeholder", and
+  // throws if an option uses it. But "Everything", "None" and "Any" are ordinary
+  // options, and the native <select> this replaces allowed them — Bindery's log
+  // filter crashed on first render. So an empty-string option travels as a
+  // private sentinel and is translated back at the boundary, in both directions.
+  // Only when an option really is "": otherwise `value=""` must reach Radix as
+  // "", which is how a controlled Select shows its placeholder.
+  const hasEmpty = options.some((o) => o.value === '')
+  const toRadix = (v: string | undefined) => (hasEmpty && v === '' ? EMPTY : v)
+  const fromRadix = (v: string) => (v === EMPTY ? '' : v)
+
   return (
     <RadixSelect.Root
-      value={value} defaultValue={defaultValue} onValueChange={onValueChange} disabled={disabled}
+      value={toRadix(value)} defaultValue={toRadix(defaultValue)}
+      onValueChange={onValueChange ? (v) => onValueChange(fromRadix(v)) : undefined}
+      disabled={disabled} name={name} required={required}
     >
       <RadixSelect.Trigger
         ref={ref}
@@ -56,7 +75,11 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
           isInvalid && 'd3-inp--invalid', disabled && 'd3-inp--disabled', className)}
         {...rest}
       >
-        <RadixSelect.Value className="d3-sel__value" placeholder={placeholder} />
+        {/* Radix renders Value as a bare span and drops `className`, so the
+            truncation and placeholder-colour rules for .d3-sel__value never
+            applied: a long label widened the trigger, and "Select…" was drawn
+            in full text colour, indistinguishable from a chosen value. */}
+        <span className="d3-sel__value"><RadixSelect.Value placeholder={placeholder} /></span>
         <RadixSelect.Icon className="d3-inp__affix">{chevronIcon ?? '▾'}</RadixSelect.Icon>
       </RadixSelect.Trigger>
       <RadixSelect.Portal>
@@ -64,7 +87,7 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
           <RadixSelect.Viewport>
             {options.map((o) => (
               <RadixSelect.Item
-                key={o.value} value={o.value} disabled={o.disabled} className="d3-sel__item"
+                key={o.value} value={toRadix(o.value) as string} disabled={o.disabled} className="d3-sel__item"
               >
                 <span className="d3-sel__tick" aria-hidden="true">{checkIcon ?? '✓'}</span>
                 <RadixSelect.ItemText>
