@@ -91,11 +91,17 @@ const dirs = process.argv.slice(2)
 if (!dirs.length) { console.error('usage: check-usage.mjs <dir> [<dir>…]'); process.exit(2) }
 
 const SKIP = new Set(['node_modules', 'dist', 'build', '.git', 'coverage', '.next', 'storybook-static'])
+const TEST_FILE = /\.(test|spec)\.[jt]sx?$/
+
 function* walk(dir) {
   for (const entry of readdirSync(dir)) {
     if (SKIP.has(entry)) continue
     const p = join(dir, entry)
     if (statSync(p).isDirectory()) yield* walk(p)
+    // Tests are skipped: a fixture's `fgColor: '#000000'` is data under test,
+    // not a colour anyone sees. d3-qr's QR and PDF tests were 17 of its 30
+    // findings, and exempting every fixture line teaches people to exempt.
+    else if (TEST_FILE.test(entry)) continue
     else if (['.ts', '.tsx', '.js', '.jsx', '.css'].includes(extname(p))) yield p
   }
 }

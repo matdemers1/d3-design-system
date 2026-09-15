@@ -52,6 +52,10 @@ apps must not select on them.
 
 ### Fixed
 
+- **The usage gate no longer scans test files.** A fixture's `fgColor: '#000000'`
+  is data under test, not a colour anyone sees. In d3-qr those were 17 of the
+  gate's 30 findings, and exempting each fixture line teaches people to exempt.
+
 - **Focused text fields drew two rings, and every page heading drew one.** The
   global focus ring sat unlayered in the token stylesheet, so once components
   moved into `@layer d3-ui` it overrode each component that hands its ring to a
