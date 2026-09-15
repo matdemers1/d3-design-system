@@ -1,6 +1,6 @@
 {
   "name": "@d3cloud/ui",
-  "version": "0.1.1",
+  "version": "0.2.0-rc.1",
   "description": "The D3 Cloud component library. Consumed by Bindery, App B, App C and App A.",
   "type": "module",
   "license": "UNLICENSED",
@@ -21,7 +21,8 @@
     "./styles.css": "./dist/index.css",
     "./theme.css": "./src/tokens/build/theme.css",
     "./tokens/*": "./src/tokens/*",
-    "./tokens.css": "./src/tokens/build/tokens.css"
+    "./tokens.css": "./src/tokens/build/tokens.css",
+    "./package.json": "./package.json"
   },
   "bin": {
     "d3-check-usage": "./scripts/check-usage.mjs"
@@ -68,6 +69,7 @@
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.3",
     "@testing-library/user-event": "^14.6.7",
+    "@types/node": "^22.20.2",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@vitejs/plugin-react": "^4.3.4",

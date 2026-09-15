@@ -19,7 +19,8 @@
  * than a line quietly added to this file.
  */
 import { readdirSync, readFileSync, statSync } from 'node:fs'
-import { join, extname, relative } from 'node:path'
+import { join, extname, relative, dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
 
 const PALETTE =
   'slate|gray|grey|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|' +
@@ -69,6 +70,23 @@ const RULES = [
     say: 'a shadow. Elevation in this system is tone, and detachment is a boundary (D-015).' },
 ]
 
+// Every custom property the system defines, read from the package's own token
+// stylesheets — so a consumer checks against the tokens it actually installed.
+const TOKEN_DIR = join(dirname(fileURLToPath(import.meta.url)), '..', 'src', 'tokens', 'build')
+const SYSTEM_NAMESPACES = /^--(color|space|radius|text|leading|weight|font|motion|ease|dur|icon|border|focus|container|scrim)-/
+const systemTokens = new Set()
+try {
+  for (const f of readdirSync(TOKEN_DIR).filter((f) => f.endsWith('.css'))) {
+    const css = readFileSync(join(TOKEN_DIR, f), 'utf8')
+    for (const m of css.matchAll(/(--[\w-]+)\s*:/g)) systemTokens.add(m[1])
+  }
+} catch { /* tokens missing — the unknown-token rule below will say so */ }
+
+const UNKNOWN_TOKEN = {
+  id: 'unknown-token',
+  say: 'a system token that does not exist. If it was renamed, use the new name — an undefined custom property fails silently.',
+}
+
 const dirs = process.argv.slice(2)
 if (!dirs.length) { console.error('usage: check-usage.mjs <dir> [<dir>…]'); process.exit(2) }
 
@@ -79,6 +97,15 @@ function* walk(dir) {
     const p = join(dir, entry)
     if (statSync(p).isDirectory()) yield* walk(p)
     else if (['.ts', '.tsx', '.js', '.jsx', '.css'].includes(extname(p))) yield p
+  }
+}
+
+// Custom properties the app declares for itself — a bridge alias like
+// `--color-ink`, or an app-local token like `--color-mark` — are not errors.
+const localTokens = new Set()
+for (const dir of dirs) {
+  for (const file of walk(dir)) {
+    for (const m of readFileSync(file, 'utf8').matchAll(/(--[\w-]+)\s*:/g)) localTokens.add(m[1])
   }
 }
 
@@ -124,6 +151,17 @@ for (const dir of dirs) {
         }
         return false
       })()
+      // A reference to a system token that does not exist — the failure a token
+      // rename causes, and one no type-checker or linter sees: the property is
+      // simply undefined, and the colour falls back to inherited without a word.
+      if (systemTokens.size && !exempt) {
+        for (const m of line.matchAll(/var\(\s*(--[\w-]+)/g)) {
+          const name = m[1]
+          if (SYSTEM_NAMESPACES.test(name) && !systemTokens.has(name) && !localTokens.has(name)) {
+            findings.push({ file, line: i + 1, rule: UNKNOWN_TOKEN, hits: [name] })
+          }
+        }
+      }
       for (const rule of RULES) {
         if (isCss ? !rule.css : !rule.js) continue
         rule.re.lastIndex = 0

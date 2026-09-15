@@ -27,6 +27,12 @@ apps must not select on them.
 - `@storybook/test-runner` removed; the browser suite supersedes it.
 - Select accepts `name` and `required`, so it submits with a native form like the
   `<select>` it replaces.
+- **The usage gate flags references to tokens that do not exist.** A renamed
+  token fails silently — the property is undefined and the colour falls back
+  without an error — and typecheck, lint and the other rules all passed while
+  Bindery still read `--color-text-muted` after the V1-1 rename. Custom properties
+  an app declares for itself are not flagged.
+- `@d3cloud/ui/package.json` is exported, for tools that read the version.
 
 ### Fixed
 
