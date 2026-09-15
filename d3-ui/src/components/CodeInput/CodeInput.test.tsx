@@ -66,9 +66,14 @@ describe('CodeInput — one control, drawn as boxes', () => {
     render(<CodeInput aria-label="Code" defaultValue="123456" />)
     const input = screen.getByLabelText('Code') as HTMLInputElement
     await user.click(input)
-    input.setSelectionRange(2, 2)
+    // Moved the way a person moves it: arrow keys release any caret the
+    // component was holding, and the browser moves the real one.
+    await user.keyboard('{End}{ArrowLeft}{ArrowLeft}{ArrowLeft}{ArrowLeft}')
     await user.keyboard('9')
     expect(input).toHaveValue('129456')
+    // And the next character goes into the next box, not the same one again.
+    await user.keyboard('8')
+    expect(input).toHaveValue('129856')
   })
 
   it('fires onComplete again after a rejected code is cleared and retyped', async () => {
@@ -157,6 +162,23 @@ describe('CodeInput — one control, drawn as boxes', () => {
     expect(screen.getByLabelText('PIN')).toHaveAttribute('autocomplete', 'off')
     expect(screen.getByLabelText('Code')).toHaveAttribute('autocomplete', 'one-time-code')
     expect(screen.getByLabelText('Code')).not.toHaveAttribute('data-1p-ignore')
+  })
+
+  it('a held caret does not survive leaving the field', async () => {
+    const user = userEvent.setup()
+    render(<><CodeInput aria-label="Code" defaultValue="123456" /><button>elsewhere</button></>)
+    const input = screen.getByLabelText('Code') as HTMLInputElement
+    await user.click(input)
+    await user.keyboard('{End}{ArrowLeft}{ArrowLeft}{ArrowLeft}{ArrowLeft}9')
+    expect(input).toHaveValue('129456')
+    // The replacement held the caret at 3. Leave, come back, and put the caret
+    // somewhere else: the browser's placement must win.
+    await user.click(screen.getByText('elsewhere'))
+    input.focus()
+    input.setSelectionRange(0, 0)
+    input.dispatchEvent(new Event('select', { bubbles: true }))
+    await user.keyboard('7')
+    expect(input).toHaveValue('729456')
   })
 
   it('draws a caret only in the box that has focus', async () => {
