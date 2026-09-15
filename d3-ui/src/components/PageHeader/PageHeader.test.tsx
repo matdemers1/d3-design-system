@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { render, screen, waitFor } from '@testing-library/react'
 import { PageHeader } from './PageHeader'
+import { Link } from '../Link/Link'
 import { Button } from '../Button/Button'
 
 describe('PageHeader — the contract', () => {
@@ -38,15 +39,33 @@ describe('PageHeader — the contract', () => {
     expect(screen.getByRole('heading', { level: 1, name: 'Archive, 1,204 items' })).toBeInTheDocument()
   })
 
-  it('names the destination of the back link', () => {
+  it('renders the back slot, and the link in it keeps its own destination', () => {
     render(
       <PageHeader title="Export fails silently" focusOnMount={false}
-        backTo={{ href: '/inbox', label: 'Inbox' }} />,
+        back={<Link href="/inbox" variant="muted">Inbox</Link>} />,
     )
-    const back = screen.getByRole('link', { name: 'Inbox' })
-    expect(back).toHaveAttribute('href', '/inbox')
+    expect(screen.getByRole('link', { name: 'Inbox' })).toHaveAttribute('href', '/inbox')
+  })
+
+  it('warns in development when the back link says only "Back"', async () => {
     // "Back" alone tells a screen-reader user nothing about where they will land.
-    expect(screen.queryByRole('link', { name: 'Back' })).not.toBeInTheDocument()
+    // As a slot, the app writes that text, so the rule is a warning now.
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    render(<PageHeader title="Detail" focusOnMount={false} back={<Link href="/x">Back</Link>} />)
+    await new Promise((r) => setTimeout(r, 0))
+    expect(warn.mock.calls.some((c) => String(c[0]).includes('names where it goes'))).toBe(true)
+    warn.mockRestore()
+  })
+
+  it('shows one thing as "1 item", visibly as well as in its name', () => {
+    const { container } = render(<PageHeader title="Inbox" count={1} focusOnMount={false} />)
+    expect(container.querySelector('.d3-ph__count')?.textContent).toBe('1 item')
+  })
+
+  it('renders a decorative icon ahead of the title', () => {
+    const { container } = render(<PageHeader title="Pipeline" icon={<svg />} focusOnMount={false} />)
+    expect(container.querySelector('.d3-ph__icon')?.getAttribute('aria-hidden')).toBe('true')
+    expect(screen.getByRole('heading', { level: 1, name: 'Pipeline' })).toBeInTheDocument()
   })
 
   it('renders actions alongside the title', () => {

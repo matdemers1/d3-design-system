@@ -6,5 +6,11 @@
  * it is spelled out, and spelled correctly.
  */
 export function countLabel(label: string, count: number): string {
-  return `${label}, ${count.toLocaleString()} item${count === 1 ? '' : 's'}`
+  return `${label}, ${countWords(count)}`
 }
+
+/** The visible half: "1 item", "48 items". */
+export function countWords(count: number): string {
+  return `${count.toLocaleString()} item${count === 1 ? '' : 's'}`
+}
+

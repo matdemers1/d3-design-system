@@ -1,3 +1,4 @@
+import * as React from 'react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { cleanup, render } from '@testing-library/react'
 import { __resetDevWarnings } from '../lib/dev'
@@ -250,5 +251,39 @@ describe('Select accepts what a native <select> accepted', () => {
     const { container } = render(<form><Select name="level" defaultValue="error"
       options={[{ value: 'warning', label: 'Warnings' }, { value: 'error', label: 'Errors only' }]} aria-label="Level" /></form>)
     expect(new FormData(container.querySelector('form')!).get('level')).toBe('error')
+  })
+})
+
+describe('Link asChild — a router link keeps its navigation', () => {
+  // Stands in for react-router's Link: an anchor whose click it handles itself.
+  const RouterLink = React.forwardRef<HTMLAnchorElement, { to: string } & React.AnchorHTMLAttributes<HTMLAnchorElement>>(
+    ({ to, ...rest }, ref) => <a ref={ref} href={to} data-router="yes" {...rest} />)
+
+  it('renders the child element, styled, instead of an anchor of its own', () => {
+    const { container } = render(<Link asChild variant="inline"><RouterLink to="/pipeline">Pipeline</RouterLink></Link>)
+    const anchors = container.querySelectorAll('a')
+    expect(anchors).toHaveLength(1)
+    const a = anchors[0]!
+    expect(a).toHaveAttribute('data-router', 'yes')
+    expect(a).toHaveAttribute('href', '/pipeline')
+    expect(a.className).toContain('d3-lnk')
+    expect(a.className).toContain('d3-lnk--inline')
+  })
+
+  it("keeps the child's own handlers and gives both refs the node", () => {
+    const onClick = vi.fn()
+    const outer = React.createRef<HTMLAnchorElement>()
+    const inner = React.createRef<HTMLAnchorElement>()
+    const { getByText } = render(
+      <Link asChild ref={outer}><RouterLink ref={inner} to="/x" onClick={onClick}>Go</RouterLink></Link>)
+    getByText('Go').click()
+    expect(onClick).toHaveBeenCalledOnce()
+    expect(outer.current).toBe(inner.current)
+    expect(outer.current?.tagName).toBe('A')
+  })
+
+  it('does not ask for an href when asChild is set', () => {
+    render(<Link asChild><RouterLink to="/x">Go</RouterLink></Link>)
+    expect(warned('Link: `href` is required')).toBe(false)
   })
 })

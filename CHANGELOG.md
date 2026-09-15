@@ -33,6 +33,10 @@ apps must not select on them.
   Bindery still read `--color-text-muted` after the V1-1 rename. Custom properties
   an app declares for itself are not flagged.
 - `@d3cloud/ui/package.json` is exported, for tools that read the version.
+- **`Link` accepts `asChild`**, to style a router's own link. A plain `<a href>`
+  reloads the whole page under a client router, so Link previously had no use in
+  a single-page app — Bindery has no external links at all.
+- **`PageHeader` accepts `icon`**, a decorative icon ahead of the title.
 
 ### Fixed
 
@@ -56,10 +60,17 @@ apps must not select on them.
 - **The Tabs count failed contrast** — 3.69:1 on the active pill, 4.29:1 on an
   inactive tab — because it was dimmed with opacity. SegmentedControl used the
   same pattern and passed by luck; both now use weight, not opacity.
+- **PageHeader's visible count still read "1 items"** after its accessible name was
+  fixed; both now share one pluralisation.
 - **PageHeader counted one thing as "1 items"** — it built its own label and
   missed the fix Tabs and SegmentedControl received in v0.1.1.
 
 ### Breaking
+
+- **`PageHeader.backTo` and `backIcon` are replaced by a `back` slot.** The old
+  prop rendered a plain `<a href>`, which reloads the page under a client router.
+  Pass the link instead: `back={<Link asChild><RouterLink to="/inbox">Inbox</RouterLink></Link>}`.
+  PageHeader warns in development if the link says only "Back".
 
 - **`--color-text`, `--color-text-muted` and `--color-text-faint` are now
   `--color-fg`, `--color-fg-muted` and `--color-fg-faint`.** The Tailwind

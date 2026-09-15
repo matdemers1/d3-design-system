@@ -6,18 +6,20 @@
   margin: 0;
 }
 .d3-ph__lead { flex: 1; min-width: 0; }
-.d3-ph__back {
+/* The back slot. It holds whatever link the app passes — usually a router
+   link inside <Link asChild> — so the rules target the link inside it, at zero
+   specificity, and a Link variant can still override them. */
+.d3-ph__back { margin-bottom: var(--space-6); font-size: var(--text-12); }
+:where(.d3-ph__back) :where(a) {
   display: inline-flex;
   align-items: center;
   gap: var(--space-4);
-  font-size: var(--text-12);
   color: var(--color-fg-muted);
   text-decoration: none;
-  margin-bottom: var(--space-6);
-  border-radius: 3px;
+  border-radius: var(--radius-xs);
 }
-.d3-ph__back:hover { color: var(--color-fg); }
-.d3-ph__back:focus-visible {
+:where(.d3-ph__back) :where(a):hover { color: var(--color-fg); }
+:where(.d3-ph__back) :where(a):focus-visible {
   outline: var(--focus-width) solid var(--color-focus);
   outline-offset: var(--focus-offset);
 }
@@ -35,6 +37,9 @@
 /* Programmatically focused on route change. tabindex="-1" makes that possible;
    the ring is :focus-visible only, so it does not flash on a mouse click. */
 .d3-ph__title:focus { outline: none; }
+/* Decorative, and muted rather than accent: colour in this system is spent on
+   meaning, and a page icon repeats what the sidebar already said. */
+.d3-ph__icon { display: inline-flex; align-self: center; color: var(--color-fg-muted); flex: none; }
 .d3-ph__title:focus-visible {
   outline: var(--focus-width) solid var(--color-focus);
   outline-offset: var(--focus-offset);

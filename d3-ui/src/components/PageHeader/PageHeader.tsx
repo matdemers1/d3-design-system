@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { cn } from '../../lib/cn'
 import { devWarn } from '../../lib/dev'
-import { countLabel as countLabelOf } from '../../lib/countLabel'
+import { countLabel as countLabelOf, countWords } from '../../lib/countLabel'
 import './PageHeader.css'
 
 export interface PageHeaderProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> {
@@ -14,9 +14,18 @@ export interface PageHeaderProps extends Omit<React.HTMLAttributes<HTMLDivElemen
   description?: React.ReactNode
   /** Right-aligned. At most one `primary`, per the Button spec. */
   actions?: React.ReactNode
-  /** A single named link to the parent — "Inbox", never "Back". Not a breadcrumb. */
-  backTo?: { href: string; label: string }
-  backIcon?: React.ReactNode
+  /**
+   * Leads the heading, decorative. Bindery repeats the sidebar's icon here, so a
+   * screen confirms where you are instead of making you re-read the word you
+   * just clicked.
+   */
+  icon?: React.ReactNode
+  /**
+   * A single named link to the parent — "Inbox", never "Back". Not a breadcrumb.
+   * A slot rather than an `href`, so a router link keeps client-side navigation:
+   * `back={<Link asChild><RouterLink to="/inbox">Inbox</RouterLink></Link>}`.
+   */
+  back?: React.ReactNode
   /**
    * Moves focus to the `<h1>` on mount so a screen reader announces the new
    * page. A PageHeader mounts once per route, so this *is* the route change.
@@ -29,32 +38,41 @@ export interface PageHeaderProps extends Omit<React.HTMLAttributes<HTMLDivElemen
 }
 
 export function PageHeader({
-  title, count, countLabel, description, actions, backTo, backIcon,
+  title, count, countLabel, description, actions, back, icon,
   focusOnMount = true, className, ...rest
 }: PageHeaderProps) {
   if (process.env.NODE_ENV !== 'production') {
     if (!title) devWarn('PageHeader.title', 'PageHeader: `title` is required — it is the page\'s <h1>.')
   }
   const h1 = useRef<HTMLHeadingElement>(null)
+  const backRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
     if (focusOnMount) h1.current?.focus()
   }, [focusOnMount])
+
+  useEffect(() => {
+    if (process.env.NODE_ENV !== 'production') {
+      const text = backRef.current?.textContent?.replace(/[←<‹\s]+/g, ' ').trim().toLowerCase()
+      if (text === 'back' || text === 'go back') {
+        devWarn('PageHeader.back', 'PageHeader: the back link should say where it goes — "Inbox", not "Back". ' +
+          '"Back" tells a screen-reader user nothing about where they will land, so it names where it goes.')
+      }
+    }
+  }, [back])
 
   const name = count !== undefined ? (countLabel ?? countLabelOf(title, count)) : undefined
 
   return (
     <div className={cn('d3-ph', className)} {...rest}>
       <div className="d3-ph__lead">
-        {backTo ? (
-          <a className="d3-ph__back" href={backTo.href}>
-            {backIcon ? <span aria-hidden="true" style={{ display: 'flex' }}>{backIcon}</span> : null}
-            {backTo.label}
-          </a>
-        ) : null}
+        {back ? <div ref={backRef} className="d3-ph__back">{back}</div> : null}
         <h1 ref={h1} tabIndex={-1} className="d3-ph__title" aria-label={name}>
+          {icon ? <span className="d3-ph__icon" aria-hidden="true">{icon}</span> : null}
           {title}
           {count !== undefined ? (
-            <span className="d3-ph__count" aria-hidden="true">{count.toLocaleString()} items</span>
+            // The visible count said "1 items" after the accessible name was fixed —
+            // the two are built separately, so both use the same pluralisation now.
+            <span className="d3-ph__count" aria-hidden="true">{countWords(count)}</span>
           ) : null}
         </h1>
         {description ? <p className="d3-ph__desc">{description}</p> : null}

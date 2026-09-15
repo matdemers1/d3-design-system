@@ -22,8 +22,22 @@ for (const theme of ['dark', 'light'] as const) {
       const violations = await page.evaluate(async () => {
         const axe = (window as unknown as { axe: { run: (ctx: unknown, opts: unknown) => Promise<{ violations: {
           id: string; impact: string; nodes: { target: string[]; failureSummary: string }[] }[] }> } }).axe
+        // Storybook's a11y addon runs axe by itself whenever a story renders, and
+        // axe allows one run at a time. On a fast machine the addon has always
+        // finished first; on the CI runner it sometimes had not, and three stories
+        // failed with "Axe is already running". So wait for its run to end rather
+        // than switch it off — it is what the published Storybook's panel shows.
+        const runOnce = (opts: unknown) => axe.run(document.body, opts)
+        const run = async (opts: unknown) => {
+          for (let attempt = 0; ; attempt++) {
+            try { return await runOnce(opts) } catch (e) {
+              if (!String(e).includes('already running') || attempt > 40) throw e
+              await new Promise((r) => setTimeout(r, 150))
+            }
+          }
+        }
         // Portals render outside the story root, so the whole body is the context.
-        const r = await axe.run(document.body, {
+        const r = await run({
           runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'] },
           // Storybook's own scaffolding around the story is not ours to fix.
           rules: { region: { enabled: false }, 'landmark-one-main': { enabled: false }, 'page-has-heading-one': { enabled: false } },

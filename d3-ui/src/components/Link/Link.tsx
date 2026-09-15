@@ -2,37 +2,58 @@ import { forwardRef } from 'react'
 import { cn } from '../../lib/cn'
 import { ExternalGlyph } from '../../lib/glyphs'
 import { devWarn } from '../../lib/dev'
+import { Slot } from '../../lib/slot'
 import './Link.css'
 
 export type LinkVariant = 'standalone' | 'inline' | 'muted'
 
-export interface LinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
-  /** Required. An element without `href` is not a link — if it acts, use a Button. */
-  href: string
+interface LinkBaseProps extends Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'href'> {
   variant?: LinkVariant
   /**
    * Opens in a new tab: adds `rel="noopener"`, a trailing external icon, and
-   * "(opens in a new tab)" to the accessible name.
+   * "(opens in a new tab)" to the accessible name. Not with `asChild` — a router
+   * link navigates inside the app.
    */
   external?: boolean
-  /** The external-link glyph. Passed in so the library does not force an icon set here. */
+  /** Overrides the built-in external-link glyph. */
   externalIcon?: React.ReactNode
 }
 
+/**
+ * Either an `href`, or `asChild` with a single link element inside — a router's
+ * own link, so client-side navigation keeps working:
+ *
+ * ```tsx
+ * <Link asChild><RouterLink to="/pipeline">Pipeline</RouterLink></Link>
+ * ```
+ */
+export type LinkProps = LinkBaseProps & (
+  | { href: string; asChild?: false }
+  | { asChild: true; href?: never }
+)
+
 export const Link = forwardRef<HTMLAnchorElement, LinkProps>(function Link(
-  { href, variant = 'standalone', external = false, externalIcon, className, children, ...rest },
+  { href, asChild = false, variant = 'standalone', external = false, externalIcon, className, children, ...rest },
   ref,
 ) {
   if (process.env.NODE_ENV !== 'production') {
-    if (!href) {
-      devWarn('Link.href', 'Link: `href` is required. A link that goes nowhere is a button — use <Button variant="ghost">.')
+    if (!href && !asChild) {
+      devWarn('Link.href', 'Link: `href` is required. A link that goes nowhere is a button — use <Button variant="ghost">. ' +
+        'For a router link, use <Link asChild><RouterLink to="…">…</RouterLink></Link>.')
     }
+    if (asChild && external) {
+      devWarn('Link.asChild.external', 'Link: `external` is ignored with `asChild` — a router link navigates inside the app.')
+    }
+  }
+  const cls = cn('d3-lnk', variant !== 'standalone' && `d3-lnk--${variant}`, className)
+  if (asChild) {
+    return <Slot ref={ref as React.Ref<HTMLElement>} className={cls} {...rest}>{children}</Slot>
   }
   return (
     <a
       ref={ref}
       href={href}
-      className={cn('d3-lnk', variant !== 'standalone' && `d3-lnk--${variant}`, className)}
+      className={cls}
       {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : null)}
       {...rest}
     >

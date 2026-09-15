@@ -35,3 +35,25 @@ export const External: Story = {
     'Adds `rel="noopener noreferrer"`, a trailing glyph, and “(opens in a new tab)” to the ' +
     'accessible name — visible and programmatic, not one or the other.' } } },
 }
+
+/**
+ * A router's own link, styled by the system. A plain `<a href>` reloads the
+ * whole page under a client router — which is why, before `asChild`, Link had
+ * no possible use in Bindery, whose every internal link is a router link.
+ */
+export const AsARouterLink: Story = {
+  render: () => {
+    // Stands in for react-router's <Link to>: it renders an anchor and handles
+    // the click itself.
+    const RouterLink = ({ to, ...rest }: { to: string } & React.AnchorHTMLAttributes<HTMLAnchorElement>) => (
+      <a href={to} onClick={(e) => e.preventDefault()} {...rest} />
+    )
+    return (
+      <p style={{ fontSize: 13 }}>
+        Three files are waiting on the{' '}
+        <Link asChild variant="inline"><RouterLink to="/pipeline">Pipeline</RouterLink></Link> screen.
+      </p>
+    )
+  },
+}
+

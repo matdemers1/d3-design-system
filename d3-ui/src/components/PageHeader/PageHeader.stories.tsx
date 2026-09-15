@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, Workflow } from 'lucide-react'
 import { PageHeader } from './PageHeader'
+import { Link } from '../Link/Link'
 import { Button } from '../Button/Button'
 
 const meta = {
@@ -36,8 +37,7 @@ export const WithDescription: Story = {
 }
 export const DetailPage: Story = {
   args: { title: 'Export fails silently on files over 50 MB',
-    backTo: { href: '#', label: 'Inbox' },
-    backIcon: <ArrowLeft size={13} strokeWidth={2} />,
+    back: <Link href="#" variant="muted"><ArrowLeft size={13} strokeWidth={2} aria-hidden /> Inbox</Link>,
     actions: <><Button variant="ghost">Merge</Button><Button variant="danger-ghost">Dismiss</Button></> },
   parameters: { docs: { description: { story:
     'On a detail page the title is **the object itself**, not its type. The back link names its ' +
@@ -50,3 +50,14 @@ export const Narrow: Story = {
   parameters: { controls: { disable: true } },
   decorators: [(S) => <div style={{ width: 360 }}><S /></div>],
 }
+
+/** A leading icon that repeats the sidebar's, so the page confirms where you are. */
+export const WithIcon: Story = {
+  args: {
+    title: 'Pipeline',
+    icon: <Workflow size={20} strokeWidth={1.8} />,
+    description: 'Every file on its way through OCR, segmentation and classification.',
+    focusOnMount: false,
+  },
+}
+
