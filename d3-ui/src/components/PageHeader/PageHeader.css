@@ -34,16 +34,15 @@
   gap: var(--space-8);
   flex-wrap: wrap;
 }
-/* Programmatically focused on route change. tabindex="-1" makes that possible;
-   the ring is :focus-visible only, so it does not flash on a mouse click. */
+/* Programmatically focused on route change, so the new page is announced.
+   tabindex="-1" keeps it out of the tab order, so no ring: after any keypress
+   the browser treats programmatic focus as :focus-visible, and a ring here
+   appeared on every keyboard navigation — a violet box around the page's
+   title that is not a control and cannot be operated. */
 .d3-ph__title:focus { outline: none; }
 /* Decorative, and muted rather than accent: colour in this system is spent on
    meaning, and a page icon repeats what the sidebar already said. */
 .d3-ph__icon { display: inline-flex; align-self: center; color: var(--color-fg-muted); flex: none; }
-.d3-ph__title:focus-visible {
-  outline: var(--focus-width) solid var(--color-focus);
-  outline-offset: var(--focus-offset);
-}
 .d3-ph__count {
   font-size: var(--text-13);
   font-weight: var(--weight-regular);

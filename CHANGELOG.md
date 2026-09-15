@@ -52,6 +52,16 @@ apps must not select on them.
 
 ### Fixed
 
+- **Focused text fields drew two rings, and every page heading drew one.** The
+  global focus ring sat unlayered in the token stylesheet, so once components
+  moved into `@layer d3-ui` it overrode each component that hands its ring to a
+  wrapper: Input, Textarea, PasswordInput and CodeInput drew a second ring
+  on the control inside the frame. PageHeader's title, focused on navigation,
+  drew a violet box on every keyboard navigation. The global ring now sits in
+  `@layer base`, the title has no ring, and PasswordInput's toggle no longer
+  lights the frame. A browser sweep Tabs through every story and requires
+  exactly one ring at each stop.
+
 - **A `className` on a component was ignored whenever it touched a property the
   component sets.** Component CSS was unlayered, and unlayered rules beat every
   Tailwind utility whatever the specificity: in Bindery `<Input className="w-72">`

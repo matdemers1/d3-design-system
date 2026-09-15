@@ -42,13 +42,24 @@
 /* :focus-visible, never :focus — this is what keeps keyboard focus styling
    switched on once mouse users are in the room. outline rather than a
    box-shadow ring, so the offset reveals the surface behind the control and a
-   violet ring stays visible on a violet button. */
-:focus-visible {
-  outline: var(--focus-width) solid var(--color-focus);
-  outline-offset: var(--focus-offset);
-}
-:focus:not(:focus-visible) { outline: none; }
+   violet ring stays visible on a violet button.
 
-@media (prefers-contrast: more) {
-  :focus-visible { outline-width: 3px; }
+   In `@layer base`, unlike the tokens around it. This is a default for every
+   focusable element, and a component that draws its ring somewhere else — an
+   Input's frame rather than the <input> inside it — must be able to switch it
+   off. Unlayered, it beat those component rules (they live in `@layer d3-ui`)
+   and a focused Input drew two rings. An app's own utilities override it too.
+   The order statement repeats here because layer order is fixed by first
+   mention, and this file can load before the components or Tailwind. */
+@layer theme, base, d3-ui, components, utilities;
+@layer base {
+  :focus-visible {
+    outline: var(--focus-width) solid var(--color-focus);
+    outline-offset: var(--focus-offset);
+  }
+  :focus:not(:focus-visible) { outline: none; }
+
+  @media (prefers-contrast: more) {
+    :focus-visible { outline-width: 3px; }
+  }
 }

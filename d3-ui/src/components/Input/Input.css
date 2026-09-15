@@ -19,7 +19,10 @@
 .d3-inp--lg { height: 40px; padding: 0 var(--space-12); font-size: var(--text-14); }
 
 .d3-inp:hover:not(.d3-inp--disabled) { border-color: var(--color-fg-faint); }
-.d3-inp:has(> :focus-visible) {
+/* The frame rings when its text control has focus — not when something else
+   inside it does. PasswordInput's show/hide toggle sits in the frame and draws
+   its own ring, and matched `> :focus-visible` too: two rings at once. */
+.d3-inp:has(> .d3-inp__control:focus-visible) {
   border-color: var(--color-accent);
   outline: var(--focus-width) solid var(--color-focus);
   outline-offset: var(--focus-offset);

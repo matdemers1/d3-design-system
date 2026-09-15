@@ -95,9 +95,28 @@ for (const f of SOURCE_CSS) {
   const path = `${root}/tokens/build/${f}`
   if (!existsSync(path)) continue
   const css = readFileSync(path, 'utf8').replace(/\/\*[\s\S]*?\*\//g, '')
-  if (/@layer\b/.test(css)) {
-    note(`tokens/build/${f} declares an @layer. Token values must be unlayered, or the Tailwind theme's ` +
-         'self-references win and every colour resolves to nothing.')
+  // A custom property declared anywhere inside an `@layer { }` block. Layered
+  // *rules* are allowed and needed — the global focus ring sits in `base` so a
+  // component can hand its ring to a wrapper — but no token value may be.
+  const stack = []
+  let layered = null
+  for (let i = 0, start = 0; i < css.length; i++) {
+    if (css[i] === '{') {
+      stack.push(/@layer\b/.test(css.slice(start, i)))
+      start = i + 1
+    } else if (css[i] === '}') {
+      stack.pop()
+      start = i + 1
+    } else if (css[i] === ';') {
+      start = i + 1
+    } else if (css[i] === '-' && css[i + 1] === '-' && stack.includes(true) && /^--[\w-]+\s*:/.test(css.slice(i))) {
+      layered = css.slice(i).match(/^--[\w-]+/)[0]
+      break
+    }
+  }
+  if (layered) {
+    note(`tokens/build/${f} declares ${layered} inside an @layer. Token values must be unlayered, or the ` +
+         "Tailwind theme's self-references win and every colour resolves to nothing.")
   }
 }
 
