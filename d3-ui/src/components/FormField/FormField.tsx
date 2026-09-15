@@ -1,5 +1,6 @@
 import { useId } from 'react'
 import { cn } from '../../lib/cn'
+import { devWarn } from '../../lib/dev'
 import { Label } from '../Label/Label'
 import { FormFieldContext } from './FormFieldContext'
 import './FormField.css'
@@ -43,6 +44,9 @@ export interface FormFieldProps extends Omit<React.HTMLAttributes<HTMLDivElement
 export function FormField({
   label, children, help, error, optional = false, errorIcon, as = 'field', className, ...rest
 }: FormFieldProps) {
+  if (process.env.NODE_ENV !== 'production') {
+    if (!label) devWarn('FormField.label', 'FormField: `label` is required — it is the whole reason to use FormField.')
+  }
   const base = useId()
   const id = `${base}-control`
   const labelId = `${base}-label`

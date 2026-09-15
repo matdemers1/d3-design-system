@@ -1,5 +1,6 @@
 import { forwardRef } from 'react'
 import { cn } from '../../lib/cn'
+import { useMergedRef, useNameCheck } from '../../lib/dev'
 import { useFormField } from '../FormField/FormFieldContext'
 import './Input.css'
 
@@ -28,6 +29,9 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
 ) {
   const field = useFormField()
   const isInvalid = invalid ?? field?.invalid ?? false
+  // Development only: warns if nothing ever gave the control a name.
+  const local = useNameCheck<HTMLInputElement>('Input')
+  const setRef = useMergedRef(ref, local)
   return (
     <div
       className={cn('d3-inp', `d3-inp--${size}`, isInvalid && 'd3-inp--invalid',
@@ -35,7 +39,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
     >
       {leading ? <span className="d3-inp__affix" aria-hidden="true">{leading}</span> : null}
       <input
-        ref={ref}
+        ref={setRef}
         id={id ?? field?.id}
         className="d3-inp__control"
         disabled={disabled}

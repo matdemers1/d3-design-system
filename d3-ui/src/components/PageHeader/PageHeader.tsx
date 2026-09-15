@@ -1,5 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { cn } from '../../lib/cn'
+import { devWarn } from '../../lib/dev'
+import { countLabel as countLabelOf } from '../../lib/countLabel'
 import './PageHeader.css'
 
 export interface PageHeaderProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> {
@@ -30,12 +32,15 @@ export function PageHeader({
   title, count, countLabel, description, actions, backTo, backIcon,
   focusOnMount = true, className, ...rest
 }: PageHeaderProps) {
+  if (process.env.NODE_ENV !== 'production') {
+    if (!title) devWarn('PageHeader.title', 'PageHeader: `title` is required — it is the page\'s <h1>.')
+  }
   const h1 = useRef<HTMLHeadingElement>(null)
   useEffect(() => {
     if (focusOnMount) h1.current?.focus()
   }, [focusOnMount])
 
-  const name = count !== undefined ? (countLabel ?? `${title}, ${count.toLocaleString()} items`) : undefined
+  const name = count !== undefined ? (countLabel ?? countLabelOf(title, count)) : undefined
 
   return (
     <div className={cn('d3-ph', className)} {...rest}>

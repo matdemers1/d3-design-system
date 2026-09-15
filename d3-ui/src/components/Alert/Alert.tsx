@@ -1,5 +1,6 @@
 import { forwardRef } from 'react'
 import { cn } from '../../lib/cn'
+import { devOneOf } from '../../lib/dev'
 import './Alert.css'
 
 export type AlertTone = 'info' | 'success' | 'warning' | 'danger'
@@ -39,6 +40,9 @@ export const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
   { tone = 'info', title, children, actions, icon, dynamic = false, flush = false,
     className, ...rest }, ref,
 ) {
+  if (process.env.NODE_ENV !== 'production') {
+    devOneOf('Alert', 'tone', tone, ['info', 'success', 'warning', 'danger'])
+  }
   const role = dynamic ? (tone === 'danger' ? 'alert' : 'status') : undefined
   return (
     <div ref={ref} role={role} className={cn('d3-alrt', `d3-alrt--${tone}`, flush && 'd3-alrt--flush', className)} {...rest}>

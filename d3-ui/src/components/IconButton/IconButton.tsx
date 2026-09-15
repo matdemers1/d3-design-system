@@ -1,5 +1,6 @@
 import { forwardRef } from 'react'
 import { cn } from '../../lib/cn'
+import { devOneOf, devWarn } from '../../lib/dev'
 import { Spinner } from '../Spinner/Spinner'
 import './IconButton.css'
 
@@ -40,6 +41,18 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(functio
     className, onClick, ...rest },
   ref,
 ) {
+  if (process.env.NODE_ENV !== 'production') {
+    if (!label) {
+      devWarn('IconButton.label', 'IconButton: `label` is required. It is the only accessible name an ' +
+        'icon-only control has — without it a screen reader announces "button" and nothing else.')
+    }
+    if ((variant as string) === 'danger') {
+      devWarn('IconButton.danger', 'IconButton: there is deliberately no `danger` variant. A destructive ' +
+        'action carries its noun — use <Button variant="danger-ghost" icon={…}>Delete document</Button>.')
+    } else {
+      devOneOf('IconButton', 'variant', variant, ['ghost', 'secondary'])
+    }
+  }
   return (
     <button
       ref={ref}

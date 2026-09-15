@@ -6,6 +6,30 @@ apps must not select on them.
 
 ## Unreleased — toward v1.0.0
 
+### Added
+
+- **Development-mode contract checks.** The guardrails that are types in
+  TypeScript are now also checked at runtime for JavaScript callers: missing
+  accessible names (IconButton `label`, Modal `title`, SegmentedControl and Tabs
+  names, and Input/Textarea checked against the real DOM), unknown `tone`,
+  `kind` and `variant` values that silently fall back, `color` on Badge, and
+  contradictions such as `pressed` on a primary Button. Each warns once, and
+  every check is removed from production builds — verified by bundling the
+  package the way an app does.
+- **Tooltip warns when its trigger cannot take focus**, because such a tooltip
+  only ever appears on hover.
+
+### Fixed
+
+- **Six components crashed on a missing prop** instead of degrading: Avatar
+  (`name`), CountBadge (`count`), Tabs and SegmentedControl (`items`), Select
+  (`options`) and Tooltip (no provider). They now render safely, and a test
+  renders every export with no props at all.
+- **Tooltip no longer requires `TooltipProvider`.** It supplies its own when
+  none is above it; wrapping the app once is still how delays are shared.
+- **PageHeader counted one thing as "1 items"** — it built its own label and
+  missed the fix Tabs and SegmentedControl received in v0.1.1.
+
 ### Breaking
 
 - **`--color-text`, `--color-text-muted` and `--color-text-faint` are now

@@ -1,5 +1,6 @@
 import { forwardRef } from 'react'
 import { cn } from '../../lib/cn'
+import { devOneOf, devWarn } from '../../lib/dev'
 import './EmptyState.css'
 
 /**
@@ -33,6 +34,15 @@ export const EmptyState = forwardRef<HTMLDivElement, EmptyStateProps>(function E
   { kind, heading, children, action, size = 'page', icon, headingLevel = 3, className, ...rest },
   ref,
 ) {
+  if (process.env.NODE_ENV !== 'production') {
+    if (!kind) {
+      devWarn('EmptyState.kind', 'EmptyState: `kind` is required — "empty", "no-results", "error" or "no-access". ' +
+        'They are four different messages, and "nothing here" after a search that found nothing reads as lost data.')
+    } else {
+      devOneOf('EmptyState', 'kind', kind, ['empty', 'no-results', 'error', 'no-access'])
+    }
+    if (!heading) devWarn('EmptyState.heading', 'EmptyState: `heading` is required.')
+  }
   const Heading = `h${headingLevel}` as 'h3'
   return (
     <div

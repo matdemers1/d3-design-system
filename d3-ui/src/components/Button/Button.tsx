@@ -1,5 +1,6 @@
 import { forwardRef } from 'react'
 import { cn } from '../../lib/cn'
+import { devOneOf, devWarn } from '../../lib/dev'
 import { Spinner } from '../Spinner/Spinner'
 import './Button.css'
 
@@ -53,6 +54,13 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
   },
   ref,
 ) {
+  if (process.env.NODE_ENV !== 'production') {
+    devOneOf('Button', 'variant', variant, ['primary', 'secondary', 'ghost', 'danger', 'danger-ghost'])
+    if (pressed !== undefined && (variant === 'primary' || variant === 'danger')) {
+      devWarn(`Button.pressed.${variant}`, `Button: \`pressed\` is defined for secondary and ghost only. ` +
+        `A pressed ${variant} claims to be both a one-off action and a mode that is currently on.`)
+    }
+  }
   const onAccent = variant === 'primary' || variant === 'danger'
   return (
     <button

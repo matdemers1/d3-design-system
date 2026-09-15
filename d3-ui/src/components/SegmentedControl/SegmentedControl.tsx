@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { cn } from '../../lib/cn'
+import { devWarn } from '../../lib/dev'
 import { countLabel } from '../../lib/countLabel'
 import './SegmentedControl.css'
 
@@ -52,9 +53,23 @@ export interface SegmentedControlProps {
  * `prefers-reduced-motion` from the global rule.
  */
 export function SegmentedControl({
-  items, value, onValueChange, size = 'md', activationMode = 'automatic',
+  items = [], value, onValueChange, size = 'md', activationMode = 'automatic',
   className, ...rest
 }: SegmentedControlProps) {
+  if (process.env.NODE_ENV !== 'production') {
+    if (!rest['aria-label']) {
+      devWarn('SegmentedControl.name', 'SegmentedControl: `aria-label` is required. A group of choices with no ' +
+        'name is announced as "radio group", with nothing to say what it chooses.')
+    }
+    if (!onValueChange) {
+      devWarn('SegmentedControl.onValueChange', 'SegmentedControl: it is always controlled, so without ' +
+        '`onValueChange` the selection can never move.')
+    }
+    if (items.length > 0 && !items.some((i) => i.value === value)) {
+      devWarn(`SegmentedControl.value.${String(value)}`, `SegmentedControl: \`value="${String(value)}"\` matches ` +
+        'no item, so nothing is selected and the group has no tab stop — keyboard users cannot reach it.')
+    }
+  }
   const group = useRef<HTMLDivElement>(null)
   const refs = useRef(new Map<string, HTMLButtonElement>())
   const [first, setFirst] = useState(true)

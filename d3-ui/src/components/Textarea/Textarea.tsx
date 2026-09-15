@@ -1,5 +1,6 @@
 import { forwardRef } from 'react'
 import { cn } from '../../lib/cn'
+import { useMergedRef, useNameCheck } from '../../lib/dev'
 import { useFormField } from '../FormField/FormFieldContext'
 import '../Input/Input.css'
 
@@ -13,13 +14,16 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function 
 ) {
   const field = useFormField()
   const isInvalid = invalid ?? field?.invalid ?? false
+  // Development only: warns if nothing ever gave the control a name.
+  const local = useNameCheck<HTMLTextAreaElement>('Textarea')
+  const setRef = useMergedRef(ref, local)
   return (
     <div
       className={cn('d3-inp', 'd3-inp--md', 'd3-inp--area', isInvalid && 'd3-inp--invalid',
         disabled && 'd3-inp--disabled', readOnly && 'd3-inp--readonly', className)}
     >
       <textarea
-        ref={ref}
+        ref={setRef}
         id={id ?? field?.id}
         rows={rows}
         className="d3-inp__control"

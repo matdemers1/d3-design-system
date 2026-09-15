@@ -1,6 +1,7 @@
 import { forwardRef, useId } from 'react'
 import * as RadixCheckbox from '@radix-ui/react-checkbox'
 import { cn } from '../../lib/cn'
+import { devWarn } from '../../lib/dev'
 import { useFormField } from '../FormField/FormFieldContext'
 import './Checkbox.css'
 
@@ -26,6 +27,11 @@ export const Checkbox = forwardRef<React.ElementRef<typeof RadixCheckbox.Root>, 
   function Checkbox(
     { checked, onCheckedChange, label, invalid, checkIcon, className, disabled, id, ...rest }, ref,
   ) {
+    if (process.env.NODE_ENV !== 'production') {
+      if (!label && !(rest as Record<string, unknown>)['aria-label']) {
+        devWarn('Checkbox.label', 'Checkbox: `label` is required. The checkbox labels itself, so without one it has no accessible name.')
+      }
+    }
     const field = useFormField()
     const generated = useId()
     // Deliberately does NOT consume field.id. A Checkbox labels itself, so

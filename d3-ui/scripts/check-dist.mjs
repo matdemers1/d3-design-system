@@ -52,6 +52,33 @@ if (!fail.length) {
     'dist/index.css opens with a malformed comment — check for `*/` inside a comment body.')
 }
 
+// The development contract checks must vanish from a consumer's production
+// bundle — the check *and* its message strings, not just the console call.
+// Bundled here the way an app would: esbuild with NODE_ENV defined and minified.
+// Bundled a second time for development, to prove this check can see the
+// strings at all; a check that passes because it finds nothing proves nothing.
+if (!fail.length) {
+  const { build } = await import('esbuild')
+  const bundle = async (mode) => (await build({
+    entryPoints: [`${dist}/index.js`], bundle: true, write: false, format: 'esm', minify: true,
+    platform: 'browser', logLevel: 'silent',
+    external: ['react', 'react-dom', 'react/*', '@radix-ui/*', 'clsx', 'lucide-react'],
+    loader: { '.css': 'empty' },
+    define: { 'process.env.NODE_ENV': JSON.stringify(mode) },
+  })).outputFiles[0].text
+  const PROBES = ['[d3-ui]', 'is required', 'no accessible name', 'there is no `color` prop']
+  const dev = await bundle('development')
+  const prod = await bundle('production')
+  check(PROBES.every((p) => dev.includes(p)),
+    'the development bundle is missing the contract warnings, so the production check below would pass vacuously.')
+  const leaked = PROBES.filter((p) => prod.includes(p))
+  check(leaked.length === 0,
+    `contract warnings survive a production build (${leaked.join(', ')}). Every check must sit inside ` +
+    "`if (process.env.NODE_ENV !== 'production')` so the bundler deletes it.")
+  check(!prod.includes('process.env'),
+    'a production bundle still references process.env — something reads it outside a replaceable expression.')
+}
+
 if (fail.length) {
   console.error('\n  dist check failed:\n' + fail.map((f) => `   ✗ ${f}`).join('\n') + '\n')
   process.exit(1)

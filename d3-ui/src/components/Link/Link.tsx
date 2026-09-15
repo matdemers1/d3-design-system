@@ -1,5 +1,6 @@
 import { forwardRef } from 'react'
 import { cn } from '../../lib/cn'
+import { devWarn } from '../../lib/dev'
 import './Link.css'
 
 export type LinkVariant = 'standalone' | 'inline' | 'muted'
@@ -21,6 +22,11 @@ export const Link = forwardRef<HTMLAnchorElement, LinkProps>(function Link(
   { href, variant = 'standalone', external = false, externalIcon, className, children, ...rest },
   ref,
 ) {
+  if (process.env.NODE_ENV !== 'production') {
+    if (!href) {
+      devWarn('Link.href', 'Link: `href` is required. A link that goes nowhere is a button — use <Button variant="ghost">.')
+    }
+  }
   return (
     <a
       ref={ref}

@@ -38,7 +38,7 @@ export interface SelectProps {
  * value, a menu performs an action), or multiple selection (checkboxes).
  */
 export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select(
-  { options, value, defaultValue, onValueChange, placeholder = 'Select…', size = 'md',
+  { options = [], value, defaultValue, onValueChange, placeholder = 'Select…', size = 'md',
     disabled, invalid, className, chevronIcon, checkIcon, ...rest }, ref,
 ) {
   const field = useFormField()

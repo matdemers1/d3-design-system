@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import * as RadixTabs from '@radix-ui/react-tabs'
 import { cn } from '../../lib/cn'
+import { devWarn } from '../../lib/dev'
 import { countLabel } from '../../lib/countLabel'
 import './Tabs.css'
 
@@ -36,9 +37,20 @@ export interface TabsProps {
 }
 
 export function Tabs({
-  items, value, defaultValue, onValueChange, children,
+  items = [], value, defaultValue, onValueChange, children,
   activationMode = 'automatic', className, ...rest
 }: TabsProps) {
+  if (process.env.NODE_ENV !== 'production') {
+    const named = rest['aria-label'] || (rest as Record<string, unknown>)['aria-labelledby']
+    if (!named) {
+      devWarn('Tabs.name', 'Tabs: give the tab list `aria-label` (or `aria-labelledby`), so it is announced ' +
+        'as what it switches between rather than as "tab list".')
+    }
+    if (value !== undefined && !onValueChange) {
+      devWarn('Tabs.controlled', 'Tabs: `value` without `onValueChange` is controlled with no way to change — ' +
+        'use `defaultValue` if the tabs should manage themselves.')
+    }
+  }
   const list = useRef<HTMLDivElement>(null)
   const glide = useRef<HTMLSpanElement>(null)
   const [first, setFirst] = useState(true)

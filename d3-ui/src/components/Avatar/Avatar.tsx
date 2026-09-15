@@ -1,5 +1,6 @@
 import { forwardRef, useState } from 'react'
 import { cn } from '../../lib/cn'
+import { devWarn } from '../../lib/dev'
 import './Avatar.css'
 
 export type AvatarSize = 'xs' | 'sm' | 'md' | 'lg'
@@ -32,8 +33,15 @@ export const Avatar = forwardRef<HTMLSpanElement, AvatarProps>(function Avatar(
   { name, src, size = 'md', decorative = true, fallbackIcon, className, ...rest },
   ref,
 ) {
+  if (process.env.NODE_ENV !== 'production') {
+    // Only a *missing* name. An empty string is data — somebody with no name on
+    // file — and falling back to an icon is the documented behaviour for it.
+    if (typeof name !== 'string') {
+      devWarn('Avatar.name', 'Avatar: `name` is required — it supplies both the initials and the accessible name.')
+    }
+  }
   const [failed, setFailed] = useState(false)
-  const initials = initialsOf(name)
+  const initials = initialsOf(name ?? '')
   const showImage = Boolean(src) && !failed
 
   return (

@@ -1059,3 +1059,23 @@ The v1 *scope* from D-028 is built. v1.0.0 is not earned: 15 of 23 exports have 
 **Bindery work builds on `deps/2026-09-15`**, which already carries Vite 8, Vitest 4, React Router 8 and the fix for the e2e test SegmentedControl broke.
 
 **Distribution waits for V1-7, and one fact is recorded now:** `github.com/d3cloud` is an organisation belonging to an unrelated company ("D3Cloud It Services", 2023). Publishing `@d3cloud/*` to GitHub Packages is therefore impossible, and publishing it to npm would look like their name. The package name is part of the API, so if it changes, it changes before 1.0.
+
+---
+
+### D-059 · V1-2 · Runtime contracts, and the crashes they exposed
+**Date:** 2026-09-15
+JavaScript consumers now get the library's contracts as development warnings: missing accessible names, enum values that silently fall back, props borrowed from other libraries, and self-contradicting props. Every check sits inside `process.env.NODE_ENV !== 'production'`, so an app's bundler deletes the check and its message strings. The package leaves `process.env.NODE_ENV` for the app to replace, as React does; loading it without a bundler is not supported.
+
+**Writing the tests for the checks found three defects the suite had never exercised.**
+
+**Six components crashed on the exact mistake the checks exist to catch.** Omitting a required prop printed a helpful warning and then threw: Avatar on `name`, CountBadge on `count`, Tabs and SegmentedControl on `items`, Select on `options`. A warning followed by a blank page helps nobody, so all of them now degrade, and a test renders **every export with no props at all**, which covers new components the day they are exported.
+
+**Tooltip threw unless a `TooltipProvider` sat above it** — a Radix requirement that nothing surfaced, because every Tooltip story wrapped itself in one. Bindery was about to replace 68 `title=` attributes with Tooltip and would have met this on the first. A Tooltip now supplies its own provider when none is present; wrapping the app once still shares delays.
+
+**The Tooltip story put a tooltip on a Badge — a `<span>` that cannot take focus** — so the tooltip only ever appeared on hover, the one failure the component's own documentation says it exists to fix. About half of Bindery's `title=` attributes are status explanations of exactly that shape. Tooltip now warns in development when its trigger cannot receive focus, and the story gives the badge `tabIndex={0}`.
+
+Smaller finds: PageHeader built its own count label and still read "1 items", and `<Badge color="green">` type-checks in TypeScript too — React allows `color` on every HTML element — so the `color` warning helps TS callers as well as JS ones.
+
+**The stripping guard caught a leak on its first run.** esbuild dropped every call site but kept the shell of `devWarn`, with its `[d3-ui]` template inside. The guard now bundles the package twice, once for development to prove it can see the strings at all and once for production to prove they are gone, and it was shown to fail by planting an unguarded warning in the build.
+
+**Why one Tooltip test takes five seconds.** Opening a tooltip makes floating-ui call `getComputedStyle` up every ancestor, and jsdom with the real stylesheets loaded takes about five seconds to do that, long enough to look like a hang. The test carries an explicit timeout and the reason, and the same path was checked with a real keyboard Tab in Storybook, where it opens in one frame.

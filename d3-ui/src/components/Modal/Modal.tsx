@@ -1,5 +1,6 @@
 import * as Dialog from '@radix-ui/react-dialog'
 import { cn } from '../../lib/cn'
+import { devWarn } from '../../lib/dev'
 import './Modal.css'
 
 export type ModalSize = 'sm' | 'md' | 'lg'
@@ -35,6 +36,12 @@ export function Modal({
   open, onOpenChange, trigger, title, description, children, footer,
   size = 'md', destructive = false, className,
 }: ModalProps) {
+  if (process.env.NODE_ENV !== 'production') {
+    if (!title) {
+      devWarn('Modal.title', 'Modal: `title` is required. It is the dialog\'s accessible name, so without it ' +
+        'a screen reader announces "dialog" and nothing about what it is for.')
+    }
+  }
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       {trigger ? <Dialog.Trigger asChild>{trigger}</Dialog.Trigger> : null}
