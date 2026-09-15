@@ -91,8 +91,10 @@ export const CardTitle = ({ as = 'p', className, children, ...rest }: CardTitleP
   const Element = (TITLE_ELEMENTS as readonly string[]).includes(as) ? as : 'p'
   return <Element className={cn('d3-crd__title', className)} {...rest}>{children}</Element>
 }
-export const CardBody = ({ className, children, ...rest }: React.HTMLAttributes<HTMLParagraphElement>) => (
-  <p className={cn('d3-crd__body', className)} {...rest}>{children}</p>
+// A div, not a p: a body is often more than one sentence, and a <p> cannot
+// hold a list or another paragraph (the same fix as Alert, D-050).
+export const CardBody = ({ className, children, ...rest }: React.HTMLAttributes<HTMLDivElement>) => (
+  <div className={cn('d3-crd__body', className)} {...rest}>{children}</div>
 )
 export const CardFooter = ({ className, children, ...rest }: React.HTMLAttributes<HTMLDivElement>) => (
   <div className={cn('d3-crd__footer', className)} {...rest}>{children}</div>

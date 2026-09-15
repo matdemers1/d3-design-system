@@ -4,6 +4,16 @@ The D3 Cloud component library. Consumed by **Bindery**, **App B**, **App C** an
 
 Design work, decisions and specs live in the workspace at `design-system/` — `AUDIT.md`, `BRIEF.md`, `DECISIONS.md` and the exploration pages. This repo is what ships.
 
+## Supported environments
+
+- React 18.2+ or 19, rendered on the client. React Server Components are not
+  supported: the components use state, effects and context.
+- A bundler that replaces `process.env.NODE_ENV` (Vite, webpack, esbuild and
+  Rollup all do), which strips the development contract checks from
+  production builds. The package is ESM-only.
+- Evergreen browsers. The CSS relies on cascade layers, `:has()` and
+  `color-mix()`.
+
 ## Install
 
 Installed by git tag; there is no registry (D-035).
@@ -24,6 +34,15 @@ import { Button } from '@d3cloud/ui'
 ```js
 import '@d3cloud/ui/theme.css'    // optional — Tailwind v4 preset
 ```
+
+### Names
+
+`label` is used where a component builds the accessible name itself: it is
+visible on Checkbox and FormField, and name-only on IconButton, Spinner and
+CountBadge. Group components (SegmentedControl, Tabs, Select outside a
+FormField) take `aria-label` verbatim. `tone` means colour carries meaning
+(Alert, Badge), `variant` means emphasis or shape (Button, Link, Skeleton), and
+`kind` means the situation (EmptyState).
 
 ### Overriding a component
 

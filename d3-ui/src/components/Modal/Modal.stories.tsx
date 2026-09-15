@@ -32,8 +32,8 @@ export const Confirmation: Story = {
       trigger={<Button variant="danger-ghost">Dismiss 3 items</Button>}
       footer={
         <>
-          <ModalClose asChild><Button variant="ghost">Cancel</Button></ModalClose>
-          <ModalClose asChild><Button variant="danger">Dismiss 3 items</Button></ModalClose>
+          <ModalClose><Button variant="ghost">Cancel</Button></ModalClose>
+          <ModalClose><Button variant="danger">Dismiss 3 items</Button></ModalClose>
         </>
       }
     />
@@ -53,7 +53,7 @@ export const WithAForm: Story = {
         trigger={<Button variant="danger-ghost">Dismiss 3 items</Button>}
         footer={
           <>
-            <ModalClose asChild><Button variant="ghost">Cancel</Button></ModalClose>
+            <ModalClose><Button variant="ghost">Cancel</Button></ModalClose>
             <Button variant="danger" disabled={!reason}>Dismiss 3 items</Button>
           </>
         }

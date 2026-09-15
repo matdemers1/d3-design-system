@@ -76,12 +76,12 @@ export function FormField({
           // Polite, so an error appearing after submit is spoken rather than
           // silently drawn — and never assertive, which would cut across the
           // user mid-keystroke.
-          <p className="d3-ff__error" id={errorId} role="status">
+          <div className="d3-ff__error" id={errorId} role="status">
             {errorIcon ? <span aria-hidden="true" style={{ display: 'flex', marginTop: 1 }}>{errorIcon}</span> : null}
             <span>{error}</span>
-          </p>
+          </div>
         ) : null}
-        {help ? <p className="d3-ff__help" id={helpId}>{help}</p> : null}
+        {help ? <div className="d3-ff__help" id={helpId}>{help}</div> : null}
       </div>
     </FormFieldContext.Provider>
   )

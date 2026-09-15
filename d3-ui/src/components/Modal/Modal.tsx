@@ -84,4 +84,13 @@ export function Modal({
   )
 }
 
-export const ModalClose = Dialog.Close
+/**
+ * Makes a footer button close the Modal — the way an uncontrolled Modal (one
+ * opened by `trigger`, with no state of its own) is dismissed from Cancel.
+ * Always wraps a single button; the button keeps its own look and label.
+ * Its own type rather than Radix's, which would make a Radix major release a
+ * breaking change here.
+ */
+export function ModalClose({ children }: { children: React.ReactElement }) {
+  return <Dialog.Close asChild>{children}</Dialog.Close>
+}

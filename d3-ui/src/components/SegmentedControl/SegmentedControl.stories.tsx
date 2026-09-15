@@ -1,16 +1,16 @@
 import { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { SegmentedControl } from './SegmentedControl'
-import type { SegmentedItem } from './SegmentedControl'
+import type { SegmentedControlItem } from './SegmentedControl'
 
-const GROUPINGS: SegmentedItem[] = [
+const GROUPINGS: SegmentedControlItem[] = [
   { value: 'kind', label: 'Kind' },
   { value: 'correspondent', label: 'Correspondent' },
   { value: 'year', label: 'Year' },
 ]
 
 function Demo({ items, size, label = 'Group by', activationMode }: {
-  items: SegmentedItem[]; size?: 'sm' | 'md'; label?: string
+  items: SegmentedControlItem[]; size?: 'sm' | 'md'; label?: string
   activationMode?: 'automatic' | 'manual'
 }) {
   const [value, setValue] = useState(items.find((i) => !i.disabled)!.value)

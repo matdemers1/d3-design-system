@@ -87,3 +87,14 @@ for (const width of [1000, 380]) {
     })
   }
 }
+
+test("a TooltipProvider's delay applies to the tooltips under it", async ({ page }) => {
+  // Every Tooltip used to pass its own 400ms to Radix, which prefers a Root's
+  // delay over its Provider's, so no provider delay ever took effect.
+  await page.goto(storyUrl('layers-tooltip--provider-delay'))
+  await settle(page)
+  await page.locator('.d3-ibtn').hover()
+  await page.waitForTimeout(800)
+  await expect(page.locator('.d3-tip')).toHaveCount(0)
+  await expect(page.locator('.d3-tip')).toBeVisible({ timeout: 2000 })
+})

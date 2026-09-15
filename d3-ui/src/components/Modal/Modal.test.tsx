@@ -16,7 +16,7 @@ describe('Modal — the contract App B has never met', () => {
         title="Dismiss 3 items"
         description="They leave the inbox and stay searchable."
         trigger={<Button>Open</Button>}
-        footer={<ModalClose asChild><Button>Cancel</Button></ModalClose>}
+        footer={<ModalClose><Button>Cancel</Button></ModalClose>}
       />,
     )
     await user.click(screen.getByRole('button', { name: 'Open' }))

@@ -4,7 +4,7 @@ import { devWarn } from '../../lib/dev'
 import { countLabel } from '../../lib/countLabel'
 import './SegmentedControl.css'
 
-export interface SegmentedItem {
+export interface SegmentedControlItem {
   value: string
   label: string
   /** Decorative. The label carries the name. */
@@ -16,7 +16,7 @@ export interface SegmentedItem {
 }
 
 export interface SegmentedControlProps {
-  items: SegmentedItem[]
+  items: SegmentedControlItem[]
   value: string
   onValueChange: (value: string) => void
   size?: 'sm' | 'md'

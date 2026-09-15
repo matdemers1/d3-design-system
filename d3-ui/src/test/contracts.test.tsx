@@ -263,6 +263,27 @@ describe('meaning never rests on colour alone', () => {
   })
 })
 
+describe('Checkbox named by aria-label', () => {
+  it('renders no empty <label> and keeps its name', () => {
+    const { container, getByRole } = render(<UI.Checkbox aria-label="Select row 3" />)
+    expect(container.querySelector('label')).toBeNull()
+    expect(getByRole('checkbox', { name: 'Select row 3' })).toBeInTheDocument()
+  })
+})
+
+describe('Link asChild refs', () => {
+  it('reaches both the caller and the child, with no React warning', () => {
+    const err = vi.spyOn(console, 'error').mockImplementation(() => {})
+    const outer = React.createRef<HTMLAnchorElement>()
+    const inner = React.createRef<HTMLAnchorElement>()
+    render(<UI.Link asChild ref={outer}><a href="/x" ref={inner}>Go</a></UI.Link>)
+    expect(outer.current?.tagName).toBe('A')
+    expect(inner.current).toBe(outer.current)
+    expect(err.mock.calls.map((c) => String(c[0])).filter((m) => /ref/i.test(m))).toEqual([])
+    err.mockRestore()
+  })
+})
+
 describe('Select accepts what a native <select> accepted', () => {
   it('an id, so a <label htmlFor> outside a FormField names it', () => {
     const { getByRole } = render(<><label htmlFor="lvl">Minimum level</label>

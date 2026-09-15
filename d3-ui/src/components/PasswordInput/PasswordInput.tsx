@@ -3,9 +3,11 @@ import { cn } from '../../lib/cn'
 import { devOneOf, devWarn, useMergedRef, useNameCheck } from '../../lib/dev'
 import { useFormField } from '../FormField/FormFieldContext'
 import '../Input/Input.css'
+import type { InputSize } from '../Input/Input'
 import './PasswordInput.css'
 
-export type PasswordInputSize = 'sm' | 'md' | 'lg'
+/** The Input scale — a password field sits in the same rows as the fields around it. */
+export type PasswordInputSize = InputSize
 
 /**
  * How strong the password is, as the app judges it. The library ships no

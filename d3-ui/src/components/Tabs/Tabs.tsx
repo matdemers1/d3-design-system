@@ -127,6 +127,15 @@ export function Tabs({
   )
 }
 
-export const TabPanel = ({ className, ...rest }: React.ComponentProps<typeof RadixTabs.Content>) => (
-  <RadixTabs.Content className={cn('d3-tabs__panel', className)} {...rest} />
+export interface TabPanelProps {
+  /** The `value` of the tab this panel belongs to. */
+  value: string
+  children?: React.ReactNode
+  className?: string
+}
+
+export const TabPanel = ({ value, children, className }: TabPanelProps) => (
+  <RadixTabs.Content value={value} className={cn('d3-tabs__panel', className)}>
+    {children}
+  </RadixTabs.Content>
 )

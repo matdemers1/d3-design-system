@@ -52,6 +52,18 @@ apps must not select on them.
 
 ### Fixed
 
+- **A `TooltipProvider`'s delays never took effect.** Every Tooltip passed its
+  own 400ms to Radix, which prefers that over the provider's. Proven with a
+  1.5s provider in a real browser.
+- **`Link asChild` dropped the caller's ref on React 18** (a plain function
+  component never receives `ref`) and logged a deprecation warning on React 19
+  (it read `element.ref`). `Slot` now forwards refs and reads the child's ref
+  where each major version keeps it.
+- **Checkbox with no visible label** renders no empty `<label>`. The type now
+  requires either `label` or `aria-label`.
+- The Tailwind weight utilities reference `--weight-*` instead of repeating
+  the numbers, so the two cannot drift apart.
+
 - **The usage gate no longer scans test files.** A fixture's `fgColor: '#000000'`
   is data under test, not a colour anyone sees. In d3-qr those were 17 of the
   gate's 30 findings, and exempting each fixture line teaches people to exempt.
@@ -108,6 +120,29 @@ apps must not select on them.
   missed the fix Tabs and SegmentedControl received in v0.1.1.
 
 ### Breaking
+
+API freeze for 1.0 (V1-6, D-063). Neither consuming app imported any of these,
+so no app code changed.
+
+- **Not exported any more:** `useFormField`, `FormFieldContext`,
+  `FormFieldContextValue`, `initialsOf`. They are internals, and exporting them
+  froze wiring that isn't finished (the context's `required` is read by nothing).
+- **Package entry points:** only `.`, `./tokens.css`, `./theme.css` and
+  `./package.json`. `./styles.css` is gone, because the entry imports its own
+  CSS and layers settle ordering (D-061). The `./tokens/*` wildcard, which
+  published the DTCG sources and font files as import paths, is gone too.
+- **Tooltip:** `delayDuration` and `className` are removed, and `content` is
+  `string`. A per-tooltip delay is what stopped `TooltipProvider`'s delay from
+  ever applying (fixed below), and D-033 sets the delay system-wide.
+- **Own prop types instead of Radix's:** `CheckboxProps`,
+  `TooltipProviderProps`, `TabPanelProps`, and `ModalClose`, which now always
+  wraps one button (no `asChild`). A Radix major release is no longer a
+  breaking change here.
+- **`CardBody`, `PageHeader` description, and `FormField` help and error**
+  render a `div`, so they can hold more than a sentence (as Alert did in D-050).
+- **Renamed:** `SegmentedItem` to `SegmentedControlItem`. `PasswordInputSize`
+  is now an alias of `InputSize`.
+
 
 - **`PageHeader.backTo` and `backIcon` are replaced by a `back` slot.** The old
   prop rendered a plain `<a href>`, which reloads the page under a client router.

@@ -75,7 +75,7 @@ export function PageHeader({
             <span className="d3-ph__count" aria-hidden="true">{countWords(count)}</span>
           ) : null}
         </h1>
-        {description ? <p className="d3-ph__desc">{description}</p> : null}
+        {description ? <div className="d3-ph__desc">{description}</div> : null}
       </div>
       {actions ? <div className="d3-ph__actions">{actions}</div> : null}
     </div>

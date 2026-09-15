@@ -1,17 +1,15 @@
 import { createContext, useContext, useEffect, useRef } from 'react'
 import * as RadixTooltip from '@radix-ui/react-tooltip'
-import { cn } from '../../lib/cn'
 import { devWarn } from '../../lib/dev'
 import './Tooltip.css'
 
+export type TooltipSide = 'top' | 'right' | 'bottom' | 'left'
+
 export interface TooltipProps {
   /** Text only. **No links, no buttons** — a tooltip cannot be hovered into. */
-  content: React.ReactNode
+  content: string
   children: React.ReactNode
-  side?: 'top' | 'right' | 'bottom' | 'left'
-  /** 400ms on hover so it does not flash while crossing a toolbar. Focus is always 0ms. */
-  delayDuration?: number
-  className?: string
+  side?: TooltipSide
 }
 
 /**
@@ -31,7 +29,10 @@ const FOCUSABLE =
 /** True beneath a TooltipProvider, so a Tooltip knows whether to supply its own. */
 const Provided = createContext(false)
 
-export function Tooltip({ content, children, side = 'top', delayDuration = 400, className }: TooltipProps) {
+/** The system's hover delay (D-033). Focus is always immediate. */
+const DELAY = 400
+
+export function Tooltip({ content, children, side = 'top' }: TooltipProps) {
   const provided = useContext(Provided)
   // Typed as a button because Radix types the trigger that way; with `asChild`
   // it is really whatever element the child renders.
@@ -53,10 +54,13 @@ export function Tooltip({ content, children, side = 'top', delayDuration = 400, 
   }, [])
 
   const tip = (
-    <RadixTooltip.Root delayDuration={delayDuration}>
+    // No delay on the Root. Radix prefers a Root's delay over its Provider's,
+    // so passing the default here meant a TooltipProvider's delayDuration never
+    // took effect anywhere — invisible only because Bindery's matched it.
+    <RadixTooltip.Root>
       <RadixTooltip.Trigger asChild ref={trigger}>{children}</RadixTooltip.Trigger>
       <RadixTooltip.Portal>
-        <RadixTooltip.Content className={cn('d3-tip', className)} side={side} sideOffset={6}>
+        <RadixTooltip.Content className="d3-tip" side={side} sideOffset={6}>
           {content}
         </RadixTooltip.Content>
       </RadixTooltip.Portal>
@@ -67,14 +71,27 @@ export function Tooltip({ content, children, side = 'top', delayDuration = 400, 
   // wrap themselves, so it never showed there. So a Tooltip supplies its own
   // when it has to. Wrapping the app once is still better, and is what the
   // Provider is for: it groups delays so crossing a toolbar does not re-wait.
-  return provided ? tip : <RadixTooltip.Provider delayDuration={delayDuration}>{tip}</RadixTooltip.Provider>
+  return provided ? tip : <RadixTooltip.Provider delayDuration={DELAY}>{tip}</RadixTooltip.Provider>
 }
 
-/** Optional. Wrap the app once to share delays between tooltips. */
-export function TooltipProvider(props: React.ComponentProps<typeof RadixTooltip.Provider>) {
+export interface TooltipProviderProps {
+  children: React.ReactNode
+  /** Hover delay before the first tooltip opens. The system default is 400ms. */
+  delayDuration?: number
+  /** How long after one closes the next opens with no delay — crossing a toolbar. */
+  skipDelayDuration?: number
+}
+
+/**
+ * Optional. Wrap the app once to share delays between tooltips. Its own props,
+ * not Radix's: a Radix major release must not be a breaking change here.
+ */
+export function TooltipProvider({ children, delayDuration = DELAY, skipDelayDuration = 300 }: TooltipProviderProps) {
   return (
     <Provided.Provider value={true}>
-      <RadixTooltip.Provider {...props} />
+      <RadixTooltip.Provider delayDuration={delayDuration} skipDelayDuration={skipDelayDuration}>
+        {children}
+      </RadixTooltip.Provider>
     </Provided.Provider>
   )
 }

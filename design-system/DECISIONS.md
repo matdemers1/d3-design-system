@@ -1130,3 +1130,23 @@ Three defects shipped past a green unit suite, and each was found by somebody me
 **Consequence for apps.** A Tailwind `outline-none` now really removes the ring from an app's own elements. Before, the unlayered global ring silently overrode it. Bindery dropped `outline-none` from native fields that used the ring as their only strong focus cue.
 
 **Lesson recorded for V1-6.** Two consecutive cascade defects, D-061 and this one, were invisible to 500 unit tests and 500 browser checks, and obvious in the first screenshot of a real app. The API freeze includes a rendered review of both consumers in both themes and in a keyboard-focused state, not only the Storybook sweep.
+
+---
+
+### D-063 · V1-6 · The API freeze: what changed, and what was kept on purpose
+**Date:** 2026-09-15
+A review of every export, prop, default, token and package entry point, checked against both apps' real imports, including the peer's unmerged front-door branch. After 1.0 a rename is a major version, so this is where names settle.
+
+**Changed** (details in CHANGELOG): the internals are no longer exported; the package has four entry points; Tooltip loses its per-instance delay and `className`, and `content` narrows to `string`; Checkbox, TooltipProvider, TabPanel and ModalClose own their prop types instead of passing Radix's through; text containers that accept ReactNode render `div`; `SegmentedItem` is renamed `SegmentedControlItem`. None of it touched app code.
+
+**Two bugs surfaced in the review and are proven fixed.** A `TooltipProvider`'s delay never applied, because each Tooltip set its own. `Link asChild` dropped refs on React 18 and warned on React 19. Each has a test that fails on the old code.
+
+**Kept on purpose.**
+- *`ModalClose` stays public.* The review called it internal. It is the only way for a footer button to close an uncontrolled Modal, and the stories teach it. It keeps a narrow type of its own.
+- *Plain token names stay as they are* (`--dur-*`, `--weight-*`, `--leading-*`, `--icon-*`). The Tailwind-side names are utility namespaces declared through `@theme inline`, which emits no custom properties, so at runtime each concept already has one variable. Renaming the runtime names to match Tailwind's would be churn, not the one-name rule D-017 set. The weights did repeat their numbers instead of referencing the variables, and now reference them.
+- *CodeInput defaults to `lg`,* an exception to D-030's "`md` is the default". A code field is the only task on its screen, entered character by character from another device, and every call site in both apps is that case.
+- *Button's `icon` and `iconAfter`* are not renamed to match Input's `leading` and `trailing`. A Button slot takes an icon; an Input affix takes a unit, a glyph or a count. Different things, different names.
+- *Unused props with a recorded need stay:* Avatar (D-028), Modal `trigger`/`description`/`size`/`destructive` (D-033), PageHeader `count`/`back`/`actions`/`focusOnMount`, and CodeInput `groups`/`masked`/`mode`/`status`.
+
+**Additive, so left for 1.x:** `forwardRef` on FormField, Modal, PageHeader, SegmentedControl, Tabs and the Card parts; wider attribute types on Select, SegmentedControl and Tabs; exported `SelectSize`, `SegmentedControlSize` and `ActivationMode`; `href` implying `interactive` on Card.
+

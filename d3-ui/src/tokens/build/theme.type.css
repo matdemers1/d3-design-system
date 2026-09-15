@@ -18,8 +18,8 @@
   --text-20--line-height: var(--leading-20);
   --text-24: var(--text-24);
   --text-24--line-height: var(--leading-24);
-  --font-weight-regular: 400;
-  --font-weight-medium: 500;
-  --font-weight-semibold: 600;
-  --font-weight-title: 650;
+  --font-weight-regular: var(--weight-regular);
+  --font-weight-medium: var(--weight-medium);
+  --font-weight-semibold: var(--weight-semibold);
+  --font-weight-title: var(--weight-title);
 }

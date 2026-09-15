@@ -48,3 +48,12 @@ export const SharedDelays: Story = {
     </TooltipProvider>
   ),
 }
+
+/** A slow provider, so the delay it sets can be seen to apply. */
+export const ProviderDelay: Story = {
+  render: () => (
+    <TooltipProvider delayDuration={1500}>
+      <Tooltip content="Settings"><IconButton icon={<Settings size={16} strokeWidth={1.8} />} label="Settings" /></Tooltip>
+    </TooltipProvider>
+  ),
+}

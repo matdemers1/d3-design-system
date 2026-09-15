@@ -3,15 +3,15 @@ import { useState } from 'react'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { SegmentedControl } from './SegmentedControl'
-import type { SegmentedItem } from './SegmentedControl'
+import type { SegmentedControlItem } from './SegmentedControl'
 
-const ITEMS: SegmentedItem[] = [
+const ITEMS: SegmentedControlItem[] = [
   { value: 'kind', label: 'Kind' },
   { value: 'correspondent', label: 'Correspondent' },
   { value: 'year', label: 'Year' },
 ]
 
-function Harness({ items = ITEMS, onChange }: { items?: SegmentedItem[]; onChange?: (v: string) => void }) {
+function Harness({ items = ITEMS, onChange }: { items?: SegmentedControlItem[]; onChange?: (v: string) => void }) {
   const [value, setValue] = useState(items.find((i) => !i.disabled)!.value)
   return (
     <SegmentedControl
