@@ -4,7 +4,11 @@ Semver. The public surface is what `d3-ui/src/index.ts` exports plus the token
 names; CSS class names (`.d3-btn`, `.d3-seg`) are an implementation detail and
 apps must not select on them.
 
-## Unreleased — toward v1.0.0
+## v1.0.0 — 2026-09-15
+
+The first stable release. The public API is frozen (D-063): from here, a rename
+or removal is a major version. Adopted by Bindery and d3-qr, and verified
+rendered in both apps, in both themes and with keyboard focus.
 
 ### Added
 

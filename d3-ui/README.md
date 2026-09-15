@@ -16,11 +16,15 @@ Design work, decisions and specs live in the workspace at `design-system/` — `
 
 ## Install
 
-Installed by git tag; there is no registry (D-035).
+Each release attaches a packed tarball to its GitHub release. Install by URL;
+there is no registry (D-064):
 
 ```
-npm i "@d3cloud/ui@github:<owner>/d3-ui#v0.1.0"
+npm i https://github.com/matdemers1/d3-design-system/releases/download/v1.0.0/d3cloud-ui-1.0.0.tgz
 ```
+
+Upgrade by changing the version in the URL, twice. The tarball is immutable
+and the lockfile records its integrity hash.
 
 ## Use
 

@@ -1150,3 +1150,19 @@ A review of every export, prop, default, token and package entry point, checked 
 
 **Additive, so left for 1.x:** `forwardRef` on FormField, Modal, PageHeader, SegmentedControl, Tabs and the Card parts; wider attribute types on Select, SegmentedControl and Tabs; exported `SelectSize`, `SegmentedControlSize` and `ActivationMode`; `href` implying `interactive` on Card.
 
+---
+
+### D-064 · V1-7 · Releases ship as tarballs attached to GitHub releases
+**Date:** 2026-09-15
+**Supersedes the install form in D-035.** D-035 chose "installed by git tag" as `github:<owner>/d3-ui#tag`. That form never worked once the package lived in a `d3-ui/` subdirectory of `d3-design-system`: npm installs a git dependency from the repository root. Both apps have been installing from tarballs attached to GitHub releases since v0.1.1, so this records what is already true.
+
+**Chosen:** every release attaches `d3cloud-ui-<version>.tgz`, packed from the tagged commit after CI passes (build, browser checks). Apps install it by URL. The asset is immutable and the lockfile pins its integrity hash. Before each publish, the downloaded asset is compared byte for byte with the local pack.
+
+**Rejected.**
+- *Public npm under a scope the maintainer owns.* It needs a registry account, and both apps would change their import path.
+- *GitHub Packages.* Every install would need an auth token, even for a public package, including in both apps' CI.
+
+The package name `@d3cloud/ui` stays. It is never published to a registry, so the unrelated `github.com/d3cloud` organisation does not matter.
+
+**Consequence.** Semver ranges and `npm outdated` do not work. An upgrade is a URL edit, which suits two consumers upgraded deliberately. Moving to a registry later changes the install line, not the import path.
+
