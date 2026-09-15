@@ -25,6 +25,11 @@ export interface SelectProps {
   className?: string
   /** Accessible name when used outside a FormField — a toolbar or table cell. */
   'aria-label'?: string
+  /**
+   * For a `<label htmlFor>` outside a FormField. Inside one, the field supplies
+   * the id and this is not needed.
+   */
+  id?: string
   /** Submitted with a native form, like the `<select>` this replaces. */
   name?: string
   required?: boolean
@@ -44,7 +49,7 @@ const EMPTY = '__d3-select-empty__'
 
 export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select(
   { options = [], value, defaultValue, onValueChange, placeholder = 'Select…', size = 'md',
-    disabled, invalid, className, chevronIcon, checkIcon, name, required, ...rest }, ref,
+    disabled, invalid, className, chevronIcon, checkIcon, name, required, id, ...rest }, ref,
 ) {
   const field = useFormField()
   const isInvalid = invalid ?? field?.invalid ?? false
@@ -68,7 +73,7 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
     >
       <RadixSelect.Trigger
         ref={ref}
-        id={field?.id}
+        id={id ?? field?.id}
         aria-invalid={isInvalid || undefined}
         aria-describedby={field?.describedBy}
         className={cn('d3-inp', `d3-inp--${size}`, 'd3-sel',

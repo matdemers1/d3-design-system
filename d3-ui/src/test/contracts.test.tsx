@@ -264,6 +264,12 @@ describe('meaning never rests on colour alone', () => {
 })
 
 describe('Select accepts what a native <select> accepted', () => {
+  it('an id, so a <label htmlFor> outside a FormField names it', () => {
+    const { getByRole } = render(<><label htmlFor="lvl">Minimum level</label>
+      <Select id="lvl" options={[{ value: 'a', label: 'A' }]} /></>)
+    expect(getByRole('combobox', { name: 'Minimum level' })).toBeInTheDocument()
+  })
+
   it('an option whose value is the empty string renders', () => {
     // Radix throws on this. Bindery's log filter ("Everything" = "") crashed on first render.
     expect(() => render(<Select aria-label="Level" value="" onValueChange={() => {}}
