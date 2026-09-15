@@ -66,9 +66,14 @@ describe('CodeInput — one control, drawn as boxes', () => {
     render(<CodeInput aria-label="Code" defaultValue="123456" />)
     const input = screen.getByLabelText('Code') as HTMLInputElement
     await user.click(input)
-    input.setSelectionRange(2, 2)
+    // Moved the way a person moves it: arrow keys release any caret the
+    // component was holding, and the browser moves the real one.
+    await user.keyboard('{End}{ArrowLeft}{ArrowLeft}{ArrowLeft}{ArrowLeft}')
     await user.keyboard('9')
     expect(input).toHaveValue('129456')
+    // And the next character goes into the next box, not the same one again.
+    await user.keyboard('8')
+    expect(input).toHaveValue('129856')
   })
 
   it('fires onComplete again after a rejected code is cleared and retyped', async () => {

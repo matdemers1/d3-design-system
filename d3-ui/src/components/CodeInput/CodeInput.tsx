@@ -76,7 +76,7 @@ export const CodeInput = forwardRef<HTMLInputElement, CodeInputProps>(function C
     length: lengthProp = 6, value: valueProp, defaultValue, onValueChange, onComplete,
     mode: modeProp = 'numeric', groups, size: sizeProp = 'lg', status: statusProp = 'idle',
     masked = false, invalid, className, disabled, id, autoComplete,
-    onFocus, onBlur, onKeyDown, onSelect, onPointerDown, style, ...rest
+    onFocus, onBlur, onKeyDown, onSelect, onPointerDown, onClick, style, ...rest
   },
   ref,
 ) {
@@ -112,6 +112,13 @@ export const CodeInput = forwardRef<HTMLInputElement, CodeInputProps>(function C
   const local = useNameCheck<HTMLInputElement>('CodeInput')
   const setRef = useMergedRef(ref, local)
   const slotsRef = useRef<HTMLDivElement | null>(null)
+  // A caret the component placed itself — after a tap on a box, or a character
+  // replaced in place — held against the browser's own opinion. iOS Safari
+  // follows both with a selection event carrying the position *it* would have
+  // chosen, from text metrics that no longer match the boxes; trusting that
+  // event put the next character back into the box just filled. Held until the
+  // value changes some other way, or the person moves the caret themselves.
+  const held = useRef<{ at: number; value: string } | null>(null)
   const fallbackId = useId()
   const inputId = id ?? field?.id ?? fallbackId
   // The boxes are aria-hidden, so the length they show has to be said another
@@ -148,6 +155,7 @@ export const CodeInput = forwardRef<HTMLInputElement, CodeInputProps>(function C
   }, [value, length])
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+    held.current = null
     const el = event.target
     const next = clean(el.value, mode, length)
     // Characters removed by cleaning shift the caret left by as many.
@@ -174,14 +182,41 @@ export const CodeInput = forwardRef<HTMLInputElement, CodeInputProps>(function C
     const at = Math.min(index, value.length)
     el.setSelectionRange(at, at)
     setCaret(at)
+    held.current = { at, value }
+  }
+
+  // And after the tap itself: iOS Safari places its own caret once the tap ends
+  // and fires no selection event for it, so the held position is applied again
+  // then, and once more a frame later, after Safari's own pass. Both checked in
+  // the iOS Simulator: without this pass, a tap on a filled box typed into the
+  // next empty one; without the held position, the caret would not advance past
+  // a replaced character.
+  function handleClick(event: React.MouseEvent<HTMLInputElement>) {
+    onClick?.(event)
+    const el = event.currentTarget
+    const apply = () => {
+      const pin = held.current
+      if (!pin || pin.value !== el.value || document.activeElement !== el) return
+      if (el.selectionStart !== pin.at || el.selectionEnd !== pin.at) el.setSelectionRange(pin.at, pin.at)
+      setCaret(pin.at)
+    }
+    apply()
+    requestAnimationFrame(apply)
   }
 
   function handleKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
     onKeyDown?.(event)
     if (event.defaultPrevented || disabled) return
     const el = event.currentTarget
-    const at = el.selectionStart ?? value.length
-    const collapsed = el.selectionStart === el.selectionEnd
+    // Where the caret really is, if the component put it there and nothing has
+    // changed since. iOS Safari resets the input's own selection after a
+    // replaced character without any event, so reading `selectionStart` here
+    // put every following digit back into the same box.
+    const pin = held.current && held.current.value === el.value ? held.current : null
+    held.current = null
+    const at = pin ? pin.at : (el.selectionStart ?? value.length)
+    const collapsed = pin ? true : el.selectionStart === el.selectionEnd
+    if (pin && (el.selectionStart !== at || el.selectionEnd !== at)) el.setSelectionRange(at, at)
     // Typing onto a filled box replaces it and moves on, which is what the
     // boxes promise. A plain input would insert and push the rest right.
     // Android virtual keyboards report `key` as "Unidentified", so there this
@@ -192,7 +227,9 @@ export const CodeInput = forwardRef<HTMLInputElement, CodeInputProps>(function C
       const ch = clean(event.key, mode, 1)
       event.preventDefault()
       if (!ch) return
-      commit(value.slice(0, at) + ch + value.slice(at + 1), at + 1)
+      const next = value.slice(0, at) + ch + value.slice(at + 1)
+      commit(next, at + 1)
+      held.current = { at: at + 1, value: next }
       return
     }
     if (event.key === 'Backspace' && collapsed && at > 0 && at < value.length) {
@@ -205,6 +242,17 @@ export const CodeInput = forwardRef<HTMLInputElement, CodeInputProps>(function C
 
   function syncCaret(event: React.SyntheticEvent<HTMLInputElement>) {
     const el = event.currentTarget
+    const pin = held.current
+    if (pin) {
+      // Not released here. A selection event can arrive before React has
+      // written the replaced character back into the input, so a value that
+      // does not match yet is a render in flight, not a person moving on.
+      if (pin.value === el.value && (el.selectionStart !== pin.at || el.selectionEnd !== pin.at)) {
+        el.setSelectionRange(pin.at, pin.at)
+      }
+      setCaret(pin.at)
+      return
+    }
     if (el.selectionStart !== null) setCaret(el.selectionStart)
   }
 
@@ -261,6 +309,7 @@ export const CodeInput = forwardRef<HTMLInputElement, CodeInputProps>(function C
         onChange={handleChange}
         onKeyDown={handleKeyDown}
         onPointerDown={handlePointerDown}
+        onClick={handleClick}
         onSelect={(e) => { syncCaret(e); onSelect?.(e) }}
         onFocus={(e) => { setFocused(true); syncCaret(e); onFocus?.(e) }}
         onBlur={(e) => { setFocused(false); onBlur?.(e) }}
