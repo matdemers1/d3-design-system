@@ -57,7 +57,10 @@ export const EmptyState = forwardRef<HTMLDivElement, EmptyStateProps>(function E
       {icon ? <span className="d3-es__icon" aria-hidden="true">{icon}</span> : null}
       <div className="d3-es__text">
         <Heading className="d3-es__heading">{heading}</Heading>
-        {children ? <p className="d3-es__body">{children}</p> : null}
+        {/* A div, not a p — the D-050 lesson again. Bindery's "Not here" state holds
+            paragraphs of its own, and a p cannot contain one; the browser closes the
+            outer paragraph early and the body reflows with no error. */}
+        {children ? <div className="d3-es__body">{children}</div> : null}
       </div>
       {action ? <div className="d3-es__actions">{action}</div> : null}
     </div>

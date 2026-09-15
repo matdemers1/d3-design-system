@@ -28,3 +28,10 @@
 .d3-es__actions { margin-top: var(--space-12); display: flex; gap: var(--space-8); }
 .d3-es--row .d3-es__actions { margin-top: 0; margin-left: auto; }
 .d3-es__text { min-width: 0; }
+
+/* The body is a div so it can hold real content; give the paragraphs inside it
+   the system's rhythm rather than the browser's default margins, which an app
+   without a CSS reset would otherwise show. */
+.d3-es__body > :where(p, ul, ol) { margin: 0; }
+.d3-es__body > :where(p, ul, ol) + :where(p, ul, ol) { margin-top: var(--space-8); }
+

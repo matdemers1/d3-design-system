@@ -40,6 +40,11 @@ apps must not select on them.
 
 ### Fixed
 
+- **EmptyState's body was a `<p>`**, so paragraphs inside it — Bindery's "Not here"
+  state has two — were invalid nesting the browser repairs by closing the outer
+  paragraph early. The same defect Alert had in D-050. Body content in both now
+  gets the system's paragraph spacing rather than browser defaults.
+
 - **Select crashed on an option whose value is `""`** — Radix reserves the empty
   string for "nothing selected". "Everything", "None" and "Any" are ordinary
   options a native `<select>` allowed; they now work, translated at the boundary.

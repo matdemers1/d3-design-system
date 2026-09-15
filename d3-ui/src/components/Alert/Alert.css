@@ -31,3 +31,10 @@
 .d3-alrt--warning .d3-alrt__icon, .d3-alrt--warning .d3-alrt__title { color: var(--color-warning); }
 .d3-alrt--success .d3-alrt__icon, .d3-alrt--success .d3-alrt__title { color: var(--color-success); }
 .d3-alrt--info    .d3-alrt__icon, .d3-alrt--info    .d3-alrt__title { color: var(--color-info); }
+
+/* The body is a div so it can hold real content; give the paragraphs inside it
+   the system's rhythm rather than the browser's default margins, which an app
+   without a CSS reset would otherwise show. */
+.d3-alrt__message > :where(p, ul, ol) { margin: 0; }
+.d3-alrt__message > :where(p, ul, ol) + :where(p, ul, ol) { margin-top: var(--space-8); }
+

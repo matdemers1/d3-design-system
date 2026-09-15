@@ -287,3 +287,14 @@ describe('Link asChild — a router link keeps its navigation', () => {
     expect(warned('Link: `href` is required')).toBe(false)
   })
 })
+
+describe('bodies that hold real content', () => {
+  it('EmptyState accepts paragraphs in its body without invalid nesting', () => {
+    // Same defect Alert had in D-050, found again migrating Bindery's "Not here".
+    const { container } = render(
+      <EmptyState kind="no-access" heading="Not here"><p>One.</p><p>Two.</p></EmptyState>)
+    const body = container.querySelector('.d3-es__body')!
+    expect(body.tagName).toBe('DIV')
+    expect(body.querySelectorAll('p')).toHaveLength(2)
+  })
+})
