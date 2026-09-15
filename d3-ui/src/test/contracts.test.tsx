@@ -113,9 +113,14 @@ describe('code and password entry', () => {
     expect(warned('PasswordInput: `strength.label` is empty')).toBe(true)
   })
 
+  it('PasswordInput with no autoComplete, which password managers read', () => {
+    render(<UI.PasswordInput aria-label="Password" />)
+    expect(warned('PasswordInput: give it `autoComplete`')).toBe(true)
+  })
+
   it('correct use warns about nothing', async () => {
     render(<FormField label="Code"><UI.CodeInput length={12} groups={[4, 4, 4]} mode="alphanumeric" /></FormField>)
-    render(<FormField label="Password"><UI.PasswordInput strength={{ score: 3, label: 'Good' }} /></FormField>)
+    render(<FormField label="Password"><UI.PasswordInput autoComplete="new-password" strength={{ score: 3, label: 'Good' }} /></FormField>)
     await frame(); await frame()
     expect(warn).not.toHaveBeenCalled()
   })

@@ -1,4 +1,4 @@
-import { forwardRef, useCallback, useLayoutEffect, useRef, useState } from 'react'
+import { forwardRef, useCallback, useId, useLayoutEffect, useRef, useState } from 'react'
 import { cn } from '../../lib/cn'
 import { devOneOf, devWarn, useMergedRef, useNameCheck } from '../../lib/dev'
 import { useFormField } from '../FormField/FormFieldContext'
@@ -37,7 +37,11 @@ export interface CodeInputProps
    * rejection. Under reduced motion the shake becomes a tinted fill instead.
    */
   status?: CodeInputStatus
-  /** Show a dot instead of each character — for a PIN typed in company. */
+  /**
+   * Show a dot instead of each character — for a PIN typed in company. A masked
+   * field defaults to `autocomplete="off"`: a PIN is not a one-time code, and a
+   * password-typed field saying otherwise invites a "save password?" prompt.
+   */
   masked?: boolean
   /** Overrides the FormField's error state. */
   invalid?: boolean
@@ -71,8 +75,8 @@ export const CodeInput = forwardRef<HTMLInputElement, CodeInputProps>(function C
   {
     length: lengthProp = 6, value: valueProp, defaultValue, onValueChange, onComplete,
     mode: modeProp = 'numeric', groups, size: sizeProp = 'lg', status: statusProp = 'idle',
-    masked = false, invalid, className, disabled, id, autoComplete = 'one-time-code',
-    onFocus, onBlur, onKeyDown, onSelect, style, ...rest
+    masked = false, invalid, className, disabled, id, autoComplete,
+    onFocus, onBlur, onKeyDown, onSelect, onPointerDown, style, ...rest
   },
   ref,
 ) {
@@ -107,6 +111,15 @@ export const CodeInput = forwardRef<HTMLInputElement, CodeInputProps>(function C
 
   const local = useNameCheck<HTMLInputElement>('CodeInput')
   const setRef = useMergedRef(ref, local)
+  const slotsRef = useRef<HTMLDivElement | null>(null)
+  const fallbackId = useId()
+  const inputId = id ?? field?.id ?? fallbackId
+  // The boxes are aria-hidden, so the length they show has to be said another
+  // way, or a screen reader user learns it only by being told they are short.
+  const lengthId = `${inputId}-length`
+  const lengthText = mode === 'numeric'
+    ? `${length} ${length === 1 ? 'digit' : 'digits'}`
+    : `${length} characters, letters and numbers`
 
   // Completion fires on the transition to full, not on every render while full.
   const wasComplete = useRef(value.length === length)
@@ -142,6 +155,27 @@ export const CodeInput = forwardRef<HTMLInputElement, CodeInputProps>(function C
     commit(next, Math.min(typedBefore.length, next.length))
   }
 
+  // A click lands on the invisible input, whose own caret positions come from
+  // its text metrics — and no letter-spacing tracks flexible boxes with a
+  // maximum width. So the box under the pointer decides where the caret goes,
+  // measured from the drawing, which is right at any width.
+  function handlePointerDown(event: React.PointerEvent<HTMLInputElement>) {
+    onPointerDown?.(event)
+    if (event.defaultPrevented || disabled || event.button !== 0) return
+    const slots = slotsRef.current?.querySelectorAll<HTMLElement>('.d3-code__slot')
+    if (!slots || slots.length === 0) return
+    let index = slots.length - 1
+    for (let i = 0; i < slots.length; i++) {
+      if (event.clientX < slots[i]!.getBoundingClientRect().right) { index = i; break }
+    }
+    event.preventDefault()
+    const el = event.currentTarget
+    el.focus({ preventScroll: true })
+    const at = Math.min(index, value.length)
+    el.setSelectionRange(at, at)
+    setCaret(at)
+  }
+
   function handleKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
     onKeyDown?.(event)
     if (event.defaultPrevented || disabled) return
@@ -150,6 +184,9 @@ export const CodeInput = forwardRef<HTMLInputElement, CodeInputProps>(function C
     const collapsed = el.selectionStart === el.selectionEnd
     // Typing onto a filled box replaces it and moves on, which is what the
     // boxes promise. A plain input would insert and push the rest right.
+    // Android virtual keyboards report `key` as "Unidentified", so there this
+    // falls back to the input's own insert — the change handler still cleans
+    // and clips it, so the worst case is a shift, never a wrong length.
     if (event.key.length === 1 && !event.metaKey && !event.ctrlKey && !event.altKey &&
         collapsed && at < value.length) {
       const ch = clean(event.key, mode, 1)
@@ -192,7 +229,7 @@ export const CodeInput = forwardRef<HTMLInputElement, CodeInputProps>(function C
         disabled && 'd3-code--disabled', className)}
       style={style}
     >
-      <div className="d3-code__slots" aria-hidden="true">
+      <div className="d3-code__slots" aria-hidden="true" ref={slotsRef}>
         {Array.from({ length }, (_, i) => {
           const ch = value[i]
           return [
@@ -218,11 +255,12 @@ export const CodeInput = forwardRef<HTMLInputElement, CodeInputProps>(function C
       </div>
       <input
         ref={setRef}
-        id={id ?? field?.id}
+        id={inputId}
         className="d3-code__control"
         value={value}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
+        onPointerDown={handlePointerDown}
         onSelect={(e) => { syncCaret(e); onSelect?.(e) }}
         onFocus={(e) => { setFocused(true); syncCaret(e); onFocus?.(e) }}
         onBlur={(e) => { setFocused(false); onBlur?.(e) }}
@@ -230,15 +268,17 @@ export const CodeInput = forwardRef<HTMLInputElement, CodeInputProps>(function C
         type={masked ? 'password' : 'text'}
         inputMode={mode === 'numeric' ? 'numeric' : 'text'}
         pattern={mode === 'numeric' ? '[0-9]*' : undefined}
-        autoComplete={autoComplete}
+        // A PIN is not a one-time code, and on a password-typed field
+        // `one-time-code` invites "save this password?" for it.
+        autoComplete={autoComplete ?? (masked ? 'off' : 'one-time-code')}
         autoCapitalize={mode === 'alphanumeric' ? 'characters' : 'off'}
         autoCorrect="off"
         spellCheck={false}
         aria-invalid={isInvalid || undefined}
-        aria-describedby={field?.describedBy}
-        data-1p-ignore={masked ? undefined : true}
+        aria-describedby={[field?.describedBy, lengthId].filter(Boolean).join(' ')}
         {...rest}
       />
+      <span id={lengthId} className="d3-code__length">{lengthText}</span>
     </div>
   )
 })

@@ -7,7 +7,7 @@ const meta = {
   title: 'Forms/PasswordInput',
   component: PasswordInput,
   tags: ['autodocs'],
-  args: { 'aria-label': 'Password' },
+  args: { 'aria-label': 'Password', autoComplete: 'current-password' },
   argTypes: { size: { control: 'inline-radio', options: ['sm', 'md', 'lg'] } },
   parameters: { docs: { description: { component:
     'A password field that can be read back before it is submitted. Input\'s geometry exactly, with ' +
@@ -63,7 +63,7 @@ export const StrengthLevels: Story = {
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
       {STRENGTHS.map((s) => (
-        <PasswordInput key={s.score} aria-label={`Password, ${s.label}`} defaultValue="xxxxxxxxxxxx" strength={s} />
+        <PasswordInput key={s.score} autoComplete="new-password" aria-label={`Password, ${s.label}`} defaultValue="xxxxxxxxxxxx" strength={s} />
       ))}
     </div>
   ),
@@ -82,9 +82,9 @@ export const Sizes: Story = {
   parameters: { controls: { disable: true } },
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-      <PasswordInput size="sm" aria-label="sm — 28px" defaultValue="hunter2hunter2" />
-      <PasswordInput size="md" aria-label="md — 34px" defaultValue="hunter2hunter2" />
-      <PasswordInput size="lg" aria-label="lg — 40px" defaultValue="hunter2hunter2" />
+      <PasswordInput autoComplete="current-password" size="sm" aria-label="sm — 28px" defaultValue="hunter2hunter2" />
+      <PasswordInput autoComplete="current-password" size="md" aria-label="md — 34px" defaultValue="hunter2hunter2" />
+      <PasswordInput autoComplete="current-password" size="lg" aria-label="lg — 40px" defaultValue="hunter2hunter2" />
     </div>
   ),
 }

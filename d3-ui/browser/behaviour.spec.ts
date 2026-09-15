@@ -52,3 +52,38 @@ test('Select: a placeholder is visibly a placeholder, and a long value truncates
   expect(box.overflows).toBe(true)
   expect(box.ellipsis).toBe('ellipsis')
 })
+
+/*
+ * CodeInput: clicking a box puts the caret in that box.
+ *
+ * The click lands on one invisible input stretched over the boxes, whose own
+ * caret positions come from text metrics. With letter-spacing standing in for
+ * the boxes, box 1 of a half-filled code put the caret at 3 and box 4 of a
+ * recovery code at 5 — so a digit could not be clicked to fix it. The caret is
+ * now placed from the box under the pointer; this clicks every box centre at a
+ * wide and a phone width.
+ */
+for (const width of [1000, 380]) {
+  for (const [story, boxes, filled] of [
+    ['forms-codeinput--partly-filled', 6, 3],
+    ['forms-codeinput--recovery-code', 12, 6],
+  ] as const) {
+    test(`CodeInput: clicking box n puts the caret at n · ${story} · ${width}px`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 600 })
+      await page.goto(storyUrl(story))
+      await settle(page)
+      const slots = page.locator('.d3-code__slot')
+      await expect(slots).toHaveCount(boxes)
+      const input = page.locator('.d3-code__control')
+      for (let i = 0; i < boxes; i++) {
+        const r = (await slots.nth(i).boundingBox())!
+        await page.mouse.click(r.x + r.width / 2, r.y + r.height / 2)
+        const caret = await input.evaluate((el: HTMLInputElement) => [el.selectionStart, el.selectionEnd])
+        const want = Math.min(i, filled)
+        expect(caret, `box ${i}`).toEqual([want, want])
+        // And the drawing agrees with the control.
+        await expect(slots.nth(want === boxes ? boxes - 1 : want)).toHaveClass(/d3-code__slot--active/)
+      }
+    })
+  }
+}
