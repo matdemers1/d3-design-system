@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, afterEach } from 'vitest'
 import { render, screen } from '@testing-library/react'
-import { Card, CardTitle } from './Card'
+import { Card, CardBody, CardTitle } from './Card'
 import { Button } from '../Button/Button'
 
 afterEach(() => vi.restoreAllMocks())
@@ -38,3 +38,31 @@ describe('Card — the nested-interactive rule', () => {
     expect(warn).not.toHaveBeenCalled()
   })
 })
+
+describe('Card — the element it renders', () => {
+  it('is a titled region when it is a section with a heading title', () => {
+    render(
+      <Card as="section" aria-labelledby="t">
+        <CardTitle as="h2" id="t">Restore drill</CardTitle>
+      </Card>,
+    )
+    expect(screen.getByRole('region', { name: 'Restore drill' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { level: 2, name: 'Restore drill' })).toHaveClass('d3-crd__title')
+  })
+
+  it('keeps its own class when the app adds one to a part', () => {
+    const { container } = render(<Card><CardTitle className="x">A</CardTitle><CardBody className="y">B</CardBody></Card>)
+    expect(container.querySelector('.d3-crd__title.x')).not.toBeNull()
+    expect(container.querySelector('.d3-crd__body.y')).not.toBeNull()
+  })
+
+  it('ignores `as` when interactive, and falls back to a div for an unknown element', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    render(<Card interactive as="section">A</Card>)
+    expect(screen.getByRole('button')).toBeInTheDocument()
+    const { container } = render(<Card as={'span' as never}>B</Card>)
+    expect(container.firstElementChild?.tagName).toBe('DIV')
+    expect(warn.mock.calls.some((c) => String(c[0]).includes('Card: `as="span"`'))).toBe(true)
+  })
+})
+

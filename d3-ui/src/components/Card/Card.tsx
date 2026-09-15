@@ -1,8 +1,13 @@
 import { forwardRef, useEffect, useRef } from 'react'
 import { cn } from '../../lib/cn'
+import { devOneOf } from '../../lib/dev'
 import './Card.css'
 
 export type CardPadding = 'sm' | 'md' | 'lg'
+export type CardElement = 'div' | 'section' | 'article' | 'li'
+export type CardTitleElement = 'p' | 'h2' | 'h3' | 'h4'
+const ELEMENTS = ['div', 'section', 'article', 'li'] as const
+const TITLE_ELEMENTS = ['p', 'h2', 'h3', 'h4'] as const
 
 export interface CardProps extends React.HTMLAttributes<HTMLElement> {
   padding?: CardPadding
@@ -19,13 +24,20 @@ export interface CardProps extends React.HTMLAttributes<HTMLElement> {
    */
   interactive?: boolean
   href?: string
+  /**
+   * The element a non-interactive card renders. A card that is a titled region
+   * of the page is a `section` (with a heading `CardTitle`); a card in a list is
+   * an `li`. Ignored when `interactive` — that card is an `a` or a `button`.
+   */
+  as?: CardElement
 }
 
 const INTERACTIVE = 'a[href], button, input, select, textarea, [tabindex]:not([tabindex="-1"])'
 
 export const Card = forwardRef<HTMLElement, CardProps>(function Card(
-  { padding = 'md', selected, interactive, href, className, children, ...rest }, ref,
+  { padding = 'md', selected, interactive, href, as = 'div', className, children, ...rest }, ref,
 ) {
+  if (process.env.NODE_ENV !== 'production') devOneOf('Card', 'as', as, ELEMENTS)
   const local = useRef<HTMLElement>(null)
 
   // Dev-only: the nested-interactive rule is the one most easily broken by
@@ -61,15 +73,27 @@ export const Card = forwardRef<HTMLElement, CardProps>(function Card(
       </button>
     )
   }
-  return <div ref={setRefs as React.Ref<HTMLDivElement>} className={cls} {...rest}>{children}</div>
+  const Element = (ELEMENTS as readonly string[]).includes(as) ? as : 'div'
+  return <Element ref={setRefs as React.Ref<never>} className={cls} {...rest}>{children}</Element>
 })
 
-export const CardTitle = ({ children, ...rest }: React.HTMLAttributes<HTMLParagraphElement>) => (
-  <p className="d3-crd__title" {...rest}>{children}</p>
+export interface CardTitleProps extends React.HTMLAttributes<HTMLHeadingElement> {
+  /**
+   * `p` by default, because most cards sit inside a page that already has its
+   * headings. Use a heading level when the card is a region the page's outline
+   * should list — the level follows the page, not the card's size.
+   */
+  as?: CardTitleElement
+}
+
+export const CardTitle = ({ as = 'p', className, children, ...rest }: CardTitleProps) => {
+  if (process.env.NODE_ENV !== 'production') devOneOf('CardTitle', 'as', as, TITLE_ELEMENTS)
+  const Element = (TITLE_ELEMENTS as readonly string[]).includes(as) ? as : 'p'
+  return <Element className={cn('d3-crd__title', className)} {...rest}>{children}</Element>
+}
+export const CardBody = ({ className, children, ...rest }: React.HTMLAttributes<HTMLParagraphElement>) => (
+  <p className={cn('d3-crd__body', className)} {...rest}>{children}</p>
 )
-export const CardBody = ({ children, ...rest }: React.HTMLAttributes<HTMLParagraphElement>) => (
-  <p className="d3-crd__body" {...rest}>{children}</p>
-)
-export const CardFooter = ({ children, ...rest }: React.HTMLAttributes<HTMLDivElement>) => (
-  <div className="d3-crd__footer" {...rest}>{children}</div>
+export const CardFooter = ({ className, children, ...rest }: React.HTMLAttributes<HTMLDivElement>) => (
+  <div className={cn('d3-crd__footer', className)} {...rest}>{children}</div>
 )

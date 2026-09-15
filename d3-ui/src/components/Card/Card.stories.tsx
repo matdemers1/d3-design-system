@@ -60,3 +60,23 @@ export const WithActions: Story = {
     </Card>
   ),
 }
+
+/**
+ * A card that is a region of the page — a settings panel, one check on a status
+ * page — is a `section` with a heading title, so it appears in the outline a
+ * screen-reader user navigates by. The heading level follows the page: under a
+ * PageHeader's h1, that is h2.
+ */
+export const AsARegion: Story = {
+  name: 'As a region of the page',
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <Card as="section" aria-labelledby="card-region-title">
+      <CardTitle as="h2" id="card-region-title">Restore drill</CardTitle>
+      <CardBody>Restores last night’s dump into a scratch database and counts the rows.</CardBody>
+      <CardFooter>
+        <Button size="sm">Run drill</Button>
+      </CardFooter>
+    </Card>
+  ),
+}
