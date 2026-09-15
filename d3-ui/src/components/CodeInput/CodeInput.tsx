@@ -312,7 +312,13 @@ export const CodeInput = forwardRef<HTMLInputElement, CodeInputProps>(function C
         onClick={handleClick}
         onSelect={(e) => { syncCaret(e); onSelect?.(e) }}
         onFocus={(e) => { setFocused(true); syncCaret(e); onFocus?.(e) }}
-        onBlur={(e) => { setFocused(false); onBlur?.(e) }}
+        onBlur={(e) => {
+          // A held caret is about this visit to the field. Tab away and back and
+          // the browser's placement wins, not a position from last time.
+          held.current = null
+          setFocused(false)
+          onBlur?.(e)
+        }}
         disabled={disabled}
         type={masked ? 'password' : 'text'}
         inputMode={mode === 'numeric' ? 'numeric' : 'text'}

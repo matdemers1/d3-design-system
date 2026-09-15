@@ -164,6 +164,23 @@ describe('CodeInput — one control, drawn as boxes', () => {
     expect(screen.getByLabelText('Code')).not.toHaveAttribute('data-1p-ignore')
   })
 
+  it('a held caret does not survive leaving the field', async () => {
+    const user = userEvent.setup()
+    render(<><CodeInput aria-label="Code" defaultValue="123456" /><button>elsewhere</button></>)
+    const input = screen.getByLabelText('Code') as HTMLInputElement
+    await user.click(input)
+    await user.keyboard('{End}{ArrowLeft}{ArrowLeft}{ArrowLeft}{ArrowLeft}9')
+    expect(input).toHaveValue('129456')
+    // The replacement held the caret at 3. Leave, come back, and put the caret
+    // somewhere else: the browser's placement must win.
+    await user.click(screen.getByText('elsewhere'))
+    input.focus()
+    input.setSelectionRange(0, 0)
+    input.dispatchEvent(new Event('select', { bubbles: true }))
+    await user.keyboard('7')
+    expect(input).toHaveValue('729456')
+  })
+
   it('draws a caret only in the box that has focus', async () => {
     const user = userEvent.setup()
     const { container } = render(<CodeInput aria-label="Code" defaultValue="12" />)
