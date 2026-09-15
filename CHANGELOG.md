@@ -19,6 +19,13 @@ apps must not select on them.
 - **Tooltip warns when its trigger cannot take focus**, because such a tooltip
   only ever appears on hover.
 
+### Changed
+
+- **Browser checks in CI.** Every story, in both themes, in a real browser:
+  control geometry, token resolution, font loading, axe with real colour
+  contrast, and pixel baselines. Storybook does not publish unless they pass.
+- `@storybook/test-runner` removed; the browser suite supersedes it.
+
 ### Fixed
 
 - **Six components crashed on a missing prop** instead of degrading: Avatar
@@ -27,6 +34,13 @@ apps must not select on them.
   renders every export with no props at all.
 - **Tooltip no longer requires `TooltipProvider`.** It supplies its own when
   none is above it; wrapping the app once is still how delays are shared.
+- **A checked Checkbox with no `checkIcon` showed no tick** — checked was
+  conveyed by fill colour alone. It now has a built-in tick, and an external Link
+  a built-in cue, both overridable. An uncontrolled `defaultChecked="indeterminate"`
+  also showed a tick instead of the dash; state is now read from the DOM.
+- **The Tabs count failed contrast** — 3.69:1 on the active pill, 4.29:1 on an
+  inactive tab — because it was dimmed with opacity. SegmentedControl used the
+  same pattern and passed by luck; both now use weight, not opacity.
 - **PageHeader counted one thing as "1 items"** — it built its own label and
   missed the fix Tabs and SegmentedControl received in v0.1.1.
 

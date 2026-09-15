@@ -63,8 +63,14 @@
   outline: var(--focus-width) solid var(--color-focus);
   outline-offset: var(--focus-offset);
 }
+/* The count is subordinate by weight and size, not by opacity. It used to be
+   dimmed to 70%, which measured 3.69:1 on the active pill and 4.29:1 on an
+   inactive tab — below 4.5:1 for 11px text in both themes. aria-hidden does not
+   exempt it: the name carries the count for a screen reader, but a sighted
+   reader still has to read the number. Found by the first axe run that could
+   actually compute a colour. */
 .d3-tabs__count { margin-left: var(--space-6); font-size: var(--text-11);
-  opacity: 0.7; font-variant-numeric: tabular-nums; }
+  font-weight: var(--weight-regular); font-variant-numeric: tabular-nums; }
 .d3-tabs__panel { margin-top: var(--space-16); }
 .d3-tabs__panel:focus-visible {
   outline: var(--focus-width) solid var(--color-focus);

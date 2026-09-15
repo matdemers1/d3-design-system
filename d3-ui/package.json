@@ -37,14 +37,16 @@
     "dev": "storybook dev -p 6006",
     "storybook:build": "storybook build",
     "test": "vitest run",
-    "test:a11y": "test-storybook",
     "typecheck": "tsc --noEmit",
     "prepare": "npm run build",
     "test:watch": "vitest",
     "verify": "npm run check:tokens && npm run check:usage && npm run typecheck && npm run test && npm run build",
     "check:dist": "node scripts/check-dist.mjs",
     "check:tokens": "node ../design-system/scripts/check-tokens.mjs",
-    "check:usage": "node scripts/check-usage.mjs src"
+    "check:usage": "node scripts/check-usage.mjs src",
+    "test:browser": "playwright test",
+    "test:browser:image": "docker run --rm --ipc=host -e D3_PIXEL_IMAGE=1 -e CI=1 -v \"$PWD\":/work -w /work mcr.microsoft.com/playwright:v1.63.0-noble npx playwright test",
+    "test:browser:update": "docker run --rm --ipc=host -e D3_PIXEL_IMAGE=1 -e CI=1 -v \"$PWD\":/work -w /work mcr.microsoft.com/playwright:v1.63.0-noble npx playwright test browser/visual.spec.ts --update-snapshots"
   },
   "peerDependencies": {
     "react": "^18.2.0 || ^19.0.0",
@@ -59,10 +61,10 @@
     "clsx": "^2.1.1"
   },
   "devDependencies": {
+    "@playwright/test": "^1.63.0",
     "@storybook/addon-a11y": "^8.6.0",
     "@storybook/addon-essentials": "^8.6.0",
     "@storybook/react-vite": "^8.6.0",
-    "@storybook/test-runner": "^0.21.0",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.3",
     "@testing-library/user-event": "^14.6.7",

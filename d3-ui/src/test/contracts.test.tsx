@@ -213,3 +213,20 @@ describe('Tooltip triggers', () => {
     expect(warned('cannot receive focus')).toBe(false)
   })
 })
+
+describe('meaning never rests on colour alone', () => {
+  it('a checked Checkbox shows a tick with no checkIcon passed', () => {
+    const { container } = render(<Checkbox label="Remember me" defaultChecked />)
+    expect(container.querySelector('.d3-cbx__tick svg')).not.toBeNull()
+  })
+
+  it('an uncontrolled indeterminate Checkbox shows the dash, not the tick', () => {
+    const { container } = render(<Checkbox label="All" defaultChecked="indeterminate" />)
+    expect(container.querySelector('.d3-cbx__indicator')?.getAttribute('data-state')).toBe('indeterminate')
+  })
+
+  it('an external Link shows a visible cue with no externalIcon passed', () => {
+    const { container } = render(<Link href="https://example.com" external>Docs</Link>)
+    expect(container.querySelector('.d3-lnk__ext svg')).not.toBeNull()
+  })
+})

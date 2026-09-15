@@ -73,11 +73,33 @@ Three defects in a row shipped past a green suite, and the pattern never varied:
 | Motion tests | jsdom returns `''` for computed animation, so they asserted on empty strings |
 | 326 tests | The built package shipped every class name and **none of its CSS** |
 
-The suite is good at semantics — roles, names, wiring, state — and blind to
-geometry. Before claiming a component works, open it and read its numbers out of
-the browser: heights, positions, computed colour. The spinner shipped at
-**1.29:1 against the surface** for an afternoon because it was checked in a
-review page rather than at 14px.
+The unit suite is good at semantics — roles, names, wiring, state — and blind
+to geometry. That measuring is now automated: **`npm run test:browser`** runs on
+every story, in both themes, against the built Storybook in a real browser.
+
+| Check | Catches |
+|---|---|
+| Control heights on the ramp (`offsetHeight`, after finite animations settle) | Input 36px beside Button 34px |
+| The `box-sizing` reset applied to every `d3-` element | the same, at its cause |
+| A FormField label never overlapping its control | the Checkbox overlap |
+| Checked and mixed checkboxes show a visible glyph | "checked" conveyed by fill colour alone |
+| Every `--color-*` resolves, and the two themes differ | a token that resolves to nothing, silently |
+| Inter and JetBrains Mono report `loaded` | a font that 403s and falls back |
+| axe, with colour contrast actually computed | the Tabs count at 3.69:1 — jsdom cannot compute colour |
+| Pixel baselines for key compositions, zero pixel budget | what geometry cannot see |
+
+Each check was proven to fail by reintroducing the defect it names.
+
+**Pixel baselines exist only inside `mcr.microsoft.com/playwright:v1.63.0-noble`.**
+Rendering differs between machines on antialiasing alone, so run
+`npm run test:browser:image` to compare and `npm run test:browser:update` to
+regenerate. Inside that image the output is identical run to run, which is why
+the budget can be zero — and it has to be: a missing checkbox tick is five
+pixels, and a looser budget let one through twice. Review a regenerated baseline
+by looking at it before committing it.
+
+The browser job runs in CI in the same image and must pass before Storybook
+publishes.
 
 ## Versioning
 

@@ -1,6 +1,7 @@
 import { forwardRef, useId } from 'react'
 import * as RadixCheckbox from '@radix-ui/react-checkbox'
 import { cn } from '../../lib/cn'
+import { CheckGlyph } from '../../lib/glyphs'
 import { devWarn } from '../../lib/dev'
 import { useFormField } from '../FormField/FormFieldContext'
 import './Checkbox.css'
@@ -56,10 +57,12 @@ export const Checkbox = forwardRef<React.ElementRef<typeof RadixCheckbox.Root>, 
           aria-describedby={field?.describedBy}
           {...rest}
         >
-          <RadixCheckbox.Indicator>
-            {checked === 'indeterminate'
-              ? <span className="d3-cbx__dash" />
-              : (checkIcon ?? null)}
+          {/* Both glyphs render and CSS shows one, keyed on Radix's data-state.
+              Choosing from the `checked` prop missed an uncontrolled
+              `defaultChecked="indeterminate"`, which showed a tick. */}
+          <RadixCheckbox.Indicator className="d3-cbx__indicator">
+            <span className="d3-cbx__tick" aria-hidden="true">{checkIcon ?? <CheckGlyph />}</span>
+            <span className="d3-cbx__dash" aria-hidden="true" />
           </RadixCheckbox.Indicator>
         </RadixCheckbox.Root>
         <label htmlFor={controlId} style={{ cursor: disabled ? 'not-allowed' : 'pointer' }}>

@@ -75,4 +75,6 @@
   font-weight: var(--weight-regular);
   color: var(--color-fg-muted);
 }
-.d3-seg__item[aria-checked='true'] .d3-seg__count { color: inherit; opacity: 0.7; }
+/* Same rule as the Tabs count: weight, not opacity. Opacity here happened to
+   clear 4.5:1 and was one palette change away from not doing so. */
+.d3-seg__item[aria-checked='true'] .d3-seg__count { color: var(--color-fg-muted); }

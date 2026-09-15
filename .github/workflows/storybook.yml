@@ -44,20 +44,74 @@ jobs:
       - name: Verify
         run: npm run verify
 
-      - name: Build Storybook
-        # Pages serves this from a subpath, so the assets need an absolute base.
+      # Built twice. The browser checks serve it from the root; Pages serves it
+      # from /d3-design-system/, which needs an absolute base. Same source.
+      - name: Build Storybook for the browser checks
+        run: npm run storybook:build
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: storybook-for-checks
+          path: d3-ui/storybook-static
+          retention-days: 3
+
+      - name: Build Storybook for Pages
         env:
           STORYBOOK_BASE: /d3-design-system/
-        run: npm run storybook:build
+        run: rm -rf storybook-static && npm run storybook:build
 
       - uses: actions/upload-pages-artifact@v3
         with:
           path: d3-ui/storybook-static
 
+  # The measurements that used to be done by hand: control heights on the ramp,
+  # the box-sizing reset, label overlap, visible checkbox glyphs, every colour
+  # token resolving, fonts actually loading, axe with real colour contrast — on
+  # every story, in both themes — plus pixel baselines for key compositions.
+  #
+  # In the same pinned image the baselines were generated in. Rendering differs
+  # between machines on antialiasing alone; inside one image it is identical run
+  # to run, which is what lets the pixel budget be zero.
+  browser:
+    needs: build
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.63.0-noble
+      options: --ipc=host
+    defaults:
+      run:
+        working-directory: d3-ui
+    env:
+      CI: '1'
+      D3_PIXEL_IMAGE: '1'
+      HOME: /root
+    steps:
+      - uses: actions/checkout@v4
+
+      - run: npm ci
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: storybook-for-checks
+          path: d3-ui/storybook-static
+
+      - name: Browser checks
+        run: npx playwright test
+
+      - if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: browser-check-report
+          path: |
+            d3-ui/playwright-report
+            d3-ui/test-results
+          retention-days: 7
+
   deploy:
     # Pull requests build and verify, but only main publishes.
     if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
-    needs: build
+    # A Storybook whose components fail their own browser checks does not publish.
+    needs: [build, browser]
     runs-on: ubuntu-latest
     environment:
       name: github-pages

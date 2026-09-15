@@ -33,4 +33,8 @@
 .d3-cbx__box:disabled { opacity: 0.42; cursor: not-allowed; }
 .d3-cbx--invalid .d3-cbx__box { border-color: var(--color-danger); }
 .d3-cbx--disabled { opacity: 0.42; cursor: not-allowed; }
+.d3-cbx__indicator { display: flex; align-items: center; justify-content: center; }
+.d3-cbx__tick { display: flex; }
 .d3-cbx__dash { width: 8px; height: 2px; border-radius: 1px; background: currentColor; }
+.d3-cbx__indicator[data-state='indeterminate'] .d3-cbx__tick,
+.d3-cbx__indicator[data-state='checked'] .d3-cbx__dash { display: none; }

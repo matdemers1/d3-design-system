@@ -1,5 +1,6 @@
 import { forwardRef } from 'react'
 import { cn } from '../../lib/cn'
+import { ExternalGlyph } from '../../lib/glyphs'
 import { devWarn } from '../../lib/dev'
 import './Link.css'
 
@@ -38,9 +39,9 @@ export const Link = forwardRef<HTMLAnchorElement, LinkProps>(function Link(
       {children}
       {external ? (
         <>
-          {externalIcon ? (
-            <span className="d3-lnk__ext" aria-hidden="true">{externalIcon}</span>
-          ) : null}
+          {/* Always a visible cue. Screen readers already heard "opens in a new
+              tab"; without a default glyph, sighted readers got nothing. */}
+          <span className="d3-lnk__ext" aria-hidden="true">{externalIcon ?? <ExternalGlyph />}</span>
           <span
             style={{
               position: 'absolute', width: 1, height: 1, padding: 0, margin: -1,

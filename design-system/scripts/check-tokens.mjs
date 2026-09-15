@@ -83,6 +83,24 @@ function resolveCss(value, seen = new Set()) {
   })
 }
 
+/* ── 0 · token values are declared unlayered ─────────────────────────── */
+// The Tailwind theme re-declares every colour as a self-reference —
+// `--color-accent: var(--color-accent)` — inside `@layer theme`. That works for
+// one reason: the literal values here are unlayered, and unlayered declarations
+// beat layered ones regardless of order. Move these into any `@layer` and every
+// colour in a Tailwind app becomes a cycle that resolves to nothing, with no
+// error. Storybook cannot show it, because Storybook does not load the Tailwind
+// theme — so the invariant is checked here, where it holds for every consumer.
+for (const f of SOURCE_CSS) {
+  const path = `${root}/tokens/build/${f}`
+  if (!existsSync(path)) continue
+  const css = readFileSync(path, 'utf8').replace(/\/\*[\s\S]*?\*\//g, '')
+  if (/@layer\b/.test(css)) {
+    note(`tokens/build/${f} declares an @layer. Token values must be unlayered, or the Tailwind theme's ` +
+         'self-references win and every colour resolves to nothing.')
+  }
+}
+
 /* ── 1 · every token value reaches the stylesheets ───────────────────── */
 const cssValues = new Set([...decls.values()].map((v) => resolveCss(v).trim()))
 /** Compare what the value *is*, not how it was typed: whitespace, quotes and

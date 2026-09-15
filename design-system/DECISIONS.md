@@ -1079,3 +1079,23 @@ Smaller finds: PageHeader built its own count label and still read "1 items", an
 **The stripping guard caught a leak on its first run.** esbuild dropped every call site but kept the shell of `devWarn`, with its `[d3-ui]` template inside. The guard now bundles the package twice, once for development to prove it can see the strings at all and once for production to prove they are gone, and it was shown to fail by planting an unguarded warning in the build.
 
 **Why one Tooltip test takes five seconds.** Opening a tooltip makes floating-ui call `getComputedStyle` up every ancestor, and jsdom with the real stylesheets loaded takes about five seconds to do that, long enough to look like a hang. The test carries an explicit timeout and the reason, and the same path was checked with a real keyboard Tab in Storybook, where it opens in one frame.
+
+---
+
+### D-060 · V1-3 · The measuring moves into CI, and finds five things
+**Date:** 2026-09-15
+Three defects shipped past a green unit suite, and each was found by somebody measuring the rendered page by hand. That measuring is now a Playwright suite against the built Storybook: every story, both themes, in a real browser, required before Storybook publishes.
+
+**What it checks, and every check was proven to fail by reintroducing its defect:** control heights on the ramp (the ramp was *measured* from the build first, not recalled), the `box-sizing` reset (removing it fails 194 of 230 with "Input is 36px; d3-inp--md is 34px" — the historical bug, reproduced), label overlap in FormField, visible checkbox glyphs, every colour token resolving (a planted cycle is caught), both fonts reporting `loaded`, axe with real colour contrast, and pixel baselines for nine compositions in both themes.
+
+**What it found:**
+
+1. **The Tabs count failed contrast** — 3.69:1 on the active pill in dark, 3.72:1 in light, 4.29:1 on an inactive tab. This was the first time axe's contrast rule had ever evaluated a component: the unit suite runs axe in jsdom, which cannot compute a colour. The count was dimmed with `opacity: 0.7`; SegmentedControl used the same pattern and passed by luck. Both now use weight, not opacity.
+2. **A checked Checkbox with no `checkIcon` showed no tick** — a violet square and nothing else, so "checked" was colour alone (WCAG 1.4.1). Found by *looking* at the first light-theme baseline rather than committing it. The library has no icon dependency, so icons are props — right for decoration, wrong for an affordance. Checkbox now has a built-in tick and Link a built-in external cue, both drawn here and both overridable.
+3. **An uncontrolled `defaultChecked="indeterminate"` showed a tick**, because the dash was chosen from the `checked` prop. State is now read from Radix's `data-state`.
+4. **The pixel comparison let the missing tick through, twice.** A ratio of 0.2% is ~350 pixels on a story this size. An absolute budget of 12 still passed, because 20 of the tick's 25 changed pixels are antialiased coverage below the default per-pixel threshold of 0.2. Inside the pinned image the rendering is identical run to run, so the per-pixel threshold is 0.05 and the pixel budget is **zero**, verified over three consecutive runs.
+5. **One comment of mine overclaimed.** I wrote that the token check would catch the Tailwind layer fragility — colour tokens work only because literal values are unlayered while Tailwind's self-references sit in `@layer theme`. It cannot: Storybook loads the plain tokens, not the Tailwind theme. The invariant is now checked statically in `check-tokens.mjs`, where it holds for every consumer, and a planted `@layer` fails it.
+
+**A false positive worth keeping in mind.** The first survey reported a 34px Button measuring 32px. It was inside a Modal, measured mid-entrance at 94% scale. Heights now come from `offsetHeight` (layout, not paint), and anything rectangle-based waits for finite animations to finish first.
+
+`@storybook/test-runner` was removed — 388 packages, including the deprecated jest-playwright stack — because the new suite supersedes it, and two accessibility runners with different coverage is how people end up trusting the weaker one.

@@ -3,3 +3,5 @@ dist
 storybook-static
 *.tsbuildinfo
 .DS_Store
+test-results
+playwright-report
