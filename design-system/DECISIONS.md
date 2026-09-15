@@ -1116,3 +1116,17 @@ Three defects shipped past a green unit suite, and each was found by somebody me
 
 **Two smaller V1-4 finds landed with it.** CardTitle was always a `<p>`: Trust's nine checks are titled regions, and moving them onto Card would have taken every h2 out of the page outline. Card now takes `as` (section, article, li) and CardTitle `as` (h2 to h4). And Select had no `id`, so the log filter's `<label htmlFor>` would have stopped naming it.
 
+
+---
+
+### D-062 · V1-4 · The global focus ring is a base-layer default, and focus is swept in the browser
+**Date:** 2026-09-15
+**Found by looking.** Bindery's first capture on rc.1 had a violet box around every page heading and two rings on the focused search field. D-061 caused both, and nothing had caught them: the global `:focus-visible` ring was unlayered in the token stylesheet, so once components moved into `@layer d3-ui` it beat every component rule that turns the ring off to draw it somewhere else. The published Storybook had shown the double ring on 28 stories, but no check had ever put a story into a keyboard-focused state, and nobody had looked at one.
+
+**Decision.** The global ring sits in `@layer base`, above Tailwind's preflight in document order but below components and app utilities. The token-value invariant (D-058/rule 0) is restated precisely: no custom property may be declared inside a layer, and layered *rules* are allowed. PageHeader's title, `tabindex="-1"` and focused only programmatically, draws no ring. After any keypress browsers treat programmatic focus as `:focus-visible`, so a ring there appeared on every keyboard navigation, around something that is not a control. The Input frame rings only for its own text control.
+
+**Proven.** `browser/focus.spec.ts` Tabs through every story and requires exactly one outlined element at each stop. On rc.1 it failed 28 stories plus the heading. With the first fix in, it caught a third defect: PasswordInput's show/hide toggle lit the frame's ring as well as its own. The full suite passes (711, pixels included). Rule 0 still fails a planted layered token.
+
+**Consequence for apps.** A Tailwind `outline-none` now really removes the ring from an app's own elements. Before, the unlayered global ring silently overrode it. Bindery dropped `outline-none` from native fields that used the ring as their only strong focus cue.
+
+**Lesson recorded for V1-6.** Two consecutive cascade defects, D-061 and this one, were invisible to 500 unit tests and 500 browser checks, and obvious in the first screenshot of a real app. The API freeze includes a rendered review of both consumers in both themes and in a keyboard-focused state, not only the Storybook sweep.
