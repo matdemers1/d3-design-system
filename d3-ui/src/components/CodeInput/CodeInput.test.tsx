@@ -141,6 +141,24 @@ describe('CodeInput — one control, drawn as boxes', () => {
     expect(screen.getByLabelText('PIN')).toHaveAttribute('type', 'password')
   })
 
+  it('says its length to a screen reader, since the boxes cannot', () => {
+    render(<FormField label="Code" help="From your authenticator."><CodeInput /></FormField>)
+    render(<CodeInput aria-label="Reset code" mode="alphanumeric" length={12} />)
+    const described = (label: string) => screen.getByLabelText(label).getAttribute('aria-describedby')!
+      .split(' ').map((id) => document.getElementById(id)?.textContent).join(' | ')
+    expect(described('Code')).toContain('From your authenticator.')
+    expect(described('Code')).toContain('6 digits')
+    expect(described('Reset code')).toContain('12 characters, letters and numbers')
+  })
+
+  it('a masked PIN does not offer itself as a one-time code, and an unmasked code is not hidden from password managers', () => {
+    render(<CodeInput aria-label="PIN" masked length={4} />)
+    render(<CodeInput aria-label="Code" />)
+    expect(screen.getByLabelText('PIN')).toHaveAttribute('autocomplete', 'off')
+    expect(screen.getByLabelText('Code')).toHaveAttribute('autocomplete', 'one-time-code')
+    expect(screen.getByLabelText('Code')).not.toHaveAttribute('data-1p-ignore')
+  })
+
   it('draws a caret only in the box that has focus', async () => {
     const user = userEvent.setup()
     const { container } = render(<CodeInput aria-label="Code" defaultValue="12" />)

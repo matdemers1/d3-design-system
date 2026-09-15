@@ -42,9 +42,12 @@ describe('PasswordInput — the contract', () => {
     const input = screen.getByLabelText('Password')
     await user.click(input)
     await user.keyboard('{CapsLock}a')
-    expect(screen.getByRole('status')).toHaveTextContent('Caps Lock is on')
+    const status = screen.getByRole('status')
+    expect(status).toHaveTextContent('Caps Lock is on')
     await user.keyboard('{CapsLock}a')
     expect(screen.queryByText('Caps Lock is on')).toBeNull()
+    // The same node, emptied — never unmounted, so the next announcement lands.
+    expect(screen.getByRole('status')).toBe(status)
   })
 
   it('is invalid through FormField, like Input', () => {

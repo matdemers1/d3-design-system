@@ -150,6 +150,16 @@
 .d3-code__control:focus-visible { outline: none; }
 .d3-code__control:disabled { cursor: not-allowed; }
 
+/* Read by a screen reader, drawn by nobody: the length the boxes show. */
+.d3-code__length {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 /* ---- reduced motion ----------------------------------------------------
    The global rule already takes the travel out of every animation. That would
    leave a rejection with no cue beyond a border colour, so here the shake is

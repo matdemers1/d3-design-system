@@ -57,6 +57,10 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(fu
     if (strength && !(Number.isInteger(strength.score) && strength.score >= 0 && strength.score <= 4)) {
       devWarn('PasswordInput.strength.score', `PasswordInput: \`strength.score\` is ${String(strength.score)}; it must be 0–4. It is clamped.`)
     }
+    if (rest.autoComplete === undefined) {
+      devWarn('PasswordInput.autoComplete', 'PasswordInput: give it `autoComplete` — "current-password" to sign in, ' +
+        '"new-password" to choose one. Password managers decide whether to fill or to generate from exactly this.')
+    }
     if (strength && !strength.label) {
       devWarn('PasswordInput.strength.label', 'PasswordInput: `strength.label` is empty. The bars are colour and length only — say the strength in words too.')
     }
@@ -136,9 +140,9 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(fu
         </div>
       ) : null}
 
-      {capsOn ? (
-        <p className="d3-pw__caps" id={capsId} role="status">Caps Lock is on</p>
-      ) : null}
+      {/* Always mounted, its text toggled: a live region that arrives together
+          with its words is not reliably announced. */}
+      <p className="d3-pw__caps" id={capsId} role="status">{capsOn ? 'Caps Lock is on' : ''}</p>
     </div>
   )
 })
