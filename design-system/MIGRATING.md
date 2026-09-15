@@ -96,7 +96,7 @@ say why in the diff.
   `IconButton`. In JS those become runtime surprises rather than build errors.
   Decide before starting: convert App A to TypeScript, or accept that the
   guardrails are advisory there.
-- **`fg` vs `text` (D-017).** The tokens are `--color-text*` but the Tailwind
+- **`fg` vs `text` (D-017).** The tokens are `--color-fg*` but the Tailwind
   utilities are emitted as `fg` so they read `text-fg-muted` rather than
   `text-text-muted`. It works and it is inconsistent, and it is still open for
   reversal. Reversing it is cheap now and expensive after three more apps adopt.

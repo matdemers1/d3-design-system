@@ -212,6 +212,8 @@ Every decision, what it rules out, and when it was made. Append-only.
 **Alternative rejected:** renaming the canonical tokens to `fg` everywhere, which reads worse in the DTCG source and in plain CSS (`color: var(--color-fg)` is less obvious than `var(--color-text)`).
 **Status:** flagged on the 3a page for approval or reversal. If reversed, the rename disappears and component code writes `text-text-muted`.
 
+**Closed in D-058 (2026-09-15): `fg` everywhere.** The canonical tokens are now `--color-fg*`, so there is one name at every layer.
+
 ---
 
 ### D-018 · Phase 3a colour foundations
@@ -1039,3 +1041,21 @@ Tagged `v0.1.0` at `939619c`, with a `CHANGELOG.md` the contribution guide's dep
 **The tag was moved once, deliberately.** Its first position shipped the licence defect. It was minutes old with no consumers and no release attached, so re-pointing it was better than leaving an artifact that violates the OFL reachable by version number. That is the only circumstance in which a published tag should move, and it will not happen again for a tag anybody could have installed.
 
 Verified end to end from the release URL: `@d3cloud/ui@0.1.0`, the entry importing its own stylesheet, `.d3-btn` present in the CSS, types emitted, and both OFL files packed.
+
+---
+
+### D-058 · The road to 1.0, and four decisions that shape it
+**Date:** 2026-09-15
+**Plan:** `D3 Cloud Vault/Design System/v1 Readiness Plan.md`
+
+The v1 *scope* from D-028 is built. v1.0.0 is not earned: 15 of 23 exports have never run in a real app, and every fix so far came from a real call site rather than the suite. So 1.0 now gates on seven phases — naming, runtime checks, browser checks in CI, finishing Bindery, adopting d3-qr, an API freeze, and the release.
+
+**D-017 is closed as `fg` everywhere.** `--color-text*` becomes `--color-fg*` in the tokens, both stylesheet copies and the Tailwind theme. It costs 45 references inside the library and two lines of Bindery's bridge; no call site changes, because Bindery already writes `text-fg`. The smell D-017 wrote down — three tokens called two things — does not survive into a frozen API.
+
+**The second consumer is d3-qr, not App B or App C.** It is the only other app that needs the library. It is also a better test than either of the offered options on the axis that matters most: it has a **light theme and a theme toggle**, and the light theme has never rendered in a real app because Bindery is dark-only. The consequence is that Next.js server components stay untested, so v1 **states** it supports client-rendered React rather than implying support it has never exercised. The library ships no `'use client'` directives; RSC support is a 1.x minor when a consumer needs it.
+
+**App A's JavaScript is resolved by dev-mode runtime checks**, not a conversion. Contract props warn in development when omitted or misused, and the checks are stripped from production. That protects any JS consumer, and it takes App A off the list of things 1.0 waits for.
+
+**Bindery work builds on `deps/2026-09-15`**, which already carries Vite 8, Vitest 4, React Router 8 and the fix for the e2e test SegmentedControl broke.
+
+**Distribution waits for V1-7, and one fact is recorded now:** `github.com/d3cloud` is an organisation belonging to an unrelated company ("D3Cloud It Services", 2023). Publishing `@d3cloud/*` to GitHub Packages is therefore impossible, and publishing it to npm would look like their name. The package name is part of the API, so if it changes, it changes before 1.0.

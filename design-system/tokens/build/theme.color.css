@@ -1,6 +1,7 @@
 /* GENERATED — Tailwind v4 theme for Bindery, App B and (after migration) App A.
-   `text`/`text-muted`/`text-faint` are emitted as fg/fg-muted/fg-faint so the
-   generated utilities read `text-fg-muted` rather than `text-text-muted` (D-017). */
+   The foreground tokens are named `fg` at every layer, so the utilities read
+   `text-fg-muted` and plain CSS reads `var(--color-fg-muted)` — one name per
+   thing (D-017, closed in D-058). */
 @import "tailwindcss";
 @import "./color.css";
 
@@ -13,9 +14,9 @@
   --color-border: var(--color-border);
   --color-border-field: var(--color-border-field);
   --color-border-float: var(--color-border-float);
-  --color-fg: var(--color-text);
-  --color-fg-muted: var(--color-text-muted);
-  --color-fg-faint: var(--color-text-faint);
+  --color-fg: var(--color-fg);
+  --color-fg-muted: var(--color-fg-muted);
+  --color-fg-faint: var(--color-fg-faint);
   --color-accent: var(--color-accent);
   --color-accent-hover: var(--color-accent-hover);
   --color-accent-contrast: var(--color-accent-contrast);

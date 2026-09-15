@@ -6,7 +6,7 @@
   text-align: left;
 }
 .d3-sel__value { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.d3-sel[data-placeholder] .d3-sel__value { color: var(--color-text-faint); }
+.d3-sel[data-placeholder] .d3-sel__value { color: var(--color-fg-faint); }
 
 /* A floating layer: surface-raised plus a 3:1 boundary, and no shadow (D-023). */
 .d3-sel__content {
@@ -39,16 +39,16 @@
   padding: var(--space-6) var(--space-8);
   border-radius: var(--radius-md);
   font-size: var(--text-13);
-  color: var(--color-text-muted);
+  color: var(--color-fg-muted);
   cursor: pointer;
   outline: none;
   user-select: none;
 }
-.d3-sel__item[data-highlighted] { background: var(--color-surface-hover); color: var(--color-text); }
+.d3-sel__item[data-highlighted] { background: var(--color-surface-hover); color: var(--color-fg); }
 .d3-sel__item[data-state='checked'] { background: var(--color-accent-muted); color: var(--color-accent);
   font-weight: var(--weight-semibold); }
 .d3-sel__item[data-disabled] { opacity: 0.42; cursor: not-allowed; }
 .d3-sel__tick { width: 14px; flex: none; display: inline-flex; opacity: 0; }
 .d3-sel__item[data-state='checked'] .d3-sel__tick { opacity: 1; }
-.d3-sel__desc { display: block; font-size: var(--text-12); color: var(--color-text-faint);
+.d3-sel__desc { display: block; font-size: var(--text-12); color: var(--color-fg-faint);
   font-weight: var(--weight-regular); margin-top: 1px; }

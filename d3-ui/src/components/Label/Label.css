@@ -6,7 +6,7 @@
   font-size: var(--text-12);
   line-height: var(--leading-12);
   font-weight: var(--weight-semibold);
-  color: var(--color-text-muted);
+  color: var(--color-fg-muted);
   margin: 0 0 var(--space-6);
 }
-.d3-lb__optional { font-weight: var(--weight-regular); color: var(--color-text-faint); }
+.d3-lb__optional { font-weight: var(--weight-regular); color: var(--color-fg-faint); }

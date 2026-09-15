@@ -17,12 +17,12 @@
   gap: var(--space-12);
   padding: var(--space-16) var(--space-20);
 }
-.d3-es__icon { color: var(--color-text-faint); margin-bottom: var(--space-4); display: flex; }
+.d3-es__icon { color: var(--color-fg-faint); margin-bottom: var(--space-4); display: flex; }
 .d3-es--row .d3-es__icon { margin-bottom: 0; }
 .d3-es__heading { font-size: var(--text-16); font-weight: var(--weight-semibold); margin: 0;
-  color: var(--color-text); }
+  color: var(--color-fg); }
 .d3-es--inline .d3-es__heading, .d3-es--row .d3-es__heading { font-size: var(--text-14); }
-.d3-es__body { font-size: var(--text-13); color: var(--color-text-muted); margin: 0;
+.d3-es__body { font-size: var(--text-13); color: var(--color-fg-muted); margin: 0;
   max-width: var(--measure-helper); line-height: var(--leading-13); }
 .d3-es--row .d3-es__body { max-width: none; }
 .d3-es__actions { margin-top: var(--space-12); display: flex; gap: var(--space-8); }

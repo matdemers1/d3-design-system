@@ -14,7 +14,7 @@
    if seeing it should change what you do next. App A ships seven statuses,
    already past what colour can distinguish, and App C proved the
    failure mode by growing five badge families. */
-.d3-bdg--neutral   { background: var(--color-surface-raised); color: var(--color-text-muted); }
+.d3-bdg--neutral   { background: var(--color-surface-raised); color: var(--color-fg-muted); }
 .d3-bdg--attention { background: var(--color-accent-muted);   color: var(--color-accent); }
 .d3-bdg--danger    { background: var(--color-surface-raised); color: var(--color-danger); }
 
@@ -28,7 +28,7 @@
 }
 .d3-bdg--count-quiet {
   background: var(--color-surface-raised);
-  color: var(--color-text-muted);
+  color: var(--color-fg-muted);
   font-variant-numeric: tabular-nums;
   min-width: 22px;
   justify-content: center;

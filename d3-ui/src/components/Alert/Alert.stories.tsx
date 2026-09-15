@@ -84,7 +84,7 @@ export const Flush: Story = {
       <Alert tone="warning" flush>
         412 entries are still being written — what you are reading is slightly behind.
       </Alert>
-      <div style={{ padding: 'var(--space-16)', fontSize: 'var(--text-12)', color: 'var(--color-text-muted)' }}>
+      <div style={{ padding: 'var(--space-16)', fontSize: 'var(--text-12)', color: 'var(--color-fg-muted)' }}>
         normalize · page · segment · embed
       </div>
     </div>

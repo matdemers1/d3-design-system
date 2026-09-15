@@ -11,12 +11,12 @@
   align-items: center;
   gap: var(--space-4);
   font-size: var(--text-12);
-  color: var(--color-text-muted);
+  color: var(--color-fg-muted);
   text-decoration: none;
   margin-bottom: var(--space-6);
   border-radius: 3px;
 }
-.d3-ph__back:hover { color: var(--color-text); }
+.d3-ph__back:hover { color: var(--color-fg); }
 .d3-ph__back:focus-visible {
   outline: var(--focus-width) solid var(--color-focus);
   outline-offset: var(--focus-offset);
@@ -42,12 +42,12 @@
 .d3-ph__count {
   font-size: var(--text-13);
   font-weight: var(--weight-regular);
-  color: var(--color-text-faint);
+  color: var(--color-fg-faint);
   font-variant-numeric: tabular-nums;
 }
 .d3-ph__desc {
   font-size: var(--text-13);
-  color: var(--color-text-muted);
+  color: var(--color-fg-muted);
   margin: var(--space-6) 0 0;
   max-width: var(--measure-body);
   line-height: var(--leading-13);

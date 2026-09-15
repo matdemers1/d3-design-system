@@ -4,6 +4,17 @@ Semver. The public surface is what `d3-ui/src/index.ts` exports plus the token
 names; CSS class names (`.d3-btn`, `.d3-seg`) are an implementation detail and
 apps must not select on them.
 
+## Unreleased — toward v1.0.0
+
+### Breaking
+
+- **`--color-text`, `--color-text-muted` and `--color-text-faint` are now
+  `--color-fg`, `--color-fg-muted` and `--color-fg-faint`.** The Tailwind
+  utilities were already `text-fg*`, so apps using utilities change nothing;
+  plain CSS reading the old custom properties must rename them. This closes
+  D-017: three tokens had two names depending on which layer you read, and a
+  1.0 would have frozen that.
+
 ## v0.1.1 — 2026-09-04
 
 **The usage gate now ships inside the package**, as the `d3-check-usage` bin.

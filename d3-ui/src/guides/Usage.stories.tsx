@@ -27,7 +27,7 @@ const tag = (ok: boolean): React.CSSProperties => ({
   marginBottom: 'var(--space-12)', display: 'block',
 })
 const why: React.CSSProperties = {
-  fontSize: 'var(--text-12)', lineHeight: 1.6, color: 'var(--color-text-muted)',
+  fontSize: 'var(--text-12)', lineHeight: 1.6, color: 'var(--color-fg-muted)',
   marginTop: 'var(--space-12)', maxWidth: 820,
 }
 
@@ -100,7 +100,7 @@ export const AlertsAreNotStatusPills: Story = {
       </Alert>}
       bad={<div style={{ display: 'flex', gap: 6 }}>
         <Badge tone="danger">Error</Badge>
-        <span style={{ fontSize: 'var(--text-12)', color: 'var(--color-text-muted)' }}>
+        <span style={{ fontSize: 'var(--text-12)', color: 'var(--color-fg-muted)' }}>
           The vault is locked.
         </span>
       </div>}
@@ -132,7 +132,7 @@ export const InteractiveCardsHoldNoControls: Story = {
     <Pair
       good={<Card interactive onClick={() => {}}>
         <strong style={{ fontSize: 'var(--text-13)' }}>Fenwick Garage — Invoice</strong>
-        <p style={{ margin: '4px 0 0', fontSize: 'var(--text-12)', color: 'var(--color-text-muted)' }}>
+        <p style={{ margin: '4px 0 0', fontSize: 'var(--text-12)', color: 'var(--color-fg-muted)' }}>
           14 March 2024 · 2 pages
         </p>
       </Card>}

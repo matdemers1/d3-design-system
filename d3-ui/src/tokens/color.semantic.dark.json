@@ -65,7 +65,7 @@
         "d3.resolved": "#747888"
       }
     },
-    "text": {
+    "fg": {
       "$type": "color",
       "$value": "{color.neutral.100}",
       "$description": "body",
@@ -73,7 +73,7 @@
         "d3.resolved": "#f0f2f7"
       }
     },
-    "text-muted": {
+    "fg-muted": {
       "$type": "color",
       "$value": "{color.neutral.300}",
       "$description": "secondary",
@@ -81,7 +81,7 @@
         "d3.resolved": "#b9bdcb"
       }
     },
-    "text-faint": {
+    "fg-faint": {
       "$type": "color",
       "$value": "{color.neutral.400}",
       "$description": "tertiary, labels, metadata",

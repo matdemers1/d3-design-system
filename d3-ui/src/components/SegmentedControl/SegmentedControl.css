@@ -52,14 +52,14 @@
   font-weight: var(--weight-medium);
   white-space: nowrap;
   cursor: pointer;
-  color: var(--color-text-muted);
+  color: var(--color-fg-muted);
   transition: color var(--motion-hover);
 }
 .d3-seg--md .d3-seg__item { height: 28px; padding: 0 var(--space-12); font-size: var(--text-12); }
 .d3-seg--sm .d3-seg__item { height: 24px; padding: 0 var(--space-8);  font-size: var(--text-11); }
 
-.d3-seg__item:hover:not(:disabled) { color: var(--color-text); }
-.d3-seg__item[aria-checked='true'] { color: var(--color-text); }
+.d3-seg__item:hover:not(:disabled) { color: var(--color-fg); }
+.d3-seg__item[aria-checked='true'] { color: var(--color-fg); }
 .d3-seg__item:disabled { opacity: 0.4; cursor: not-allowed; }
 /* A disabled option is still telling you the option exists, so it stays
    readable rather than disappearing. */
@@ -73,6 +73,6 @@
 .d3-seg__count {
   font-variant-numeric: tabular-nums;
   font-weight: var(--weight-regular);
-  color: var(--color-text-muted);
+  color: var(--color-fg-muted);
 }
 .d3-seg__item[aria-checked='true'] .d3-seg__count { color: inherit; opacity: 0.7; }

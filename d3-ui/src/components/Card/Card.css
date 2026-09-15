@@ -28,7 +28,7 @@
 .d3-crd--selected .d3-crd__title { color: var(--color-accent); }
 
 .d3-crd__title { font-size: var(--text-14); font-weight: var(--weight-semibold); margin: 0 0 var(--space-4); }
-.d3-crd__body  { font-size: var(--text-13); color: var(--color-text-muted); margin: 0;
+.d3-crd__body  { font-size: var(--text-13); color: var(--color-fg-muted); margin: 0;
                  line-height: var(--leading-13); }
 .d3-crd__footer {
   margin-top: var(--space-12);

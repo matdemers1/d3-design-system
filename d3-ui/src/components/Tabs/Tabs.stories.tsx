@@ -35,7 +35,7 @@ export const Automatic: Story = {
     <Tabs {...args}>
       {VIEWS.map((v) => (
         <TabPanel key={v.value} value={v.value}>
-          <span style={{ fontSize: 13, color: 'var(--color-text-muted)' }}>
+          <span style={{ fontSize: 13, color: 'var(--color-fg-muted)' }}>
             {v.label} panel — local state, so arrowing between tabs is free.
           </span>
         </TabPanel>
@@ -52,7 +52,7 @@ export const Manual: Story = {
     <Tabs {...args}>
       {VIEWS.map((v) => (
         <TabPanel key={v.value} value={v.value}>
-          <span style={{ fontSize: 13, color: 'var(--color-text-muted)' }}>
+          <span style={{ fontSize: 13, color: 'var(--color-fg-muted)' }}>
             {v.label} panel — each of these refetches.
           </span>
         </TabPanel>

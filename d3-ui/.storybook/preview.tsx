@@ -45,7 +45,7 @@ const preview: Preview = {
           data-theme={theme}
           style={{
             background: 'var(--color-bg)',
-            color: 'var(--color-text)',
+            color: 'var(--color-fg)',
             fontFamily: 'var(--font-sans)',
             fontSize: 'var(--text-14)',
             // Generous padding so a component is never judged flush against an

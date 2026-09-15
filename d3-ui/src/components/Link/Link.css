@@ -16,8 +16,8 @@
   text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
 }
 .d3-lnk--inline:hover { text-decoration-color: currentColor; }
-.d3-lnk--muted { color: var(--color-text-muted); }
-.d3-lnk--muted:hover { color: var(--color-text); }
+.d3-lnk--muted { color: var(--color-fg-muted); }
+.d3-lnk--muted:hover { color: var(--color-fg); }
 .d3-lnk__ext { display: inline-flex; vertical-align: -1px; margin-left: 3px; opacity: 0.65; }
 
 /* :visited is deliberately unstyled. A visited colour on an in-app link leaks

@@ -6,12 +6,12 @@
   margin: 0;
   border-radius: var(--radius-md);
   background: transparent;
-  color: var(--color-text-muted);
+  color: var(--color-fg-muted);
   cursor: pointer;
   transition: background-color var(--motion-hover), color var(--motion-hover);
 }
-.d3-ibtn:hover:not(:disabled) { background: var(--color-surface-raised); color: var(--color-text); }
-.d3-ibtn--secondary { background: var(--color-surface-raised); color: var(--color-text); }
+.d3-ibtn:hover:not(:disabled) { background: var(--color-surface-raised); color: var(--color-fg); }
+.d3-ibtn--secondary { background: var(--color-surface-raised); color: var(--color-fg); }
 .d3-ibtn--secondary:hover:not(:disabled) { background: var(--color-surface-hover); }
 
 /* 28px at the smallest size clears WCAG 2.2 AA 2.5.8 (24x24) with room. */

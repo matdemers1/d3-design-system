@@ -10,7 +10,7 @@
      (WCAG 1.4.11, 3:1). border-field is solved to clear that on every surface. */
   border: var(--border-width) solid var(--color-border-field);
   border-radius: var(--radius-md);
-  color: var(--color-text);
+  color: var(--color-fg);
   font-family: inherit;
   transition: border-color var(--motion-hover);
 }
@@ -18,7 +18,7 @@
 .d3-inp--md { height: 34px; padding: 0 var(--space-12); font-size: var(--text-13); }
 .d3-inp--lg { height: 40px; padding: 0 var(--space-12); font-size: var(--text-14); }
 
-.d3-inp:hover:not(.d3-inp--disabled) { border-color: var(--color-text-faint); }
+.d3-inp:hover:not(.d3-inp--disabled) { border-color: var(--color-fg-faint); }
 .d3-inp:has(> :focus-visible) {
   border-color: var(--color-accent);
   outline: var(--focus-width) solid var(--color-focus);
@@ -40,8 +40,8 @@
   font: inherit;
   padding: 0;
 }
-.d3-inp__control::placeholder { color: var(--color-text-faint); }
-.d3-inp__affix { display: flex; flex: none; color: var(--color-text-faint); }
+.d3-inp__control::placeholder { color: var(--color-fg-faint); }
+.d3-inp__affix { display: flex; flex: none; color: var(--color-fg-faint); }
 
 .d3-inp--area { height: auto; align-items: flex-start; padding: var(--space-8) var(--space-12); }
 .d3-inp--area .d3-inp__control {

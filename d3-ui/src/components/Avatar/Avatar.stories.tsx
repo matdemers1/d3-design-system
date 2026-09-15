@@ -56,7 +56,7 @@ export const InAMessageRow: Story = {
     <div style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 13 }}>
       <Avatar name="Priya Raman" size="sm" />
       <span>Priya Raman</span>
-      <span style={{ color: 'var(--color-text-faint)', fontSize: 12 }}>reported 18 items</span>
+      <span style={{ color: 'var(--color-fg-faint)', fontSize: 12 }}>reported 18 items</span>
     </div>
   ),
 }

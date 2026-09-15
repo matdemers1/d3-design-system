@@ -21,7 +21,7 @@ export const Standalone: Story = {}
 export const Inline: Story = {
   args: { variant: 'inline' },
   render: (args) => (
-    <p style={{ fontSize: 13.5, color: 'var(--color-text-muted)', maxWidth: '48ch', lineHeight: 1.6 }}>
+    <p style={{ fontSize: 13.5, color: 'var(--color-fg-muted)', maxWidth: '48ch', lineHeight: 1.6 }}>
       Offsite replication runs nightly and writes an encrypted dump to your{' '}
       <Link {...args}>S3 bucket</Link>. Inside prose a link is always underlined — colour alone is
       not an affordance.

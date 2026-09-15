@@ -8,7 +8,7 @@
      that every pair is measured. Per-user tinting is v2, with a validated tint
      ramp or not at all (D-030). */
   background: var(--color-surface-raised);
-  color: var(--color-text-muted);
+  color: var(--color-fg-muted);
   font-weight: var(--weight-semibold);
   overflow: hidden;
   flex: none;
