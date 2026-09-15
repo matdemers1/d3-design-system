@@ -17,6 +17,8 @@ import '../components/Badge/Badge'
 import '../components/Avatar/Avatar'
 import '../components/PageHeader/PageHeader'
 import '../components/EmptyState/EmptyState'
+import '../components/CodeInput/CodeInput'
+import '../components/PasswordInput/PasswordInput'
 
 /**
  * D-024 set a motion tier per interaction and, just as importantly, a list of
@@ -99,6 +101,29 @@ describe('things that move', () => {
   it('the Select chevron rotates on open — one of the three animated icons', () => {
     expect(prop('.d3-sel .d3-inp__affix', 'transition')).toContain('transform')
     expect(prop(".d3-sel[data-state='open'] .d3-inp__affix", 'transform')).toBe('rotate(180deg)')
+  })
+})
+
+describe('code and password entry', () => {
+  it('each character pops in on a spring, backwards-fill only', () => {
+    const a = prop('.d3-code__char', 'animation')
+    expect(a).toContain('d3-code-pop')
+    expect(a).toContain('var(--ease-spring)')
+    expect(a).toContain('backwards')
+    expect(a).not.toContain('forwards')
+  })
+
+  it('a rejection shakes the row and an acceptance waves across the boxes', () => {
+    expect(prop('.d3-code--reject .d3-code__slots', 'animation')).toContain('d3-code-shake')
+    const wave = decl('.d3-code--accept .d3-code__slot')
+    expect(wave.getPropertyValue('animation')).toContain('d3-code-wave')
+    // Staggered by box index, so it reads as a wave rather than a flash.
+    expect(wave.getPropertyValue('animation-delay')).toContain('--d3-code-i')
+  })
+
+  it('the reveal slash draws itself rather than snapping', () => {
+    expect(prop('.d3-pw__slash', 'transition')).toContain('stroke-dashoffset')
+    expect(prop('.d3-pw__eye--crossed .d3-pw__slash', 'stroke-dashoffset')).toBe('0')
   })
 })
 

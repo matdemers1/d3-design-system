@@ -15,6 +15,7 @@ const RAMP: Record<string, Record<string, number>> = {
   'd3-ibtn': { sm: 28, md: 34, lg: 40 },
   'd3-inp': { sm: 28, md: 34, lg: 40 },
   'd3-sel': { sm: 28, md: 34, lg: 40 },
+  'd3-code': { md: 34, lg: 40 },
   'd3-bdg': { sm: 20, md: 24 },
   'd3-avt': { xs: 20, sm: 24, md: 32, lg: 40 },
 }
