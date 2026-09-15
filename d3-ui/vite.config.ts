@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react'
 import dts from 'vite-plugin-dts'
 import { resolve } from 'node:path'
 import type { Plugin } from 'vite'
+import type { AtRule, Plugin as PostcssPlugin } from 'postcss'
 
 /**
  * Vite's library build *extracts* every `import './Button.css'` into a single
@@ -34,7 +35,45 @@ function importOwnStyles(): Plugin {
   }
 }
 
+/**
+ * Component CSS ships inside `@layer d3-ui`, placed after Tailwind's `base` and
+ * before its `utilities`.
+ *
+ * Unlayered, it beat every layered rule whatever the specificity, and Tailwind
+ * v4 puts every utility in `@layer utilities`: in Bindery `<Input className="w-72">`
+ * rendered full width and `<CardBody className="mb-3">` had no margin, with no
+ * error. Layered, an app's utilities and its own unlayered CSS override a
+ * component, and Tailwind's preflight (in `base`) still cannot reset one.
+ *
+ * The order statement travels with every stylesheet because layer order is
+ * fixed by first mention anywhere in the document. If Tailwind's own statement
+ * came first and ours named `d3-ui` for the first time later, `d3-ui` would be
+ * appended after `utilities` and win again. theme.css declares the same order
+ * ahead of `@import "tailwindcss"` for the same reason.
+ *
+ * Applied through `css.postcss`, so Storybook — and the browser checks that run
+ * against it — get the same cascade the package ships. Tokens are not layered
+ * (see check-tokens rule 0); only component rules are.
+ */
+export const LAYER_ORDER = 'theme, base, d3-ui, components, utilities'
+
+function layerComponentCss(): PostcssPlugin {
+  return {
+    postcssPlugin: 'd3ui-layer-components',
+    Once(root, { AtRule }) {
+      const file = (root.source?.input.file ?? '').replace(/\\/g, '/')
+      if (!/\/src\/(components|styles)\/[^?]*\.css$/.test(file)) return
+      if (root.nodes.some((n) => n.type === 'atrule' && (n as AtRule).name === 'layer')) return
+      const layer = new AtRule({ name: 'layer', params: 'd3-ui' })
+      layer.append(root.nodes.map((n) => n.clone()))
+      root.removeAll()
+      root.append(new AtRule({ name: 'layer', params: LAYER_ORDER }), layer)
+    },
+  }
+}
+
 export default defineConfig({
+  css: { postcss: { plugins: [layerComponentCss()] } },
   plugins: [
     react(),
     dts({ include: ['src'], exclude: ['**/*.stories.tsx', '**/*.test.*'], rollupTypes: true }),

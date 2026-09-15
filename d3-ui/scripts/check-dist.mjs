@@ -46,6 +46,27 @@ if (!fail.length) {
   check(css.includes('height:34px') || css.includes('height: 34px'),
     'dist/index.css has no 34px control height — the size ramp did not survive the build.')
 
+  // Every component rule sits in `@layer d3-ui`, and the order statement comes
+  // before it. Unlayered, a component beat every Tailwind utility an app put on
+  // it — `className="w-72"` on an Input was ignored without a word. Remove the
+  // layer blocks and what is left must be nothing.
+  const ORDER = '@layer theme,base,d3-ui,components,utilities;'
+  check(css.replace(/\/\*[\s\S]*?\*\//g, '').trimStart().startsWith(ORDER),
+    `dist/index.css does not open with \`${ORDER}\` — layer order is set by first mention, so without it ` +
+    'd3-ui can land after an app\'s utilities and override them again. See layerComponentCss() in vite.config.ts.')
+  let residue = css.replace(/\/\*[\s\S]*?\*\//g, '').split(ORDER).join('')
+  for (let at = residue.indexOf('@layer d3-ui{'); at !== -1; at = residue.indexOf('@layer d3-ui{')) {
+    let depth = 0, i = at + '@layer d3-ui'.length
+    for (; i < residue.length; i++) {
+      if (residue[i] === '{') depth++
+      else if (residue[i] === '}' && --depth === 0) break
+    }
+    residue = residue.slice(0, at) + residue.slice(i + 1)
+  }
+  check(residue.trim() === '',
+    `dist/index.css has rules outside @layer d3-ui: ${residue.trim().slice(0, 120)}… Unlayered component CSS ` +
+    'overrides every utility class an app passes.')
+
   // Phase 3a: a `*/` inside a comment terminates it early and browsers drop the
   // rest of the block. This shipped once already.
   check(!/\/\*[^*]*\*\/[^{}]*\*\//.test(css.slice(0, 4000)),

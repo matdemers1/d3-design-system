@@ -25,6 +25,15 @@ import { Button } from '@d3cloud/ui'
 import '@d3cloud/ui/theme.css'    // optional — Tailwind v4 preset
 ```
 
+### Overriding a component
+
+Component rules live in the cascade layer `d3-ui`, ordered after Tailwind's
+`base` and before its `utilities`. So a `className` on a component wins
+(`<Input className="w-72">` is 288px wide), an app's own unlayered CSS wins, and
+Tailwind's preflight cannot reset one. An app with its own global rules for bare
+elements (`button { … }`) should put them in a layer too, or they override the
+components.
+
 ## Colour mode
 
 Dark is primary. Light is applied with `data-theme="light"` on `<html>`, and is also honoured via `prefers-color-scheme` when no attribute is set.

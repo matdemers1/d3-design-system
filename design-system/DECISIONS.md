@@ -1099,3 +1099,20 @@ Three defects shipped past a green unit suite, and each was found by somebody me
 **A false positive worth keeping in mind.** The first survey reported a 34px Button measuring 32px. It was inside a Modal, measured mid-entrance at 94% scale. Heights now come from `offsetHeight` (layout, not paint), and anything rectangle-based waits for finite animations to finish first.
 
 `@storybook/test-runner` was removed — 388 packages, including the deprecated jest-playwright stack — because the new suite supersedes it, and two accessibility runners with different coverage is how people end up trusting the weaker one.
+
+---
+
+### D-061 · V1-4 · Component CSS moves into a cascade layer
+**Date:** 2026-09-15
+**Found by Bindery, twice over.** Moving Trust's cards onto Card meant `<CardBody className="mb-3">`, and the inputs next in line carry widths like `w-72`. Measured in Chromium against Bindery's production build, both lost: 0px margin and a 1280px-wide input. Component CSS was unlayered; Tailwind v4 puts every utility in `@layer utilities`; unlayered beats layered whatever the specificity. Every class an app puts on a component was silently dropped for any property the component also sets. The peer session building Bindery's sign-in screens found the same thing independently from margins on Button and FormField, and suggested it might be the intended "spacing belongs to the parent" rule. The width case settles it: that is not a spacing rule, it is a component that cannot be sized.
+
+**Decision.** Component rules ship inside `@layer d3-ui`, with the order `theme, base, d3-ui, components, utilities` stated at the top of every component stylesheet and ahead of `@import "tailwindcss"` in theme.css. Layer order is fixed by first mention, so if Tailwind's statement came first and ours named `d3-ui` later, `d3-ui` would be appended after `utilities` and win again. Above `base`, so preflight cannot reset a component. Tokens stay unlayered (check-tokens rule 0): the Tailwind theme's self-references depend on it.
+
+**Rejected.** `:where()` selectors lower specificity, but an unlayered rule still beats a layered one, so it does not help. Documenting "use `style` for overrides" leaves the silent failure in place.
+
+**Consequence.** An app's unlayered global rules for bare elements now override components where they overlap. Checked in both apps: d3-qr's element rules are all in `@layer base`. Bindery has one unlayered rule, `button, [role="button"], select { min-height: 1.75rem }`, and it overlaps no component declaration, since no component button sets `min-height`, so layering changes nothing there. It does already apply to every library button, which matters for Checkbox (see V1-4). The README says to layer such rules.
+
+**Proven.** The dist check fails on any rule outside the layer or a missing order statement, shown with a planted rule. A browser spec injects stand-ins for Tailwind's `base` and `utilities` layers into a real story: it fails against an unlayered Storybook and passes on the layered one, and the full 502-test suite, pixel baselines included, is unchanged. In Bindery's rebuilt app, with the stylesheets in either order: `mb-3` is 12px, `w-72` is 288px, heights stay 34px, and preflight does not strip a button's padding. Tailwind's compiler rewrote our order statement as `@layer d3-ui,components;` placed directly after `base`, which is the order intended.
+
+**Two smaller V1-4 finds landed with it.** CardTitle was always a `<p>`: Trust's nine checks are titled regions, and moving them onto Card would have taken every h2 out of the page outline. Card now takes `as` (section, article, li) and CardTitle `as` (h2 to h4). And Select had no `id`, so the log filter's `<label htmlFor>` would have stopped naming it.
+

@@ -3,6 +3,11 @@
 
    This is not required by @d3cloud/ui components. Import "@d3cloud/ui/tokens.css"
    for the components themselves; add this only if you also want utilities. */
+/* Layer order, stated before Tailwind states its own. @d3cloud/ui's component
+   rules live in `d3-ui`: above Tailwind's preflight, so a reset cannot undo a
+   component, and below utilities, so a className on a component still applies.
+   Order is fixed by first mention, which is why this line comes first. */
+@layer theme, base, d3-ui, components, utilities;
 @import "tailwindcss";
 @import "./tokens.css";
 @import "./theme.color.css";

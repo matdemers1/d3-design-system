@@ -7,6 +7,11 @@
    3g voice and content ships as tokens/content.json — it governs strings, not
    styles, so it has no stylesheet. Its formatters land in Phase 5 with the
    components (see content.json → $extensions.d3.formatters). */
+/* Layer order, stated before Tailwind states its own. @d3cloud/ui's component
+   rules live in `d3-ui`: above Tailwind's preflight, so a reset cannot undo a
+   component, and below utilities, so a className on a component still applies.
+   Order is fixed by first mention, which is why this line comes first. */
+@layer theme, base, d3-ui, components, utilities;
 @import "tailwindcss";
 @import "./theme.color.css";
 @import "./theme.type.css";

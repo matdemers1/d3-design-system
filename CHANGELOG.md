@@ -52,6 +52,17 @@ apps must not select on them.
 
 ### Fixed
 
+- **A `className` on a component was ignored whenever it touched a property the
+  component sets.** Component CSS was unlayered, and unlayered rules beat every
+  Tailwind utility whatever the specificity: in Bindery `<Input className="w-72">`
+  rendered full width and `<CardBody className="mb-3">` had no margin, with no
+  error. Component rules now sit in `@layer d3-ui`, after `base` and before
+  `utilities`. An app's unlayered global element rules now override components.
+- **Select takes `id`**, so a `<label htmlFor>` outside a FormField names it.
+- **Card renders `section`, `article` or `li` (`as`), and CardTitle a heading
+  (`as="h2"`)**, so a card that is a region of the page appears in its outline.
+  The parts merge an app's `className` with their own instead of replacing it.
+
 - **EmptyState's body was a `<p>`**, so paragraphs inside it — Bindery's "Not here"
   state has two — were invalid nesting the browser repairs by closing the outer
   paragraph early. The same defect Alert had in D-050. Body content in both now
