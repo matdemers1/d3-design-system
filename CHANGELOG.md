@@ -4,6 +4,50 @@ Semver. The public surface is what `d3-ui/src/index.ts` exports plus the token
 names; CSS class names (`.d3-btn`, `.d3-seg`) are an implementation detail and
 apps must not select on them.
 
+## v1.1.0-rc.2 — 2026-09-17
+
+Fixes found by rebuilding the D3 Auth console on rc.1. Additive only.
+
+### Added
+
+- **`setStyleNonce(nonce)` and `readStyleNonce()`** (D-072) — strict CSP.
+  `Modal`, the `AppShell` drawer, `Select` and a modal `Menu` lock scroll
+  through Radix, which injects a `<style>` element; under `style-src` without
+  `'unsafe-inline'` it was blocked (a console error, and the page behind still
+  scrolled). The server sends a per-response nonce in `style-src 'nonce-…'`
+  and in `<meta name="d3-style-nonce">`; the app calls
+  `setStyleNonce(readStyleNonce())` before rendering. `Select` passes the nonce
+  to its list's own `<style>`. New dependency: `get-nonce` ^1.0.1, the copy
+  Radix already resolves; the dist check fails if it is bundled or resolves
+  twice.
+- **`PageHeader countNoun`** — `{ one: 'person', other: 'people' }` shows
+  "5 people" and names the heading "People, 5 people". Default unchanged
+  ("items"); `countLabel` still replaces the whole name. Type `CountNoun`.
+- **`Textarea mono`** — `--font-mono`, no ligatures, for JSON and manifests.
+- **`@d3cloud/ui/base.css`** — opt-in document base: `html` and `body` on
+  `--color-bg`, `--color-fg`, `--font-sans`, antialiased, `body` at least the
+  viewport tall, in `@layer base`. Not imported by any component.
+- README: the strict-CSP pattern, and the one line Vitest needs in an app
+  (`test.server.deps.inline: ['@d3cloud/ui']`) because the package imports its
+  own CSS.
+
+### Changed
+
+- **`Modal description`** accepts `React.ReactNode`, not only a string. It
+  renders in a `div` (was Radix's `<p>`) so paragraphs and lists are valid; it
+  is still the dialog's accessible description. Rich content gets 8px between
+  blocks, `strong` in the foreground colour and `code` in mono. A plain-string
+  description renders identically.
+
+### Fixed
+
+- **Dead modifier classes.** `Card` no longer emits `d3-crd--md` (20px is the
+  base rule) and `Section` no longer emits `d3-sec--card` or `d3-sec--plain`;
+  no stylesheet had a rule for any of them. No rendered change.
+- **Date `Input` focus ring** — in Chromium the frame drew no ring at the
+  calendar-picker tab stop (rc.1 known issue). Date and time fields also ring
+  on `:focus-within`.
+
 ## v1.1.0-rc.1 — 2026-09-17
 
 Additive only: no existing export, prop or default changes. The frame arrives (D-065, D-066); page, list and form primitives (D-067–D-070).
@@ -108,7 +152,7 @@ Additive only: no existing export, prop or default changes. The frame arrives (D
 ### Known issues
 
 - In Chromium, an `Input type="date"` draws no focus ring while focus is on its
-  internal calendar-picker stop (D-069).
+  internal calendar-picker stop (D-069). Fixed in rc.2.
 
 ## v1.0.0 — 2026-09-15
 
