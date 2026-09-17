@@ -12,8 +12,12 @@ export interface ModalProps {
   trigger?: React.ReactNode
   /** Names the action, not the object type: "Dismiss 3 items", never "Confirm". */
   title: string
-  /** The consequence, and whether it is reversible. This is the sentence that prevents the mistake. */
-  description?: string
+  /**
+   * The consequence, and whether it is reversible. This is the sentence that prevents the mistake.
+   * Text, or rich content — a name in `<strong>`, a `<code>` identifier, paragraphs or a list.
+   * It renders in a `div`, so block content is valid, and stays the dialog's accessible description.
+   */
+  description?: React.ReactNode
   children?: React.ReactNode
   footer?: React.ReactNode
   size?: ModalSize
@@ -73,8 +77,13 @@ export function Modal({
           <div className="d3-modal__head">
             <Dialog.Title className="d3-modal__title">{title}</Dialog.Title>
           </div>
-          {description ? (
-            <Dialog.Description className="d3-modal__desc">{description}</Dialog.Description>
+          {description !== undefined && description !== null && description !== false && description !== '' ? (
+            // A div, not Radix's default <p>: a description may be paragraphs or a
+            // list, and a <p> cannot hold either (the same fix as Alert, D-050).
+            // Radix still gives it the id the dialog's aria-describedby points at.
+            <Dialog.Description asChild>
+              <div className="d3-modal__desc">{description}</div>
+            </Dialog.Description>
           ) : null}
           {children}
           {footer ? <div className="d3-modal__footer">{footer}</div> : null}

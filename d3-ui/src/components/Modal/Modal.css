@@ -55,5 +55,12 @@
   letter-spacing: -0.015em; margin: 0; flex: 1; }
 .d3-modal__desc { font-size: var(--text-13); color: var(--color-fg-muted);
   margin: 0 0 var(--space-16); line-height: var(--leading-13); }
+/* Rich descriptions: paragraphs and lists keep the description's own rhythm
+   rather than the browser's 1em margins. */
+.d3-modal__desc > :where(p, ul, ol) { margin: 0; }
+.d3-modal__desc > * + * { margin-top: var(--space-8); }
+.d3-modal__desc :where(ul, ol) { padding-left: var(--space-20); }
+.d3-modal__desc strong { color: var(--color-fg); font-weight: var(--weight-semibold); }
+.d3-modal__desc code { font-family: var(--font-mono); }
 .d3-modal__footer { display: flex; justify-content: flex-end; gap: var(--space-8);
   margin-top: var(--space-16); }

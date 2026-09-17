@@ -81,3 +81,24 @@ export const OpenByDefault: Story = {
     <Modal {...args} footer={<Button variant="danger">Dismiss 3 items</Button>} />
   ),
 }
+
+export const RichDescription: Story = {
+  args: {
+    open: true,
+    size: 'sm',
+    destructive: true,
+    title: 'Remove Ada Lovelace',
+    description: (
+      <>
+        <p>She loses access to <strong>3 apps</strong> at once, and her sessions end.</p>
+        <p>Her audit history stays under <code>ada@example.com</code>.</p>
+      </>
+    ),
+  },
+  render: (args) => (
+    <Modal {...args} footer={<Button variant="danger">Remove Ada Lovelace</Button>} />
+  ),
+  parameters: { docs: { description: { story:
+    '`description` takes rich content — the name in bold, an identifier in mono, two paragraphs. ' +
+    'It renders in a `div`, so block content is valid, and remains the dialog\'s accessible description.' } } },
+}

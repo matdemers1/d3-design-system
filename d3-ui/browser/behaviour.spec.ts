@@ -99,6 +99,25 @@ test("a TooltipProvider's delay applies to the tooltips under it", async ({ page
   await expect(page.locator('.d3-tip')).toBeVisible({ timeout: 2000 })
 })
 
+test('Modal: a rich description is valid block content, with its own rhythm', async ({ page }) => {
+  await page.goto(storyUrl('layers-modal--rich-description'))
+  await settle(page)
+  const got = await page.evaluate(() => {
+    const dlg = document.querySelector<HTMLElement>('[role="dialog"]')!
+    const desc = dlg.querySelector<HTMLElement>('.d3-modal__desc')!
+    const [p1, p2] = [...desc.querySelectorAll('p')]
+    return {
+      tag: desc.tagName,
+      describedBy: dlg.getAttribute('aria-describedby') === desc.id,
+      firstMargin: getComputedStyle(p1!).marginTop,
+      gap: Math.round(p2!.getBoundingClientRect().top - p1!.getBoundingClientRect().bottom),
+      code: getComputedStyle(desc.querySelector('code')!).fontFamily,
+    }
+  })
+  expect(got).toMatchObject({ tag: 'DIV', describedBy: true, firstMargin: '0px', gap: 8 })
+  expect(got.code).toMatch(/^"?JetBrains Mono/)
+})
+
 test('PageHeader countNoun shows the noun it was given', async ({ page }) => {
   await page.goto(storyUrl('patterns-pageheader--count-noun'))
   await settle(page)

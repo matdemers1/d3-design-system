@@ -117,4 +117,25 @@ describe('Modal — the contract App B has never met', () => {
     await user.keyboard('{Enter}')
     expect(onConfirm).not.toHaveBeenCalled()
   })
+
+  it('takes rich content as its description, in a div, still describing the dialog', async () => {
+    render(
+      <Modal
+        open
+        title="Remove Ada Lovelace"
+        description={<><p>She loses access to <strong>3 apps</strong> at once.</p><ul><li>Sessions end</li></ul></>}
+      />,
+    )
+    const dlg = await screen.findByRole('dialog')
+    const desc = dlg.querySelector('.d3-modal__desc')!
+    expect(desc.tagName).toBe('DIV')
+    expect(dlg.getAttribute('aria-describedby')).toBe(desc.id)
+    expect(dlg).toHaveAccessibleDescription(/loses access to 3 apps at once/)
+  })
+
+  it('renders no description element for an empty one', async () => {
+    render(<Modal open title="Rename" description="" />)
+    const dlg = await screen.findByRole('dialog')
+    expect(dlg.querySelector('.d3-modal__desc')).toBeNull()
+  })
 })
