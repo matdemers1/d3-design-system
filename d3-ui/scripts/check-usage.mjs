@@ -7,7 +7,10 @@
  * happens when the only thing standing between a developer and a raw hex is a
  * convention written down somewhere. So this is a gate, not a guideline.
  *
- *   npx d3-check-usage <dir> [<dir>…]
+ *   npx d3-check-usage [--tailwind] <dir> [<dir>…]
+ *
+ * `--tailwind` is for apps that compile their CSS through Tailwind v4 with the
+ * system's theme.css: it admits the `@theme` names as well as the runtime ones.
  *
  * It ships inside the package rather than beside the design record, because a
  * gate that lives in a sibling directory is a gate that fails in CI: Bindery's
@@ -70,25 +73,71 @@ const RULES = [
     say: 'a shadow. Elevation in this system is tone, and detachment is a boundary (D-015).' },
 ]
 
+const args = process.argv.slice(2)
+// --tailwind: the app compiles its CSS through Tailwind v4 with the system's
+// theme.css, so the names declared in its `@theme` blocks are admitted too.
+const TAILWIND = args.includes('--tailwind')
+const dirs = args.filter((a) => !a.startsWith('--'))
+if (!dirs.length) { console.error('usage: check-usage.mjs [--tailwind] <dir> [<dir>…]'); process.exit(2) }
+
 // Every custom property the system defines, read from the package's own token
 // stylesheets — so a consumer checks against the tokens it actually installed.
+//
+// Only RUNTIME declarations count by default. The theme*.css files declare
+// Tailwind's names (`--font-weight-title`, `--text-24--line-height`) inside
+// `@theme inline`, which is an instruction to the Tailwind compiler and emits
+// no custom property a browser can read. The first version of this rule read
+// every declaration in every file, so the D3 Auth console — no Tailwind — used
+// both names, passed the gate, and rendered every heading at weight 400.
 const TOKEN_DIR = join(dirname(fileURLToPath(import.meta.url)), '..', 'src', 'tokens', 'build')
 const SYSTEM_NAMESPACES = /^--(color|space|radius|text|leading|weight|font|motion|ease|dur|icon|border|focus|container|scrim)-/
+
+/**
+ * Splits a stylesheet's custom-property declarations into those a browser sees
+ * and those inside an `@theme` block, which only Tailwind's compiler sees.
+ */
+function readTokenDeclarations(css) {
+  const runtime = new Set()
+  const theme = new Set()
+  const source = css.replace(/\/\*[\s\S]*?\*\//g, (c) => c.replace(/[^\n]/g, ' '))
+  // Mark the character ranges that sit inside an @theme block, by brace depth.
+  const ranges = []
+  for (const m of source.matchAll(/@theme\b[^{;]*\{/g)) {
+    let depth = 1
+    let i = m.index + m[0].length
+    for (; i < source.length && depth > 0; i++) {
+      if (source[i] === '{') depth++
+      else if (source[i] === '}') depth--
+    }
+    ranges.push([m.index, i])
+  }
+  for (const m of source.matchAll(/(--[\w-]+)\s*:/g)) {
+    const inTheme = ranges.some(([a, b]) => m.index >= a && m.index < b)
+    ;(inTheme ? theme : runtime).add(m[1])
+  }
+  return { runtime, theme }
+}
+
 const systemTokens = new Set()
+const tailwindTokens = new Set()
 try {
   for (const f of readdirSync(TOKEN_DIR).filter((f) => f.endsWith('.css'))) {
-    const css = readFileSync(join(TOKEN_DIR, f), 'utf8')
-    for (const m of css.matchAll(/(--[\w-]+)\s*:/g)) systemTokens.add(m[1])
+    const { runtime, theme } = readTokenDeclarations(readFileSync(join(TOKEN_DIR, f), 'utf8'))
+    for (const t of runtime) systemTokens.add(t)
+    for (const t of theme) tailwindTokens.add(t)
   }
 } catch { /* tokens missing — the unknown-token rule below will say so */ }
+if (TAILWIND) for (const t of tailwindTokens) systemTokens.add(t)
 
 const UNKNOWN_TOKEN = {
   id: 'unknown-token',
   say: 'a system token that does not exist. If it was renamed, use the new name — an undefined custom property fails silently.',
 }
-
-const dirs = process.argv.slice(2)
-if (!dirs.length) { console.error('usage: check-usage.mjs <dir> [<dir>…]'); process.exit(2) }
+const TAILWIND_ONLY_TOKEN = {
+  id: 'tailwind-only-token',
+  say: 'a Tailwind theme name, declared only inside `@theme` — it does not exist at runtime without Tailwind. ' +
+       'Use the runtime token (`--weight-*`, `--leading-*`), or run with --tailwind if this app compiles through Tailwind v4.',
+}
 
 const SKIP = new Set(['node_modules', 'dist', 'build', '.git', 'coverage', '.next', 'storybook-static'])
 const TEST_FILE = /\.(test|spec)\.[jt]sx?$/
@@ -164,7 +213,8 @@ for (const dir of dirs) {
         for (const m of line.matchAll(/var\(\s*(--[\w-]+)/g)) {
           const name = m[1]
           if (SYSTEM_NAMESPACES.test(name) && !systemTokens.has(name) && !localTokens.has(name)) {
-            findings.push({ file, line: i + 1, rule: UNKNOWN_TOKEN, hits: [name] })
+            const rule = tailwindTokens.has(name) ? TAILWIND_ONLY_TOKEN : UNKNOWN_TOKEN
+            findings.push({ file, line: i + 1, rule, hits: [name] })
           }
         }
       }

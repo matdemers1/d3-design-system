@@ -1,0 +1,23 @@
+/* Auto-fit tiles on the grid gutter (D-021). A tile never shrinks below its
+   minimum width: when a row cannot fit another tile, a column drops — the same
+   rule as "columns drop, they do not shrink". `min(100%, …)` keeps a tile from
+   overflowing a container narrower than its minimum. */
+.d3-grid {
+  display: grid;
+  gap: var(--grid-gutter);
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+  list-style: none;
+}
+.d3-grid--sm { grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr)); }
+.d3-grid--md { grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr)); }
+.d3-grid--lg { grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr)); }
+.d3-grid > * { min-width: 0; }
+
+/* One column below md, whatever the minimum — D-021's dashboard grid collapses
+   there, and two 16rem tiles side by side on a 700px tablet are too cramped to
+   read a sentence in. */
+@media (max-width: 767.98px) {
+  .d3-grid { grid-template-columns: minmax(0, 1fr); }
+}

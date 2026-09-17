@@ -1,0 +1,44 @@
+/* Terms and values. Stacked below sm; from sm, two columns where the term
+   column is a third of the width up to 14rem, so a long label ("How they prove
+   it is them") wraps inside its column instead of pushing the values around. */
+.d3-desc { margin: 0; padding: 0; min-width: 0; }
+
+.d3-desc__item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-2);
+  padding: var(--cell-pad-y) 0;
+  margin: 0;
+}
+/* A divider between items, not around them — D-023's decorative border role. */
+.d3-desc__item + .d3-desc__item { border-top: var(--border-width) solid var(--color-border); }
+.d3-desc__item:first-child { padding-top: 0; }
+.d3-desc__item:last-child { padding-bottom: 0; }
+
+.d3-desc__term {
+  margin: 0;
+  font-size: var(--text-13);
+  line-height: var(--leading-13);
+  font-weight: var(--weight-medium);
+  color: var(--color-fg-muted);
+}
+.d3-desc__value {
+  margin: 0;
+  min-width: 0;
+  font-size: var(--text-14);
+  line-height: var(--leading-14);
+  color: var(--color-fg);
+  /* Redirect URIs, hashes and client IDs have no spaces to break at. */
+  overflow-wrap: anywhere;
+}
+/* Tabular figures, per D-019, so a column of counts does not wander. */
+.d3-desc__value--numeric { font-variant-numeric: tabular-nums; font-feature-settings: 'tnum' 1; }
+.d3-desc__value > :where(code) { font-family: var(--font-mono); font-size: var(--text-12); }
+
+@media (min-width: 640px) {
+  .d3-desc__item {
+    grid-template-columns: min(14rem, 33%) minmax(0, 1fr);
+    column-gap: var(--space-16);
+    align-items: baseline;
+  }
+}

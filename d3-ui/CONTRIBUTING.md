@@ -35,8 +35,19 @@ raw Tailwind palette classes, off-scale values on a scale the system owns,
 primitive `--p-*` tokens, and shadows. Run it against any app:
 
 ```bash
-npx d3-check-usage src
+npx d3-check-usage src              # an app without Tailwind
+npx d3-check-usage --tailwind src   # an app that compiles through Tailwind v4 with theme.css
 ```
+
+It also reports a `var(--…)` in a system namespace that no token declares.
+**Only runtime declarations count by default.** The `theme*.css` files declare
+Tailwind's names — `--font-weight-title`, `--text-24--line-height` — inside
+`@theme inline`, which is an instruction to Tailwind's compiler and emits no
+custom property a browser can read. Before 1.1 the gate read those files too, so
+the D3 Auth console, which has no Tailwind, used both names, passed, and
+rendered every heading at weight 400. Those names now fail as
+`tailwind-only-token`; use the runtime names (`--weight-*`, `--leading-*`), or
+pass `--tailwind` in an app whose CSS Tailwind compiles.
 
 It deliberately says nothing about `grid-cols-[1fr_22rem]` or `max-h-[80vh]` —
 a layout template and a viewport height are not scales the system has an opinion

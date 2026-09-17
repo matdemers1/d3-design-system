@@ -4,6 +4,46 @@ Semver. The public surface is what `d3-ui/src/index.ts` exports plus the token
 names; CSS class names (`.d3-btn`, `.d3-seg`) are an implementation detail and
 apps must not select on them.
 
+## Unreleased — 1.1.0
+
+Additive only: no existing export, prop or default changes.
+
+### Added
+
+- **Page primitives** (D-068). `Page` — the content container: `width`
+  `wide | narrow | form | prose` from the container tokens, `--page-pad`,
+  regions 24px apart; a `div` by default because the app shell owns `<main>`.
+  `Stack` and `Cluster` — a column and a wrapping row whose `gap` takes a
+  spacing step by name (`gap="16"`), never a length; `align`, `justify`, `as`.
+  `Grid` — auto-fit tiles with a named minimum width (`sm | md | lg`), on
+  `--grid-gutter`, one column below `md`. `Section` — a `<section>` named by
+  its `h2` (or `h3`), with `description`, trailing `actions` and
+  `surface="card" | "plain"`. `AuthLayout` — a single-task page: brand slot,
+  PageHeader title, the task, a footnote slot, at form width.
+- **Lists and forms** (D-067, D-069). `DataList` and `DataListRow` — rows, not
+  a table: `leading`, `title`, `description`, `meta`, `actions`, 48px rows,
+  meta and actions aligned down the list, actions under the text below `sm`,
+  truncation per D-019, an `empty` slot. A row is one link (`href`) or holds
+  actions, never both. `DescriptionList` and `DescriptionItem` — a `<dl>`, two
+  columns from `sm`, `numeric` for tabular figures. `FormActions` — primary
+  last; a row on the aligned edge from `sm`, full width with the primary on top
+  below it; optional `leading` action. `FilterBar` — filter controls in a
+  wrapping row with a `trailing` slot, stacked below `md`.
+
+### Changed
+
+- **The usage gate reports Tailwind-only token names** (D-070). Names declared
+  only inside `@theme` (`--font-weight-title`, `--text-24--line-height`) do not
+  exist at runtime, and the gate used to accept them. They now fail as
+  `tailwind-only-token` unless the gate is run with `--tailwind`. An app without
+  Tailwind that passed on 1.0 may fail here: each finding is a style that was
+  never applied. The D3 Auth console has 7.
+
+### Known issues
+
+- In Chromium, an `Input type="date"` draws no focus ring while focus is on its
+  internal calendar-picker stop (D-069).
+
 ## v1.0.0 — 2026-09-15
 
 The first stable release. The public API is frozen (D-063): from here, a rename

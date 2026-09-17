@@ -22,6 +22,9 @@ const COMPOSITIONS = [
   'layers-tabs--with-icons',
   'patterns-emptystate--no-results',
   'guides-using-the-system--one-primary-per-view',
+  // v1.1: a page built only from the layout exports, at D-021's rhythm.
+  'layout-page--composed',
+  'lists-datalist--with-actions',
 ]
 
 test.skip(!process.env.D3_PIXEL_IMAGE,
