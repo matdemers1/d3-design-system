@@ -9,6 +9,7 @@
 import { readFileSync, existsSync, readdirSync } from 'node:fs'
 import { resolve, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { createRequire } from 'node:module'
 
 const dist = resolve(dirname(fileURLToPath(import.meta.url)), '../dist')
 const fail = []
@@ -73,6 +74,30 @@ if (!fail.length) {
     'dist/index.css opens with a malformed comment — check for `*/` inside a comment body.')
 }
 
+// D-072: `setStyleNonce` works only if it sets the same `get-nonce` module the
+// style singleton inside Radix reads. Bundled into dist, it would set a private
+// copy and every strict-CSP page would still lose its scroll lock, silently.
+// So: dist imports it as a bare specifier, carries no copy of its body, and the
+// specifier resolves — from this package and from react-style-singleton, the
+// module that reads it — to one file.
+if (!fail.length) {
+  const js = readFileSync(`${dist}/index.js`, 'utf8')
+  check(/^import \{[^}]*\bsetNonce\b[^}]*\} from ["']get-nonce["'];/m.test(js),
+    'dist/index.js does not import setNonce from "get-nonce" — keep it in rollupOptions.external (vite.config.ts).')
+  check(!js.includes('__webpack_nonce__'),
+    'dist/index.js contains a bundled copy of get-nonce, so setStyleNonce sets a nonce nothing reads.')
+  const pkgRoot = resolve(dist, '..')
+  const req = createRequire(`${pkgRoot}/package.json`)
+  const ours = req.resolve('get-nonce')
+  const chain = ['@radix-ui/react-dialog', 'react-remove-scroll', 'react-remove-scroll-bar', 'react-style-singleton']
+  let from = `${pkgRoot}/package.json`
+  for (const name of chain) from = createRequire(from).resolve(name)
+  const theirs = createRequire(from).resolve('get-nonce')
+  check(ours === theirs,
+    `get-nonce resolves to two copies: ${ours} for this package and ${theirs} for react-style-singleton. ` +
+    'Align the get-nonce range in package.json with the one react-style-singleton resolves.')
+}
+
 // The development contract checks must vanish from a consumer's production
 // bundle — the check *and* its message strings, not just the console call.
 // Bundled here the way an app would: esbuild with NODE_ENV defined and minified.
@@ -83,7 +108,7 @@ if (!fail.length) {
   const bundle = async (mode) => (await build({
     entryPoints: [`${dist}/index.js`], bundle: true, write: false, format: 'esm', minify: true,
     platform: 'browser', logLevel: 'silent',
-    external: ['react', 'react-dom', 'react/*', '@radix-ui/*', 'clsx', 'lucide-react'],
+    external: ['react', 'react-dom', 'react/*', '@radix-ui/*', 'clsx', 'lucide-react', 'get-nonce'],
     loader: { '.css': 'empty' },
     define: { 'process.env.NODE_ENV': JSON.stringify(mode) },
   })).outputFiles[0].text

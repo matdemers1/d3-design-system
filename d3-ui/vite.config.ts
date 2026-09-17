@@ -83,7 +83,9 @@ export default defineConfig({
     lib: { entry: resolve(__dirname, 'src/index.ts'), formats: ['es'], fileName: 'index' },
     // React stays a peer: the four apps run 18.2, 18.3 and 19, and two copies of
     // React in one tree breaks hooks.
-    rollupOptions: { external: [/^react/, /^react-dom/, /^@radix-ui/, 'lucide-react', 'clsx'] },
+    // `get-nonce` must stay external: bundled, `setStyleNonce` would set a private
+    // copy that the style singleton inside Radix never reads (D-072).
+    rollupOptions: { external: [/^react/, /^react-dom/, /^@radix-ui/, 'lucide-react', 'clsx', 'get-nonce'] },
     cssCodeSplit: false,
     sourcemap: true,
   },

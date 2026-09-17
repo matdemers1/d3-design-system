@@ -54,3 +54,6 @@ export * from './components/DescriptionList'
 export * from './components/DataList'
 export * from './components/FormActions'
 export * from './components/FilterBar'
+
+// Strict CSP: the nonce for the styles Radix injects while a layer is open (D-072)
+export { setStyleNonce, readStyleNonce } from './lib/styleNonce'

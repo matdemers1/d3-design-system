@@ -1295,3 +1295,25 @@ The nine patterns (L4) were reviewed as screenshots — dark and light, phone an
 - **Single-task forms stack their actions.** `FormActions` gains `layout: 'row' | 'stack'`, default `row`. `stack` is the phone layout at every width: the primary full width, the `leading` alternative (*Use a passkey*) beneath it. Sign-in and code steps use it; everything inside an app keeps the row.
 
 All three are additive and part of 1.1.0; `Page` and `FormActions` have not been released, so the `Page` default is not a breaking change.
+
+---
+
+### D-072 · v1.1 · Strict CSP: the library takes the page's style nonce
+**Date:** 2026-09-17
+**Found by the D3 Auth console on 1.1.0-rc.1.** The console serves `style-src 'self'` with no `'unsafe-inline'`, as an identity provider should. Opening a `Modal` or the `AppShell` drawer logged a CSP violation and the page behind still scrolled. Both are Radix Dialogs, which lock scroll through `react-remove-scroll` → `react-remove-scroll-bar` → `react-style-singleton`, and the singleton injects a `<style>` element while a layer is open. `Select` and a modal `Menu` go through the same path, and Radix `Select` also renders its own `<style>` to hide the list's scrollbar.
+
+**Chosen: `setStyleNonce(nonce: string): void` and `readStyleNonce(): string | undefined`.** The singleton reads its nonce from the `get-nonce` package on every injection, so `setStyleNonce` calls `get-nonce`'s `setNonce`. `readStyleNonce` reads `<meta name="d3-style-nonce" content="…">`. The pattern: the server makes a nonce per response, sends it in `style-src 'nonce-…'` and in that meta, and the app calls `setStyleNonce(readStyleNonce())` before the first render. `Select` passes the same nonce to Radix's `Viewport`, which takes it as a prop.
+
+**The hazard is a second copy.** `get-nonce` keeps the nonce in a module-level variable. If `setStyleNonce` set one copy and the singleton read another, every strict-CSP page would silently keep the defect. So:
+- `get-nonce` is a direct dependency at `^1.0.1`, the version `react-style-singleton` already resolved in the lockfile (its own range is `^1.0.0`), so npm dedupes to one copy in an app.
+- It is external in the library build, like React and Radix. `check-dist.mjs` fails if `dist/index.js` stops importing it by name or carries a copy of its body, and if the name resolves to a different file from this package than from `react-style-singleton` (reached through `@radix-ui/react-dialog`). Both halves were proven by building with it bundled.
+
+**Rejected.**
+- *A `nonce` prop on `Modal`, `AppShell` and `Select`.* The nonce is per page, not per component, and the scroll lock is a singleton shared by every open layer. A prop would have to be threaded through every layer, and a missed one would still break the lock.
+- *A provider component.* A context cannot reach `get-nonce`, which is a module variable. A provider would call the same function during render, which is later than the first layer might open.
+- *Reading the nonce from an existing `<script nonce>` or `<style nonce>`.* Browsers hide a parsed `nonce` attribute from `getAttribute`, and a page need not have such an element. A meta is explicit, and the server already knows the value.
+- *Shipping the lock's CSS in `index.css`.* The injected rules carry the measured scrollbar width, so they cannot be static.
+
+**Not covered.** An app's own inline `style="…"` attributes in server-rendered HTML are the app's to solve. The components set styles through the CSSOM (React's `style` prop, Radix's popper positioning), which `style-src` does not govern.
+
+**Proven.** Unit: the nonce set through the package's entry lands on the `<style>` the Modal scroll lock injects, and no nonce is set when none was given; `readStyleNonce` reads the meta and ignores an empty one. Browser (`browser/csp.spec.ts`): a fixture app built from `dist/` (`browser/csp-fixture/`, served at `/csp/`) under a meta `Content-Security-Policy: style-src 'self' 'nonce-TEST'`. The built bundle contains exactly one copy of `get-nonce`. `securitypolicyviolation` is recorded from before the first script runs. Opening the Modal, the Select and, at 390px, the AppShell drawer records no violation, the lock's `<style>` carries `nonce="TEST"`, and `body` computes `overflow: hidden`, with a wheel over the scrim leaving `scrollY` at 0. The control is the same page with `?nononce`, which skips the call: it records `style-src` violations and the page is not locked. Without the control, none of the passing checks would show the policy was in force.

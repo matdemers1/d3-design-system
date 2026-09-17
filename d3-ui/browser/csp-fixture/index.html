@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <!--
+      D-072. The policy a strict app serves, as a meta so the static server
+      needs no headers: styles from this origin, and <style> elements only with
+      the nonce. No 'unsafe-inline'. The server would put the same per-request
+      nonce in the header and in d3-style-nonce; here both are TEST.
+    -->
+    <meta http-equiv="Content-Security-Policy" content="style-src 'self' 'nonce-TEST'" />
+    <meta name="d3-style-nonce" content="TEST" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Strict CSP fixture</title>
+    <script type="module" src="./main.tsx"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>

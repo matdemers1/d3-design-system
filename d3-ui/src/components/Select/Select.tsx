@@ -1,6 +1,7 @@
 import { forwardRef } from 'react'
 import * as RadixSelect from '@radix-ui/react-select'
 import { cn } from '../../lib/cn'
+import { currentStyleNonce } from '../../lib/styleNonce'
 import { useFormField } from '../FormField/FormFieldContext'
 import '../Input/Input.css'
 import './Select.css'
@@ -89,7 +90,9 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
       </RadixSelect.Trigger>
       <RadixSelect.Portal>
         <RadixSelect.Content className="d3-sel__content" position="popper" sideOffset={6}>
-          <RadixSelect.Viewport>
+          {/* Radix renders a <style> here that hides the viewport's scrollbar; under a
+              strict style-src it needs the nonce set with setStyleNonce (D-072). */}
+          <RadixSelect.Viewport nonce={currentStyleNonce()}>
             {options.map((o) => (
               <RadixSelect.Item
                 key={o.value} value={toRadix(o.value) as string} disabled={o.disabled} className="d3-sel__item"

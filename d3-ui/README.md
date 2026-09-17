@@ -110,6 +110,39 @@ Tailwind's preflight cannot reset one. An app with its own global rules for bare
 elements (`button { … }`) should put them in a layer too, or they override the
 components.
 
+### Strict Content Security Policy
+
+`Modal`, the `AppShell` drawer, `Select` and a `modal` `Menu` lock page scroll
+while they are open, through Radix, which injects one `<style>` element to do it.
+Under a `style-src` without `'unsafe-inline'` the browser blocks that element:
+a console error, and the page behind the dialog still scrolls. Give the
+library the page's nonce before the first render (D-072):
+
+1. The server generates a nonce per response, allows it in the header and
+   repeats it in a meta:
+
+   ```
+   Content-Security-Policy: style-src 'self' 'nonce-r4nd0m…'
+   ```
+   ```html
+   <meta name="d3-style-nonce" content="r4nd0m…">
+   ```
+
+2. The app sets it before rendering:
+
+   ```ts
+   import { readStyleNonce, setStyleNonce } from '@d3cloud/ui'
+
+   const nonce = readStyleNonce()
+   if (nonce) setStyleNonce(nonce)
+   createRoot(el).render(<App />)
+   ```
+
+`setStyleNonce` sets the nonce in `get-nonce`, the module Radix's style
+singleton reads. It works only while there is one copy of `get-nonce` in the
+app: `npm ls get-nonce` should show a single deduped version. The nonce must be
+fresh per response: a nonce that is fixed at build time is no protection.
+
 ## Colour mode
 
 Dark is primary. Light is applied with `data-theme="light"` on `<html>`, and is also honoured via `prefers-color-scheme` when no attribute is set.
