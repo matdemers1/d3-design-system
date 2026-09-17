@@ -4,6 +4,41 @@ Semver. The public surface is what `d3-ui/src/index.ts` exports plus the token
 names; CSS class names (`.d3-btn`, `.d3-seg`) are an implementation detail and
 apps must not select on them.
 
+## Unreleased — 1.1.0
+
+Additive only. The frame arrives (D-065, D-066).
+
+### Added
+
+- **`AppShell`** — D-021's shell. `brand`, `nav`, `footer` and `children`
+  slots. At `lg` and above: a 240px sidebar, collapsible to a 64px rail,
+  remembered in `localStorage` (`storageKey`, default `d3.sidebar.collapsed`;
+  `defaultCollapsed`). Below `lg`: a top bar with a menu button, and the
+  sidebar as a drawer over a scrim (Radix Dialog: focus trapped, Escape, scrim
+  and any link activation close it, focus returns). A "Skip to content" link
+  and exactly one `<main>` (`mainId`, default `content`). Router-agnostic.
+  `useAppShell()` returns `{ collapsed, drawer }` for the brand slot.
+- **`SideNav`, `SideNavGroup`, `SideNavItem`** — a named `<nav>` landmark;
+  groups labelled by their visible (or `hideTitle`) title; items take `href` or
+  `asChild` with a router link, `icon`, `label`, `current`
+  (`aria-current="page"`), and `count`/`countLabel`, rendered as a `CountBadge`
+  and joined to the name. On a collapsed rail an item is its icon, with the
+  label as a Tooltip.
+- **`Menu`, `MenuTrigger`, `MenuContent`, `MenuItem`, `MenuSeparator`,
+  `MenuLabel`** — Radix DropdownMenu with the system's floating layer
+  (surface-raised, 1px border-float, no shadow). `MenuItem` takes `icon`,
+  `tone="danger"`, `disabled`, `onSelect` and `asChild`. Non-modal by default.
+  New dependency: `@radix-ui/react-dropdown-menu`.
+- **`AccountMenu`** — `name`, `detail`, `avatarSrc`, and the app's menu items.
+  Sign-out is an item the app provides (a navigation or a form post it owns).
+  Avatar only on a collapsed rail.
+- **`ThemeProvider`, `useTheme`, `ThemeSwitch`, `themeBootScript`** — System /
+  Light / Dark. Writes the resolved mode to `data-theme` on `<html>`, follows
+  the OS live under `system`, remembers the choice (`storageKey`, default
+  `d3.theme`) and follows other tabs. `ThemeSwitch` is a SegmentedControl on a
+  page and menu radios inside a menu. `themeBootScript()` returns an inline
+  `<head>` script that sets the theme before first paint.
+
 ## v1.0.0 — 2026-09-15
 
 The first stable release. The public API is frozen (D-063): from here, a rename

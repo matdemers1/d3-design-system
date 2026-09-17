@@ -1,0 +1,84 @@
+/* A floating layer: surface-raised plus a 3:1 boundary, and no shadow (D-023).
+   The same panel as Select's list, because they are the same object. */
+.d3-menu {
+  background: var(--color-surface-raised);
+  border: var(--border-width) solid var(--color-border-float);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  min-width: max(var(--radix-dropdown-menu-trigger-width), 200px);
+  max-height: var(--radix-dropdown-menu-content-available-height);
+  overflow-y: auto;
+  box-shadow: none;
+  color: var(--color-fg);
+  font-size: var(--text-13);
+  z-index: 50;
+  /* Confident tier: 200ms ease-out, no overshoot, no item stagger. A menu is
+     opened dozens of times an hour and must not perform (D-024). */
+  animation: d3-menu-in var(--motion-menu-enter) backwards;
+  transform-origin: var(--radix-dropdown-menu-content-transform-origin);
+}
+@keyframes d3-menu-in { from { opacity: 0; transform: scale(0.97); } }
+@keyframes d3-menu-out { to { opacity: 0; transform: scale(0.98); } }
+.d3-menu[data-state='closed'] { animation: d3-menu-out var(--motion-menu-exit) forwards; }
+@media (prefers-reduced-motion: reduce) {
+  .d3-menu { animation: d3-menu-fade var(--motion-menu-enter) backwards; }
+  .d3-menu[data-state='closed'] { animation: none; }
+}
+@keyframes d3-menu-fade { from { opacity: 0; } }
+
+.d3-menu__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  min-height: 32px;
+  padding: var(--space-6) var(--space-8);
+  border-radius: var(--radius-md);
+  color: var(--color-fg);
+  font-size: var(--text-13);
+  line-height: var(--leading-13);
+  text-decoration: none;
+  cursor: pointer;
+  outline: none;
+  user-select: none;
+  /* An asChild <button> brings its own UA box. */
+  width: 100%;
+  border: 0;
+  margin: 0;
+  background: transparent;
+  font-family: inherit;
+  text-align: left;
+}
+/* Radix moves real focus to the highlighted item, so this tone is the focus
+   indicator for a menu — keyboard and pointer alike, one treatment. */
+.d3-menu__item[data-highlighted] { background: var(--color-surface-hover); }
+/* Keyboard users also get the system's ring, drawn inside the item so the
+   panel's padding cannot clip it (D-023). Pointer highlight stays tone-only. */
+.d3-menu__item:focus-visible {
+  outline: var(--focus-width) solid var(--color-focus);
+  outline-offset: calc(-1 * var(--focus-width));
+}
+.d3-menu__item[data-disabled] { opacity: 0.42; cursor: not-allowed; }
+.d3-menu__item--danger { color: var(--color-danger); }
+
+.d3-menu__icon { display: inline-flex; flex: none; color: var(--color-fg-muted); }
+.d3-menu__item--danger .d3-menu__icon { color: inherit; }
+
+.d3-menu__tick { width: 14px; flex: none; display: inline-flex; color: var(--color-accent); }
+.d3-menu__item--radio[data-state='checked'] { font-weight: var(--weight-semibold); }
+
+.d3-menu__label {
+  padding: var(--space-6) var(--space-8) var(--space-4);
+  font-size: var(--text-12);
+  line-height: var(--leading-12);
+  font-weight: var(--weight-semibold);
+  color: var(--color-fg-muted);
+}
+
+.d3-menu__sep {
+  height: var(--border-width);
+  /* Not --color-border: in dark it is the same step as surface-raised, so a
+     divider drawn with it on this panel was invisible. The page ground is a
+     step below the panel in both modes. Decorative, so no contrast floor. */
+  background: var(--color-bg);
+  margin: var(--space-4) 0;
+}

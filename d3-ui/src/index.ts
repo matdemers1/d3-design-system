@@ -34,3 +34,10 @@ export * from './components/Label'
 export * from './components/PasswordInput'
 export * from './components/Select'
 export * from './components/Textarea'
+
+// v1.1 L1 — the frame: shell, navigation, menus, theme (D-065, D-066)
+export * from './components/AppShell'
+export * from './components/SideNav'
+export * from './components/Menu'
+export * from './components/AccountMenu'
+export * from './components/Theme'

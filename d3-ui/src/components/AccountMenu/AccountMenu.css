@@ -1,0 +1,45 @@
+/* The trigger is a full-width row, quiet until hovered, because it is read
+   (who am I signed in as) far more often than it is used. */
+.d3-acct {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  width: 100%;
+  min-height: 48px;
+  margin: 0;
+  padding: var(--space-6) var(--space-8);
+  border: 0;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--color-fg);
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color var(--motion-hover);
+}
+.d3-acct:hover,
+.d3-acct[data-state='open'] { background: var(--color-surface-hover); }
+.d3-acct:focus-visible {
+  outline: var(--focus-width) solid var(--color-focus);
+  outline-offset: calc(-1 * var(--focus-width));
+}
+.d3-acct--collapsed { justify-content: center; padding: var(--space-4); min-height: 40px; }
+
+.d3-acct__text { display: flex; flex-direction: column; flex: 1; min-width: 0; }
+.d3-acct__name,
+.d3-acct__detail { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.d3-acct__name { font-size: var(--text-13); line-height: var(--leading-13); font-weight: var(--weight-semibold); }
+.d3-acct__detail { font-size: var(--text-12); line-height: var(--leading-12); color: var(--color-fg-muted); }
+.d3-acct__chevron { display: inline-flex; flex: none; color: var(--color-fg-muted); }
+
+.d3-acct__vh {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  border: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

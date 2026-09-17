@@ -1,0 +1,145 @@
+/* D-021: 240px sidebar at lg and above, a 64px rail when collapsed, an
+   off-canvas drawer below lg. Which of those applies is decided by the
+   component from the same media query, so the markup never carries a hidden
+   second copy of the navigation. */
+.d3-shell {
+  display: flex;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--color-bg);
+  color: var(--color-fg);
+}
+.d3-shell--narrow { flex-direction: column; }
+
+/* A resting surface: a tone step from the page, no border, no shadow (D-023). */
+.d3-shell__sidebar {
+  position: sticky;
+  top: 0;
+  align-self: flex-start;
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  width: var(--sidebar-width);
+  height: 100vh;
+  height: 100dvh;
+  background: var(--color-surface);
+  overflow: hidden;
+}
+/* Not animated. D-024 rules out animating layout that reflows content, and a
+   sidebar changing width reflows the whole page on every frame. */
+.d3-shell[data-collapsed] .d3-shell__sidebar { width: var(--sidebar-collapsed); }
+
+.d3-shell__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-8);
+  padding: var(--space-12);
+  min-height: 58px;
+  flex: none;
+}
+.d3-shell[data-collapsed] .d3-shell__head {
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: var(--space-12) 0;
+}
+.d3-shell__brand {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  overflow: hidden;
+  padding-left: var(--space-4);
+  font-size: var(--text-14);
+  font-weight: var(--weight-semibold);
+}
+.d3-shell[data-collapsed] .d3-shell__brand { padding-left: 0; justify-content: center; max-width: 100%; }
+.d3-shell__toggle { flex: none; }
+
+.d3-shell__nav {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0 var(--space-12) var(--space-12);
+}
+.d3-shell__foot { flex: none; padding: var(--space-12); }
+
+.d3-shell__main { flex: 1; min-width: 0; }
+/* Focused by the skip link, programmatically — not a control, so no ring. */
+.d3-shell__main:focus { outline: none; }
+
+/* Below lg: the only way to the navigation. A resting surface like the sidebar. */
+.d3-shell__bar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  padding: var(--space-8) var(--space-12);
+  background: var(--color-surface);
+}
+
+/* The drawer floats over the page, so it is a floating layer: surface-raised
+   and a boundary, plus a scrim — the modal rule (D-023). */
+.d3-shell__scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: var(--scrim);
+  animation: d3-shell-fade var(--dur-3) var(--ease-out) backwards;
+}
+.d3-shell__drawer {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  width: min(var(--sidebar-width), calc(100vw - var(--space-48)));
+  background: var(--color-surface-raised);
+  border-right: var(--border-width) solid var(--color-border-float);
+  border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+  box-shadow: none;
+  outline: none;
+  animation: d3-shell-slide var(--motion-drawer) backwards;
+}
+@keyframes d3-shell-slide { from { transform: translateX(-100%); } }
+@keyframes d3-shell-slide-out { to { transform: translateX(-100%); } }
+@keyframes d3-shell-fade { from { opacity: 0; } }
+@keyframes d3-shell-fade-out { to { opacity: 0; } }
+.d3-shell__drawer[data-state='closed'] { animation: d3-shell-slide-out var(--motion-menu-exit) forwards; }
+.d3-shell__scrim[data-state='closed'] { animation: d3-shell-fade-out var(--motion-menu-exit) forwards; }
+
+/* Reduced motion keeps the fade and drops the travel. */
+@media (prefers-reduced-motion: reduce) {
+  .d3-shell__drawer { animation-name: d3-shell-fade; }
+  .d3-shell__drawer[data-state='closed'] { animation-name: d3-shell-fade-out; }
+}
+
+.d3-shell__skip {
+  position: fixed;
+  top: var(--space-8);
+  left: var(--space-8);
+  z-index: 60;
+  padding: var(--space-8) var(--space-12);
+  background: var(--color-surface-raised);
+  border: var(--border-width) solid var(--color-border-float);
+  border-radius: var(--radius-md);
+  color: var(--color-fg);
+  font-size: var(--text-13);
+  font-weight: var(--weight-medium);
+  text-decoration: none;
+}
+.d3-shell__skip:not(:focus),
+.d3-shell__vh {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  border: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
