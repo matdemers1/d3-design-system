@@ -67,3 +67,23 @@ test('a destructive Modal opened from the keyboard focuses its panel without a r
   expect(await page.evaluate(() => document.activeElement?.classList.contains('d3-modal'))).toBe(true)
   expect(await page.evaluate(ringed)).toEqual([])
 })
+
+test('a date Input keeps its ring on the calendar-picker stop (Chromium)', async ({ page }) => {
+  // D-069 found it: at the picker's internal tab stop the <input> matches neither
+  // :focus nor :focus-visible, so the frame's :has(> :focus-visible) ring vanished.
+  await page.goto(storyUrl('forms-input--date-field'))
+  await settle(page)
+  const frameRing = () => page.evaluate(() => {
+    const cs = getComputedStyle(document.querySelector('.d3-inp')!)
+    return cs.outlineStyle !== 'none' && parseFloat(cs.outlineWidth) > 0
+  })
+  let stops = 0
+  for (; stops < 6; stops++) {
+    await page.keyboard.press('Tab')
+    const onInput = await page.evaluate(() => document.activeElement?.tagName === 'INPUT')
+    if (!onInput) break
+    expect(await frameRing(), `stop ${stops + 1} inside the date field`).toBe(true)
+  }
+  // month, day, year and the picker: the loop really reached the picker stop.
+  expect(stops).toBeGreaterThanOrEqual(4)
+})

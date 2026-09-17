@@ -1270,6 +1270,8 @@ The package name `@d3cloud/ui` stays. It is never published to a registry, so th
 
 **Found on the way, not fixed here.** In Chromium a native `<Input type="date">` has an internal calendar-picker tab stop, and at that stop the Input frame draws no focus ring (its ring is `:has(> .d3-inp__control:focus-visible)`). The focus sweep caught it on the first FilterBar story. The stories use a Select for "Since" instead; the fix belongs with Input, and the console's Audit filter uses a date input.
 
+*Fixed in 1.1.0-rc.2:* for date and time types the Input frame also rings on `:focus-within`. At the picker stop the `<input>` matches neither `:focus` nor `:focus-visible` but is still the active element, and those fields hold nothing else focusable. A `Date` story puts the case in the focus sweep, and `browser/focus.spec.ts` checks every internal stop. Both failed before the rule.
+
 ---
 
 ### D-070 · v1.1 · The usage gate knows which token names exist at runtime

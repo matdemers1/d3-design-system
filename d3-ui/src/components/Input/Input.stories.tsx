@@ -57,3 +57,14 @@ export const InAFilterBar: Story = {
     </div>
   ),
 }
+
+/**
+ * A native date field. In Chromium it has an internal calendar-picker tab stop,
+ * where the input itself no longer matches `:focus-visible` — the frame keeps
+ * its ring there through `:focus-within`.
+ */
+export const DateField: Story = {
+  name: 'Date',
+  args: { type: 'date', defaultValue: '2026-09-17', 'aria-label': 'Since' },
+  decorators: [(S) => <div style={{ width: 200 }}><S /></div>],
+}
