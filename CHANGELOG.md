@@ -94,6 +94,8 @@ Additive only: no existing export, prop or default changes. The frame arrives (D
   `Link` is the foreground colour, underlined on hover, rather than a column of
   accent-coloured names (pixel baseline regenerated).
 
+- **Owner review (D-071):** `Page align` (`start` default, `center`); `FormActions layout` (`row` default, `stack` for single-task pages). The Settings pattern's saves are secondary; the Auth pattern stacks its actions.
+
 ### Changed
 
 - **The usage gate reports Tailwind-only token names** (D-070). Names declared

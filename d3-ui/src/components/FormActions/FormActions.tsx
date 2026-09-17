@@ -4,6 +4,7 @@ import { devOneOf, devWarn } from '../../lib/dev'
 import './FormActions.css'
 
 export type FormActionsAlign = 'end' | 'start'
+export type FormActionsLayout = 'row' | 'stack'
 
 export interface FormActionsProps extends React.HTMLAttributes<HTMLDivElement> {
   /**
@@ -18,6 +19,13 @@ export interface FormActionsProps extends React.HTMLAttributes<HTMLDivElement> {
    * escape ("Use a recovery code instead"). Below `sm` it goes to the bottom.
    */
   leading?: React.ReactNode
+  /**
+   * `row` (default): a row from `sm`, stacked below it. `stack`: the phone layout
+   * at every width — full-width buttons, the primary on top, the leading action
+   * at the bottom. For single-task pages such as sign-in, where the one primary
+   * is the whole point of the screen.
+   */
+  layout?: FormActionsLayout
 }
 
 /**
@@ -29,10 +37,11 @@ export interface FormActionsProps extends React.HTMLAttributes<HTMLDivElement> {
  * the source reads the same at every width.
  */
 export const FormActions = forwardRef<HTMLDivElement, FormActionsProps>(function FormActions(
-  { align = 'end', leading, className, children, ...rest }, ref,
+  { align = 'end', layout = 'row', leading, className, children, ...rest }, ref,
 ) {
   if (process.env.NODE_ENV !== 'production') {
     devOneOf('FormActions', 'align', align, ['end', 'start'])
+    devOneOf('FormActions', 'layout', layout, ['row', 'stack'])
     const buttons = Children.toArray(children).filter(isValidElement)
     const primaries = buttons
       .map((b, i) => ((b.props as { variant?: string }).variant === 'primary' ? i : -1))
@@ -49,7 +58,7 @@ export const FormActions = forwardRef<HTMLDivElement, FormActionsProps>(function
   const main = <div className="d3-fa__main">{children}</div>
   const lead = leading ? <div className="d3-fa__leading">{leading}</div> : null
   return (
-    <div ref={ref} className={cn('d3-fa', start ? 'd3-fa--start' : 'd3-fa--end', className)} {...rest}>
+    <div ref={ref} className={cn('d3-fa', start ? 'd3-fa--start' : 'd3-fa--end', layout === 'stack' && 'd3-fa--stack', className)} {...rest}>
       {/* DOM order follows the visual order from sm: leading on the left for
           end-aligned actions, on the right for start-aligned ones. */}
       {start ? <>{main}{lead}</> : <>{lead}{main}</>}

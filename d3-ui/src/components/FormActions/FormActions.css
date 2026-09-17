@@ -41,3 +41,20 @@
   .d3-fa__main > *,
   .d3-fa__leading > * { width: 100%; }
 }
+
+/* layout="stack": the phone layout at every width (D-071). */
+.d3-fa--stack,
+.d3-fa--stack .d3-fa__main,
+.d3-fa--stack .d3-fa__leading {
+  flex-direction: column-reverse;
+  flex-wrap: nowrap;
+  align-items: stretch;
+}
+.d3-fa--stack.d3-fa--end .d3-fa__main,
+.d3-fa--stack.d3-fa--start .d3-fa__leading { margin-inline-start: 0; }
+/* align="start" renders the leading action after the main group in the DOM,
+   so the mirror would put it on top; order puts it back at the bottom. */
+.d3-fa--stack.d3-fa--start .d3-fa__leading { order: -1; }
+.d3-fa--stack .d3-fa__main > *,
+.d3-fa--stack .d3-fa__leading > * { width: 100%; }
+

@@ -10,6 +10,16 @@ afterEach(() => { vi.restoreAllMocks(); __resetDevWarnings() })
 const warned = (spy: ReturnType<typeof vi.spyOn>, fragment: string) =>
   spy.mock.calls.some((c: unknown[]) => String(c[0]).includes(fragment))
 
+describe('FormActions — layout', () => {
+  it('is a row by default and a stack when asked, without changing the DOM order', () => {
+    const { container, rerender } = render(<FormActions><Button>Cancel</Button><Button variant="primary">Save</Button></FormActions>)
+    expect(container.firstElementChild).not.toHaveClass('d3-fa--stack')
+    rerender(<FormActions layout="stack" leading={<Button variant="ghost">Use a passkey</Button>}><Button variant="primary">Sign in</Button></FormActions>)
+    expect(container.firstElementChild).toHaveClass('d3-fa--stack')
+    expect(screen.getAllByRole('button').map((b) => b.textContent)).toEqual(['Use a passkey', 'Sign in'])
+  })
+})
+
 describe('FormActions — the order', () => {
   it('keeps the buttons in the order written: primary last', () => {
     render(<FormActions><Button>Cancel</Button><Button variant="primary">Save</Button></FormActions>)

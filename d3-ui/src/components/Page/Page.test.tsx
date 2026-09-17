@@ -22,6 +22,13 @@ describe('Page — the container', () => {
     expect(container.firstElementChild).toHaveClass(`d3-page--${width}`)
   })
 
+  it('sits on the start edge unless asked to centre', () => {
+    const { container, rerender } = render(<Page width="narrow">Content</Page>)
+    expect(container.firstElementChild).not.toHaveClass('d3-page--center')
+    rerender(<Page width="narrow" align="center">Content</Page>)
+    expect(container.firstElementChild).toHaveClass('d3-page--center')
+  })
+
   it('defaults to wide', () => {
     const { container } = render(<Page>Content</Page>)
     expect(container.firstElementChild).toHaveClass('d3-page--wide')

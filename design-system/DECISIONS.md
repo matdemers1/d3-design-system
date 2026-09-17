@@ -1282,3 +1282,16 @@ The package name `@d3cloud/ui` stays. It is never published to a registry, so th
 
 **Proven.** Against the console's `src`, the 1.0 gate reports nothing. The new one reports 7: `--text-24--line-height` and `--font-weight-title` (the sign-in title), `--font-weight-medium` three times, `--font-weight-regular` and `--font-weight-semibold`. With `--tailwind` it passes. The library's own `src` passes. A test runs the script as a process against fixtures for runtime names, Tailwind-only names with and without the flag, and an undeclared name.
 
+
+---
+
+### D-071 · v1.1 · Owner review of the page patterns
+**Date:** 2026-09-17
+
+The nine patterns (L4) were reviewed as screenshots — dark and light, phone and desktop — before the D3 Auth console was rebuilt on them. The direction was accepted, with three changes:
+
+- **Pages sit on the start edge.** `Page` gains `align: 'start' | 'center'`, default `start`. A narrow detail or settings page centred beside a 240px sidebar left a column of empty space on its left and moved the title every time a person went from a wide list to a narrow page. `center` remains for a page with no shell. `AuthLayout` is unchanged: a single task with nothing around it is still centred.
+- **A settings page has no primary.** Each Section's save is a secondary button, still last and still named for what it saves. Several independent forms on one screen each claiming primary is the "one primary per view" rule broken three times; the order and the name carry the meaning instead.
+- **Single-task forms stack their actions.** `FormActions` gains `layout: 'row' | 'stack'`, default `row`. `stack` is the phone layout at every width: the primary full width, the `leading` alternative (*Use a passkey*) beneath it. Sign-in and code steps use it; everything inside an app keeps the row.
+
+All three are additive and part of 1.1.0; `Page` and `FormActions` have not been released, so the `Page` default is not a breaking change.

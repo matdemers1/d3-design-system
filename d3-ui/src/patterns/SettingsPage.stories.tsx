@@ -23,9 +23,9 @@ one \`Section\` per concern, each its own form with its own \`FormActions\`.**
 - **Don't** put a setting that belongs to the browser — the theme — on this page. It is the account menu's (see *App frame*).
 
 #### Actions
-- **Do** end each Section with \`FormActions\`: secondary actions first, **the save last** (rightmost from \`sm\`, on top on a phone).
-- **Do** treat each Section's save as that form's primary. A card is one form and one decision; the primary is the button that finishes *that* form.
-- **Don't** give a Section two primaries. *Send a test message* is secondary, even though it is the one people should press next.
+- **Do** end each Section with \`FormActions\`: other actions first, **the save last** (rightmost from \`sm\`, on top on a phone).
+- **Do** make each Section's save a **secondary** button. A settings page is several independent forms, and three primaries on one screen is no primary at all (owner review, D-071). The save is still last, and still names what it saves.
+- **Don't** promote one Section's save to primary to make it stand out. If one concern matters more, it goes first on the page.
 
 #### Feedback
 - **Do** put the result **at the top of the Section it concerns**, as an \`Alert\` with \`dynamic\`: *Saved* in \`success\`, the server's own words in \`danger\`.
@@ -72,7 +72,7 @@ function Mail({ saved }: { saved: boolean }) {
         </FormField>
         <FormActions>
           <Button>Send a test message</Button>
-          <Button variant="primary" type="submit">Save mail settings</Button>
+          <Button type="submit">Save mail settings</Button>
         </FormActions>
       </Stack>
     </Section>
@@ -87,7 +87,7 @@ function Alerts() {
           <Input defaultValue="alex@d3cloud.example, ops@d3cloud.io" />
         </FormField>
         <FormActions>
-          <Button variant="primary" type="submit">Save recipients</Button>
+          <Button type="submit">Save recipients</Button>
         </FormActions>
       </Stack>
     </Section>
@@ -111,7 +111,7 @@ function Lifetimes({ failed }: { failed: boolean }) {
           <Input type="number" inputMode="numeric" defaultValue="14" trailing="days" />
         </FormField>
         <FormActions>
-          <Button variant="primary" type="submit">Save lifetimes</Button>
+          <Button type="submit">Save lifetimes</Button>
         </FormActions>
       </Stack>
     </Section>

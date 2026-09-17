@@ -9,6 +9,7 @@ import './Page.css'
  */
 export type PageWidth = 'wide' | 'narrow' | 'form' | 'prose'
 export type PageElement = 'div' | 'main'
+export type PageAlign = 'start' | 'center'
 const WIDTHS = ['wide', 'narrow', 'form', 'prose'] as const
 
 export interface PageProps extends React.HTMLAttributes<HTMLElement> {
@@ -20,10 +21,17 @@ export interface PageProps extends React.HTMLAttributes<HTMLElement> {
    * without a shell.
    */
   as?: PageElement
+  /**
+   * Where a page narrower than its space sits. `start` (the default) keeps every
+   * page's title on the same edge beside the sidebar, so moving between a wide
+   * list and a narrow detail page does not make the content jump. `center` is
+   * for a page with no shell around it.
+   */
+  align?: PageAlign
 }
 
 /**
- * The content of one page: centred, capped at a container width, padded by
+ * The content of one page: on the start edge (or centred), capped at a container width, padded by
  * `--page-pad` (24px, 32px from `lg`), and its regions spaced 24px apart.
  *
  * Put everything a page renders inside it — including its loading skeleton,
@@ -31,16 +39,17 @@ export interface PageProps extends React.HTMLAttributes<HTMLElement> {
  * rather than full width against the edge of the window.
  */
 export const Page = forwardRef<HTMLElement, PageProps>(function Page(
-  { width = 'wide', as = 'div', className, children, ...rest }, ref,
+  { width = 'wide', as = 'div', align = 'start', className, children, ...rest }, ref,
 ) {
   if (process.env.NODE_ENV !== 'production') {
     devOneOf('Page', 'width', width, WIDTHS)
     devOneOf('Page', 'as', as, ['div', 'main'])
+    devOneOf('Page', 'align', align, ['start', 'center'])
   }
   const Element = as === 'main' ? 'main' : 'div'
   const w = (WIDTHS as readonly string[]).includes(width) ? width : 'wide'
   return (
-    <Element ref={ref as React.Ref<HTMLDivElement>} className={cn('d3-page', `d3-page--${w}`, className)} {...rest}>
+    <Element ref={ref as React.Ref<HTMLDivElement>} className={cn('d3-page', `d3-page--${w}`, align === 'center' && 'd3-page--center', className)} {...rest}>
       {children}
     </Element>
   )

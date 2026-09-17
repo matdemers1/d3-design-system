@@ -19,7 +19,7 @@ setup. **\`AuthLayout\` → one \`Card\` → one form → one primary.**
 - **Do** use \`AuthLayout\`, never \`AppShell\`: there is nobody signed in to navigate for. It owns the page's \`<main>\` and its one \`<h1>\`, and moves focus to the heading so each step is announced.
 - **Do** write the title as the task and the product — *Sign in to D3 Auth* — and use \`description\` for who or what this step is for.
 - **Do** keep **one form in one Card with one primary**, labelled for what it does: *Sign in*, *Verify*, never *Submit* or *Continue*.
-- **Do** put the alternative route — *Use a recovery code*, *Use a passkey* — in \`FormActions leading\`, as a \`ghost\` button. It is a way through the same step, not a second task.
+- **Do** end the form with \`FormActions layout="stack"\`: the primary full width, where a thumb and an eye both land, and the alternative route — *Use a passkey*, *Use a recovery code* — in \`leading\` as a \`ghost\` button beneath it. It is a way through the same step, not a second task (D-071).
 - **Do** put the failure **inside the Card, above the fields**, as an \`Alert\`. Say what to do, and never which of username or password was wrong.
 - **Do** put help that is not an action — who to ask — in the \`footer\`.
 - **Don't** add navigation, a marketing panel, or a second Card. Anything else on the page is something between a person and their account.
@@ -51,7 +51,7 @@ function SignIn({ failed = false }: { failed?: boolean }) {
             <PasswordInput autoComplete="current-password" />
           </FormField>
           <Checkbox label="Trust this browser for 30 days" />
-          <FormActions leading={<Button variant="ghost">Use a passkey</Button>}>
+          <FormActions layout="stack" leading={<Button variant="ghost">Use a passkey</Button>}>
             <Button variant="primary" type="submit">Sign in</Button>
           </FormActions>
         </Stack>
@@ -77,7 +77,7 @@ export const CodeStep: Story = {
           <FormField label="Six-digit code" help="It changes every 30 seconds.">
             <CodeInput autoComplete="one-time-code" />
           </FormField>
-          <FormActions leading={<Button variant="ghost">Use a recovery code</Button>}>
+          <FormActions layout="stack" leading={<Button variant="ghost">Use a recovery code</Button>}>
             <Button variant="primary" type="submit">Verify</Button>
           </FormActions>
         </Stack>
