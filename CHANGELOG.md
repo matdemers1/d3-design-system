@@ -4,6 +4,29 @@ Semver. The public surface is what `d3-ui/src/index.ts` exports plus the token
 names; CSS class names (`.d3-btn`, `.d3-seg`) are an implementation detail and
 apps must not select on them.
 
+## v1.1.0 — 2026-09-17
+
+**The frame and the page patterns.** v1.0 gave apps good parts and no guidance on putting them
+together; every internal app improvised its own shell, lists and forms. v1.1 adds them, additively —
+no existing export, prop or default changed:
+
+- **The frame** (D-065, D-066): `AppShell` + `AppShellBrand`, `SideNav`, `Menu`, `AccountMenu`, and
+  System / Light / Dark theming (`ThemeProvider`, `useTheme`, `ThemeSwitch`, `themeBootScript`).
+- **Page primitives** (D-068): `Page`, `Stack`, `Cluster`, `Grid`, `Section`, `AuthLayout`.
+- **Lists and forms** (D-067, D-069): `DescriptionList`, `DataList`, `FormActions`, `FilterBar`;
+  `FormField width`.
+- **Patterns** — nine full-screen compositions with written rules under `Patterns/` in Storybook,
+  and "Building a page" in the README. Reviewed by the owner before release (D-071).
+- **Strict CSP** (D-072): `setStyleNonce` / `readStyleNonce` let dialogs, the phone drawer and
+  `Select` lock scroll and position under `style-src 'self' 'nonce-…'` with no `'unsafe-inline'`.
+- **Smaller additions:** `PageHeader countNoun`, rich `Modal description`, `Textarea mono`,
+  `@d3cloud/ui/base.css`; the usage gate now reports Tailwind-only token names in apps that do not
+  use Tailwind (D-070); date and time inputs draw their focus ring.
+
+First consumer: the D3 Auth console, rebuilt on rc.2 and running in production at
+auth.d3cloud.io. v1.1.0 is rc.2 with the version number changed; the release candidates' own entries
+follow.
+
 ## v1.1.0-rc.2 — 2026-09-17
 
 Fixes found by rebuilding the D3 Auth console on rc.1. Additive only.

@@ -20,7 +20,7 @@ Each release attaches a packed tarball to its GitHub release. Install by URL;
 there is no registry (D-064):
 
 ```
-npm i https://github.com/matdemers1/d3-design-system/releases/download/v1.0.0/d3cloud-ui-1.0.0.tgz
+npm i https://github.com/matdemers1/d3-design-system/releases/download/v1.1.0/d3cloud-ui-1.1.0.tgz
 ```
 
 Upgrade by changing the version in the URL, twice. The tarball is immutable
