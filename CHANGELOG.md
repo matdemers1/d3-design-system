@@ -4,7 +4,7 @@ Semver. The public surface is what `d3-ui/src/index.ts` exports plus the token
 names; CSS class names (`.d3-btn`, `.d3-seg`) are an implementation detail and
 apps must not select on them.
 
-## Unreleased — 1.1.0
+## v1.1.0-rc.1 — 2026-09-17
 
 Additive only: no existing export, prop or default changes. The frame arrives (D-065, D-066); page, list and form primitives (D-067–D-070).
 
