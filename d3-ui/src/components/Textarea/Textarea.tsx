@@ -6,11 +6,17 @@ import '../Input/Input.css'
 
 export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   invalid?: boolean
+  /**
+   * Sets the text in `--font-mono`, for content whose characters are the
+   * point: JSON, a manifest, a key. Tabular figures and no ligatures come with
+   * the face.
+   */
+  mono?: boolean
 }
 
 /** Multi-line text. A minimum of three rows — a one-row textarea should be an Input. */
 export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function Textarea(
-  { invalid, className, disabled, readOnly, id, rows = 3, ...rest }, ref,
+  { invalid, mono = false, className, disabled, readOnly, id, rows = 3, ...rest }, ref,
 ) {
   const field = useFormField()
   const isInvalid = invalid ?? field?.invalid ?? false
@@ -20,7 +26,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function 
   return (
     <div
       className={cn('d3-inp', 'd3-inp--md', 'd3-inp--area', isInvalid && 'd3-inp--invalid',
-        disabled && 'd3-inp--disabled', readOnly && 'd3-inp--readonly', className)}
+        disabled && 'd3-inp--disabled', readOnly && 'd3-inp--readonly', mono && 'd3-inp--mono', className)}
     >
       <textarea
         ref={setRef}

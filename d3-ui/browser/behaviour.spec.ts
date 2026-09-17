@@ -99,6 +99,17 @@ test("a TooltipProvider's delay applies to the tooltips under it", async ({ page
   await expect(page.locator('.d3-tip')).toBeVisible({ timeout: 2000 })
 })
 
+test('Textarea mono sets the manifest in the mono face, at the same size step', async ({ page }) => {
+  await page.goto(storyUrl('forms-textarea--mono'))
+  await settle(page)
+  const got = await page.evaluate(() => {
+    const control = document.querySelector<HTMLElement>('.d3-inp--mono .d3-inp__control')!
+    return { family: getComputedStyle(control).fontFamily, size: getComputedStyle(control).fontSize }
+  })
+  expect(got.family).toMatch(/^"?JetBrains Mono/)
+  expect(got.size).toBe('13px')
+})
+
 test('Modal: a rich description is valid block content, with its own rhythm', async ({ page }) => {
   await page.goto(storyUrl('layers-modal--rich-description'))
   await settle(page)

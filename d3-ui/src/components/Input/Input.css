@@ -55,3 +55,10 @@
   line-height: var(--leading-14);
   width: 100%;
 }
+/* Textarea mono: JSON and manifests, where a 0 and an O, or two spaces and a
+   tab, have to be told apart. The frame's size step is unchanged. */
+.d3-inp--mono .d3-inp__control {
+  font-family: var(--font-mono);
+  font-variant-ligatures: none;
+  tab-size: 2;
+}
