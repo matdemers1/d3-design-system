@@ -152,6 +152,20 @@ singleton reads. It works only while there is one copy of `get-nonce` in the
 app: `npm ls get-nonce` should show a single deduped version. The nonce must be
 fresh per response: a nonce that is fixed at build time is no protection.
 
+### Testing an app with Vitest
+
+The built package imports its own stylesheet from JavaScript
+(`import "./index.css"`), which Node cannot load. Vitest leaves dependencies to
+Node by default, so tests that import a component fail with
+`Unknown file extension ".css"`. Let Vitest process the package instead:
+
+```ts
+// vitest.config.ts
+export default defineConfig({
+  test: { server: { deps: { inline: ['@d3cloud/ui'] } } },
+})
+```
+
 ## Colour mode
 
 Dark is primary. Light is applied with `data-theme="light"` on `<html>`, and is also honoured via `prefers-color-scheme` when no attribute is set.
