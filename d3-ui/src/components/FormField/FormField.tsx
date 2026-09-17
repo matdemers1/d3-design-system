@@ -1,6 +1,6 @@
 import { useId } from 'react'
 import { cn } from '../../lib/cn'
-import { devWarn } from '../../lib/dev'
+import { devOneOf, devWarn } from '../../lib/dev'
 import { Label } from '../Label/Label'
 import { FormFieldContext } from './FormFieldContext'
 import './FormField.css'
@@ -30,7 +30,18 @@ export interface FormFieldProps extends Omit<React.HTMLAttributes<HTMLDivElement
    * self-labelling control concatenates both into its accessible name.
    */
   as?: 'field' | 'group'
+  /**
+   * The widest the control may be; the label, help and error keep the field's
+   * width. `full` (the default) takes the form's width. Size a field to the
+   * value it holds, so its width is a hint: `xs` 8rem for a number of days or a
+   * port, `sm` 16rem for a date or a short code, `md` 20rem and `lg` 24rem
+   * for a name or an email address. The same steps as `Grid`.
+   */
+  width?: FormFieldWidth
 }
+
+export type FormFieldWidth = 'full' | 'lg' | 'md' | 'sm' | 'xs'
+const WIDTHS = ['full', 'lg', 'md', 'sm', 'xs'] as const
 
 /**
  * Binds a label, a control, help text and an error into one accessible unit.
@@ -42,11 +53,13 @@ export interface FormFieldProps extends Omit<React.HTMLAttributes<HTMLDivElement
  * three of four apps use `aria-invalid` and `aria-describedby` zero times.
  */
 export function FormField({
-  label, children, help, error, optional = false, errorIcon, as = 'field', className, ...rest
+  label, children, help, error, optional = false, errorIcon, as = 'field', width = 'full', className, ...rest
 }: FormFieldProps) {
   if (process.env.NODE_ENV !== 'production') {
     if (!label) devWarn('FormField.label', 'FormField: `label` is required — it is the whole reason to use FormField.')
+    devOneOf('FormField', 'width', width, WIDTHS)
   }
+  const w = (WIDTHS as readonly string[]).includes(width) && width !== 'full' ? width : null
   const base = useId()
   const id = `${base}-control`
   const labelId = `${base}-label`
@@ -60,7 +73,7 @@ export function FormField({
       value={{ id, describedBy, invalid: Boolean(error), required: !optional }}
     >
       <div
-        className={cn('d3-ff', className)}
+        className={cn('d3-ff', w && `d3-ff--w-${w}`, className)}
         {...(isGroup ? { role: 'group', 'aria-labelledby': labelId } : null)}
         {...rest}
       >

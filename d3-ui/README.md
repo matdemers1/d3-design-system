@@ -58,6 +58,40 @@ step name only), `Grid` (auto-fit tiles), `Section` (a titled region),
 table), `FormActions` and `FilterBar`. Each story documents its rules; the
 reasoning is D-067 to D-070 in `design-system/DECISIONS.md`.
 
+### Building a page
+
+A screen is four layers, each owned by one component, and nothing between them
+needs CSS of your own:
+
+```
+AppShell            the frame: AppShellBrand · SideNav · AccountMenu — once, in the root layout
+└─ Page             one page: a container width (wide · narrow · form · prose) and 24px rhythm
+   ├─ PageHeader    the h1 (the nav item's word, or the object's name), count, back link, one primary
+   ├─ FilterBar     narrows the list below it
+   └─ Section       a titled region, on a card or plain; its Alert goes at the top of its body
+      ├─ DataList / DescriptionList   rows of like things · facts about one thing
+      └─ FormField … FormActions      a form, primary last
+```
+
+A sign-in or other single task swaps `AppShell` + `Page` for `AuthLayout`.
+Nine full-screen compositions in Storybook show the whole thing, with the rules
+as do/don't lists — start from the one closest to the page you are building:
+
+| Pattern | For |
+|---|---|
+| **Patterns/App frame** | the shell: what goes in the sidebar, the account menu, where sign-out lives |
+| **Patterns/List page** | a list with filters and row actions; loading, empty, no results, no access |
+| **Patterns/Detail page** | one object: facts, related lists, the danger zone last |
+| **Patterns/Settings page** | one Section and one save per concern; feedback in place |
+| **Patterns/Dashboard** | status tiles that say what to do, counts, recent activity |
+| **Patterns/Auth page** | sign-in and code steps on `AuthLayout` |
+| **Patterns/Confirmation** | when and how a destructive action asks first |
+| **Patterns/Page states** | loading, error, denied, empty — and where Alerts sit |
+| **Patterns/Forms** | field spacing, widths, grouping, action row, when to split a form |
+
+The running example is an identity provider's admin console
+(`src/patterns/console.tsx`); the stories import only from the package.
+
 ### Names
 
 `label` is used where a component builds the accessible name itself: it is

@@ -63,3 +63,18 @@ describe('Cluster', () => {
     expect(warn.mock.calls.some((c) => String(c[0]).includes('Cluster: `align="top"`'))).toBe(true)
   })
 })
+
+describe('Stack and Cluster as a form', () => {
+  it('pass the form attributes through, so a form can post without JavaScript', () => {
+    const { container } = render(
+      <Stack as="form" method="post" action="/login" noValidate autoComplete="on" name="sign-in"><button>Go</button></Stack>,
+    )
+    const form = container.querySelector('form')!
+    expect(form).toHaveAttribute('method', 'post')
+    expect(form).toHaveAttribute('action', '/login')
+    expect(form).toHaveAttribute('novalidate')
+    expect(form).toHaveAttribute('name', 'sign-in')
+    const { container: c2 } = render(<Cluster as="form" method="get" action="/search" />)
+    expect(c2.querySelector('form')).toHaveAttribute('action', '/search')
+  })
+})

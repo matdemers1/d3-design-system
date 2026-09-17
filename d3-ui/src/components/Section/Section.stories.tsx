@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { Section } from './Section'
 import { Button } from '../Button/Button'
+import { Badge } from '../Badge/Badge'
 import { Alert } from '../Alert/Alert'
 import { FormField } from '../FormField/FormField'
 import { Input } from '../Input/Input'
@@ -68,6 +69,20 @@ export const WithActions: Story = {
       </DescriptionList>
     </Section>
   ),
+}
+
+/**
+ * A tile-sized Section whose description is longer than the row: the badge
+ * stays beside the title rather than dropping under the description.
+ */
+export const LongDescription: Story = {
+  name: 'Long description — actions stay beside the title',
+  args: {
+    title: 'Backups',
+    description: 'The nightly backup last finished 3 days ago, on 13 September at 02:00. Open the backup log to see why.',
+    actions: <Badge tone="attention">Overdue</Badge>,
+  },
+  decorators: [(S) => <div style={{ width: 420 }}><S /></div>],
 }
 
 /** Too narrow for both: the actions wrap under the title, never over it. */

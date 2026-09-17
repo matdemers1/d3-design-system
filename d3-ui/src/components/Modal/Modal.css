@@ -36,6 +36,12 @@
 @keyframes d3-scrim-out { to { opacity: 0; } }
 .d3-modal[data-state='closed'] { animation: d3-modal-out var(--motion-modal-exit) forwards; }
 .d3-modal__scrim[data-state='closed'] { animation: d3-scrim-out var(--motion-modal-exit) forwards; }
+/* The panel takes focus when it opens with a destructive button in it, so that
+   Enter destroys nothing. It is not a control and cannot be operated, so it
+   draws no ring — the same rule as a page heading focused on navigation. After
+   a keyboard open, the browser treats that programmatic focus as
+   :focus-visible, and the global ring framed the whole dialog in violet. */
+.d3-modal:focus-visible { outline: none; }
 .d3-modal--sm { width: min(300px, calc(100vw - var(--space-32))); }
 .d3-modal--lg { width: min(560px, calc(100vw - var(--space-32))); }
 

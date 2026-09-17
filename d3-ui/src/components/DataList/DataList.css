@@ -16,6 +16,11 @@
 /* Inside a card the rows bleed to the card's padding, so a row's text lines up
    with the card's title and a hovered row's fill reaches across. */
 :where(.d3-crd) .d3-dlist { margin-inline: calc(var(--cell-pad-x) * -1); }
+/* A list that is the whole card bleeds vertically too, so the first row's text
+   sits the card's padding from its top edge, the same distance as from its
+   side — not the card's padding plus the row's. */
+:where(.d3-crd) > .d3-dlist:first-child { margin-top: calc(var(--cell-pad-y) * -1); }
+:where(.d3-crd) > .d3-dlist:last-child { margin-bottom: calc(var(--cell-pad-y) * -1); }
 
 .d3-dlist__item {
   grid-column: 1 / -1;
@@ -60,6 +65,17 @@ a.d3-dlrow:focus-visible {
   font-weight: var(--weight-medium);
   color: var(--color-fg);
 }
+/* An event name or a key id in a row: the system's mono, a step smaller so it
+   sits on the line beside proportional text. */
+.d3-dlrow :where(code) { font-family: var(--font-mono); font-size: 0.93em; }
+
+/* A title that is a Link reads as the row's name, not as a sentence's link:
+   the foreground colour, underlined on hover. Twelve accent-coloured names down
+   a list spend the accent on nothing (D-016); the row position and the pointer
+   already say it opens something. */
+.d3-dlrow__title > .d3-lnk { color: var(--color-fg); }
+.d3-dlrow__title > .d3-lnk:hover { text-decoration: underline; text-underline-offset: 2px; }
+
 .d3-dlrow__desc {
   display: block;
   font-size: var(--text-13);

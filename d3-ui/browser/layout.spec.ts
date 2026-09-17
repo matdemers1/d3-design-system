@@ -104,11 +104,34 @@ test.describe('Section', () => {
     expect(Math.round(body.top - head.bottom)).toBe(16)
   })
 
+  test('a long description does not push the actions under the title when there is room', async ({ page }) => {
+    await open(page, 'layout-section--long-description')
+    const title = await rect(page, '.d3-sec__title')
+    const actions = await rect(page, '.d3-sec__actions')
+    expect(actions.top).toBeLessThan(title.bottom)
+    const lead = await rect(page, '.d3-sec__lead')
+    expect(actions.left).toBeGreaterThanOrEqual(lead.right)
+  })
+
   test('actions wrap under the title when narrow, never over it', async ({ page }) => {
     await open(page, 'layout-section--narrow')
     const title = await rect(page, '.d3-sec__lead')
     const actions = await rect(page, '.d3-sec__actions')
     expect(actions.top).toBeGreaterThanOrEqual(title.bottom)
+  })
+})
+
+test.describe('FormField width', () => {
+  test('caps the control at its step, and leaves the label and help the field\'s width', async ({ page }) => {
+    await open(page, 'forms-formfield--widths')
+    const widths = await page.locator('.d3-ff').evaluateAll((fields) => fields.map((f) => ({
+      control: (f.querySelector('.d3-inp') as HTMLElement).getBoundingClientRect().width,
+      field: f.getBoundingClientRect().width,
+    })))
+    // rem, like Grid's minimum widths — 14px here, because the root font size is the body size.
+    const rem = await page.evaluate(() => parseFloat(getComputedStyle(document.documentElement).fontSize))
+    expect(widths.map((w) => w.control)).toEqual([8 * rem, 16 * rem, 24 * rem, 480])
+    expect(widths.every((w) => w.field === 480)).toBe(true)
   })
 })
 
@@ -217,6 +240,32 @@ test.describe('DataList', () => {
     })
     expect(focused.cls).toContain('d3-dlrow')
     expect(focused.outline).not.toBe('none')
+  })
+
+  test('a list that is the whole card starts its first row the card padding from the top', async ({ page }) => {
+    await open(page, 'patterns-list-page--loaded')
+    const card = await rect(page, '.d3-crd:has(> .d3-dlist)')
+    const first = await page.locator('.d3-crd > .d3-dlist .d3-dlrow').first().evaluate((el) =>
+      el.getBoundingClientRect().top + parseFloat(getComputedStyle(el).paddingTop))
+    const last = await page.locator('.d3-crd > .d3-dlist .d3-dlrow').last().evaluate((el) =>
+      el.getBoundingClientRect().bottom - parseFloat(getComputedStyle(el).paddingBottom))
+    expect(Math.round(first - card.top)).toBe(20)
+    expect(Math.round(card.bottom - last)).toBe(20)
+  })
+
+  test('a title that is a Link is the foreground colour, not the accent', async ({ page }) => {
+    for (const theme of ['dark', 'light'] as const) {
+      await open(page, 'lists-datalist--with-actions', DESKTOP, theme)
+      const [link, fg] = await page.locator('.d3-dlrow__title > .d3-lnk').first().evaluate((el) => {
+        const probe = document.createElement('span')
+        probe.style.color = 'var(--color-fg)'
+        el.parentElement!.appendChild(probe)
+        const want = getComputedStyle(probe).color
+        probe.remove()
+        return [getComputedStyle(el).color, want]
+      })
+      expect(link).toBe(fg)
+    }
   })
 
   test('inside a card, row text lines up with the section title', async ({ page }) => {

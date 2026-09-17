@@ -11,7 +11,11 @@ setProjectAnnotations([previewAnnotations.default])
 type StoryModule = Parameters<typeof composeStories>[0]
 type ComposedStory = React.ComponentType<Record<string, never>>
 
-const modules = import.meta.glob<StoryModule>('../components/**/*.stories.tsx', { eager: true })
+// Components, the full-screen Patterns, and the guides: everything Storybook shows.
+const modules = import.meta.glob<StoryModule>(
+  ['../components/**/*.stories.tsx', '../patterns/**/*.stories.tsx', '../guides/**/*.stories.tsx'],
+  { eager: true },
+)
 
 afterEach(cleanup)
 

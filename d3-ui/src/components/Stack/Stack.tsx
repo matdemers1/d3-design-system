@@ -17,7 +17,15 @@ const LAYOUT_ELEMENTS = ['div', 'section', 'ul', 'ol', 'li', 'form', 'header', '
 export type StackAlign = 'stretch' | 'start' | 'center' | 'end'
 export type StackJustify = 'start' | 'center' | 'end' | 'between'
 
-export interface StackProps extends React.HTMLAttributes<HTMLElement> {
+/**
+ * The attributes a `<form>` needs, for `as="form"`: without them a Stack could
+ * render a form that could not say where it posts or opt out of the browser's
+ * own validation.
+ */
+export type LayoutFormAttributes = Pick<React.FormHTMLAttributes<HTMLFormElement>,
+  'action' | 'method' | 'encType' | 'target' | 'noValidate' | 'autoComplete' | 'name' | 'acceptCharset'>
+
+export interface StackProps extends React.HTMLAttributes<HTMLElement>, LayoutFormAttributes {
   /** A step on the spacing scale. Defaults to `16`. */
   gap?: SpaceStep
   /** Cross-axis alignment. Defaults to `stretch`, so children take the full width. */

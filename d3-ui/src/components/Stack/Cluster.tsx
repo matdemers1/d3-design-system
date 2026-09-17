@@ -1,13 +1,13 @@
 import { forwardRef } from 'react'
 import { cn } from '../../lib/cn'
 import { devOneOf } from '../../lib/dev'
-import { layoutClasses, layoutElement, type LayoutElement, type SpaceStep } from './Stack'
+import { layoutClasses, layoutElement, type LayoutElement, type LayoutFormAttributes, type SpaceStep } from './Stack'
 import './Stack.css'
 
 export type ClusterAlign = 'start' | 'center' | 'end' | 'baseline' | 'stretch'
 export type ClusterJustify = 'start' | 'center' | 'end' | 'between'
 
-export interface ClusterProps extends React.HTMLAttributes<HTMLElement> {
+export interface ClusterProps extends React.HTMLAttributes<HTMLElement>, LayoutFormAttributes {
   /** A step on the spacing scale. Defaults to `8`, the gap between two buttons. */
   gap?: SpaceStep
   /** Cross-axis alignment. Defaults to `center`; use `baseline` for mixed text sizes. */

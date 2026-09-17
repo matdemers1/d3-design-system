@@ -27,3 +27,14 @@
   gap: var(--space-6);
   align-items: flex-start;
 }
+
+/* width: the widest the control may be (the same steps as Grid, plus xs).
+   The label, help and error keep the field's width — a help sentence under an
+   8rem field would otherwise wrap every two words. */
+.d3-ff:where(.d3-ff--w-xs, .d3-ff--w-sm, .d3-ff--w-md, .d3-ff--w-lg) > :not(.d3-lb, .d3-ff__help, .d3-ff__error) {
+  width: 100%;
+}
+.d3-ff--w-xs > :not(.d3-lb, .d3-ff__help, .d3-ff__error) { max-width: 8rem; }
+.d3-ff--w-sm > :not(.d3-lb, .d3-ff__help, .d3-ff__error) { max-width: 16rem; }
+.d3-ff--w-md > :not(.d3-lb, .d3-ff__help, .d3-ff__error) { max-width: 20rem; }
+.d3-ff--w-lg > :not(.d3-lb, .d3-ff__help, .d3-ff__error) { max-width: 24rem; }

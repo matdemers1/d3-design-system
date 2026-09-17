@@ -143,3 +143,24 @@
   clip-path: inset(50%);
   white-space: nowrap;
 }
+
+/* The brand: a mark and the product name, as the home link. */
+.d3-shell-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-8);
+  min-width: 0;
+  padding: var(--space-2);
+  border-radius: var(--radius-sm);
+  color: var(--color-fg);
+  font-size: var(--text-14);
+  line-height: var(--leading-14);
+  font-weight: var(--weight-semibold);
+  text-decoration: none;
+}
+.d3-shell-brand:focus-visible {
+  outline: var(--focus-width) solid var(--color-focus);
+  outline-offset: calc(var(--focus-width) * -1);
+}
+.d3-shell-brand__mark { display: inline-flex; flex: none; color: var(--color-accent); }
+.d3-shell-brand__name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

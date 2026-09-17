@@ -8,8 +8,11 @@
   align-items: flex-start;
   gap: var(--space-8) var(--space-16);
 }
-/* The title keeps at least 16rem before the actions wrap underneath it. */
-.d3-sec__lead { flex: 1 1 auto; min-width: min(100%, 16rem); }
+/* The title keeps at least 16rem before the actions wrap underneath it. The
+   basis is that 16rem, not the content: with an `auto` basis a description
+   longer than the row claimed the whole row, and a status badge beside a tile's
+   title dropped under its description on a 1440px screen. */
+.d3-sec__lead { flex: 1 1 16rem; min-width: min(100%, 16rem); }
 
 /* D-019: a section title is 20px/600, the step below a page title's 24px/650.
    A nested section (h3) takes the 16px emphasis step. Runtime tokens only — the

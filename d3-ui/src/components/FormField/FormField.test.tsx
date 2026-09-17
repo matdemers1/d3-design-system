@@ -149,3 +149,16 @@ describe('FormField — the wiring contract', () => {
     expect(a.id).not.toBe(b.id)
   })
 })
+
+describe('FormField — width', () => {
+  it('is full width by default, with no width class', () => {
+    const { container } = render(<FormField label="Name"><Input /></FormField>)
+    expect([...container.firstElementChild!.classList].filter((c) => c.startsWith('d3-ff--w-'))).toEqual([])
+  })
+
+  it('caps the control at a named step and keeps the wiring', () => {
+    const { container } = render(<FormField label="Trust a browser for" width="xs" help="Days."><Input /></FormField>)
+    expect(container.firstElementChild).toHaveClass('d3-ff', 'd3-ff--w-xs')
+    expect(screen.getByLabelText('Trust a browser for')).toHaveAccessibleDescription('Days.')
+  })
+})

@@ -87,3 +87,21 @@ export const EveryControl: Story = {
     </div>
   ),
 }
+
+/**
+ * `width` caps the control at a step — `xs` 8rem, `sm` 16rem, `md` 20rem,
+ * `lg` 24rem — so its width hints at the value. The label and help keep the
+ * field's width.
+ */
+export const Widths: Story = {
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-16)', width: 480 }}>
+      <FormField label="Trust a browser for" width="xs" help="1 to 365.">
+        <Input type="number" defaultValue="30" trailing="days" />
+      </FormField>
+      <FormField label="Recovery code" width="sm"><Input defaultValue="7KQ4-M2XD" /></FormField>
+      <FormField label="Email" width="lg"><Input type="email" defaultValue="priya.raman@northfield-studio.co" /></FormField>
+      <FormField label="Redirect URI"><Input defaultValue="https://print.d3cloud.io/auth/callback" /></FormField>
+    </div>
+  ),
+}

@@ -95,10 +95,13 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
                 key={o.value} value={toRadix(o.value) as string} disabled={o.disabled} className="d3-sel__item"
               >
                 <span className="d3-sel__tick" aria-hidden="true">{checkIcon ?? '✓'}</span>
-                <RadixSelect.ItemText>
-                  {o.label}
+                {/* Only the label is ItemText: Radix copies ItemText into the
+                    trigger, and a description inside it was drawn as a second
+                    line squeezed into a 34px control. */}
+                <span className="d3-sel__text">
+                  <RadixSelect.ItemText>{o.label}</RadixSelect.ItemText>
                   {o.description ? <span className="d3-sel__desc">{o.description}</span> : null}
-                </RadixSelect.ItemText>
+                </span>
               </RadixSelect.Item>
             ))}
           </RadixSelect.Viewport>

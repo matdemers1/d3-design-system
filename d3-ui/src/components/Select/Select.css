@@ -50,5 +50,6 @@
 .d3-sel__item[data-disabled] { opacity: 0.42; cursor: not-allowed; }
 .d3-sel__tick { width: 14px; flex: none; display: inline-flex; opacity: 0; }
 .d3-sel__item[data-state='checked'] .d3-sel__tick { opacity: 1; }
+.d3-sel__text { min-width: 0; }
 .d3-sel__desc { display: block; font-size: var(--text-12); color: var(--color-fg-faint);
   font-weight: var(--weight-regular); margin-top: 1px; }

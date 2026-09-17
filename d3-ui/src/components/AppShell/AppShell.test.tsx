@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import { act, render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { AppShell } from './AppShell'
+import { AppShellBrand } from './AppShellBrand'
 import { SideNav, SideNavItem } from '../SideNav/SideNav'
 import { mockMatchMedia, WIDE } from '../../test/media'
 
@@ -128,5 +129,30 @@ describe('AppShell — below lg, a drawer', () => {
     localStorage.setItem('d3.sidebar.collapsed', '1')
     const drawer = await open()
     expect(within(drawer).getByText('Ask')).not.toHaveClass('d3-snav__vh')
+  })
+})
+
+describe('AppShellBrand', () => {
+  beforeEach(() => { media = mockMatchMedia({ [WIDE]: true }) })
+
+  it('is one home link named by the product, with the mark decorative', () => {
+    render(<AppShellBrand href="/" name="D3 Auth" mark={<svg data-testid="mark" />} />)
+    const link = screen.getByRole('link', { name: 'D3 Auth' })
+    expect(link).toHaveAttribute('href', '/')
+    expect(screen.getByTestId('mark').parentElement).toHaveAttribute('aria-hidden', 'true')
+  })
+
+  it('keeps the name as the link name on a collapsed rail, hidden visually', async () => {
+    render(<AppShell defaultCollapsed brand={<AppShellBrand href="/" name="D3 Auth" mark={<svg />} />} nav={<Nav />} />)
+    const link = screen.getByRole('link', { name: 'D3 Auth' })
+    expect(within(link).getByText('D3 Auth')).toHaveClass('d3-shell__vh')
+  })
+
+  it('fills a router link with asChild', () => {
+    render(<AppShellBrand asChild name="D3 Auth"><a href="/home" className="own" /></AppShellBrand>)
+    const link = screen.getByRole('link', { name: 'D3 Auth' })
+    expect(link).toHaveAttribute('href', '/home')
+    expect(link).toHaveClass('own')
+    expect(link).toHaveClass('d3-shell-brand')
   })
 })

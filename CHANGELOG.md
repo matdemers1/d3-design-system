@@ -59,6 +59,41 @@ Additive only: no existing export, prop or default changes. The frame arrives (D
   below it; optional `leading` action. `FilterBar` — filter controls in a
   wrapping row with a `trailing` slot, stacked below `md`.
 
+- **Patterns guide** — nine full-screen compositions under `Patterns/` in
+  Storybook, each built only from package exports, with its rules as do/don't
+  lists: App frame, List page, Detail page, Settings page, Dashboard, Auth page,
+  Confirmation, Page states, Forms. The README gains "Building a page".
+- **`AppShellBrand`** — the home link for the shell's `brand` slot: `name`,
+  decorative `mark`, `href` or `asChild`. On a collapsed rail it shows the mark
+  and keeps the name as the link's name. Every app had written this inline.
+- **`FormField width`** — `full` (default) · `lg` 24rem · `md` 20rem · `sm`
+  16rem · `xs` 8rem, capping the control while the label and help keep the
+  field's width. A number of days no longer has to be a 640px field.
+- **Form attributes on `Stack` and `Cluster`** — `action`, `method`, `encType`,
+  `target`, `noValidate`, `autoComplete`, `name`, `acceptCharset` pass through
+  for `as="form"` (type `LayoutFormAttributes`). A Stack could render a form
+  that could not say where it posts.
+- Storybook: `parameters.canvas: 'app'` renders a story as a full page under a
+  real `ThemeProvider` following the toolbar theme, so portalled menus and
+  modals match the page. The unit story sweep now includes `src/patterns` and
+  `src/guides`.
+
+### Fixed
+
+- **`Select`** drew an option's `description` inside the closed trigger, as a
+  second line squeezed into a 34px control. Only the label is copied now.
+- **`Section`**: a description longer than the row pushed `actions` under it,
+  so a status badge dropped below a tile's text. The lead's flex basis is 16rem,
+  as its comment always said.
+- **`Modal`**: opened from the keyboard with a destructive action in it, the
+  panel took focus (correctly) and the global focus ring framed the whole
+  dialog. The panel draws no ring, like a page heading focused on navigation.
+- **`DataList`**: a list that is a Card's whole content bleeds vertically as
+  well as horizontally, so the first row sits the card's padding from its top
+  rather than 32px; `code` in a row uses the mono face; a title that is a
+  `Link` is the foreground colour, underlined on hover, rather than a column of
+  accent-coloured names (pixel baseline regenerated).
+
 ### Changed
 
 - **The usage gate reports Tailwind-only token names** (D-070). Names declared

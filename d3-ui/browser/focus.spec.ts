@@ -53,3 +53,17 @@ test('a heading focused on navigation draws no ring, even after keyboard use', a
   expect(await page.evaluate(() => document.activeElement?.classList.contains('d3-ph__title'))).toBe(true)
   expect(await page.evaluate(ringed)).toEqual([])
 })
+
+test('a destructive Modal opened from the keyboard focuses its panel without a ring', async ({ page }) => {
+  // The panel takes focus so that Enter on a fresh dialog destroys nothing. It
+  // is not a control; a keyboard open made that focus :focus-visible, and the
+  // global ring drew a violet frame around the whole dialog.
+  await page.goto(storyUrl('layers-modal--confirmation'))
+  await settle(page)
+  await page.locator('button', { hasText: 'Dismiss 3 items' }).focus()
+  await page.keyboard.press('Enter')
+  await page.waitForSelector('.d3-modal')
+  await settle(page)
+  expect(await page.evaluate(() => document.activeElement?.classList.contains('d3-modal'))).toBe(true)
+  expect(await page.evaluate(ringed)).toEqual([])
+})
