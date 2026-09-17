@@ -21,14 +21,16 @@ describe('Section — a titled region', () => {
 
   it('is on a Card surface by default', () => {
     render(<Section title="Mail" />)
-    expect(screen.getByRole('region')).toHaveClass('d3-crd', 'd3-sec--card')
+    expect(screen.getByRole('region')).toHaveClass('d3-crd', 'd3-sec')
   })
 
   it('has no surface when plain', () => {
     render(<Section title="Danger" surface="plain" />)
     const region = screen.getByRole('region')
-    expect(region).toHaveClass('d3-sec--plain')
+    expect(region).toHaveClass('d3-sec')
     expect(region).not.toHaveClass('d3-crd')
+    // No modifier class that no stylesheet reads.
+    expect(region.className).not.toMatch(/d3-sec--/)
   })
 
   it('renders the description, the actions and the body', () => {

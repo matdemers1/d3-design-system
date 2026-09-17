@@ -61,15 +61,17 @@ export const Section = forwardRef<HTMLElement, SectionProps>(function Section(
     </>
   )
 
+  // No surface modifier class: `card` is Card's own classes and `plain` is the
+  // absence of them, so neither needs a rule of its own.
   if (surface === 'plain') {
     return (
-      <section ref={ref} id={id} aria-labelledby={titleId} className={cn('d3-sec', 'd3-sec--plain', className)} {...rest}>
+      <section ref={ref} id={id} aria-labelledby={titleId} className={cn('d3-sec', className)} {...rest}>
         {content}
       </section>
     )
   }
   return (
-    <Card ref={ref} as="section" id={id} aria-labelledby={titleId} className={cn('d3-sec', 'd3-sec--card', className)} {...rest}>
+    <Card ref={ref} as="section" id={id} aria-labelledby={titleId} className={cn('d3-sec', className)} {...rest}>
       {content}
     </Card>
   )

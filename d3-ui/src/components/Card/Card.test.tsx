@@ -66,3 +66,14 @@ describe('Card — the element it renders', () => {
   })
 })
 
+
+describe('Card — padding classes', () => {
+  it('emits a modifier only for the steps that have a rule', () => {
+    const { container } = render(<><Card>md</Card><Card padding="sm">sm</Card><Card padding="lg">lg</Card></>)
+    const [md, sm, lg] = [...container.children]
+    // md is the base rule's 20px; a `d3-crd--md` class had no rule behind it.
+    expect(md!.className).toBe('d3-crd')
+    expect(sm).toHaveClass('d3-crd--sm')
+    expect(lg).toHaveClass('d3-crd--lg')
+  })
+})

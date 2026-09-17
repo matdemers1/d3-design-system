@@ -54,7 +54,8 @@ export const Card = forwardRef<HTMLElement, CardProps>(function Card(
     }
   }, [interactive, children])
 
-  const cls = cn('d3-crd', `d3-crd--${padding}`, interactive && 'd3-crd--interactive',
+  // `md` is the base rule's padding, so it has no modifier class of its own.
+  const cls = cn('d3-crd', padding !== 'md' && `d3-crd--${padding}`, interactive && 'd3-crd--interactive',
     selected && 'd3-crd--selected', className)
 
   const setRefs = (node: HTMLElement | null) => {
