@@ -98,3 +98,10 @@ test("a TooltipProvider's delay applies to the tooltips under it", async ({ page
   await expect(page.locator('.d3-tip')).toHaveCount(0)
   await expect(page.locator('.d3-tip')).toBeVisible({ timeout: 2000 })
 })
+
+test('PageHeader countNoun shows the noun it was given', async ({ page }) => {
+  await page.goto(storyUrl('patterns-pageheader--count-noun'))
+  await settle(page)
+  await expect(page.locator('.d3-ph__count')).toHaveText('5 people')
+  await expect(page.getByRole('heading', { level: 1, name: 'People, 5 people' })).toBeVisible()
+})

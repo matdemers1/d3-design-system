@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { cn } from '../../lib/cn'
 import { devWarn } from '../../lib/dev'
-import { countLabel as countLabelOf, countWords } from '../../lib/countLabel'
+import { countLabel as countLabelOf, countWords, type CountNoun } from '../../lib/countLabel'
 import './PageHeader.css'
 
 export interface PageHeaderProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> {
@@ -9,7 +9,13 @@ export interface PageHeaderProps extends Omit<React.HTMLAttributes<HTMLDivElemen
   title: string
   /** Part of the accessible name: "Inbox, 48 items", not a bare number after a title. */
   count?: number
+  /** Replaces the whole accessible name ("Inbox, 48 items"). The visible count is unchanged. */
   countLabel?: string
+  /**
+   * What the count counts, singular and plural: `{ one: 'person', other: 'people' }`
+   * shows "5 people" and names the heading "People, 5 people". Default: items.
+   */
+  countNoun?: CountNoun
   /** One line. If it needs two it belongs on the page, not in the header. */
   description?: React.ReactNode
   /** Right-aligned. At most one `primary`, per the Button spec. */
@@ -38,7 +44,7 @@ export interface PageHeaderProps extends Omit<React.HTMLAttributes<HTMLDivElemen
 }
 
 export function PageHeader({
-  title, count, countLabel, description, actions, back, icon,
+  title, count, countLabel, countNoun, description, actions, back, icon,
   focusOnMount = true, className, ...rest
 }: PageHeaderProps) {
   if (process.env.NODE_ENV !== 'production') {
@@ -60,7 +66,7 @@ export function PageHeader({
     }
   }, [back])
 
-  const name = count !== undefined ? (countLabel ?? countLabelOf(title, count)) : undefined
+  const name = count !== undefined ? (countLabel ?? countLabelOf(title, count, countNoun)) : undefined
 
   return (
     <div className={cn('d3-ph', className)} {...rest}>
@@ -72,7 +78,7 @@ export function PageHeader({
           {count !== undefined ? (
             // The visible count said "1 items" after the accessible name was fixed —
             // the two are built separately, so both use the same pluralisation now.
-            <span className="d3-ph__count" aria-hidden="true">{countWords(count)}</span>
+            <span className="d3-ph__count" aria-hidden="true">{countWords(count, countNoun)}</span>
           ) : null}
         </h1>
         {description ? <div className="d3-ph__desc">{description}</div> : null}

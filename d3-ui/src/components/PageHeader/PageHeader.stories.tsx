@@ -61,3 +61,13 @@ export const WithIcon: Story = {
   },
 }
 
+
+/** `countNoun` says what is counted, in both forms: "5 people", and "People, 5 people" as the name. */
+export const CountNoun: Story = {
+  args: {
+    title: 'People',
+    count: 5,
+    countNoun: { one: 'person', other: 'people' },
+    actions: <Button variant="primary">Invite someone</Button>,
+  },
+}

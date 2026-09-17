@@ -62,6 +62,25 @@ describe('PageHeader — the contract', () => {
     expect(container.querySelector('.d3-ph__count')?.textContent).toBe('1 item')
   })
 
+  it('counts a named noun, visibly and in the name, singular and plural', () => {
+    const people = { one: 'person', other: 'people' }
+    const { container, rerender } = render(<PageHeader title="People" count={5} countNoun={people} focusOnMount={false} />)
+    expect(container.querySelector('.d3-ph__count')?.textContent).toBe('5 people')
+    expect(screen.getByRole('heading', { level: 1, name: 'People, 5 people' })).toBeInTheDocument()
+    rerender(<PageHeader title="People" count={1} countNoun={people} focusOnMount={false} />)
+    expect(container.querySelector('.d3-ph__count')?.textContent).toBe('1 person')
+    expect(screen.getByRole('heading', { level: 1, name: 'People, 1 person' })).toBeInTheDocument()
+  })
+
+  it('lets countLabel replace the name while the noun still drives the visible count', () => {
+    const { container } = render(
+      <PageHeader title="People" count={2} countNoun={{ one: 'person', other: 'people' }}
+        countLabel="People, 2 people in this workspace" focusOnMount={false} />,
+    )
+    expect(container.querySelector('.d3-ph__count')?.textContent).toBe('2 people')
+    expect(screen.getByRole('heading', { level: 1, name: 'People, 2 people in this workspace' })).toBeInTheDocument()
+  })
+
   it('renders a decorative icon ahead of the title', () => {
     const { container } = render(<PageHeader title="Pipeline" icon={<svg />} focusOnMount={false} />)
     expect(container.querySelector('.d3-ph__icon')?.getAttribute('aria-hidden')).toBe('true')
