@@ -49,7 +49,7 @@ export function ConsoleNav({ current }: { current: Destination }) {
 
 export function ConsoleAccount() {
   return (
-    <AccountMenu name="Matt Demers" detail="Owner · matt@d3cloud.io">
+    <AccountMenu name="Alex Rivera" detail="Owner · alex@d3cloud.example">
       <MenuItem asChild icon={icon(UserCircle)}><a href="#profile">Your profile</a></MenuItem>
       <MenuItem asChild icon={icon(Settings)}><a href="#settings">Settings</a></MenuItem>
       <MenuItem asChild icon={icon(Download)}><a href="#transfer">Export and import</a></MenuItem>
@@ -87,8 +87,8 @@ export interface Person {
 }
 
 export const PEOPLE: Person[] = [
-  { id: 'p-matt', name: 'Matt Demers', username: 'matt', email: 'matt@d3cloud.io', kind: 'owner', status: 'active', lastSignIn: 'Today, 09:41', factors: 'Passkey, authenticator app' },
-  { id: 'p-sarah', name: 'Sarah Byrne', username: 'sbyrne', email: 'sarah@sarahbyrnelicsw.com', kind: 'admin', status: 'active', lastSignIn: 'Today, 08:12', factors: 'Passkey' },
+  { id: 'p-matt', name: 'Alex Rivera', username: 'matt', email: 'alex@d3cloud.example', kind: 'owner', status: 'active', lastSignIn: 'Today, 09:41', factors: 'Passkey, authenticator app' },
+  { id: 'p-sarah', name: 'Sam Okoye', username: 'sokoye', email: 'sam.okoye@okoye-studio.example', kind: 'admin', status: 'active', lastSignIn: 'Today, 08:12', factors: 'Passkey' },
   { id: 'p-priya', name: 'Priya Raman', username: 'priya', email: 'priya.raman@northfield-studio.co', kind: 'guest', status: 'active', lastSignIn: 'Yesterday, 17:55', factors: 'Authenticator app' },
   { id: 'p-jonah', name: 'Jonah Whitaker', username: 'jonah', email: 'jonah@whitaker.family', kind: 'guest', status: 'active', lastSignIn: '12 Sept, 21:03', factors: 'Password only' },
   { id: 'p-elena', name: 'Elena Vasquez', username: 'elena.v', email: 'elena@vasquez-design.com', kind: 'guest', status: 'suspended', lastSignIn: '28 Aug, 11:20', factors: 'Passkey' },
@@ -114,9 +114,9 @@ export const APPS: App[] = [
 export interface AuditEvent { id: string; event: string; actor: string; target: string; at: string }
 
 export const EVENTS: AuditEvent[] = [
-  { id: 'e1', event: 'grant.given', actor: 'Matt Demers', target: 'Priya Raman → Bindery', at: '09:41' },
-  { id: 'e2', event: 'session.revoked', actor: 'Sarah Byrne', target: 'Jonah Whitaker · iPhone', at: '09:12' },
+  { id: 'e1', event: 'grant.given', actor: 'Alex Rivera', target: 'Priya Raman → Bindery', at: '09:41' },
+  { id: 'e2', event: 'session.revoked', actor: 'Sam Okoye', target: 'Jonah Whitaker · iPhone', at: '09:12' },
   { id: 'e3', event: 'key.rotated', actor: 'System', target: 'Signing key 2026-09', at: '08:00' },
-  { id: 'e4', event: 'person.suspended', actor: 'Matt Demers', target: 'Elena Vasquez', at: 'Yesterday' },
-  { id: 'e5', event: 'app.registered', actor: 'Matt Demers', target: 'Someday Vault admin', at: 'Yesterday' },
+  { id: 'e4', event: 'person.suspended', actor: 'Alex Rivera', target: 'Elena Vasquez', at: 'Yesterday' },
+  { id: 'e5', event: 'app.registered', actor: 'Alex Rivera', target: 'Someday Vault admin', at: 'Yesterday' },
 ]

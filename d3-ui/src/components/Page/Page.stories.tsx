@@ -123,8 +123,8 @@ export const Composed: Story = {
       </Section>
       <Section title="Lately" actions={<Button size="sm">All of it</Button>}>
         <DataList aria-label="Recent events">
-          <DataListRow title="grant.given" description="Matt Demers · Bindery" meta={<span>16 Sept, 09:41</span>} />
-          <DataListRow title="session.revoked" description="Sarah Byrne" meta={<span>16 Sept, 09:12</span>} />
+          <DataListRow title="grant.given" description="Alex Rivera · Bindery" meta={<span>16 Sept, 09:41</span>} />
+          <DataListRow title="session.revoked" description="Sam Okoye" meta={<span>16 Sept, 09:12</span>} />
         </DataList>
       </Section>
       <Section title="Mail" surface="plain">

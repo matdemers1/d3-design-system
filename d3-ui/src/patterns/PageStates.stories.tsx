@@ -91,7 +91,7 @@ export const Denied: Story = {
         <KeysHeader actions={false} />
         <EmptyState kind="no-access" headingLevel={2} heading="Keys are the owner’s"
           icon={<KeyRound size={24} strokeWidth={1.6} aria-hidden />}>
-          Rotating a key signs everyone out of every app, so only the owner can. Ask Matt Demers if a key needs rotating.
+          Rotating a key signs everyone out of every app, so only the owner can. Ask Alex Rivera if a key needs rotating.
         </EmptyState>
       </Page>
     </ConsoleFrame>

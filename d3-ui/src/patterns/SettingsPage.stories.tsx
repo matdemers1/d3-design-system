@@ -84,7 +84,7 @@ function Alerts() {
     <Section title="Alerts" description="Who hears about it when something this system needs is down.">
       <Stack as="form" gap="16" aria-label="Alerts">
         <FormField label="Who to warn" help="Email addresses, separated by commas.">
-          <Input defaultValue="matt@d3cloud.io, ops@d3cloud.io" />
+          <Input defaultValue="alex@d3cloud.example, ops@d3cloud.io" />
         </FormField>
         <FormActions>
           <Button variant="primary" type="submit">Save recipients</Button>

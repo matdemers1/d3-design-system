@@ -33,8 +33,8 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 const PEOPLE = [
-  { id: 'p1', name: 'Matt Demers', user: 'matt', email: 'matt@example.com', kind: 'owner', status: 'active', last: '16 Sept' },
-  { id: 'p2', name: 'Sarah Byrne', user: 'sarah', email: 'sarah.byrne@a-rather-long-domain-name.example.com', kind: 'admin', status: 'active', last: '14 Sept' },
+  { id: 'p1', name: 'Alex Rivera', user: 'matt', email: 'matt@example.com', kind: 'owner', status: 'active', last: '16 Sept' },
+  { id: 'p2', name: 'Sam Okoye', user: 'sarah', email: 'sarah.byrne@a-rather-long-domain-name.example.com', kind: 'admin', status: 'active', last: '14 Sept' },
   { id: 'p3', name: 'Alex Rivera', user: 'alex', email: 'alex@example.com', kind: 'guest', status: 'suspended', last: 'never' },
 ]
 
@@ -83,9 +83,9 @@ export const TextOnly: Story = {
   name: 'Text only — a log',
   render: () => (
     <DataList aria-label="Recent events">
-      <DataListRow title={<code>grant.given</code>} description="Matt Demers · person 8f2c4e1a" meta={<span>16 Sept, 09:41</span>} />
-      <DataListRow title={<code>session.revoked</code>} description="Sarah Byrne · session 1b7d4c3e" meta={<span>16 Sept, 09:12</span>} />
-      <DataListRow title={<code>app.registered</code>} description="Matt Demers · app murmur" meta={<span>15 Sept, 17:03</span>} />
+      <DataListRow title={<code>grant.given</code>} description="Alex Rivera · person 8f2c4e1a" meta={<span>16 Sept, 09:41</span>} />
+      <DataListRow title={<code>session.revoked</code>} description="Sam Okoye · session 1b7d4c3e" meta={<span>16 Sept, 09:12</span>} />
+      <DataListRow title={<code>app.registered</code>} description="Alex Rivera · app murmur" meta={<span>15 Sept, 17:03</span>} />
     </DataList>
   ),
 }

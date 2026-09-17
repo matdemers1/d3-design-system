@@ -15,8 +15,8 @@ describe('DataList — rows, not a table (D-067)', () => {
   it('is a named list of list items, with no table semantics', () => {
     render(
       <DataList aria-label="People">
-        <DataListRow title="Matt Demers" />
-        <DataListRow title="Sarah Byrne" />
+        <DataListRow title="Alex Rivera" />
+        <DataListRow title="Sam Okoye" />
       </DataList>,
     )
     const list = screen.getByRole('list', { name: 'People' })
@@ -29,12 +29,12 @@ describe('DataList — rows, not a table (D-067)', () => {
   it('renders each slot in its place', () => {
     const { container } = render(
       <DataList>
-        <DataListRow leading={<span>avatar</span>} title="Matt Demers" description="matt@example.com"
+        <DataListRow leading={<span>avatar</span>} title="Alex Rivera" description="matt@example.com"
           meta={<span>16 Sept</span>} actions={<Button size="sm">Suspend</Button>} />
       </DataList>,
     )
     expect(container.querySelector('.d3-dlrow__leading')?.textContent).toBe('avatar')
-    expect(container.querySelector('.d3-dlrow__title')?.textContent).toBe('Matt Demers')
+    expect(container.querySelector('.d3-dlrow__title')?.textContent).toBe('Alex Rivera')
     expect(container.querySelector('.d3-dlrow__desc')?.textContent).toBe('matt@example.com')
     expect(container.querySelector('.d3-dlrow__meta')?.textContent).toBe('16 Sept')
     expect(screen.getByRole('button', { name: 'Suspend' }).parentElement).toHaveClass('d3-dlrow__actions')
@@ -85,10 +85,10 @@ describe('DataListRow — a link or actions, never both', () => {
   it('without href, the row is inert and the title can be the link', () => {
     render(
       <DataList>
-        <DataListRow title={<Link href="/people/1">Matt Demers</Link>} actions={<Button size="sm">Suspend</Button>} />
+        <DataListRow title={<Link href="/people/1">Alex Rivera</Link>} actions={<Button size="sm">Suspend</Button>} />
       </DataList>,
     )
-    expect(screen.getByRole('link', { name: 'Matt Demers' })).toHaveAttribute('href', '/people/1')
+    expect(screen.getByRole('link', { name: 'Alex Rivera' })).toHaveAttribute('href', '/people/1')
     expect(screen.getByRole('button', { name: 'Suspend' })).toBeInTheDocument()
     expect(screen.getByRole('listitem').querySelector('a.d3-dlrow')).toBeNull()
   })

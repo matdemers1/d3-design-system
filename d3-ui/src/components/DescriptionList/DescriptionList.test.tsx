@@ -10,14 +10,14 @@ describe('DescriptionList', () => {
   it('is a real dl of terms and definitions', () => {
     const { container } = render(
       <DescriptionList>
-        <DescriptionItem term="Username">@matt</DescriptionItem>
+        <DescriptionItem term="Username">@alex</DescriptionItem>
         <DescriptionItem term="Kind"><Badge>admin</Badge></DescriptionItem>
       </DescriptionList>,
     )
     const dl = container.querySelector('dl')!
     expect(dl).toHaveClass('d3-desc')
     expect(screen.getAllByRole('term').map((t) => t.textContent)).toEqual(['Username', 'Kind'])
-    expect(screen.getAllByRole('definition').map((d) => d.textContent)).toEqual(['@matt', 'admin'])
+    expect(screen.getAllByRole('definition').map((d) => d.textContent)).toEqual(['@alex', 'admin'])
     // Each pair is grouped in a div — the only wrapper a dl allows.
     expect([...dl.children].every((c) => c.tagName === 'DIV')).toBe(true)
   })

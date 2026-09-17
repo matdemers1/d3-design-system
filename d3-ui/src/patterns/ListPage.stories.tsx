@@ -216,7 +216,7 @@ export const NoAccess: Story = {
       <Page>
         <PageHeader title="People" focusOnMount={false} />
         <EmptyState kind="no-access" headingLevel={2} heading="Managing people is for admins">
-          Your account can sign in to apps, but not change who else can. Matt Demers, the owner, can make you an admin.
+          Your account can sign in to apps, but not change who else can. Alex Rivera, the owner, can make you an admin.
         </EmptyState>
       </Page>
     </ConsoleFrame>

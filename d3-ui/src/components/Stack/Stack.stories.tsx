@@ -63,7 +63,7 @@ export const AsForm: Story = {
   parameters: { controls: { disable: true } },
   render: () => (
     <Stack as="form" gap="16" aria-label="Profile" onSubmit={(e) => e.preventDefault()}>
-      <FormField label="Display name"><Input defaultValue="Matt Demers" /></FormField>
+      <FormField label="Display name"><Input defaultValue="Alex Rivera" /></FormField>
       <FormField label="Email"><Input type="email" defaultValue="matt@example.com" /></FormField>
     </Stack>
   ),

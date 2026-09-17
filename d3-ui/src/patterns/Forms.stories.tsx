@@ -106,7 +106,7 @@ function RegisterApp({ failed = false }: { failed?: boolean }) {
 
           <Section title="Who can use it" description="Nobody can sign in until they have access.">
             <FormField as="group" label="Give access now to">
-              <Checkbox label="Matt Demers (you)" defaultChecked />
+              <Checkbox label="Alex Rivera (you)" defaultChecked />
               <Checkbox label="The group Household" />
               <Checkbox label="Everyone, including guests invited later" />
             </FormField>

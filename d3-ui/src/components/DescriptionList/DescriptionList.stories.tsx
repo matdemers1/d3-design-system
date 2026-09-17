@@ -24,7 +24,7 @@ type Story = StoryObj<typeof meta>
 export const Person: Story = {
   render: () => (
     <DescriptionList>
-      <DescriptionItem term="Username">@matt</DescriptionItem>
+      <DescriptionItem term="Username">@alex</DescriptionItem>
       <DescriptionItem term="Kind">
         <Cluster gap="6"><Badge tone="attention">admin</Badge><Badge tone="danger">suspended</Badge></Cluster>
       </DescriptionItem>

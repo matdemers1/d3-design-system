@@ -70,7 +70,7 @@ export const CodeStep: Story = {
   name: 'Code step',
   render: () => (
     <AuthLayout brand={mark} title="Enter your code"
-      description="From the authenticator app on your phone, for matt@d3cloud.io."
+      description="From the authenticator app on your phone, for alex@d3cloud.example."
       footer={<Link href="#sign-in" variant="muted">Not you? Sign in as someone else</Link>}>
       <Card>
         <Stack as="form" gap="16" aria-label="Verify">

@@ -80,7 +80,7 @@ function PersonDetail({ confirming = false }: { confirming?: boolean }) {
             <DescriptionItem term="Role"><Badge size="sm">Guest</Badge></DescriptionItem>
             <DescriptionItem term="Signs in with">{person.factors}</DescriptionItem>
             <DescriptionItem term="Last signed in" numeric>{person.lastSignIn}</DescriptionItem>
-            <DescriptionItem term="Joined" numeric>3 March 2026, from an invite by Matt Demers</DescriptionItem>
+            <DescriptionItem term="Joined" numeric>3 March 2026, from an invite by Alex Rivera</DescriptionItem>
           </DescriptionList>
         </Section>
 
