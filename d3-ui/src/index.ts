@@ -41,3 +41,16 @@ export * from './components/SideNav'
 export * from './components/Menu'
 export * from './components/AccountMenu'
 export * from './components/Theme'
+
+// v1.1 — page primitives (D-068)
+export * from './components/Page'
+export * from './components/Stack'
+export * from './components/Grid'
+export * from './components/Section'
+export * from './components/AuthLayout'
+
+// v1.1 — lists and forms (D-067, D-069, D-070)
+export * from './components/DescriptionList'
+export * from './components/DataList'
+export * from './components/FormActions'
+export * from './components/FilterBar'

@@ -1209,3 +1209,76 @@ The package name `@d3cloud/ui` stays. It is never published to a registry, so th
 
 **Verified.** Unit: 13 tests. System follows the OS live. Explicit Dark on a light OS writes `dark`. The key is honoured and read back, garbage is ignored, and throwing storage works. A change in another tab is followed. The boot script covers stored, system, garbage, custom key, throwing storage and `</script>` escaping. Browser: Dark chosen on a light OS survives a reload with the dark `--color-bg`. System follows an emulated OS change. For four stored/OS combinations the boot script sets the right `data-theme` while `document.body` does not yet exist. In the open account menu, keyboard arrows reach Light, Enter selects it, the menu stays open, and `<html>` changes.
 
+---
+
+### D-067 · v1.1 · List rows are not tables
+**Date:** 2026-09-17
+**Found in the D3 Auth console.** Every list — people, apps, sessions, grants, the audit trail, pending invites — was a hand-built `ul.rows > li.row` in four variants, with row actions that landed wherever the wrap put them. The obvious component for that is a table, and D-028 already cut the data table to v2.
+
+**Chosen:** `DataList` and `DataListRow`. A real `ul` of `li`s with slots for `leading` (Avatar or icon), `title`, `description`, `meta` (badges, a timestamp — tabular figures) and `actions`. Rows are at least `--row-height` (48px), padded `--cell-pad-y`/`--cell-pad-x`, divided by the decorative `border` role (D-023). Title and description truncate to one line (D-019); `truncate={false}` is for a log line whose detail is the point.
+
+**Why not a table.** A person with a name, two badges and a Suspend button is an item, not a record of cells. `role="table"` promises column headers, cell-by-cell navigation and, to a sighted user, sortable columns; none exist here, and a table with no headers is worse for a screen-reader user than a list. The console has no question a column answers ("sort people by last sign-in"). When an app does, that is the v2 data table, still out of scope by name.
+
+**Alignment without columns.** From `sm` the list is a four-track grid and each row a CSS subgrid, so meta and actions line up down the list and actions share one trailing edge. Spacing between tracks is a margin on the slot rather than a grid gap, so a list with no leading slot has no empty gap. Below `sm` meta and actions move under the text and stay in the tab order. An app with more actions than fit a phone passes one Menu as the row's action. The row does not build its own overflow menu: that would couple it to `Menu`, and decide for the app which actions are secondary (D-034: only secondary actions collapse).
+
+**The interactivity rule is Card's.** A row is either one link or it holds actions, never both. `href` makes the whole row an `<a>` and renders no `actions` (typed `never`, and dropped with a development warning for JavaScript callers); a linked row that contains a control warns, as Card does. A row with actions stays inert and its `title` is the `Link`. Inside a Card the list bleeds by `--cell-pad-x`, so row text lines up with the card's title. `href` is a plain anchor; whole-row links under a client router are additive later if an app needs them, and until then the title-as-Link form takes `<Link asChild>`.
+
+**Empty.** `empty` renders in place of the list when there are no rows: an `EmptyState` with the `kind` that fits.
+
+**Proven.** Unit tests for the semantics (a list, no table or row roles), the slots, the link-or-actions rule both ways, and the empty swap. In the browser: rows ≥ 48px padded 12/16; action right edges and meta left edges identical across rows; truncation with an ellipsis and no page overflow; actions under the text at 390px; every row control reached by Tab at 390 and 1440px.
+
+---
+
+### D-068 · v1.1 · Page primitives: token names in, nothing arbitrary out
+**Date:** 2026-09-17
+**The inside of the frame, after D-065's shell.** `Page`, `Stack`, `Cluster`, `Grid`, `Section` and `AuthLayout`. Each replaces local CSS that every app has written for itself with a different number: the console's `.shell` at 72rem and 28rem (neither a token), `.stack`, `.row-meta`, `.tiles` on a 16px gutter, and `Card` + `h2.section-title`.
+
+**Props take token names, never values.** `Stack gap="16"` is `var(--space-16)`. The type is the union of D-021's twelve steps, so `gap="15"` is a type error (and, for JavaScript, a development warning and the default step). `Page width` is `wide | narrow | form | prose`, the four `--container-*` tokens. There is no `style` escape and no arbitrary length. The plan named the risk of primitives growing into a CSS-in-props framework; the types are the answer. A gap the scale lacks is a scale change, and a width the containers lack is a container change.
+
+**`Page`.** The container width is the width of the *content*: `max-width` is the container plus twice `--page-pad`, so a wide page's rows are 1280px on any monitor (D-021). Padding is `--page-pad` (24px, 32px from `lg`), and regions are 24px apart. It renders a `div` by default, **because the app shell owns the page's one `<main>`**; `as="main"` is for a page with no shell. Loading skeletons, errors and denied states go inside it, so they sit where the content will.
+
+**`Grid` takes a minimum tile width, not a column count.** `minItemWidth` is `sm | md | lg` (16, 20, 24rem), producing `repeat(auto-fit, minmax(min(100%, …), 1fr))` on `--grid-gutter`, and one column below `md`.
+- *Why not D-021's literal 12 columns with spans:* a span API needs per-breakpoint spans to honour "one column below `md`", which is the props-as-CSS framework ruled out above. And no screen in the console or Bindery places tiles asymmetrically: the dashboard is equal tiles.
+- *Why this keeps "columns drop, they do not shrink":* a tile never goes below its minimum. When a row cannot fit another, a column drops.
+- *What it costs:* an asymmetric layout (2/3 + 1/3) composes Stacks or stays local CSS. If two apps need one, that is the evidence for a `columns` prop, added in a minor.
+
+**`Section` makes the card-or-not choice explicit.** A `<section>` named by its heading through `aria-labelledby`: `h2` by default, `h3` for a section inside a section. It takes a `description`, trailing `actions` that wrap under the title, and `surface="card" | "plain"`. `card` is the default, since the pattern it replaces was a Card, and renders Card itself, so padding and tone cannot drift from it. The title is D-019's section step, 20px/600 (`h3`: 16px/600), from runtime tokens only. The console's section titles rendered at 400 because they read Tailwind names that do not exist without Tailwind (D-070). The body is a column on the 16px step, so an Alert, a DescriptionList and a FormActions row compose inside it without a Stack.
+
+**`AuthLayout`.** Form width (480px of content), centred, 40px from the top below `md` and 64px from `md`. A product mark slot, then `PageHeader` for the title, so the single `<h1>` and the focus that announces a new step are handled once; then the task, then a footnote slot. It renders `main` by default, because a sign-in page has no shell.
+
+**Recorded so it is not re-asked:** no `typography.css` of text-style classes. Text styles go through components (Section titles, DescriptionList terms), and apps use tokens directly.
+
+**Proven.** In the browser, on a page composed only of these exports: content 1280px at a 1440px viewport with 32px padding and 24px between every region; 24px padding below `lg`; `narrow` 672px and `form` 480px; Grid tiles 24px apart, and one column at 390px; a Section title computed at 20px/600 in both themes, and a card body 16px under its head; AuthLayout 480px and centred on a desktop, with no horizontal overflow at 390px. Pixel baselines for the composed page and the DataList, in both themes.
+
+---
+
+### D-069 · v1.1 · Form action order, filter bars and key/value lists
+**Date:** 2026-09-17
+**Found in the D3 Auth console:** every form's buttons were full width and stacked, because forms were a flex column with no action-row pattern. Audit's filters were a card of stacked fields with the export button last. Detail pages set key/value pairs as the same rows as entity lists.
+
+**`FormActions`: primary last in the DOM, primary on top on a phone.** From `sm` the buttons are a row on the aligned edge (`end` by default), with the primary last and so nearest that edge. An optional `leading` action, destructive or an escape, sits on the opposite edge. Below `sm` they are full width and stacked, primary on top.
+- *How:* below `sm` both the group and the row around it become `column-reverse`. The phone order is the DOM order **mirrored**, not reshuffled with `order`: `[Delete, Cancel, Save]` reads Save, Cancel, Delete from the top.
+- *Why that is acceptable from the keyboard:* the source order is the desktop reading order, where most forms are filled in. On a phone the focus order is the visual order exactly reversed, so it still moves in one direction through two or three adjacent peers rather than jumping around. WCAG 2.4.3 asks that focus order preserve meaning and operability, and a reversed stack of peers does. The alternative, primary first in the DOM, puts the primary first in the tab sequence and leftmost on a desktop, against platform convention and the console's own forms.
+- *One exception, stated:* with `align="start"` the leading action renders after the group, so desktop DOM order still matches left to right. On a phone `order` moves it back to the bottom, so that one case is not a pure mirror.
+- Development warnings for a second primary, and for a primary that is not last.
+
+**`FilterBar`.** From `md`, controls in one row that wraps, bottom-aligned so the visible labels share a line. Each control is 12 to 20rem wide; a SegmentedControl keeps its natural width. `trailing` (a result count, an export) takes the far edge. Below `md`, a full-width column. Labels stay visible: a FormField, or a SegmentedControl's own name. With an `aria-label` the bar is a named `role="group"`; without one it has no role, because an unnamed group announces nothing useful.
+
+**`DescriptionList` and `DescriptionItem`.** A real `<dl>`, each pair in a `div`, which a `dl` allows. From `sm`, two columns, the term column a third of the width up to 14rem so a long term wraps inside it; stacked below `sm`. `numeric` gives a value tabular figures (D-019). Values wrap anywhere, because redirect URIs and client IDs have no spaces.
+
+**Proven.** Unit tests for DOM order at both alignments, and the Tab sequence. In the browser: from `sm` one row reading Delete, Cancel, Save left to right; at 390px Save, Cancel, Delete from the top, each button the full width of the row; filter controls on one baseline with the trailing slot flush to the far edge, and full width at 390px; term beside value from `sm`, above it at 390px.
+
+**Found on the way, not fixed here.** In Chromium a native `<Input type="date">` has an internal calendar-picker tab stop, and at that stop the Input frame draws no focus ring (its ring is `:has(> .d3-inp__control:focus-visible)`). The focus sweep caught it on the first FilterBar story. The stories use a Select for "Since" instead; the fix belongs with Input, and the console's Audit filter uses a date input.
+
+---
+
+### D-070 · v1.1 · The usage gate knows which token names exist at runtime
+**Date:** 2026-09-17
+**Found in the D3 Auth console.** Card and section headings rendered at weight 400. `styles.css` read `var(--font-weight-title)`, `var(--font-weight-semibold)` and `var(--text-24--line-height)`. Those names are declared only inside the `@theme inline` blocks of `theme.type.css`, which instruct Tailwind's compiler and emit no custom property. The console does not use Tailwind, so every one was undefined, and `d3-check-usage` passed: it built its list of known tokens from every declaration in every build stylesheet, theme files included.
+
+**Chosen.** The gate separates declarations inside an `@theme` block (found by brace depth, with comments stripped) from runtime declarations. By default only runtime names are known, and a Tailwind-only name fails as its own rule, `tailwind-only-token`, which points at the runtime name. `--tailwind` admits the theme names, for an app whose CSS Tailwind v4 compiles with `theme.css`. A name declared nowhere is still `unknown-token`, with or without the flag.
+
+**Rejected.** *Filtering by file name* (`theme*.css`): it misclassifies silently the day a theme file gains a runtime rule or a runtime file gains an `@theme` block. *Runtime aliases for the Tailwind names:* two names for one concept is what D-017 and D-063 refused.
+
+**Proven.** Against the console's `src`, the 1.0 gate reports nothing. The new one reports 7: `--text-24--line-height` and `--font-weight-title` (the sign-in title), `--font-weight-medium` three times, `--font-weight-regular` and `--font-weight-semibold`. With `--tailwind` it passes. The library's own `src` passes. A test runs the script as a process against fixtures for runtime names, Tailwind-only names with and without the flag, and an undeclared name.
+

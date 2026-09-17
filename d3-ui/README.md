@@ -39,6 +39,25 @@ import { Button } from '@d3cloud/ui'
 import '@d3cloud/ui/theme.css'    // optional — Tailwind v4 preset
 ```
 
+The Tailwind names that preset declares (`--font-weight-semibold`,
+`--text-24--line-height`) do not exist at runtime — `@theme inline` emits no
+custom properties. In CSS of your own, use the runtime tokens (`--weight-*`,
+`--leading-*`, `--text-*`). The usage gate reports the Tailwind names unless it
+is told the app uses Tailwind:
+
+```bash
+npx d3-check-usage src              # no Tailwind
+npx d3-check-usage --tailwind src   # Tailwind v4 with theme.css
+```
+
+### Page layout (1.1)
+
+`Page` (container width and rhythm), `Stack` and `Cluster` (gaps by spacing
+step name only), `Grid` (auto-fit tiles), `Section` (a titled region),
+`AuthLayout` (a single-task page), `DescriptionList`, `DataList` (rows, not a
+table), `FormActions` and `FilterBar`. Each story documents its rules; the
+reasoning is D-067 to D-070 in `design-system/DECISIONS.md`.
+
 ### Names
 
 `label` is used where a component builds the accessible name itself: it is

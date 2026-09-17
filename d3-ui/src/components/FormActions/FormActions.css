@@ -1,0 +1,43 @@
+/* The row of buttons that ends a form.
+
+   From sm: one row, actions on the aligned edge, the primary last and so
+   nearest that edge; an optional leading action on the opposite edge.
+
+   Below sm: full-width buttons in a column that is the DOM order mirrored —
+   the primary on top, where the eye lands first, and the leading (usually
+   destructive) action at the bottom, furthest from it. A mirror rather than a
+   reshuffle, so Tab still moves through the buttons in one direction. */
+.d3-fa {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-8) var(--space-16);
+  margin: 0;
+  min-width: 0;
+}
+.d3-fa__main,
+.d3-fa__leading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-8);
+}
+.d3-fa--end .d3-fa__main { margin-inline-start: auto; justify-content: flex-end; }
+.d3-fa--start .d3-fa__leading { margin-inline-start: auto; }
+
+@media (max-width: 639.98px) {
+  .d3-fa,
+  .d3-fa__main,
+  .d3-fa__leading {
+    flex-direction: column-reverse;
+    flex-wrap: nowrap;
+    align-items: stretch;
+  }
+  .d3-fa--end .d3-fa__main,
+  .d3-fa--start .d3-fa__leading { margin-inline-start: 0; }
+  /* align="start" renders the leading action after the main group in the DOM,
+     so the mirror would put it on top; order puts it back at the bottom. */
+  .d3-fa--start .d3-fa__leading { order: -1; }
+  .d3-fa__main > *,
+  .d3-fa__leading > * { width: 100%; }
+}

@@ -1,0 +1,20 @@
+/* The page container (D-021). The width is the width of the CONTENT: a wide
+   page's rows are at most 1280px, and the page padding sits outside that, so a
+   wide page reads the same on a laptop and a 4K monitor. */
+.d3-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-24);
+  width: 100%;
+  margin: 0 auto;
+  padding: var(--page-pad);
+  min-width: 0;
+}
+.d3-page--wide   { max-width: calc(var(--container-wide) + 2 * var(--page-pad)); }
+.d3-page--narrow { max-width: calc(var(--container-narrow) + 2 * var(--page-pad)); }
+.d3-page--form   { max-width: calc(var(--container-form) + 2 * var(--page-pad)); }
+.d3-page--prose  { max-width: calc(var(--container-prose) + 2 * var(--page-pad)); }
+
+/* A flex column stretches its children, which is right for regions. A child
+   that should keep its own width (a lone Button) sets it. */
+.d3-page > * { min-width: 0; }

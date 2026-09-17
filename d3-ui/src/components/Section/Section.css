@@ -1,0 +1,51 @@
+/* A titled region of a page. With surface="card" the element is a Card, so the
+   surface, radius and 20px padding are Card's own and cannot drift from it. */
+.d3-sec { margin: 0; min-width: 0; }
+
+.d3-sec__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--space-8) var(--space-16);
+}
+/* The title keeps at least 16rem before the actions wrap underneath it. */
+.d3-sec__lead { flex: 1 1 auto; min-width: min(100%, 16rem); }
+
+/* D-019: a section title is 20px/600, the step below a page title's 24px/650.
+   A nested section (h3) takes the 16px emphasis step. Runtime tokens only — the
+   Tailwind theme names do not exist in an app without Tailwind. */
+.d3-sec__title {
+  margin: 0;
+  color: var(--color-fg);
+  font-size: var(--text-20);
+  line-height: var(--leading-20);
+  font-weight: var(--weight-semibold);
+}
+.d3-sec__title--h3 {
+  font-size: var(--text-16);
+  line-height: var(--leading-16);
+}
+.d3-sec__desc {
+  margin: var(--space-4) 0 0;
+  font-size: var(--text-13);
+  line-height: var(--leading-13);
+  color: var(--color-fg-muted);
+  max-width: var(--measure-body);
+}
+.d3-sec__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-8);
+  flex: none;
+}
+
+/* The body is a column on the 16px step, so a DescriptionList, an Alert and a
+   FormActions row compose inside it without a Stack of their own. */
+.d3-sec__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+  margin-top: var(--space-16);
+  min-width: 0;
+}

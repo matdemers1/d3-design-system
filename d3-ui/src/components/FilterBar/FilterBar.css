@@ -1,0 +1,45 @@
+/* Filters above a list. From md: one row that wraps, controls bottom-aligned
+   so their visible labels sit on one line, and the trailing slot (a result
+   count, an export) pushed to the far edge. Below md: a column, every control
+   full width. */
+.d3-fb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-12) var(--space-16);
+  margin: 0;
+  min-width: 0;
+}
+.d3-fb__controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-12) var(--space-16);
+  flex: 1 1 auto;
+  min-width: 0;
+}
+/* A control is at least 12rem and at most 20rem wide, so a Select does not
+   shrink to its placeholder or stretch across a 1280px page. A control with a
+   natural width of its own (a SegmentedControl) keeps it. */
+.d3-fb__controls > * { flex: 0 1 16rem; min-width: min(100%, 12rem); max-width: 20rem; }
+.d3-fb__controls > :where(.d3-seg, [role='radiogroup']) { flex: none; max-width: none; min-width: 0; }
+.d3-fb__trailing {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-8);
+  margin-inline-start: auto;
+  min-height: 34px;
+  font-size: var(--text-13);
+  line-height: var(--leading-13);
+  color: var(--color-fg-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 767.98px) {
+  .d3-fb,
+  .d3-fb__controls { flex-direction: column; align-items: stretch; }
+  .d3-fb__controls > * { flex: none; max-width: none; min-width: 0; }
+  .d3-fb__controls > :where(.d3-seg, [role='radiogroup']) { align-self: flex-start; }
+  .d3-fb__trailing { margin-inline-start: 0; justify-content: space-between; min-height: 0; }
+}
