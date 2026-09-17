@@ -8,6 +8,7 @@
   "files": [
     "dist",
     "src/tokens",
+    "src/styles/base.css",
     "scripts"
   ],
   "main": "./dist/index.js",
@@ -21,6 +22,7 @@
     },
     "./tokens.css": "./src/tokens/build/tokens.css",
     "./theme.css": "./src/tokens/build/theme.css",
+    "./base.css": "./src/styles/base.css",
     "./package.json": "./package.json"
   },
   "bin": {

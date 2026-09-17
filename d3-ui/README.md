@@ -33,6 +33,15 @@ import '@d3cloud/ui/tokens.css'   // required — custom properties and fonts
 import { Button } from '@d3cloud/ui'
 ```
 
+Optionally, the document base — `html` and `body` on the page ground, in the
+text colour and face, `body` at least the viewport tall. It is opt-in and never
+imported by a component, and it sits in `@layer base`, so an app's own
+`html, body` rule still wins:
+
+```js
+import '@d3cloud/ui/base.css'     // optional — replaces every app's own html, body rule
+```
+
 `tokens.css` is plain CSS. **The components do not require Tailwind** — App C does not use it. Apps that do want matching utilities add:
 
 ```js
