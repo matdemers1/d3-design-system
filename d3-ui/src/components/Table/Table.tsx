@@ -154,6 +154,33 @@ function TableInner<Row>(props: TableProps<Row>, ref: React.Ref<HTMLDivElement>)
   const scroller = useRef<HTMLDivElement | null>(null)
   const setRef = useMergedRef(ref, scroller)
 
+  /**
+   * Whether this table actually scrolls, in either direction.
+   *
+   * Re-measured whenever the element resizes: a table that fits at one width overflows at
+   * another, and the tab stop has to appear and disappear with the overflow rather than with a
+   * prop set at render time.
+   */
+  const [scrollable, setScrollable] = useState(false)
+  useEffect(() => {
+    const element = scroller.current
+    if (element === null) return
+
+    const measure = () => {
+      setScrollable(
+        element.scrollWidth > element.clientWidth + 1 ||
+          element.scrollHeight > element.clientHeight + 1,
+      )
+    }
+    measure()
+
+    const observer = new ResizeObserver(measure)
+    observer.observe(element)
+    return () => {
+      observer.disconnect()
+    }
+  })
+
   if (process.env.NODE_ENV !== 'production') {
     if (columns.length === 0) devWarn('Table.columns', 'Table: `columns` is empty.')
     if (!caption && !rest['aria-label'] && !rest['aria-labelledby']) {
@@ -269,14 +296,17 @@ function TableInner<Row>(props: TableProps<Row>, ref: React.Ref<HTMLDivElement>)
         className,
       )}
       style={maxHeight ? { maxHeight } : undefined}
-      // A bounded table scrolls, and a region that scrolls has to be reachable by keyboard —
-      // otherwise the only way to see the rows below the fold is a pointer (WCAG 2.1.1, axe's
-      // `scrollable-region-focusable`). Only when bounded: an unbounded table does not scroll, and
-      // a tab stop that does nothing is worse than none.
-      tabIndex={maxHeight ? 0 : undefined}
-      // Named by its own caption, so the stop announces which table it is rather than "group".
-      role={maxHeight ? 'group' : undefined}
-      aria-label={maxHeight && typeof caption === 'string' ? caption : undefined}
+      // A region that scrolls has to be reachable by keyboard, or the content past the edge is
+      // pointer-only (WCAG 2.1.1, axe's `scrollable-region-focusable`).
+      //
+      // **Measured, not inferred from `maxHeight`.** A table with no height bound still scrolls
+      // *horizontally* when its columns are wider than the page, which is the common case on a
+      // dense screen — deciding from the prop alone left exactly those tables unreachable. And a
+      // tab stop on a table that does not scroll is worse than none, so it is neither always on
+      // nor always off.
+      tabIndex={scrollable ? 0 : undefined}
+      role={scrollable ? 'group' : undefined}
+      aria-label={scrollable && typeof caption === 'string' ? caption : undefined}
       {...rest}
     >
       <table

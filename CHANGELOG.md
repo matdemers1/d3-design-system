@@ -4,6 +4,18 @@ Semver. The public surface is what `d3-ui/src/index.ts` exports plus the token
 names; CSS class names (`.d3-btn`, `.d3-seg`) are an implementation detail and
 apps must not select on them.
 
+## v1.2.2 — 2026-09-18
+
+**1.2.1 fixed half of it.** A table with no `maxHeight` still scrolls *horizontally* when its
+columns are wider than the page — the common case on a dense screen — and deciding the tab stop
+from the prop left exactly those tables unreachable.
+
+### Fixed
+
+- **`Table`** — whether the scroll region is focusable is now **measured** (`scrollWidth` /
+  `scrollHeight` against the client box, re-measured on resize) rather than inferred from
+  `maxHeight`. A table that fits still adds no tab stop.
+
 ## v1.2.1 — 2026-09-18
 
 **A bounded `Table` was pointer-only.** Found by running axe over a real consuming app rather than

@@ -147,4 +147,17 @@ test.describe('a bounded table is reachable by keyboard', () => {
     await expect(scroller).toHaveAttribute('tabindex', '0')
     await expect(scroller).toHaveAttribute('aria-label', 'Bounded')
   })
+
+  test('a table that fits adds no tab stop', async ({ mount, page }) => {
+    // A stop that does nothing is worse than none: it costs a keyboard user a press for nothing.
+    await mount(
+      <Table
+        caption="Short"
+        columns={[{ key: 'n', header: 'N', cell: (row: { n: number }) => row.n }]}
+        rows={[{ n: 1 }, { n: 2 }]}
+        rowKey={(row) => String(row.n)}
+      />,
+    )
+    await expect(page.locator('.d3-tbl-scroll').first()).not.toHaveAttribute('tabindex', '0')
+  })
 })
