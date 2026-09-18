@@ -4,6 +4,36 @@ Semver. The public surface is what `d3-ui/src/index.ts` exports plus the token
 names; CSS class names (`.d3-btn`, `.d3-seg`) are an implementation detail and
 apps must not select on them.
 
+## v1.2.0 — 2026-09-18
+
+**Records.** `DataList` covers like things with a name and some meta (D-067); it deliberately is not
+a table, and until now the system had nothing for the case a table is actually for — columns that
+line up, so a value can be compared down one or ordered by it. Additive: no existing export, prop or
+default changed.
+
+### Added
+
+- **`Table`** — columns declared as data (`key` · `header` · `cell` · `sortable` · `numeric` ·
+  `width` · `align`), a header that stays put, and virtualization past a threshold.
+  - **Sorting** cycles ascending → descending → **back to the order the caller passed**. The third
+    state is not decoration: the given order is often itself meaningful. `aria-sort` goes on the
+    column rather than on the button inside it, which is where a screen reader looks for it.
+    Numbers sort by value, so a Phase 8.5 does not land between 12 and 2.
+  - **Virtualization** renders a window of rows with spacer rows above and below, so the table stays
+    a real `<table>` — the browser's own column sizing and cell semantics still apply — and the
+    scrollbar still describes the whole set. `aria-rowcount` reports the true count, not the
+    rendered one.
+  - **`stickyHeader` and `virtualize` both need `maxHeight`**: each needs a scroll container, and
+    virtualization needs a viewport to measure against. Asking for virtualization without one warns
+    in development, because the failure is silent otherwise — every row renders.
+  - Below `sm` the table keeps its shape and scrolls sideways rather than becoming a stack of cards:
+    stacking destroys exactly the alignment that was the reason to use a table. Reach for `DataList`
+    when the small screen is the primary one.
+
+Built for Foreman's requirements register, and measured against it: `browser/table.spec.ts` loads
+439 rows, asserts fewer than forty are ever in the DOM across a full scroll, and holds the
+90th-percentile frame under 50ms while scrolling.
+
 ## v1.1.0 — 2026-09-17
 
 **The frame and the page patterns.** v1.0 gave apps good parts and no guidance on putting them

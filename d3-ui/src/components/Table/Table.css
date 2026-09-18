@@ -1,0 +1,160 @@
+/* A table of records: cells under column headings, sortable, sticky-headed
+   (D-067's other half — DataList is for like things, this is for records).
+
+   The scroll container is the element with the height, because sticky needs a
+   scrolling ancestor and virtualization needs a viewport to measure. */
+.d3-tbl-scroll {
+  min-width: 0;
+  /* Wide tables scroll sideways inside their own box rather than pushing the
+     page wider — a page that scrolls horizontally has lost its layout. */
+  overflow-x: auto;
+}
+.d3-tbl-scroll--bounded {
+  overflow-y: auto;
+  /* Without this the sticky header of a table inside a flex or grid child can
+     never stick: the container has no height of its own to scroll within. */
+  min-height: 0;
+}
+
+.d3-tbl {
+  width: 100%;
+  border-collapse: separate;
+  /* `separate`, not `collapse`: a collapsed border is painted by the cell, and a
+     sticky header's collapsed bottom border scrolls away with the body. */
+  border-spacing: 0;
+  font-size: var(--text-14);
+  line-height: var(--leading-14);
+  color: var(--color-fg);
+}
+
+.d3-tbl__caption {
+  caption-side: top;
+  text-align: start;
+  padding: var(--cell-pad-y) var(--cell-pad-x);
+  font-size: var(--text-13);
+  line-height: var(--leading-13);
+  color: var(--color-fg-muted);
+}
+
+/* Hidden from the page, not from the accessibility tree: a caption the design
+   does not want to show is still the table's name. */
+.d3-tbl__caption--hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  border: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.d3-tbl__th {
+  position: relative;
+  text-align: start;
+  padding: var(--cell-pad-y) var(--cell-pad-x);
+  font-size: var(--text-12);
+  line-height: var(--leading-12);
+  font-weight: var(--weight-medium);
+  color: var(--color-fg-muted);
+  white-space: nowrap;
+  /* On the cell, not the row: a sticky `tr` is ignored, and a border on a
+     sticky cell is what survives the body scrolling under it. */
+  border-bottom: var(--border-width) solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.d3-tbl-scroll--sticky .d3-tbl__th {
+  position: sticky;
+  top: 0;
+  /* Above the cells that scroll beneath, below any Menu or Tooltip a cell opens. */
+  z-index: 1;
+}
+
+.d3-tbl__td {
+  padding: var(--cell-pad-y) var(--cell-pad-x);
+  vertical-align: middle;
+  /* D-019: a cell truncates rather than wraps, so a long value cannot silently
+     make one row four rows tall — which virtualization's fixed height forbids. */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: var(--measure-cell);
+}
+.d3-tbl__row + .d3-tbl__row .d3-tbl__td {
+  border-top: var(--border-width) solid var(--color-border);
+}
+.d3-tbl__row:hover .d3-tbl__td { background: var(--color-surface-hover); }
+
+.d3-tbl__cell--end { text-align: end; }
+.d3-tbl__cell--num {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+}
+
+/* An id or a SHA in a cell: the system's mono, a step smaller so it sits on the
+   line beside proportional text. */
+.d3-tbl :where(code) { font-family: var(--font-mono); font-size: 0.93em; }
+
+/* The whole heading is the control, so the hit target is the cell rather than
+   the few characters of its label. */
+.d3-tbl__sort {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  text-align: inherit;
+  background: none;
+  border: 0;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+.d3-tbl__cell--end .d3-tbl__sort { justify-content: flex-end; }
+.d3-tbl__sort:hover { color: var(--color-fg); }
+.d3-tbl__sort:focus-visible {
+  outline: var(--focus-width) solid var(--color-focus);
+  outline-offset: 2px;
+}
+.d3-tbl__sort--active { color: var(--color-fg); }
+
+/* The indicator holds its width whether or not the column is the sorted one, so
+   headings do not shift sideways as the sort moves between them. */
+.d3-tbl__sort-icon {
+  flex: none;
+  width: 1em;
+  text-align: center;
+  color: var(--color-fg-faint);
+}
+.d3-tbl__sort--active .d3-tbl__sort-icon { color: var(--color-accent); }
+
+.d3-tbl__empty {
+  padding: var(--space-24) var(--cell-pad-x);
+  text-align: center;
+  color: var(--color-fg-muted);
+}
+
+/* The virtualization spacers. They carry height and nothing else; every visible
+   property is off so they cannot contribute a border or a background. */
+.d3-tbl__spacer > td {
+  padding: 0;
+  border: 0;
+  background: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .d3-tbl__row .d3-tbl__td { transition: background-color var(--motion-hover); }
+}
+
+/* Below sm the table keeps its shape and scrolls sideways. It is not turned into
+   a stack of cards: the reason to use a table is that values line up down a
+   column, and that is exactly what stacking destroys. Reach for DataList when
+   the small screen is the primary one. */
+@media (max-width: 639.98px) {
+  .d3-tbl { font-size: var(--text-13); line-height: var(--leading-13); }
+  .d3-tbl__td { max-width: none; }
+}

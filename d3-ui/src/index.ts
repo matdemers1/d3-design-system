@@ -55,5 +55,8 @@ export * from './components/DataList'
 export * from './components/FormActions'
 export * from './components/FilterBar'
 
+// v1.2 — records (D-067's other half: DataList is for like things, Table for records)
+export * from './components/Table'
+
 // Strict CSP: the nonce for the styles Radix injects while a layer is open (D-072)
 export { setStyleNonce, readStyleNonce } from './lib/styleNonce'
