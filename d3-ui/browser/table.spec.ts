@@ -128,3 +128,23 @@ test.describe('Table · virtualization', () => {
     expect(longestFrame).toBeLessThan(50)
   })
 })
+
+test.describe('a bounded table is reachable by keyboard', () => {
+  test('the scroll region takes focus, and an unbounded one adds no tab stop', async ({ mount, page }) => {
+    // A region that scrolls must be focusable, or the rows below the fold are pointer-only
+    // (WCAG 2.1.1). Found by axe against a real consuming app, not by reading the spec.
+    await mount(
+      <Table
+        caption="Bounded"
+        maxHeight="120px"
+        columns={[{ key: 'n', header: 'N', cell: (row: { n: number }) => row.n }]}
+        rows={Array.from({ length: 40 }, (_, n) => ({ n }))}
+        rowKey={(row) => String(row.n)}
+      />,
+    )
+
+    const scroller = page.locator('.d3-tbl-scroll').first()
+    await expect(scroller).toHaveAttribute('tabindex', '0')
+    await expect(scroller).toHaveAttribute('aria-label', 'Bounded')
+  })
+})

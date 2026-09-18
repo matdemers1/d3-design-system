@@ -4,6 +4,19 @@ Semver. The public surface is what `d3-ui/src/index.ts` exports plus the token
 names; CSS class names (`.d3-btn`, `.d3-seg`) are an implementation detail and
 apps must not select on them.
 
+## v1.2.1 — 2026-09-18
+
+**A bounded `Table` was pointer-only.** Found by running axe over a real consuming app rather than
+by reading the spec: `maxHeight` makes the table a scroll container, and a region that scrolls has
+to be reachable by keyboard or the rows below the fold can only be seen with a mouse
+(WCAG 2.1.1 — axe's `scrollable-region-focusable`, serious).
+
+### Fixed
+
+- **`Table`** — a bounded table's scroll region now takes focus (`tabIndex=0`) and is named by its
+  own caption. Only when `maxHeight` is set: an unbounded table does not scroll, and a tab stop
+  that does nothing is worse than none.
+
 ## v1.2.0 — 2026-09-18
 
 **Records.** `DataList` covers like things with a name and some meta (D-067); it deliberately is not

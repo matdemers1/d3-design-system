@@ -269,6 +269,14 @@ function TableInner<Row>(props: TableProps<Row>, ref: React.Ref<HTMLDivElement>)
         className,
       )}
       style={maxHeight ? { maxHeight } : undefined}
+      // A bounded table scrolls, and a region that scrolls has to be reachable by keyboard —
+      // otherwise the only way to see the rows below the fold is a pointer (WCAG 2.1.1, axe's
+      // `scrollable-region-focusable`). Only when bounded: an unbounded table does not scroll, and
+      // a tab stop that does nothing is worse than none.
+      tabIndex={maxHeight ? 0 : undefined}
+      // Named by its own caption, so the stop announces which table it is rather than "group".
+      role={maxHeight ? 'group' : undefined}
+      aria-label={maxHeight && typeof caption === 'string' ? caption : undefined}
       {...rest}
     >
       <table
