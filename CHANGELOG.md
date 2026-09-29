@@ -4,6 +4,12 @@ Semver. The public surface is what `d3-ui/src/index.ts` exports plus the token
 names; CSS class names (`.d3-btn`, `.d3-seg`) are an implementation detail and
 apps must not select on them.
 
+## Unreleased
+
+### Added
+
+- **`RecipientField`** — email recipients as chips, with async suggestions from a caller-supplied loader; an APG editable combobox, and a borderless `row` variant for composer headers that keeps a visible label and divider (D-073). Also `parseRecipients`, `parseRecipient`, `splitRecipients`, `isValidAddress`, `formatRecipient`.
+
 ## v1.2.2 — 2026-09-18
 
 **1.2.1 fixed half of it.** A table with no `maxHeight` still scrolls *horizontally* when its
