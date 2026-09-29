@@ -1,0 +1,70 @@
+/* A phone bar: hidden from lg (the AppShell breakpoint) up unless forced. Done in
+   CSS rather than by not rendering, so there is no flash and no hydration
+   mismatch on a server-rendered phone page. `display: none` also removes it from
+   the accessibility tree, so a hidden bar is not a second copy of the actions. */
+.d3-abar {
+  display: flex;
+  align-items: stretch;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-8) max(var(--space-8), env(safe-area-inset-bottom));
+  background: var(--color-surface);
+  border-top: var(--border-width) solid var(--color-border);
+}
+@media (min-width: 1024px) {
+  .d3-abar:not(.d3-abar--force) { display: none; }
+}
+
+/* Equal shares, and never under 44 x 44 (WCAG 2.5.5, and the platform minimum
+   for a thumb). `flex: 1 1 0` with `min-width: 0` keeps a long label from
+   stealing width from its neighbours. */
+.d3-abar__item {
+  flex: 1 1 0;
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  margin: 0;
+  padding: var(--space-4) var(--space-2);
+  border: 0;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--color-fg-muted);
+  font: inherit;
+  font-size: var(--text-11);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-11);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color var(--motion-hover), color var(--motion-hover);
+}
+.d3-abar__item--accent { color: var(--color-accent); }
+
+.d3-abar__item:hover:not(:disabled):not([aria-disabled='true']),
+.d3-abar__item:active:not(:disabled):not([aria-disabled='true']) {
+  background: var(--color-surface-hover);
+}
+
+.d3-abar__icon {
+  display: flex;
+  flex: none;
+  width: 22px;
+  height: 22px;
+}
+.d3-abar__icon > svg { width: 100%; height: 100%; }
+
+.d3-abar__label {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.d3-abar__item:disabled,
+.d3-abar__item[aria-disabled='true'] { opacity: 0.42; cursor: not-allowed; }
+.d3-abar__item:focus-visible {
+  outline: var(--focus-width) solid var(--color-focus);
+  outline-offset: var(--focus-offset);
+}
