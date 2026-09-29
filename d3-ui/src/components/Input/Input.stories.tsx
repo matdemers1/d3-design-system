@@ -3,6 +3,8 @@ import { Search, X } from 'lucide-react'
 import { Input } from './Input'
 import { Button } from '../Button/Button'
 import { Select } from '../Select/Select'
+import { Textarea } from '../Textarea/Textarea'
+import { FormField } from '../FormField/FormField'
 
 const meta = {
   title: 'Forms/Input',
@@ -67,4 +69,32 @@ export const DateField: Story = {
   name: 'Date',
   args: { type: 'date', defaultValue: '2026-09-17', 'aria-label': 'Since' },
   decorators: [(S) => <div style={{ width: 200 }}><S /></div>],
+}
+
+/**
+ * `appearance="filled"` (D-073) — opt-in; the outlined field above is unchanged. 36px and 14px
+ * text, filled with `bg` one step below the `surface` it sits on, the same 3:1 `border-field`
+ * edge (3.92:1 light, 4.29:1 dark against the fill), and at focus a single 2px outline laid over
+ * that edge — no accent border, no offset ring. Textarea and Select take the same prop.
+ */
+export const AppearanceFilled: Story = {
+  name: 'Appearance: filled',
+  parameters: { controls: { disable: true } },
+  decorators: [(S) => (
+    <div style={{ width: 380, boxSizing: 'border-box', padding: 'var(--space-16)', background: 'var(--color-surface)', borderRadius: 'var(--radius-lg)' }}>
+      <S />
+    </div>
+  )],
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+      <FormField label="To"><Input appearance="filled" defaultValue="dana.okafor.builds@gmail.com" /></FormField>
+      <FormField label="Subject"><Input appearance="filled" placeholder="What it is about" /></FormField>
+      <FormField label="Reply-to" error="That is not an email address"><Input appearance="filled" defaultValue="dana@" /></FormField>
+      <FormField label="From"><Input appearance="filled" disabled defaultValue="matt@d3cloud.io" /></FormField>
+      <FormField label="Format">
+        <Select appearance="filled" defaultValue="plain" options={[{ value: 'plain', label: 'Plain text' }, { value: 'html', label: 'Rich text' }]} />
+      </FormField>
+      <FormField label="Message"><Textarea appearance="filled" rows={4} defaultValue="Updated numbers attached." /></FormField>
+    </div>
+  ),
 }

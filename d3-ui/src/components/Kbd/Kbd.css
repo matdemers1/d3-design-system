@@ -1,0 +1,18 @@
+/* A key cap drawn as a fill, not an outline (BRIEF). radius-xs is the keyboard
+   hint's step on the radius scale (D-023). The fill is set by where it sits:
+   one step off the thing it is drawn on. */
+.d3-kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 var(--space-6);
+  border-radius: var(--radius-xs);
+  background: var(--color-bg);
+  color: var(--color-fg-faint);
+  font-family: inherit;
+  font-size: var(--text-11);
+  line-height: var(--leading-11);
+  font-weight: var(--weight-medium);
+}

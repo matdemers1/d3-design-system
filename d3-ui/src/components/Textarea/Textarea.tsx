@@ -2,6 +2,7 @@ import { forwardRef } from 'react'
 import { cn } from '../../lib/cn'
 import { useMergedRef, useNameCheck } from '../../lib/dev'
 import { useFormField } from '../FormField/FormFieldContext'
+import type { FieldAppearance } from '../Input/Input'
 import '../Input/Input.css'
 
 export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
@@ -12,11 +13,13 @@ export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextArea
    * the face.
    */
   mono?: boolean
+  /** `filled`: 14px text on a `bg` fill with the same 3:1 edge and one focus outline (D-073). */
+  appearance?: FieldAppearance
 }
 
 /** Multi-line text. A minimum of three rows — a one-row textarea should be an Input. */
 export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function Textarea(
-  { invalid, mono = false, className, disabled, readOnly, id, rows = 3, ...rest }, ref,
+  { invalid, mono = false, appearance = 'outlined', className, disabled, readOnly, id, rows = 3, ...rest }, ref,
 ) {
   const field = useFormField()
   const isInvalid = invalid ?? field?.invalid ?? false
@@ -25,7 +28,8 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function 
   const setRef = useMergedRef(ref, local)
   return (
     <div
-      className={cn('d3-inp', 'd3-inp--md', 'd3-inp--area', isInvalid && 'd3-inp--invalid',
+      className={cn('d3-inp', 'd3-inp--md', 'd3-inp--area', appearance === 'filled' && 'd3-inp--filled',
+        isInvalid && 'd3-inp--invalid',
         disabled && 'd3-inp--disabled', readOnly && 'd3-inp--readonly', mono && 'd3-inp--mono', className)}
     >
       <textarea

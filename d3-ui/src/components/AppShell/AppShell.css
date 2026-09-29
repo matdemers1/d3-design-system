@@ -164,3 +164,33 @@
 }
 .d3-shell-brand__mark { display: inline-flex; flex: none; color: var(--color-accent); }
 .d3-shell-brand__name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* navTone="recessed" (D-073): the chrome sinks to the page ground and the
+   content comes forward onto the resting surface — for an app whose content is
+   one working surface, where a raised sidebar makes the content look sunk.
+   Opt-in; the default above is untouched.
+
+   Two tokens stop working on --color-bg and are moved up a step here, inside
+   the sidebar only: in light, --color-surface-hover IS --color-bg, and
+   --color-accent-muted is 1.01:1 against it, so hover and the current item
+   would both vanish. Hover lifts to the content tone; the current item to the
+   raised tone, keeping its accent text and semibold weight as the signals that
+   do not depend on the fill. */
+.d3-shell--recessed .d3-shell__sidebar,
+.d3-shell--recessed .d3-shell__bar { background: var(--color-bg); }
+.d3-shell--recessed .d3-shell__main { background: var(--color-surface); }
+
+.d3-shell--recessed .d3-shell__sidebar .d3-snav__item:hover { background: var(--color-surface); }
+.d3-shell--recessed .d3-shell__sidebar .d3-snav__item[aria-current='page'] {
+  background: var(--color-surface-raised);
+}
+.d3-shell--recessed .d3-shell__sidebar .d3-snav__item[aria-current='page'] .d3-bdg--count-quiet {
+  background: var(--color-bg);
+}
+.d3-shell--recessed .d3-shell__sidebar .d3-acct:hover,
+.d3-shell--recessed .d3-shell__sidebar .d3-acct[data-state='open'] { background: var(--color-surface); }
+/* A filled field is one step below the surface it sits on; the recessed
+   sidebar IS the lowest step, so a field there steps up instead. The field
+   edge stays at 3:1 against it: 4.21:1 light, 3.91:1 dark. */
+.d3-shell--recessed .d3-shell__sidebar .d3-inp--filled,
+.d3-shell--recessed .d3-shell__bar .d3-inp--filled { background: var(--color-surface); }

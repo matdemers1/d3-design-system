@@ -1,0 +1,68 @@
+/* Fixed over the page at the bottom centre, so a toast never reflows what is
+   under it. The region passes pointer events through; only the toast takes
+   them. No transform on the region: a retained transform makes a containing
+   block (D-024's fill-mode note), and nothing here needs one. */
+.d3-toast-region {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: var(--space-24);
+  z-index: 60;
+  display: flex;
+  justify-content: center;
+  padding: 0 var(--space-16);
+  pointer-events: none;
+}
+.d3-toast-region__live { display: contents; }
+
+/* A floating layer: surface-raised and a 3:1 boundary, no shadow (D-023). */
+.d3-toast {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  min-height: 44px;
+  max-width: min(560px, 100%);
+  padding: var(--space-4) var(--space-4) var(--space-4) var(--space-16);
+  background: var(--color-surface-raised);
+  border: var(--border-width) solid var(--color-border-float);
+  border-radius: var(--radius-md);
+  box-shadow: none;
+  color: var(--color-fg);
+  font-size: var(--text-13);
+  line-height: var(--leading-13);
+  pointer-events: auto;
+  /* Rises 16px and lands before the eye moves on (D-073). Backwards fill only:
+     the settled toast holds no transform. */
+  animation: d3-toast-in var(--motion-toast-enter) backwards;
+}
+@keyframes d3-toast-in { from { opacity: 0; transform: translateY(16px); } }
+@keyframes d3-toast-out { to { opacity: 0; transform: translateY(8px); } }
+@keyframes d3-toast-swap { from { opacity: 0; } }
+/* A newer toast replaces the one on screen in place: a hover-speed cross-fade,
+   not a second rise from below. */
+.d3-toast--swap { animation: d3-toast-swap var(--motion-hover) backwards; }
+.d3-toast[data-state='closed'] {
+  animation: d3-toast-out var(--motion-toast-exit) forwards;
+  pointer-events: none;
+}
+
+.d3-toast__message {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-right: var(--space-8);
+}
+/* The one action reads as the thing to press: accent and semibold, 8.15:1 on
+   surface-raised in light and 4.71:1 in dark. */
+.d3-toast .d3-toast__action {
+  color: var(--color-accent);
+  font-weight: var(--weight-semibold);
+  gap: var(--space-6);
+}
+.d3-toast__close { flex: none; }
+/* Both buttons hover to surface-raised by default — the toast's own fill — so
+   in a toast they hover to the neighbouring step instead. */
+.d3-toast .d3-toast__action:hover:not(:disabled),
+.d3-toast .d3-toast__close:hover:not(:disabled) { background: var(--color-surface-hover); }

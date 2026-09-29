@@ -122,3 +122,21 @@ export const CollapsedByDefault: Story = {
     </ThemeProvider>
   ),
 }
+
+/**
+ * `navTone="recessed"` (D-073): the sidebar sinks to `bg` and `<main>` comes forward onto
+ * `surface` — for an app whose content is one working surface, like a mail list beside a
+ * reading pane. Hover lifts a nav item to `surface` and the current item to `surface-raised`,
+ * because on `bg` the default hover and accent tint are invisible in light.
+ */
+export const Recessed: Story = {
+  render: () => (
+    <ThemeProvider storageKey="d3.story.theme">
+      <form id="story-sign-out" method="post" action="#" hidden />
+      <AppShell storageKey="d3.story.sidebar.recessed" navTone="recessed" brand={<Brand />} nav={<Nav />}
+        footer={<Account />}>
+        <Page />
+      </AppShell>
+    </ThemeProvider>
+  ),
+}
