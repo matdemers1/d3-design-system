@@ -1,0 +1,56 @@
+.d3-sw {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-8);
+  font-size: var(--text-13);
+  color: var(--color-fg);
+  margin: 0;
+}
+.d3-sw__label { cursor: pointer; }
+
+/* Off: the track is filled with the field edge tone, which holds 3:1 or better
+   against surface and (except dark surface-raised, right at 3.00) surface-raised;
+   the knob is the page ground, so it is distinct from the track in both themes
+   and the position — left or right — says the state without colour. */
+.d3-sw__track {
+  position: relative;
+  flex: none;
+  box-sizing: border-box;
+  width: 36px;
+  height: 20px;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: var(--color-border-field);
+  cursor: pointer;
+  transition: background-color var(--motion-hover);
+}
+.d3-sw__track[aria-checked='true'] { background: var(--color-accent); }
+
+.d3-sw__knob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: var(--radius-full);
+  background: var(--color-bg);
+  transform: translateX(0);
+  transition: transform var(--motion-hover), background-color var(--motion-hover);
+}
+.d3-sw__track[aria-checked='true'] .d3-sw__knob {
+  background: var(--color-accent-contrast);
+  transform: translateX(16px);
+}
+
+/* The global rule already zeroes durations; stated here too so the guarantee
+   does not depend on it. The knob still jumps to its new position. */
+@media (prefers-reduced-motion: reduce) {
+  .d3-sw__track, .d3-sw__knob { transition: none; }
+}
+
+/* Same treatment as Checkbox: one opacity, on the whole row. */
+.d3-sw--disabled { opacity: 0.42; }
+.d3-sw--disabled .d3-sw__track,
+.d3-sw--disabled .d3-sw__label { cursor: not-allowed; }
