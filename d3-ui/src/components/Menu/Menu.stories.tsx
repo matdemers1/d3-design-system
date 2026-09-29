@@ -14,7 +14,8 @@ const meta = {
     'Actions or destinations behind a button — the account menu, a row\'s overflow actions.\n\n' +
     'A thin wrapper over Radix DropdownMenu, so roving focus, typeahead, Escape, focus return and ' +
     '`aria-expanded` are Radix\'s and the look is the system\'s: a floating layer at `surface-raised` ' +
-    'with a 1px `border-float`, `radius-lg`, and **no shadow** (D-023). It opens on the Confident ' +
+    'with `radius-lg` and the float shadow, `--shadow-float` (D-075); under forced colours or ' +
+    '`prefers-contrast: more` the shadow gives way to a 1px `border-float` edge. It opens on the Confident ' +
     'tier — 200ms, no overshoot, no stagger — because a menu is opened dozens of times an hour (D-024).\n\n' +
     'A menu is for doing and going. A choice inside a form is a `Select`; switching what a region ' +
     'shows is a `SegmentedControl`.' } } },

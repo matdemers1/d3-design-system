@@ -1,14 +1,16 @@
-/* A floating layer: surface-raised plus a 3:1 boundary, and no shadow (D-023).
-   The same panel as Select's list, because they are the same object. */
+/* A floating layer: surface-raised plus the float shadow (D-075, amending
+   D-023). The border is kept, transparent, so the panel measures the same in
+   every mode; under forced-colors and prefers-contrast: more it takes the 3:1
+   border-float edge back and the shadow goes (below). */
 .d3-menu {
   background: var(--color-surface-raised);
-  border: var(--border-width) solid var(--color-border-float);
+  border: var(--border-width) solid transparent;
   border-radius: var(--radius-lg);
   padding: var(--space-4);
   min-width: max(var(--radix-dropdown-menu-trigger-width), 200px);
   max-height: var(--radix-dropdown-menu-content-available-height);
   overflow-y: auto;
-  box-shadow: none;
+  box-shadow: var(--shadow-float);
   color: var(--color-fg);
   font-size: var(--text-13);
   z-index: 50;
@@ -25,6 +27,9 @@
   .d3-menu[data-state='closed'] { animation: none; }
 }
 @keyframes d3-menu-fade { from { opacity: 0; } }
+@media (forced-colors: active), (prefers-contrast: more) {
+  .d3-menu { border-color: var(--color-border-float); box-shadow: none; }
+}
 
 .d3-menu__item {
   display: flex;

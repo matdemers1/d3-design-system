@@ -13,11 +13,13 @@
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 50;
-  /* Floating layer: surface-raised plus a 3:1 boundary, and no shadow (D-023). */
+  /* Floating layer: surface-raised plus the float shadow (D-075, amending
+     D-023). The transparent border keeps the geometry; forced-colors and
+     prefers-contrast: more put the 3:1 border-float edge back (below). */
   background: var(--color-surface-raised);
-  border: var(--border-width) solid var(--color-border-float);
+  border: var(--border-width) solid transparent;
   border-radius: var(--radius-lg);
-  box-shadow: none;
+  box-shadow: var(--shadow-float);
   padding: var(--space-20);
   width: min(380px, calc(100vw - var(--space-32)));
   max-height: calc(100vh - var(--space-48));
@@ -47,6 +49,9 @@
 
 @media (prefers-reduced-motion: reduce) {
   .d3-modal, .d3-modal__scrim { animation-duration: 0.01ms; }
+}
+@media (forced-colors: active), (prefers-contrast: more) {
+  .d3-modal { border-color: var(--color-border-float); box-shadow: none; }
 }
 
 .d3-modal__head { display: flex; align-items: flex-start; gap: var(--space-8);

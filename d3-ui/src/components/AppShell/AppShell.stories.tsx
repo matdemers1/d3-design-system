@@ -127,7 +127,9 @@ export const CollapsedByDefault: Story = {
  * `navTone="recessed"` (D-073): the sidebar sinks to `bg` and `<main>` comes forward onto
  * `surface` — for an app whose content is one working surface, like a mail list beside a
  * reading pane. Hover lifts a nav item to `surface` and the current item to `surface-raised`,
- * because on `bg` the default hover and accent tint are invisible in light.
+ * because on `bg` the default hover and accent tint are invisible in light. `<main>` is a sheet
+ * inset from the page on `radius-lg` with `--shadow-sheet` — the one resting surface that carries
+ * a shadow (D-075).
  */
 export const Recessed: Story = {
   render: () => (

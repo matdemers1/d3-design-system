@@ -1,5 +1,5 @@
 {
-  "$description": "Shape and elevation. Elevation is tone; detachment is a boundary. There is no shadow token in this system by design (D-015).",
+  "$description": "Shape and elevation. Elevation is tone; detachment is a boundary — plus exactly two shadows, each named for the one job it does (D-015, D-023, amended by D-075).",
   "radius": {
     "xs": {
       "$type": "dimension",
@@ -56,24 +56,24 @@
     }
   },
   "elevation": {
-    "$description": "Deliberately not a shadow ramp. Resting surfaces differ by tone and carry no border; floating layers sit at surface-raised and carry a 1px border-float at 3:1. A modal adds a scrim; nothing else does.",
+    "$description": "Deliberately not a shadow ramp. Resting surfaces differ by tone and carry no border. Floating layers sit at surface-raised and carry shadow-float; under forced-colors or prefers-contrast: more they go back to a 1px border-float at 3:1. The recessed shell's main content is the one resting surface that carries shadow-sheet. A modal adds a scrim; nothing else does.",
     "resting": {
       "$type": "string",
       "$value": "surface tone step, no border",
       "$extensions": {
         "d3": {
           "emit": false,
-          "why": "Prose: this states the elevation rule, and there is no shadow ramp to emit (D-015)."
+          "why": "Prose: this states the elevation rule. The one resting surface with a shadow, the recessed shell's main, reads shadow.sheet (D-075)."
         }
       }
     },
     "floating": {
       "$type": "string",
-      "$value": "surface-raised + 1px border-float",
+      "$value": "surface-raised + shadow-float (1px border-float under forced-colors and prefers-contrast: more)",
       "$extensions": {
         "d3": {
           "emit": false,
-          "why": "Prose: this states the elevation rule, and there is no shadow ramp to emit (D-015)."
+          "why": "Prose: this states the elevation rule. The shadow it names is emitted from shadow.float (D-075)."
         }
       }
     },
@@ -81,6 +81,35 @@
       "$type": "color",
       "$value": "rgba(0,0,0,0.58)",
       "$description": "modal only"
+    }
+  },
+  "shadow": {
+    "$description": "Two shadows, and only two (D-075, DS-ADR-001). Not a ramp: each is named for the one job it does, and the usage guard admits exactly these two. The light and dark values are the sources; components read --shadow-sheet and --shadow-float, which follow the theme.",
+    "sheet": {
+      "$description": "The content sheet: AppShell navTone=\"recessed\" <main> only.",
+      "light": {
+        "$type": "string",
+        "$value": "0 1px 2px rgba(16,17,23,0.05), 0 4px 16px rgba(16,17,23,0.05)",
+        "$description": "a CSS box-shadow list — a whisper that lifts the sheet off bg"
+      },
+      "dark": {
+        "$type": "string",
+        "$value": "0 1px 2px rgba(0,0,0,0.35)",
+        "$description": "a CSS box-shadow list — one tight edge; dark already separates by tone"
+      }
+    },
+    "float": {
+      "$description": "Floating layers: Menu, Tooltip, Toast, Modal, RecipientField's suggestion list. Always on surface-raised.",
+      "light": {
+        "$type": "string",
+        "$value": "0 0 0 1px {color.border}, 0 8px 24px rgba(16,17,23,0.12), 0 2px 6px rgba(16,17,23,0.06)",
+        "$description": "a CSS box-shadow list — a 1px hairline ring in the divider colour, then the lift; the ring is what finds a white menu on a white card"
+      },
+      "dark": {
+        "$type": "string",
+        "$value": "0 12px 32px rgba(0,0,0,0.5), 0 2px 6px rgba(0,0,0,0.3)",
+        "$description": "a CSS box-shadow list — no ring: surface-raised is already a step above every ground in dark"
+      }
     }
   }
 }
