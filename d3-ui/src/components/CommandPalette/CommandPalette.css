@@ -134,6 +134,11 @@
 }
 
 /* ---------- results ---------- */
+.d3-cmd__results:focus-visible {
+  /* Drawn inside the edge: the panel clips anything outside the scroller. */
+  outline-offset: calc(var(--focus-width) * -1);
+}
+
 .d3-cmd__results {
   flex: 1 1 auto;
   min-height: 0;

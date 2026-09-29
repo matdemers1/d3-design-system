@@ -265,7 +265,10 @@ export function CommandPalette({
           {filters ? (
             <div className="d3-cmd__filters" role="group" aria-label="Filters">{filters}</div>
           ) : null}
-          <div className="d3-cmd__results" aria-busy={loading || undefined}>
+          {/* A tab stop of its own: the options are steered from the input by
+              aria-activedescendant and are not focusable, so when the results
+              overflow, this is how a keyboard reaches the scroll (WCAG 2.1.1). */}
+          <div className="d3-cmd__results" role="group" tabIndex={0} aria-label="Search results" aria-busy={loading || undefined}>
             {hasResults ? (
               <div className="d3-cmd__list" id={listId} ref={listRef} role="listbox" aria-label="Results">
                 {shown.map((g, gi) => (
