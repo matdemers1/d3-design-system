@@ -130,34 +130,23 @@ test.describe('Table · virtualization', () => {
 })
 
 test.describe('a bounded table is reachable by keyboard', () => {
-  test('the scroll region takes focus, and an unbounded one adds no tab stop', async ({ mount, page }) => {
+  // Stories, not component mounts: this suite drives the built Storybook, and `mount` needs the
+  // Playwright component-testing runner this package does not install (JSX in a .ts spec broke
+  // the whole browser job from v1.2.2 until v1.3.0).
+  test('the scroll region takes focus, and an unbounded one adds no tab stop', async ({ page }) => {
     // A region that scrolls must be focusable, or the rows below the fold are pointer-only
     // (WCAG 2.1.1). Found by axe against a real consuming app, not by reading the spec.
-    await mount(
-      <Table
-        caption="Bounded"
-        maxHeight="120px"
-        columns={[{ key: 'n', header: 'N', cell: (row: { n: number }) => row.n }]}
-        rows={Array.from({ length: 40 }, (_, n) => ({ n }))}
-        rowKey={(row) => String(row.n)}
-      />,
-    )
-
+    await page.goto(storyUrl('data-table--sticky-header'))
+    await settle(page)
     const scroller = page.locator('.d3-tbl-scroll').first()
     await expect(scroller).toHaveAttribute('tabindex', '0')
-    await expect(scroller).toHaveAttribute('aria-label', 'Bounded')
+    await expect(scroller).toHaveAttribute('aria-label', 'Scroll the body; the headings stay')
   })
 
-  test('a table that fits adds no tab stop', async ({ mount, page }) => {
+  test('a table that fits adds no tab stop', async ({ page }) => {
     // A stop that does nothing is worse than none: it costs a keyboard user a press for nothing.
-    await mount(
-      <Table
-        caption="Short"
-        columns={[{ key: 'n', header: 'N', cell: (row: { n: number }) => row.n }]}
-        rows={[{ n: 1 }, { n: 2 }]}
-        rowKey={(row) => String(row.n)}
-      />,
-    )
+    await page.goto(storyUrl('data-table--compact'))
+    await settle(page)
     await expect(page.locator('.d3-tbl-scroll').first()).not.toHaveAttribute('tabindex', '0')
   })
 })
