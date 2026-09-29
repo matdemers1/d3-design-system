@@ -66,11 +66,23 @@ const RULES = [
 
   { id: 'shadow',
     // `box-shadow: none` is the rule being enforced, not broken — the library
-    // writes it explicitly on Card, Modal, Select and Tooltip. `inset` is a ring
-    // drawn inside a control (a pressed toggle), which is a boundary, not lift.
-    re: /\bshadow-(?!none\b)[a-z0-9-]+\b|box-shadow\s*:(?!\s*none\b)(?![^;]*inset)/g,
+    // writes it explicitly on Card and Select. `inset` is a ring drawn inside a
+    // control (a pressed toggle), which is a boundary, not lift.
+    //
+    // D-075 admits exactly two shadows, and only as the whole value:
+    // `box-shadow: var(--shadow-sheet)` or `var(--shadow-float)`. A fallback, a
+    // second layer after the comma, or any other token is still a shadow.
+    // The utility half skips a custom property's name (`var(--shadow-float)`,
+    // `--shadow-sheet-light:`), which is not a Tailwind class; `drop-shadow-md`
+    // and `hover:shadow-lg` are still caught.
+    re: new RegExp(
+      String.raw`(?<!--)\bshadow-(?!none\b)[a-z0-9-]+\b|` +
+      String.raw`box-shadow\s*:(?!\s*none\b)` +
+      String.raw`(?!\s*var\(\s*--shadow-(?:sheet|float)\s*\)\s*(?:!important\s*)?(?:[;}'"\x60]|$))` +
+      String.raw`(?![^;]*inset)`, 'g'),
     css: true, js: true,
-    say: 'a shadow. Elevation in this system is tone, and detachment is a boundary (D-015).' },
+    say: 'a shadow. Elevation in this system is tone, and detachment is a boundary (D-015, D-023). ' +
+         'The only two are `box-shadow: var(--shadow-sheet)` and `var(--shadow-float)`, on the components D-075 names.' },
 ]
 
 const args = process.argv.slice(2)
