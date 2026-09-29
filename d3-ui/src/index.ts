@@ -71,6 +71,7 @@ export * from './components/SettingsRow'
 export * from './components/StatusDot'
 export * from './components/Stat'
 export * from './components/ActionBar'
+export * from './components/CommandPalette'
 // Named, not `export *`: PasswordInput already exports a type called PasswordStrength (D-082)
 export { PasswordStrength } from './components/PasswordStrength'
 export type { PasswordStrengthProps, PasswordStrengthScore } from './components/PasswordStrength'
