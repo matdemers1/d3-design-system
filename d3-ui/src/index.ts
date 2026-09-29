@@ -64,5 +64,16 @@ export * from './components/SearchField'
 // v1.3 — composing mail: recipient chips with suggestions (D-074)
 export * from './components/RecipientField'
 
+// v1.4 — the finished-product layer (DS-ADR-001, D-075–D-083)
+export * from './components/Switch'
+export * from './components/SplitButton'
+export * from './components/SettingsRow'
+export * from './components/StatusDot'
+export * from './components/Stat'
+export * from './components/ActionBar'
+// Named, not `export *`: PasswordInput already exports a type called PasswordStrength (D-082)
+export { PasswordStrength } from './components/PasswordStrength'
+export type { PasswordStrengthProps, PasswordStrengthScore } from './components/PasswordStrength'
+
 // Strict CSP: the nonce for the styles Radix injects while a layer is open (D-072)
 export { setStyleNonce, readStyleNonce } from './lib/styleNonce'

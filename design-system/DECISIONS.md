@@ -329,7 +329,7 @@ The audit found nineteen sizes across the four apps with ten crammed between 10 
 
 **Enforcement:** `theme.shape.css` sets Tailwind's seven `--shadow-*` keys to `initial`, so `shadow-md` and friends do not exist as utilities. Reaching for a shadow is a build-visible act, not a quiet one.
 
-**Verification:** the 3d page was checked programmatically — zero elements in any rendered component have a computed `box-shadow`.
+**Verification:** the 3d page was checked programmatically — zero elements in any rendered component had a computed `box-shadow`. Amended by D-075: **shadows only on the listed components** — `--shadow-float` on Menu, Tooltip, Toast, Modal and RecipientField's suggestion list, `--shadow-sheet` on AppShell `navTone="recessed"` `<main>` — checked on every story in both themes by `browser/elevation.spec.ts`. An inset ring drawn inside a control is a boundary, not a shadow.
 
 ---
 
@@ -1380,3 +1380,165 @@ D-009's reason — "we own none of the focus-management or ARIA plumbing" — st
 - *A `row` variant of `Input`.* Subject in the composer is a plain text row; that belongs with `Input`'s own variants, not here.
 
 **Proven.** Unit: parsing (split, quotes, `Name <addr>`, round-trip, validity), keyboard (↓↑ wrap, Enter/Tab/comma/semicolon/paste commit, Esc, Backspace select-then-remove, ←/→/Delete, Tab not trapped), a stale loader answer never shown, axe with the list open and with a chip selected. Browser (`browser/recipientfield.spec.ts`): the composer driven by keyboard only in both themes, axe on the open list and the selected chip with contrast computed, a real `ClipboardEvent` paste, the row's label and divider measured, and the chip's animation read from the computed style with and without reduced motion. Every story is swept by the existing axe, geometry and one-ring focus checks.
+
+---
+
+### D-075 · v1.4 · Two shadows: a sheet and a float, and nothing else
+**Date:** 2026-09-29
+**Prompted by:** Postroom's redesign canvas (PST-ADR-011) and DS-ADR-001. Every floating layer drawn with a 1px `border-float` at 3:1 read as outlined with a pen, and the recessed shell's content (D-073) sat on `bg` as a stripe of colour rather than a surface. **Amends D-015 and D-023.**
+
+**Question:** Can the system take a shadow without reopening a shadow ramp, and without giving up the one-mechanism-in-both-modes argument D-023 made for the boundary?
+
+**Chosen:** exactly two shadow tokens, each named for the one job it does, both switching with the theme on the same selectors as the colour tokens.
+
+| Token | Light | Dark | Used by |
+|---|---|---|---|
+| `--shadow-sheet` | `0 1px 2px rgba(16,17,23,.05), 0 4px 16px rgba(16,17,23,.05)` | `0 1px 2px rgba(0,0,0,.35)` | AppShell `navTone="recessed"` `<main>` **only** — a sheet inset 8px from the page on `radius-lg` |
+| `--shadow-float` | `0 0 0 1px var(--color-border), 0 8px 24px rgba(16,17,23,.12), 0 2px 6px rgba(16,17,23,.06)` | `0 12px 32px rgba(0,0,0,.5), 0 2px 6px rgba(0,0,0,.3)` | Menu (so AccountMenu's panel), Tooltip, Toast, Modal, RecipientField's suggestion list — all still on `surface-raised` |
+
+- The light and dark values are emitted as `--shadow-{sheet,float}-{light,dark}` sources, declared on every theme root because the light float names `var(--color-border)`, which a custom property resolves where it is declared. Components read only the two mode-following names; the guard refuses the sources in a `box-shadow`.
+- **`border-float` stays.** The floating layers keep a 1px border, transparent, so no box changes size. Under `forced-colors: active` (where the UA drops every shadow and repaints a transparent border in a system colour) and `prefers-contrast: more`, the shadow goes and the 1px `border-float` edge returns.
+- **Focus is never a shadow.** It stays a 2px outline at a 2px offset (D-023, D-062).
+- **Everything else stays tone-only:** resting surfaces, Card, the sidebar, the drawer, Select's list and the skip link are unchanged.
+- **No Tailwind utilities** for either token. Tailwind's seven default `--shadow-*` keys stay `initial`; a `shadow-float` class would be an invitation to put it anywhere, and the guard rejects every `shadow-*` class regardless.
+
+**Why:** In light, the ladder still ends at white — D-023's reason for a boundary — so the float opens with a 1px ring in the *divider* colour, and that ring, not the blur, is what finds a white menu on a white card. The blur carries depth rather than findability, so dropping it under forced colours or more contrast loses nothing a user needs, and the 3:1 edge those modes ask for is the one D-023 already verified. In dark, `surface-raised` is already a step above every ground, so the float is only depth and carries no ring. The sheet is the one resting surface with a shadow because it is the one place a surface meets the page ground with nothing at its edge. Two named tokens keep "reaching for a shadow" a build-visible act: the guard admits exactly `box-shadow: var(--shadow-sheet)` and `box-shadow: var(--shadow-float)` as the whole value, and nothing else.
+
+**Rules out:** a shadow ramp (`sm`/`md`/`lg`) or any third shadow; a shadow on a resting surface other than the recessed `<main>`; either token composed with another layer or given a fallback; a shadow as a focus ring; Tailwind shadow utilities; dropping `border-float` from the token set.
+
+**Verification:** `npm run check:tokens` holds `tokens/shape.json` and both copies of `build/shape.css` to the values above. `src/test/check-usage.test.ts` feeds the guard the two admitted forms, `none`, an inset ring and a custom property naming the token (all pass), and a raw shadow, the source tokens, an invented token, a fallback, a second layer, a shadow focus ring, an app-local shadow token and `shadow-*` utilities including `shadow-float` (all fail, citing D-075). `browser/elevation.spec.ts` sweeps every story in both themes and requires no computed `box-shadow` (on an element or its `::before`/`::after`) outside the list, and that each listed element's shadow equals its token; opens each floating layer in both themes (surface-raised, the float token, a transparent 1px border, the light ring in `--color-border`); reopens each under `forced-colors: active` and `prefers-contrast: more` (no shadow, 1px solid edge, `border-float` under more contrast); measures the recessed `<main>` (sheet token, 14px radius, inset) at and below `lg` and the default shell's `<main>` (no shadow); and checks a focused control draws an outline and no shadow. D-023's verification line is amended to match.
+
+---
+
+### D-076 · v1.4 · Switch: an immediate-effect toggle as a real `role="switch"` button
+**Date:** 2026-09-29
+**Prompted by:** the Postroom redesign canvas (`.pr-toggle`) and DS-REQ-001, which asks for an on/off switch that is keyboard-operable, axe-clean in both themes and honours reduced motion. Foreman task DS-T-0.2.
+
+**Chosen: `Switch`** — `checked` / `defaultChecked` / `onCheckedChange(checked: boolean)`, `disabled`, and a name from `children`, `aria-label` or `aria-labelledby`. It renders `<button type="button" role="switch" aria-checked>`; `ref` and every other prop go to the button, `className` to the wrapper. Children render as a `<label htmlFor>` beside it, so the label is part of the click target, the same wiring Checkbox uses. With none of the three names, `devWarn` says so.
+
+**Geometry and tone.** A 36x20 track with a 16px knob inset 2px, travelling 16px. Off: the track is filled with `border-field` (3.91:1 against dark `surface`, 4.21:1 against light `surface`; 4.39:1 against light `surface-raised`, and 3.00:1 against dark `surface-raised`, which is the floor) and the knob is `bg` (4.29:1 dark, 3.92:1 light against the track). On: `accent` track, `accent-contrast` knob (7.17:1 dark, 8.15:1 light). The state does not rest on colour: the knob is at the left or the right. The Postroom canvas's 34px track and white knob with a shadow were not taken; elevation is tone here (D-023) and the knob is not lifted.
+
+**Motion.** The knob and track use `--motion-hover` (90ms ease-out). `prefers-reduced-motion: reduce` sets `transition: none` on both, so the knob jumps; the global reduced-motion rule already zeroes durations and this states it locally so the guarantee does not depend on it. Focus is the global 2px `--color-focus` outline (D-062), not overridden.
+
+**Keyboard.** A native button fires click on Space and on Enter, so both toggle; there is no key handler to drift out of step. Tests cover both, the label click, disabled, controlled vs uncontrolled, and a consumer `onClick` that calls `preventDefault`.
+
+**Disabled** copies Checkbox: 0.42 opacity and `not-allowed`, applied once on the wrapper rather than again on the button, so the knob and track are not dimmed twice.
+
+**Switch or Checkbox.** A Switch is a setting that takes effect the moment it is flipped; a Checkbox is a choice submitted later with a form, or one of several selected together. A Switch has no indeterminate state.
+
+**Rejected.**
+- *Radix Switch.* It would add a dependency for a `<button>` with one attribute, and its `asChild` would let a consumer replace the element that carries the role. Written by hand, against the same reasoning as Checkbox owning its props.
+- *A hidden `<input type=checkbox>` styled as a switch.* It announces as a checkbox, not a switch, and its Enter key submits a form rather than toggling.
+- *A shadow on the knob.* D-023: no shadows anywhere in the system.
+- *Text "On" / "Off" inside the track.* It does not fit in 36px and the knob position already carries the state.
+
+---
+
+### D-077 · v1.4 · SplitButton: two Buttons in one pill, and a menu that opens from the chevron only
+**Date:** 2026-09-29
+**Prompted by:** Postroom's composer (PST-ADR-011): Send with Send later and Schedule behind it. Foreman requirement DS-REQ-001, task DS-T-0.3.
+
+**Chosen: `SplitButton`** with `label`, `menuLabel` (required), `variant` (`primary` | `secondary`), `size` (`sm` | `md` | `lg`), `onClick`, `icon`, `loading`, `disabled`, and `children` as the menu's items. It is two `Button`s inside one inline-flex wrapper, with no gap: the main half runs the action, the chevron half is a `MenuTrigger` and does nothing else. The `ref` goes to the main button.
+
+- **Geometry is Button's by construction.** Both halves are the real `Button`, so height per size, radius `md`, type, colour, hover, `loading` and the focus ring are not restated. The wrapper only squares the inner corners, drops the chevron's padding to a fixed width equal to its height (28, 34, 40px), and puts a 1px `border-left` on the chevron as the divider.
+- **The divider reads on the fill, token-only.** On `primary` it is `color-mix(in srgb, var(--color-accent-contrast) 35%, transparent)`, which follows the text colour on the accent in both themes. On `secondary` it is `--color-border-field`, because `--color-border` is the same step as `surface-raised` in dark and vanishes there (the same finding as Menu's separator and RecipientField's row). It is decorative, so it carries no contrast floor; the halves are separated by shape and by the focus and hover states as well.
+- **The chevron has its own name.** `menuLabel` is required and set as `aria-label` ("More send options"). The glyph is `aria-hidden`. A missing `menuLabel` warns in development, as `IconButton` does for `label`.
+- **`children` as `MenuItem`s, not an `items` array.** Menu's idiom is composition: `MenuItem` already takes `icon`, `tone`, `disabled`, `onSelect` and `asChild` (a real link), and `MenuSeparator` and `MenuLabel` sit between items. An `items` array would have to re-declare every one of those props and would still not cover separators or links. The main button's label is therefore the `label` prop, not children.
+- **The menu opens from the chevron only, aligned to the end edge** (`MenuContent align="end"`), so it hangs from the pill's right edge. Enter, Space and ArrowDown on the chevron, Escape, arrow keys, typeahead, focus return and the enter and exit motion are Menu's. The main half never opens it.
+- **Disabled disables both halves.** `loading` blocks only the main action, as Button does; the chevron stays available.
+- **Focus.** The halves touch, so the focused half is lifted with `position: relative; z-index: 1` and its whole ring shows instead of being painted over by its neighbour. An open menu keeps the chevron on its hover tone.
+- **The chevron glyph is drawn inside the component**, because `lib/glyphs` has no down chevron and the library ships no icon set. If a second consumer needs one, it moves there.
+
+**Rejected.**
+- *Other Button variants.* A split ghost has no fill for a divider to read on, and a split danger would put a destructive action beside a menu of alternatives. An unsupported variant warns in development and renders as `primary`.
+- *One button with a chevron region and a click position test.* Two hit areas in one focus target cannot be separately named or focused, so the chevron would have no accessible name of its own and no keyboard path.
+- *A `SplitButton`-specific menu.* A second menu would restate Menu's roving focus, focus return and motion.
+- *A shadow or a raised divider for the seam.* D-023: no shadows; a 1px border does the job.
+
+**Proven.** Unit (`SplitButton.test.tsx`, 13): two buttons with the chevron named by the caller and `aria-haspopup="menu"`; the main half fires `onClick` and never opens the menu; both halves share Button's classes for variant and size, and the wrapper carries them; defaults; ref goes to the main button; icon; disabled disables both; loading blocks the main half; the development warnings and the fallback to `primary`; axe clean closed; click on the chevron opens the menu, lists the items, an item's `onSelect` fires and `onClick` does not; Enter opens it and Escape closes it with focus back on the chevron; ArrowDown opens it with the first item focused and the arrows move through the items. Stories (`Actions/SplitButton`: Primary, Secondary, Sizes, Disabled, Loading) are swept by axe in both themes by the existing story sweep.
+
+---
+
+### D-079 · v1.4 · SettingsRow: a row divided by hairlines, and a render-prop for naming its control
+**Date:** 2026-09-29
+**Prompted by:** DS-REQ-001, the Postroom redesign canvas's settings screen: a title and a line of description on the left, a switch, a button, a value with a chevron or a status on the right, rows divided by hairlines inside one card. The console apps hand-roll this as a flex row with a `<span>` for the label and a control that no `<label>` reaches.
+
+**Chosen: `SettingsRow` with `title`, `description?`, `control`, `htmlFor?` and `id?`.** The title is 14/500 `fg`, the description 13 `fg-muted`, the control right-aligned and vertically centred. From `md` (768px) it is two columns, `1fr auto`; below it one column with the control under the text, left-aligned (mobile-first, so the edge is the one FilterBar's `max-width: 767.98px` block draws). A long description wraps inside its column and the control never shrinks.
+
+**The control is named by a render-prop, not by cloning.** The row generates ids from `useId` (or from `id`): the title, the description and one for the control. `control` is a node, or a function `(ids) => node` receiving `{ id, titleId, descriptionId, labelledBy, describedBy }`. `htmlFor` (an id, or `true` for `ids.id`) makes the title a real `<label>`, so clicking the title reaches the control and the name needs no ARIA; without it the title is a `div` and a control takes `aria-labelledby={ids.labelledBy}`. A plain node is rendered as it is, for a Button named by its own text ("Change\u2026") and for a value.
+- *Why not clone the element to add `aria-labelledby`/`aria-describedby`:* cloning reaches only a direct child that forwards ARIA props. Wrap the control in a Tooltip or a helper and the wiring is dropped without a sound; `Checkbox` does not even type `aria-labelledby`. A function is typed, readable at the call site and works for any control, including one that needs the id on an inner element.
+- *Development check:* after mount, every interactive element in the control slot is checked in the DOM (a label, `aria-label`, `aria-labelledby`, or a button's own text) and an unnamed one is reported with the fix. A missing `control`, and a missing `title`, are reported too. Inferring from props would miss a label that arrives through `htmlFor` or a wrapper.
+
+**Hairlines: between rows, inset with the card's padding, no outer border.** `.d3-setrow + .d3-setrow` takes a 1px `border` top and the row has no horizontal padding, so the hairline runs the card's content box and lines up with the text, as DescriptionList's dividers do (D-069). Running them to the card's edge would need negative margins tied to Card's 20px. The first and last row take no padding on the outer side, so the card's own padding is the space above and below. Section's body is a 16px-gap column, which would put a 16px band on each side of every hairline; a rule scoped to `.d3-sec__body > .d3-setrow + .d3-setrow` takes the gap back with a negative margin of the same step. Section is not touched, and the rule is the one place SettingsRow knows Section's gap.
+
+**Rules out.** *Cloning the control* (above). *Boxed rows or a border around the group*, which the canvas does not draw and D-013's rule on decorative borders does not want. *A dependency on Switch*: the row takes any control, and its stories use Checkbox, Button, Select and Badge until the Switch replaces the toggle. *A `SettingsGroup` wrapper*: a second export to carry a rule that a sibling selector already carries. *Container queries*: every other component reads the viewport, and one idiom is easier to reason about; the narrow story therefore follows the viewport, as FormActions' does.
+
+**Proven.** Unit: a control named by the title through `aria-labelledby` and described by the description; the title a real label with `htmlFor` and a click on it reaching the control; an explicit `htmlFor` id; stable ids from `id` and distinct ones without; no description element and no `describedBy` without a description; warnings for no control and for an unnamed control, and none when the title names it; axe clean on a toggle, a button, a chevron value and a status in a Section. Stories under Layout/SettingsRow (in a Section, controls, without a description, below md), swept by axe in both themes by the story sweeps.
+
+---
+
+### D-080 · v1.4 · StatusDot and Stat: a status as a dot and a word, and a number-forward tile
+**Date:** 2026-09-29
+**Prompted by:** Postroom's redesign canvas (DS-REQ-001): a services list where each row is a dot and a word, and an admin health strip of four tiles split by hairlines. Both are additive; Badge is untouched.
+
+**Chosen: `StatusDot`.** `tone` is `neutral | attention | danger | idle`, `size` is `sm | md`, `children` is the status in words. It is Badge's vocabulary (D-016) with one addition, `idle`. `neutral` is the default and is what a healthy or running state uses: a muted dot in `fg-muted`, not green. `attention` spends the accent and `danger` the danger colour, on the dot and the text, exactly as Badge does. `idle` is a dimmer neutral for something parked or switched off: the dot drops to `fg-faint`, the text stays `fg-muted`. The dot is an 8px circle, `aria-hidden`; **the text carries the meaning**, so a status is never colour alone (WCAG 1.4.1). Text contrast on `surface` and `surface-raised`, light / dark: `fg-muted` 12.6-13.2 / 7.0-9.2, `accent` 7.8-8.2 / 4.7-6.1, `danger` 7.9-8.2 / 4.5-5.9. An unknown tone warns in development and renders neutral, like Badge.
+
+**Chosen: `Stat` and `StatGroup`.** `Stat` takes `label`, `value`, optional `unit`, `footnote` and `status` (a `StatusDot` element). The value is 24px at `weight-title` with `font-variant-numeric: tabular-nums` (D-019), so a polled number does not jitter; label and footnote are 12px `fg-muted`; the unit follows the value, 14px and muted. `StatGroup` lays tiles in one row, equal widths (`grid-auto-columns: minmax(0, 1fr)`), separated by 1px `--color-border` vertical hairlines, and wraps to two columns below `md` (768px) with a hairline between the rows. It draws no surface of its own; the caller puts it in a Card or on a raised surface.
+
+**Where the status sits.** Under the value, not beside the label. DOM order is label, value, unit, status, footnote, so a screen reader says "Inbound queue, 0, waiting, Healthy" with no ARIA, the status reads after the thing it qualifies, and a long label cannot squeeze it out of a narrow tile (the mockup's label-row placement needed a visually-hidden word to make sense in reading order).
+
+**Semantics.** `StatGroup` is a plain `div`, and `Stat` a `div` of `span`s. A `ul` would announce "list, 4 items" for what is one strip read left to right, and a `dl` would need every `Stat` to live inside one, which breaks a lone tile. The group takes `role="group"` and `aria-label` from the caller when it needs a name. Reading order comes from the DOM, which is already label then value.
+
+**Rules out.**
+- *A `pulse` on attention.* The calm rule; a pulsing dot is motion that asks for attention, which Badge's attention tone already does by hue.
+- *A `success` or green tone.* D-016. Healthy is neutral.
+- *A `Stat.Group` static.* One more export shape to document for no gain over `StatGroup`.
+- *A per-tile trend arrow or sparkline.* Not in the canvas; a `footnote` carries "up 4 since yesterday" in words.
+
+**Proven.** Unit: dot is `aria-hidden` and the text present, neutral by default, each tone maps to its class, a bad tone warns, Stat reads label then value then unit, status reads after the value, `0` renders, and the stylesheet sets tabular figures on the value. Stories for all four tones, a services list, and a four-tile `StatGroup` are swept by axe in both themes by the Storybook suite.
+
+---
+
+### D-081 · v1.4 · Avatar tints: six name-derived identity fills, measured, opt-in
+**Date:** 2026-09-29
+**Prompted by:** the Postroom redesign canvas (DS-REQ-001), where a message list is scanned by the colour of each sender's avatar. D-030 shipped Avatar as a single neutral treatment and flagged that as a genuine loss: App B has twelve avatars in a message list and colour is how you scan those. The condition D-030 set for revisiting it was "a validated tint ramp, or not at all". This is the ramp.
+**Chosen:** `Avatar tint="auto" | "none" | 1-6`, default `none`. Six semantic token pairs, `--color-avatar-1` ... `--color-avatar-6` (fill) and `--color-avatar-N-fg` (ink), in light and dark. Each aliases the existing ramps: violet, red, green, a new pink, blue and amber. Light is fill 200 with ink 600 (5.41:1 to 6.04:1); dark is fill 800 with ink 300 (7.83:1 to 8.26:1). Every pair was measured before it was written, so the premise of the system, that every colour pair is measured, still holds: six pairs per theme, not one per user. `auto` hashes the trimmed, lower-cased name with FNV-1a 32-bit over its UTF-8 bytes, modulo six, so the same name is the same tint on every render, in every app and in every release. `avatarTintFor(name)` is exported and a unit test pins eleven names to their tints, because changing the hash recolours every avatar in every app. An empty name stays neutral. Images are unaffected; a tint only shows behind initials.
+**A new primitive ramp, `pink` (h=335).** The library had five hues and a neutral, and six tints need six distinguishable hues. Pink took the largest gap on the wheel (violet 286 to red 22) and was generated the way D-018 generated the others: the same lightness ladder, the chroma profile of red, chroma clamped to sRGB and never lightness or hue. It exists for the avatars; no semantic token outside them uses it.
+**This does not break D-008 (one accent).** D-008 is about *brand* colour: which hue means "this is the product, and this is what you act on". The tints carry no meaning. They are identity, the way a name is, and they attach to a person, never to a state or an action. The accent stays the only colour that says "press this", and D-016 stands: status stays neutral unless it needs the user, and no tint may be used to show status. Red and amber appear among the tints only because they are the ramps' hue families, not because they warn; two people sharing the red tint are not in danger. The token descriptions say so ("identity, never status").
+**Opt-in, so nothing moves.** The default is `none`, byte-identical to today's markup; no existing story, snapshot or app changes until it passes `tint`. Six new tokens per theme are additive and resolve in every theme scope, the OS-preference block included.
+**Rules out:** per-user hue from an id or an email (unmeasured pairs, unbounded palette); a tint that varies by theme or app for the same name; a seventh tint or a caller-supplied colour (`style` is still there, and outside the system); using the avatar tints for tags, labels, series in a chart or any status. Collisions are expected: 12 people share six colours, and a tint is a scanning aid, never an identifier. The initials and the name beside them remain the identity.
+
+---
+
+### D-082 · v1.4 · PasswordStrength: a meter the caller scores, a verdict in words, and no estimator
+**Date:** 2026-09-29
+**Prompted by:** Postroom's redesign canvas (PST-ADR-011; DS-REQ-001) — the new-password field carries a four-bar meter with a sentence under it ("Strong · 22 characters, not in known breaches"). `PasswordInput` already draws bars through its `strength` prop, but only inside itself; the canvas puts the meter under any field, including a confirm field or a settings row, and wants its verdict to carry more than one word.
+**Question:** How does the library draw a strength meter without deciding what strong means?
+**Chosen: `PasswordStrength`** — `score: 0|1|2|3|4`, `label: ReactNode`, `id?`. Four 4px segments, `--radius-full`, `--space-4` apart; the filled count *is* the score (0 fills none) and each segment widens from the left over `--dur-2` `--ease-out`, with no transition under reduced motion. The hue follows the score: **1 danger, 2 warning, 3 and 4 accent.** Unfilled segments sit on `--color-bg-sunken`: `--color-border` is the same step as `surface-raised` in dark and vanished there. The verdict is `--text-12` text, `--color-fg-muted`, and is the only thing announced; the segments are `aria-hidden`. Non-interactive.
+**Why:**
+- **The library does not score passwords.** Strength is a judgement — length, a breached-password list, the account's own email, a house policy — and every one of those belongs to the app; an estimator would be a runtime dependency four apps did not choose. `score` and `label` are supplied by the caller, and out-of-range scores are clamped with a development warning.
+- **Colour is never the only signal (WCAG 1.4.1).** The verdict is real text, visible, and linked to the field: inside `FormField`'s `help` slot the control is already `aria-describedby` its help, so the meter is read with no wiring at all; anywhere else the caller passes `id` and lists it in the input's `aria-describedby` (a `PasswordInput` given its own `aria-describedby` uses it in place of FormField's help and error ids, so those must be listed too). No `FormField` or `PasswordInput` change was needed.
+- **A polite, atomic live region** (`role="status"`, `aria-live="polite"`, `aria-atomic`): a change is spoken once the user pauses, never cutting across a keystroke. It must be mounted before it changes — a live region inserted with its words is not reliably announced — so the component is meant to stay on screen, showing score 0 and a prompt, rather than appear on the first keystroke.
+- **Accent, not success, for 3 and 4.** D-016 keeps `success` green out of routine status: a strong password asks nothing of the user, so it has no claim on a hue. Danger and warning are spent where the user should do something (lengthen it); a full accent bar reads as "done" without a fourth colour, and the word "Strong" is what says so. Accent also avoids a second green-only-in-one-place rule for the canvas's `--ok`.
+- **Beside `PasswordInput`'s own meter, not replacing it.** `PasswordInput strength` is unchanged (bars with its spring, success at 3–4). Moving it onto this component would change four apps' sign-up forms in a minor release; a later major can.
+- **A type and a component with one name.** `PasswordInput` has exported a `PasswordStrength` *type* (`{ score, label: string }`) since 1.0. The new component takes the name the canvas gives it, and its module also declares `type PasswordStrength` as an alias of the old one, so the export stays whole. The root barrel must export the component by name; `export *` from both modules is a TS2308 ambiguity.
+**Rules out:** computing the score in the library (a `zxcvbn` dependency, or a `password` prop that the meter reads); a colour prop; `success` for strong (D-016); segments as the accessible signal; an assertive live region; a meter that mounts only after the first keystroke; a native `<meter>` or `role="meter"` (it would announce a number the app did not choose to say, and the verdict already is the value in words); a `size` prop (one meter, one height).
+**Proven.** Unit (16): filled count for each score 0–4 and left-first order, the hue class by score, `aria-hidden` segments with visible verdict text, `status` region polite and atomic, text changed inside the same region, non-interactive, `id` given and generated, the input's accessible description equal to the verdict by `id` and through FormField's `help`, development warnings for a bad score (clamped) and an empty label, axe at every score. Stories: a story per score, All scores, and two composed (FormField `help` and explicit `id`) with a toy scorer that lives only in the story — every one swept by the axe, geometry and focus checks in both themes.
+
+---
+
+### D-083 · v1.4 · ActionBar: a phone bottom bar of labelled icon actions
+**Date:** 2026-09-29
+**Prompted by:** DS-REQ-001 and the Postroom redesign canvas's phone thread, which ends in a row of five actions (Archive, Delete, Move, Reply, More) under the message. Additive and opt-in; nothing existing changes.
+
+**Chosen.** `ActionBar` and `ActionBar.Item` (also exported as `ActionBarItem`). Each item is an icon (22px, `aria-hidden`) over a visible `--text-11` medium label, a `<button type="button">` or, with `href`, an `<a>`; `tone="accent"` colours it `--color-accent`, `disabled` follows the Button idiom (0.42 opacity, not-allowed). Items are `flex: 1 1 0` so they share the width equally, with a 44 x 44px minimum. Hover and pressed fill with `--color-surface-hover` at radius `md`. The bar sits on `surface` with a 1px `--color-border` top hairline and pads its bottom by `max(var(--space-8), env(safe-area-inset-bottom))`. It is hidden from `lg` (1024px, AppShell's breakpoint) upward unless `forceVisible`. Forwards its ref.
+
+**Semantics: a labelled `role="group"` of plain controls in tab order.** Not `role="toolbar"`: APG makes a toolbar a single tab stop with arrow-key roving, which suits a dense desktop row and is worse for five thumb targets, and it obliges the component to own roving focus and Home/End. Not `<nav>`: the items are actions, and a landmark that is mostly not navigation dilutes the landmark list. `aria-label` is required by the type, because an unnamed group is announced as nothing. Link items remain links inside the group.
+
+**Visibility is CSS, not a matchMedia hook.** The query is AppShell's `(min-width: 1024px)`, but AppShell must know the breakpoint to choose between two component trees; a bar only has to disappear. A `display: none` rule has no server-render mismatch and no flash on a phone, and takes the bar out of the accessibility tree, so hidden is not a second copy of the actions.
+
+**A disabled link drops its `href`** and is `aria-disabled`, since an anchor cannot be disabled; it leaves the tab order rather than looking dead and still navigating.
+
+**Rules out.** *`position="static|fixed"`*: fixed positioning also needs the content above to reserve the bar's height, which only the caller knows, and a prop would make the wrong half of that look handled. The docs give the two correct recipes (a `100dvh` flex column, or `position: sticky; bottom: 0`). *A roving-tabindex toolbar*, above. *Rendering `null` above `lg` from JS*, above. *Wrapping long labels*: one line with an ellipsis keeps item heights equal; labels are single short words. *A `danger` tone*: the same reasoning as IconButton, since a destructive action carries a confirmation, and a red icon under a thumb is not one.
+
+**Proven.** Unit (9): labelled group, `ActionBar.Item` is `ActionBarItem`, ref forwarded, forced class only when asked, buttons named by their visible label with the icon hidden, keyboard tab and Enter, `href` renders a link, disabled button not clickable, disabled link loses its href, axe clean. Browser (`browser/actionbar.spec.ts`), in both themes at 390px on all four stories: every item at least 44 x 44, 22px icons, label below icon, equal widths, 1px top hairline, axe with contrast clean; and hidden at 1280px unless forced. The stories join the general axe, geometry and focus sweeps.

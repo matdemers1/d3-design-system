@@ -111,9 +111,16 @@ test.describe('at lg and wider — the sidebar column', () => {
       document.body.append(probe)
       const raised = getComputedStyle(probe).color
       probe.remove()
-      return { shadow: cs.boxShadow, border: cs.borderTopWidth, bg: cs.backgroundColor, raised }
+      // The float shadow, resolved the same way the panel resolves it (D-075).
+      const ref = document.createElement('div')
+      ref.style.boxShadow = 'var(--shadow-float)'
+      el.append(ref)
+      const float = getComputedStyle(ref).boxShadow
+      ref.remove()
+      return { shadow: cs.boxShadow, float, border: cs.borderTopWidth, bg: cs.backgroundColor, raised }
     })
-    expect(panel.shadow).toBe('none')
+    expect(panel.shadow).not.toBe('none')
+    expect(panel.shadow).toBe(panel.float)
     expect(panel.border).toBe('1px')
     expect(panel.bg).toBe(panel.raised)
 

@@ -135,12 +135,19 @@ for (const theme of ['dark', 'light'] as const) {
     await settle(page)
     const look = await toast.evaluate((el) => {
       const cs = getComputedStyle(el)
-      return { bg: cs.backgroundColor, border: cs.borderTopWidth, shadow: cs.boxShadow, transform: cs.transform,
+      const ref = document.createElement('div')
+      ref.style.boxShadow = 'var(--shadow-float)'
+      el.append(ref)
+      const float = getComputedStyle(ref).boxShadow
+      ref.remove()
+      return { bg: cs.backgroundColor, border: cs.borderTopWidth, shadow: cs.boxShadow, float, transform: cs.transform,
         pos: getComputedStyle(el.closest('.d3-toast-region')!).position }
     })
     expect(look.bg).toBe(await tokenColor(page, '--color-surface-raised'))
     expect(look.border).toBe('1px')
-    expect(look.shadow).toBe('none')
+    // A floating layer carries the float shadow (D-075).
+    expect(look.shadow).not.toBe('none')
+    expect(look.shadow).toBe(look.float)
     expect(look.transform).toBe('none')
     expect(look.pos).toBe('fixed')
     // The action reads at AA on the toast.
