@@ -1,0 +1,307 @@
+/* RecipientField — chips, a text input, and a suggestion list (D-074).
+
+   Two frames. `field` is a form control and carries the 3:1 `border-field`
+   boundary like every other field (D-013). `row` is a composer header row:
+   no box, a visible label and a 1px 3:1 bottom edge, which is the amendment
+   D-074 makes to D-013 for header rows. */
+.d3-rcp {
+  position: relative;
+  display: flex;
+  width: 100%;
+  margin: 0;
+  color: var(--color-fg);
+  font-family: inherit;
+  font-size: var(--text-13);
+  cursor: text;
+}
+
+/* ---------- field: the boxed control ---------- */
+.d3-rcp--field {
+  min-height: 34px;
+  padding: var(--space-4);
+  background: var(--color-surface);
+  border: var(--border-width) solid var(--color-border-field);
+  border-radius: var(--radius-md);
+  transition: border-color var(--motion-hover);
+}
+.d3-rcp--field:hover:not(.d3-rcp--disabled) { border-color: var(--color-fg-faint); }
+.d3-rcp--field:has(.d3-rcp__input:focus-visible) {
+  border-color: var(--color-accent);
+  outline: var(--focus-width) solid var(--color-focus);
+  outline-offset: var(--focus-offset);
+}
+.d3-rcp--field.d3-rcp--invalid { border-color: var(--color-danger); }
+
+/* ---------- row: the composer header ---------- */
+.d3-rcp--row {
+  align-items: flex-start;
+  gap: var(--space-8);
+  min-height: 44px;
+  /* 44px outer, like a touch target; the divider is inside that height. */
+  --d3-rcp-row-inner: calc(44px - var(--border-width));
+  /* The row keeps one side of D-013's boundary: a 1px divider in
+     border-field, solved to 3:1 on every surface. --color-border would be
+     lighter, but in dark it is the same step as surface-raised — the composer
+     pane — and vanished there (Menu.css found the same). With the visible
+     label, this is what identifies the row (D-074). */
+  border-bottom: var(--border-width) solid var(--color-border-field);
+  font-size: var(--text-14);
+  border-radius: var(--radius-xs) var(--radius-xs) 0 0;
+}
+.d3-rcp--row:has(.d3-rcp__input:focus-visible) {
+  outline: var(--focus-width) solid var(--color-focus);
+  outline-offset: var(--focus-offset);
+}
+.d3-rcp__label {
+  display: flex;
+  align-items: center;
+  flex: none;
+  min-width: 64px;
+  min-height: var(--d3-rcp-row-inner);
+  padding-right: var(--space-8);
+  color: var(--color-fg-faint);
+  font-size: var(--text-13);
+  line-height: var(--leading-13);
+  cursor: text;
+  transition: color var(--motion-hover);
+}
+.d3-rcp--focused .d3-rcp__label { color: var(--color-accent); font-weight: var(--weight-medium); }
+.d3-rcp--row.d3-rcp--invalid .d3-rcp__label { color: var(--color-danger); }
+.d3-rcp__trailing {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  flex: none;
+  min-height: var(--d3-rcp-row-inner);
+  cursor: auto;
+}
+
+/* ---------- chips and the text ---------- */
+.d3-rcp__value {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4) var(--space-6);
+  flex: 1;
+  min-width: 0;
+}
+.d3-rcp--row .d3-rcp__value { min-height: var(--d3-rcp-row-inner); padding: var(--space-8) 0; }
+
+.d3-rcp__chips {
+  display: contents;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* No border: D-013 keeps boundaries for things that must be found before they
+   are used, and a chip is content, not a control. It is a fill. */
+.d3-rcp__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-6);
+  max-width: 100%;
+  height: 24px;
+  margin: 0;
+  padding: 0 var(--space-8) 0 var(--space-2);
+  border-radius: var(--radius-full);
+  background: var(--color-surface-hover);
+  color: var(--color-fg);
+  font-size: var(--text-13);
+  font-weight: var(--weight-medium);
+  line-height: 1;
+  white-space: nowrap;
+  cursor: default;
+  user-select: none;
+}
+.d3-rcp--row .d3-rcp__chip { height: 26px; }
+
+/* Arrivals scale in on the spring — 140ms, well inside the "fast" band the
+   composer asks for. Backwards fill only: a retained transform would make the
+   chip a containing block (motion.css). */
+.d3-rcp__chip--enter { animation: d3-rcp-chip-in var(--dur-2) var(--ease-spring) backwards; }
+@keyframes d3-rcp-chip-in { from { opacity: 0; transform: scale(0.6); } }
+@media (prefers-reduced-motion: reduce) {
+  /* Opacity only — reduced motion is a mode, not a downgrade (motion.css). */
+  .d3-rcp__chip--enter { animation: d3-rcp-fade var(--dur-2) var(--ease-out) backwards; }
+}
+@keyframes d3-rcp-fade { from { opacity: 0; } }
+
+/* Selected for removal: a fill, not a thicker outline (D-023). */
+.d3-rcp__chip--selected { background: var(--color-accent); color: var(--color-accent-contrast); }
+.d3-rcp__chip--selected .d3-rcp__remove { color: inherit; }
+
+.d3-rcp__initials {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 20px;
+  height: 20px;
+  border-radius: var(--radius-full);
+  background: var(--color-accent-muted);
+  color: var(--color-accent);
+  font-size: var(--text-11);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0;
+}
+.d3-rcp__name { overflow: hidden; text-overflow: ellipsis; }
+
+/* Invalid: the danger tone, and a "!" where the initials were — so it is not
+   carried by colour alone (WCAG 1.4.1), and the accessible name says it. */
+.d3-rcp__chip--invalid { background: var(--color-danger-muted); color: var(--color-danger); }
+.d3-rcp__chip--invalid .d3-rcp__initials { background: var(--color-danger); color: var(--color-danger-muted); }
+.d3-rcp__chip--invalid.d3-rcp__chip--selected { background: var(--color-danger); color: var(--color-danger-muted); }
+
+.d3-rcp__remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  /* Sits in the chip's end padding, so a chip without one (disabled) keeps its 8px. */
+  margin-right: calc(-1 * var(--space-6));
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--color-fg-faint);
+  cursor: pointer;
+  transition: color var(--motion-hover), background-color var(--motion-hover);
+}
+.d3-rcp__remove:hover { color: var(--color-fg); background: var(--color-surface-raised); }
+.d3-rcp__chip--invalid .d3-rcp__remove { color: inherit; }
+
+.d3-rcp__input {
+  flex: 1 1 64px;
+  min-width: 64px;
+  height: 24px;
+  margin: 0;
+  padding: 0 var(--space-8);
+  background: none;
+  border: 0;
+  outline: none;
+  color: inherit;
+  font: inherit;
+}
+.d3-rcp--row .d3-rcp__input { padding: 0 var(--space-2); }
+/* The frame draws the ring (above), so the input inside it never does. */
+.d3-rcp__input:focus-visible { outline: none; }
+.d3-rcp__input::placeholder { color: var(--color-fg-faint); }
+/* Disabled fades the frame and the text entry, not the chips: who a message
+   goes to is still information, and it stays readable at full contrast. */
+.d3-rcp--disabled { cursor: not-allowed; }
+.d3-rcp--disabled.d3-rcp--field { background: var(--color-bg); border-color: var(--color-border); }
+.d3-rcp--disabled .d3-rcp__input { cursor: not-allowed; opacity: 0.42; }
+.d3-rcp--disabled .d3-rcp__label { opacity: 0.42; }
+
+/* ---------- the suggestion list: the menu panel (D-023) ---------- */
+.d3-rcp__pop {
+  position: absolute;
+  /* Clear of the frame's focus ring: 2px offset + 2px ring. */
+  top: calc(100% + var(--space-8));
+  left: 0;
+  z-index: 50;
+  width: max-content;
+  min-width: min(280px, 100%);
+  max-width: min(420px, 100vw);
+  padding: var(--space-4);
+  background: var(--color-surface-raised);
+  border: var(--border-width) solid var(--color-border-float);
+  border-radius: var(--radius-lg);
+  box-shadow: none;
+  color: var(--color-fg);
+  cursor: default;
+  /* The menu tier: 200ms ease-out, no overshoot. It opens on every keystroke
+     that matches and must not perform (D-024). */
+  animation: d3-rcp-pop-in var(--motion-popover-enter) backwards;
+  transform-origin: top left;
+}
+.d3-rcp__pop[hidden] { display: none; }
+@keyframes d3-rcp-pop-in { from { opacity: 0; transform: translateY(-4px) scale(0.98); } }
+@media (prefers-reduced-motion: reduce) {
+  .d3-rcp__pop { animation: d3-rcp-fade var(--motion-popover-enter) backwards; }
+}
+
+.d3-rcp__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 280px;
+  overflow-y: auto;
+}
+.d3-rcp__opt {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+  min-height: 44px;
+  margin: 0;
+  padding: var(--space-4) var(--space-8);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+}
+/* Focus stays in the input, so this tone is the indicator for the active
+   option — keyboard and pointer alike, as in the menu. */
+.d3-rcp__opt--active { background: var(--color-surface-hover); }
+.d3-rcp__opt-initials {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-full);
+  background: var(--color-accent-muted);
+  color: var(--color-accent);
+  font-size: var(--text-11);
+  font-weight: var(--weight-semibold);
+}
+.d3-rcp__opt-text { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+.d3-rcp__opt-name {
+  font-size: var(--text-13);
+  line-height: var(--leading-13);
+  font-weight: var(--weight-semibold);
+  color: var(--color-fg);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.d3-rcp__opt-addr {
+  font-size: var(--text-12);
+  line-height: var(--leading-12);
+  color: var(--color-fg-faint);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.d3-rcp__match { font-weight: var(--weight-title); color: var(--color-accent); }
+.d3-rcp__opt-detail {
+  flex: none;
+  margin-left: var(--space-12);
+  font-size: var(--text-12);
+  color: var(--color-fg-faint);
+}
+.d3-rcp__keys {
+  margin: var(--space-4) 0 0;
+  padding: var(--space-6) var(--space-8) var(--space-2);
+  /* Not --color-border: the same step as surface-raised in dark (Menu.css). */
+  border-top: var(--border-width) solid var(--color-bg);
+  font-size: var(--text-11);
+  line-height: var(--leading-11);
+  color: var(--color-fg-faint);
+}
+
+.d3-rcp__vh {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  border: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

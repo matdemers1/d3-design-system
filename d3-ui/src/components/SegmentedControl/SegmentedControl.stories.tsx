@@ -41,7 +41,7 @@ const meta = {
     'because these change what an already-loaded region shows. If a segment ever triggers a request, ' +
     'it is a `Tabs` in `manual` mode, not this.\n\n' +
     'Segments are content-width, so the thumb is **measured** rather than computed — the same ' +
-    'technique `Tabs` uses for its pill, on the same 280ms spring token, so the two read as one idea.' } } },
+    'technique `Tabs` uses for its pill, on the same `--motion-tab-glide` token, so the two read as one idea.' } } },
 } satisfies Meta<typeof SegmentedControl>
 export default meta
 type Story = StoryObj<typeof meta>

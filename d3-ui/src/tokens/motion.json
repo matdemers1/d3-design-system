@@ -82,18 +82,18 @@
     },
     "toast-enter": {
       "$type": "string",
-      "$value": "420ms {easing.spring}",
-      "$description": "Expressive \u2014 it arrives unasked, so it should be felt"
+      "$value": "200ms {easing.spring}",
+      "$description": "Rises 16px and lands before the eye moves on; the spring overshoots under 2px at that distance (D-024 amended, D-073)"
     },
     "toast-exit": {
       "$type": "string",
-      "$value": "280ms {easing.in}",
-      "$description": "slides out"
+      "$value": "140ms {easing.in}",
+      "$description": "leaves without ceremony (D-073)"
     },
     "tab-glide": {
       "$type": "string",
-      "$value": "280ms {easing.spring}",
-      "$description": "Expressive \u2014 the pill travels between tabs"
+      "$value": "160ms {easing.out}",
+      "$description": "the pill travels between tabs; no overshoot, which reads as jitter on a 30px control (D-073)"
     },
     "list-enter": {
       "$type": "string",
@@ -102,8 +102,8 @@
     },
     "row-exit": {
       "$type": "string",
-      "$value": "420ms {easing.spring}",
-      "$description": "Expressive \u2014 a dismissed row leaves so the list does not blink"
+      "$value": "180ms {easing.in}",
+      "$description": "a dismissed row slides out and its slot closes, so the list does not blink; no spring on something leaving (D-073)"
     },
     "hover": {
       "$type": "string",

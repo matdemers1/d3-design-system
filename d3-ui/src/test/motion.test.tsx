@@ -19,6 +19,7 @@ import '../components/PageHeader/PageHeader'
 import '../components/EmptyState/EmptyState'
 import '../components/CodeInput/CodeInput'
 import '../components/PasswordInput/PasswordInput'
+import '../components/Toast/Toast'
 
 /**
  * D-024 set a motion tier per interaction and, just as importantly, a list of
@@ -101,6 +102,41 @@ describe('things that move', () => {
   it('the Select chevron rotates on open — one of the three animated icons', () => {
     expect(prop('.d3-sel .d3-inp__affix', 'transition')).toContain('transform')
     expect(prop(".d3-sel[data-state='open'] .d3-inp__affix", 'transform')).toBe('rotate(180deg)')
+  })
+})
+
+describe('D-024 as amended by D-073 — the high-frequency retune', () => {
+  const token = (name: string) => prop(':root', name).trim()
+  it.each([
+    ['--motion-row-exit', '180ms var(--ease-in)'],
+    ['--motion-toast-enter', '200ms var(--ease-spring)'],
+    ['--motion-toast-exit', '140ms var(--ease-in)'],
+    ['--motion-tab-glide', '160ms var(--ease-out)'],
+  ])('%s is %s', (name, value) => {
+    // Found by reading every :root rule: motion.css declares these in its first.
+    let found = ''
+    for (const sheet of Array.from(document.styleSheets)) {
+      let rules: CSSRuleList
+      try { rules = sheet.cssRules } catch { continue }
+      for (const rule of Array.from(rules)) {
+        if (rule instanceof CSSStyleRule && rule.selectorText === ':root' && rule.style.getPropertyValue(name)) {
+          found = rule.style.getPropertyValue(name).trim()
+        }
+      }
+    }
+    expect(found).toBe(value)
+  })
+
+  it('the modal keeps its Expressive entrance — the retune is not a blanket speed-up', () => {
+    expect(token('--motion-modal-enter')).toBe('420ms var(--ease-spring)')
+  })
+
+  it('a toast rises on the toast token and leaves on its exit token, backwards-fill on the way in', () => {
+    const enter = prop('.d3-toast', 'animation')
+    expect(enter).toContain('d3-toast-in')
+    expect(enter).toContain('var(--motion-toast-enter)')
+    expect(enter).toContain('backwards')
+    expect(prop(".d3-toast[data-state='closed']", 'animation')).toContain('var(--motion-toast-exit)')
   })
 })
 

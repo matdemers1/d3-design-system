@@ -4,6 +4,37 @@ Semver. The public surface is what `d3-ui/src/index.ts` exports plus the token
 names; CSS class names (`.d3-btn`, `.d3-seg`) are an implementation detail and
 apps must not select on them.
 
+## v1.3.0 — 2026-09-29 · calm-app foundations (D-073, D-074)
+
+**Foundations for calm apps**, built for Postroom's redesign and opt-in everywhere: no existing
+export, prop or default changed. The one exception is the motion retune below, which changes four
+token values.
+
+### Added
+
+- **`Toast`, `ToastRegion`, `useToast`** — one toast at a time, a newer one replacing the older in
+  place; never takes focus; six seconds, paused while hovered or focused; at most one action, with
+  a key hint (`action.shortcut`, announced as `aria-keyshortcuts`; the app binds the key); Escape
+  closes it. Wrap the app once in `<ToastRegion>`.
+- **`AppShell navTone="recessed"`** — sidebar on `bg`, `<main>` on `surface`, with nav hover and the
+  current item lifted a step so they stay visible on `bg`. Default `raised` is unchanged.
+- **`appearance="filled"`** on `Input`, `Textarea` and `Select` — 36px, 14px text, a `bg` fill, the
+  same 3:1 edge (3.92:1 light, 4.29:1 dark), one 2px focus outline and no border-colour change on
+  focus. Type `FieldAppearance`.
+- **`SearchField`** — the filled Input for search, with a glyph and an optional `shortcut` hint.
+
+### Changed
+
+- **Motion tokens retuned for high-frequency use** (D-024 amended): `--motion-toast-enter` 200ms
+  spring (was 420ms), `--motion-toast-exit` 140ms (was 280ms), `--motion-row-exit` 180ms ease-in
+  (was a 420ms spring), `--motion-tab-glide` 160ms ease-out (was a 280ms spring) — so the Tabs pill
+  and SegmentedControl thumb glide faster, without overshoot, in every app. `.enter-toast` rises
+  16px with no scale. `--motion-modal-enter` and every other token are unchanged.
+
+### Added (composing mail)
+
+- **`RecipientField`** — email recipients as chips, with async suggestions from a caller-supplied loader; an APG editable combobox, and a borderless `row` variant for composer headers that keeps a visible label and divider (D-074). Also `parseRecipients`, `parseRecipient`, `splitRecipients`, `isValidAddress`, `formatRecipient`.
+
 ## v1.2.2 — 2026-09-18
 
 **1.2.1 fixed half of it.** A table with no `maxHeight` still scrolls *horizontally* when its

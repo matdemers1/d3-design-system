@@ -3,6 +3,7 @@ import * as RadixSelect from '@radix-ui/react-select'
 import { cn } from '../../lib/cn'
 import { currentStyleNonce } from '../../lib/styleNonce'
 import { useFormField } from '../FormField/FormFieldContext'
+import type { FieldAppearance } from '../Input/Input'
 import '../Input/Input.css'
 import './Select.css'
 
@@ -21,6 +22,8 @@ export interface SelectProps {
   onValueChange?: (value: string) => void
   placeholder?: string
   size?: 'sm' | 'md' | 'lg'
+  /** `filled`: the calmer 36px trigger, matching a filled Input (D-073). `size` applies to `outlined` only. */
+  appearance?: FieldAppearance
   disabled?: boolean
   invalid?: boolean
   className?: string
@@ -49,7 +52,7 @@ export interface SelectProps {
 const EMPTY = '__d3-select-empty__'
 
 export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select(
-  { options = [], value, defaultValue, onValueChange, placeholder = 'Select…', size = 'md',
+  { options = [], value, defaultValue, onValueChange, placeholder = 'Select…', size = 'md', appearance = 'outlined',
     disabled, invalid, className, chevronIcon, checkIcon, name, required, id, ...rest }, ref,
 ) {
   const field = useFormField()
@@ -77,7 +80,7 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
         id={id ?? field?.id}
         aria-invalid={isInvalid || undefined}
         aria-describedby={field?.describedBy}
-        className={cn('d3-inp', `d3-inp--${size}`, 'd3-sel',
+        className={cn('d3-inp', appearance === 'filled' ? 'd3-inp--filled' : `d3-inp--${size}`, 'd3-sel',
           isInvalid && 'd3-inp--invalid', disabled && 'd3-inp--disabled', className)}
         {...rest}
       >

@@ -25,3 +25,24 @@ describe('Input — the contract', () => {
     expect(screen.getByTestId('lead').parentElement).toHaveAttribute('aria-hidden', 'true')
   })
 })
+
+describe('Input — appearance', () => {
+  it('outlined is the default and renders exactly as before: a size class, no filled class', () => {
+    render(<Input aria-label="Name" />)
+    const frame = screen.getByLabelText('Name').parentElement!
+    expect(frame.className).toBe('d3-inp d3-inp--md')
+  })
+
+  it('filled replaces the size class with its own single size', () => {
+    render(<Input aria-label="To" appearance="filled" size="lg" />)
+    const frame = screen.getByLabelText('To').parentElement!
+    expect(frame).toHaveClass('d3-inp', 'd3-inp--filled')
+    expect(frame).not.toHaveClass('d3-inp--lg')
+  })
+
+  it('filled keeps invalid, disabled and read-only', () => {
+    render(<Input aria-label="To" appearance="filled" invalid disabled />)
+    const frame = screen.getByLabelText('To').parentElement!
+    expect(frame).toHaveClass('d3-inp--filled', 'd3-inp--invalid', 'd3-inp--disabled')
+  })
+})
