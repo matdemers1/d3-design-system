@@ -1,0 +1,54 @@
+/* One setting: what it is on the left, what you do about it on the right.
+   Stacked by default; side by side from md (768px), the same edge FilterBar
+   uses (a max-width: 767.98px block there, mobile-first here). */
+.d3-setrow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-8) var(--space-16);
+  padding: var(--space-16) 0;
+  margin: 0;
+  min-width: 0;
+}
+/* A hairline between rows, not around them — D-023's decorative border role,
+   as DescriptionList does. The row has no horizontal padding of its own, so
+   the hairline runs the width of the card's content box and lines up with the
+   text above and below it, instead of poking out to the card's edge. */
+.d3-setrow + .d3-setrow { border-top: var(--border-width) solid var(--color-border); }
+/* The first and last row take no padding on the outer side: the container's
+   own padding (Card's 20px) is the space above the first and below the last. */
+.d3-setrow:first-child { padding-top: 0; }
+.d3-setrow:last-child { padding-bottom: 0; }
+/* Section's body is a column with a 16px gap, which would put a 16px band on
+   both sides of every hairline. Take the gap back between consecutive rows so
+   the padding above is the only space; Section itself is not touched. */
+.d3-sec__body > .d3-setrow + .d3-setrow { margin-top: calc(var(--space-16) * -1); }
+
+.d3-setrow__text { min-width: 0; display: flex; flex-direction: column; gap: var(--space-2); }
+.d3-setrow__title {
+  margin: 0;
+  font-size: var(--text-14);
+  line-height: var(--leading-14);
+  font-weight: var(--weight-medium);
+  color: var(--color-fg);
+}
+.d3-setrow__desc {
+  margin: 0;
+  font-size: var(--text-13);
+  line-height: var(--leading-13);
+  color: var(--color-fg-muted);
+  max-width: var(--measure-body);
+}
+.d3-setrow__control {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--space-8);
+  min-width: 0;
+}
+
+@media (min-width: 768px) {
+  .d3-setrow { grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-16) var(--space-24); }
+  .d3-setrow__control { flex-wrap: nowrap; justify-content: flex-end; }
+}
