@@ -82,6 +82,18 @@
   --p-blue-900: #001d37;
   --p-blue-950: #001227;
   --p-blue-975: #000a1a;
+  --p-pink-50: #fef8fc;
+  --p-pink-100: #fbedf7;
+  --p-pink-200: #f5d2ec;
+  --p-pink-300: #eba2db;
+  --p-pink-400: #e16bcb;
+  --p-pink-500: #b93ea5;
+  --p-pink-600: #8c187c;
+  --p-pink-700: #530a49;
+  --p-pink-800: #45073c;
+  --p-pink-900: #33042c;
+  --p-pink-950: #23021e;
+  --p-pink-975: #170113;
 }
 
 /* Dark is the primary mode (D-011).
@@ -115,6 +127,21 @@
   --color-danger: #fc6568;
   --color-info: #87c3ff;
   --color-focus: #978cff;
+  /* Avatar tints — six name-derived identity fills (DS-REQ-001, D-081). Fill 800, ink 300
+     of the same ramp: every pair measured, 5.4:1 or better in light, 7.8:1 or better
+     in dark. Identity, not status — never use these for state (D-016). */
+  --color-avatar-1: #29036e;
+  --color-avatar-1-fg: #b8b4ff;
+  --color-avatar-2: #51000c;
+  --color-avatar-2-fg: #ffa09c;
+  --color-avatar-3: #00311c;
+  --color-avatar-3-fg: #70d6a1;
+  --color-avatar-4: #45073c;
+  --color-avatar-4-fg: #eba2db;
+  --color-avatar-5: #00294b;
+  --color-avatar-5-fg: #87c3ff;
+  --color-avatar-6: #372400;
+  --color-avatar-6-fg: #e7b45d;
 }
 
 [data-theme="light"] {
@@ -142,6 +169,21 @@
   --color-danger: #a20022;
   --color-info: #005896;
   --color-focus: #5432be;
+  /* Avatar tints — six name-derived identity fills (DS-REQ-001, D-081). Fill 200, ink 600
+     of the same ramp: every pair measured, 5.4:1 or better in light, 7.8:1 or better
+     in dark. Identity, not status — never use these for state (D-016). */
+  --color-avatar-1: #dadaff;
+  --color-avatar-1-fg: #5432be;
+  --color-avatar-2: #ffd1cf;
+  --color-avatar-2-fg: #a20022;
+  --color-avatar-3: #adf0ca;
+  --color-avatar-3-fg: #00663f;
+  --color-avatar-4: #f5d2ec;
+  --color-avatar-4-fg: #8c187c;
+  --color-avatar-5: #c5e2ff;
+  --color-avatar-5-fg: #005896;
+  --color-avatar-6: #fcd8a0;
+  --color-avatar-6-fg: #714e00;
 }
 
 /* Follow the OS only when no explicit theme has been set anywhere. */
@@ -171,6 +213,21 @@
     --color-danger: #a20022;
     --color-info: #005896;
     --color-focus: #5432be;
+    /* Avatar tints — six name-derived identity fills (DS-REQ-001, D-081). Fill 200, ink 600
+       of the same ramp: every pair measured, 5.4:1 or better in light, 7.8:1 or better
+       in dark. Identity, not status — never use these for state (D-016). */
+    --color-avatar-1: #dadaff;
+    --color-avatar-1-fg: #5432be;
+    --color-avatar-2: #ffd1cf;
+    --color-avatar-2-fg: #a20022;
+    --color-avatar-3: #adf0ca;
+    --color-avatar-3-fg: #00663f;
+    --color-avatar-4: #f5d2ec;
+    --color-avatar-4-fg: #8c187c;
+    --color-avatar-5: #c5e2ff;
+    --color-avatar-5-fg: #005896;
+    --color-avatar-6: #fcd8a0;
+    --color-avatar-6-fg: #714e00;
   }
 }
 

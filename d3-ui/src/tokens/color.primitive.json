@@ -589,6 +589,104 @@
         }
       }
     },
+    "pink": {
+      "50": {
+        "$type": "color",
+        "$value": "#fef8fc",
+        "$extensions": {
+          "d3.oklch-l": 0.985,
+          "d3.oklch-h": 335
+        }
+      },
+      "100": {
+        "$type": "color",
+        "$value": "#fbedf7",
+        "$extensions": {
+          "d3.oklch-l": 0.96,
+          "d3.oklch-h": 335
+        }
+      },
+      "200": {
+        "$type": "color",
+        "$value": "#f5d2ec",
+        "$extensions": {
+          "d3.oklch-l": 0.9,
+          "d3.oklch-h": 335
+        }
+      },
+      "300": {
+        "$type": "color",
+        "$value": "#eba2db",
+        "$extensions": {
+          "d3.oklch-l": 0.8,
+          "d3.oklch-h": 335
+        }
+      },
+      "400": {
+        "$type": "color",
+        "$value": "#e16bcb",
+        "$extensions": {
+          "d3.oklch-l": 0.7,
+          "d3.oklch-h": 335
+        }
+      },
+      "500": {
+        "$type": "color",
+        "$value": "#b93ea5",
+        "$extensions": {
+          "d3.oklch-l": 0.575,
+          "d3.oklch-h": 335
+        }
+      },
+      "600": {
+        "$type": "color",
+        "$value": "#8c187c",
+        "$extensions": {
+          "d3.oklch-l": 0.45,
+          "d3.oklch-h": 335
+        }
+      },
+      "700": {
+        "$type": "color",
+        "$value": "#530a49",
+        "$extensions": {
+          "d3.oklch-l": 0.31,
+          "d3.oklch-h": 335
+        }
+      },
+      "800": {
+        "$type": "color",
+        "$value": "#45073c",
+        "$extensions": {
+          "d3.oklch-l": 0.275,
+          "d3.oklch-h": 335
+        }
+      },
+      "900": {
+        "$type": "color",
+        "$value": "#33042c",
+        "$extensions": {
+          "d3.oklch-l": 0.225,
+          "d3.oklch-h": 335
+        }
+      },
+      "950": {
+        "$type": "color",
+        "$value": "#23021e",
+        "$extensions": {
+          "d3.oklch-l": 0.18,
+          "d3.oklch-h": 335
+        }
+      },
+      "975": {
+        "$type": "color",
+        "$value": "#170113",
+        "$extensions": {
+          "d3.oklch-l": 0.143,
+          "d3.oklch-h": 335
+        }
+      }
+    },
     "white": {
       "$type": "color",
       "$value": "#ffffff"

@@ -7,14 +7,19 @@ const meta = {
   component: Avatar,
   tags: ['autodocs'],
   args: { name: 'Dana Whitfield', size: 'md' },
-  argTypes: { size: { control: 'inline-radio', options: ['xs', 'sm', 'md', 'lg'] } },
+  argTypes: {
+    size: { control: 'inline-radio', options: ['xs', 'sm', 'md', 'lg'] },
+    tint: { control: 'inline-radio', options: ['none', 'auto', 1, 2, 3, 4, 5, 6] },
+  },
   parameters: { docs: { description: { component:
     'Identifies a person.\n\n' +
-    '**A single neutral treatment in v1 — no per-user colour.** Hashing an id into a hue would ' +
-    'generate around twenty unmeasured colour pairs in a system whose premise is that every pair ' +
-    'is measured. Doing it properly needs a validated tint ramp, which is real Phase 3a work.\n\n' +
-    'This is a genuine loss, not a clean call: App B has twelve avatars in a message list and ' +
-    'colour is how you scan those. Deferred to v2, with a ramp or not at all (D-030).' } } },
+    '**Neutral by default.** Opt in to colour with `tint`: `auto` picks one of six pastel tints from ' +
+    'a stable hash of the name — the same name is the same tint on every render and in every app — ' +
+    'and `1`–`6` pins one. Each fill/ink pair is a measured token (`--color-avatar-N` and ' +
+    '`--color-avatar-N-fg`), 5.4:1 or better in light and 7.8:1 or better in dark.\n\n' +
+    'Tints are identity, not status and not action: they never mean anything, and the single accent ' +
+    'stays the only colour that does (D-008, D-081). Images are unaffected — a tint only shows ' +
+    'behind initials.' } } },
 } satisfies Meta<typeof Avatar>
 export default meta
 type Story = StoryObj<typeof meta>
@@ -33,6 +38,39 @@ export const Sizes: Story = {
       <Avatar name="Dana Whitfield" size="md" />
       <Avatar name="Dana Whitfield" size="lg" />
     </Row>
+  ),
+}
+const NAMES = [
+  'Priya Shah', 'Jonah Reyes', 'Linda Demers', 'Sam Whitaker', 'Dana Okafor', 'Elena Park',
+  'Ada Lovelace', 'Marcus Bell', 'Noor Haddad', 'Tom Ives', 'Yuki Tanaka', 'Owen Pratt',
+]
+const SIZES = ['xs', 'sm', 'md', 'lg'] as const
+export const Tints: Story = {
+  parameters: { controls: { disable: true }, docs: { description: { story:
+    'All six tints at every size. The rows are the tints, 1 to 6, top to bottom.' } } },
+  render: () => (
+    <div style={{ display: 'grid', gap: 10 }}>
+      {([1, 2, 3, 4, 5, 6] as const).map((n) => (
+        <Row key={n}>
+          {SIZES.map((size) => <Avatar key={size} name="Dana Whitfield" size={size} tint={n} />)}
+        </Row>
+      ))}
+    </div>
+  ),
+}
+export const AutoTint: Story = {
+  name: 'Auto, from the name',
+  parameters: { controls: { disable: true }, docs: { description: { story:
+    'Twelve names, `tint="auto"`. Reorder or repeat them and each keeps its colour.' } } },
+  render: () => (
+    <div style={{ display: 'grid', gap: 8 }}>
+      {NAMES.map((name) => (
+        <div key={name} style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 13 }}>
+          <Avatar name={name} tint="auto" />
+          <span>{name}</span>
+        </div>
+      ))}
+    </div>
   ),
 }
 export const Fallbacks: Story = {
