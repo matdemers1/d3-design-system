@@ -4,6 +4,48 @@ Semver. The public surface is what `d3-ui/src/index.ts` exports plus the token
 names; CSS class names (`.d3-btn`, `.d3-seg`) are an implementation detail and
 apps must not select on them.
 
+## v1.4.0 — 2026-09-29 · the finished-product layer (D-075 – D-083)
+
+**Two shadows and nine building blocks**, built for Postroom's redesign and usable by every app. No
+export, prop or default was removed or renamed. What every app *will* see on the bump is the change
+to floating layers under **Changed**.
+
+### Changed
+
+- **Two shadows, and only two (D-075, amends D-015 and D-023; DS-ADR-001).** New tokens
+  `--shadow-sheet` and `--shadow-float` (with `-light`/`-dark` sources that follow the theme).
+  **Menu (so AccountMenu), Tooltip, Toast, Modal and RecipientField's suggestion list** now sit on
+  `surface-raised` with `--shadow-float` over a transparent 1px border, instead of the 3:1
+  `border-float` outline — the outline returns, and the shadow goes, under `forced-colors` and
+  `prefers-contrast: more`. **`AppShell navTone="recessed"`**'s `<main>` becomes an inset sheet:
+  `radius-lg`, `--shadow-sheet`, 8px from the page. The shared `.elevated` /
+  `[data-elevation="floating"]` recipe follows the floating layers.
+- **The usage guard admits exactly `box-shadow: var(--shadow-sheet)` and `var(--shadow-float)`**,
+  as the whole value, and still rejects every other shadow, fallback, extra layer and `shadow-*`
+  utility. `browser/elevation.spec.ts` checks every story in both themes for any other shadow.
+
+### Added
+
+- **`Switch`** — an immediate-effect on/off setting as a real `role="switch"` button (D-076).
+- **`SplitButton`** — a primary action with a menu of alternatives from the chevron only, both
+  halves real Buttons (D-077).
+- **`CommandPalette`**, **`CommandPaletteChip`**, **`CommandPaletteHint`** — a ⌘K dialog: an APG
+  combobox over grouped results with query marking, filter chips, empty and loading states. The
+  app binds the shortcut; the library adds no global key listener (D-078).
+- **`SettingsRow`** — a title and description with a control on the right, divided by hairlines
+  inside a `Section`, stacking below `md`; names its control by its title (D-079).
+- **`StatusDot`**, **`Stat`**, **`StatGroup`** — a status as a dot and a word, neutral by default
+  (D-016), and a number-forward tile in a hairline-divided row (D-080).
+- **`Avatar tint="auto" | "none" | 1–6`** and **`avatarTintFor(name)`** — six measured identity
+  tints (≥5.4:1 light, ≥7.8:1 dark) picked by a pinned FNV-1a hash of the name; default `none`, so
+  nothing moves until an app opts in. New tokens `--color-avatar-1…6` and `-fg`, and a primitive
+  `pink` ramp for the sixth hue (D-081).
+- **`PasswordStrength`** — a four-segment meter with a verdict in words in a polite live region;
+  the caller scores, the library computes nothing. Exported by name: `PasswordInput`'s
+  `PasswordStrength` *type* is kept as an alias (D-082).
+- **`ActionBar`**, **`ActionBarItem`** — a phone bottom bar of labelled icon actions, 44px targets,
+  safe-area padding, hidden from `lg` unless `forceVisible` (D-083).
+
 ## v1.3.0 — 2026-09-29 · calm-app foundations (D-073, D-074)
 
 **Foundations for calm apps**, built for Postroom's redesign and opt-in everywhere: no existing
