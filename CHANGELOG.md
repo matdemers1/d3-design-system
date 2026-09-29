@@ -4,7 +4,7 @@ Semver. The public surface is what `d3-ui/src/index.ts` exports plus the token
 names; CSS class names (`.d3-btn`, `.d3-seg`) are an implementation detail and
 apps must not select on them.
 
-## v1.3.0 — unreleased · calm-app foundations (D-073)
+## v1.3.0 — 2026-09-29 · calm-app foundations (D-073, D-074)
 
 **Foundations for calm apps**, built for Postroom's redesign and opt-in everywhere: no existing
 export, prop or default changed. The one exception is the motion retune below, which changes four
@@ -30,6 +30,10 @@ token values.
   (was a 420ms spring), `--motion-tab-glide` 160ms ease-out (was a 280ms spring) — so the Tabs pill
   and SegmentedControl thumb glide faster, without overshoot, in every app. `.enter-toast` rises
   16px with no scale. `--motion-modal-enter` and every other token are unchanged.
+
+### Added (composing mail)
+
+- **`RecipientField`** — email recipients as chips, with async suggestions from a caller-supplied loader; an APG editable combobox, and a borderless `row` variant for composer headers that keeps a visible label and divider (D-074). Also `parseRecipients`, `parseRecipient`, `splitRecipients`, `isValidAddress`, `formatRecipient`.
 
 ## v1.2.2 — 2026-09-18
 

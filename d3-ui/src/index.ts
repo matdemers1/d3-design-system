@@ -61,6 +61,8 @@ export * from './components/Table'
 // v1.3 — calm apps: Toast, SearchField (D-073)
 export * from './components/Toast'
 export * from './components/SearchField'
+// v1.3 — composing mail: recipient chips with suggestions (D-074)
+export * from './components/RecipientField'
 
 // Strict CSP: the nonce for the styles Radix injects while a layer is open (D-072)
 export { setStyleNonce, readStyleNonce } from './lib/styleNonce'
