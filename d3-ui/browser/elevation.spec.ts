@@ -10,7 +10,7 @@ import { settle, watchErrors } from './settle'
  * only on the components D-075 names, and only as the token it names for them.
  *
  *   --shadow-float → Menu (and so AccountMenu's panel), Tooltip, Toast, Modal,
- *                    RecipientField's suggestion list
+ *                    RecipientField's suggestion list, CommandPalette's panel
  *   --shadow-sheet → AppShell navTone="recessed" <main>, and nothing else
  *
  * An inset shadow is not lift: it is a boundary drawn inside a control (a
@@ -22,7 +22,7 @@ import { settle, watchErrors } from './settle'
  * prefers-contrast: more, where the shadow must give way to a border-float edge.
  */
 
-const FLOAT = '.d3-menu, .d3-tip, .d3-toast, .d3-modal, .d3-rcp__pop'
+const FLOAT = '.d3-menu, .d3-tip, .d3-toast, .d3-modal, .d3-rcp__pop, .d3-cmd'
 const SHEET = '.d3-shell--recessed .d3-shell__main'
 
 /** Every element — and its ::before and ::after — with a shadow it may not have. */
@@ -148,6 +148,10 @@ const LAYERS: { name: string; story: string; selector: string; open: (page: Page
       await page.getByRole('combobox', { name: 'To' }).focus()
       await page.keyboard.type('d')
     },
+  },
+  {
+    name: 'CommandPalette', story: 'layers-commandpalette--mail-search', selector: '.d3-cmd',
+    open: async () => {},
   },
 ]
 

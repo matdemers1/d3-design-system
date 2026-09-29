@@ -1,0 +1,291 @@
+/* CommandPalette — one floating panel over the scrim (D-078).
+
+   Composed from Radix Dialog the way Modal is, with its own panel: Modal's is
+   a centred 380px card with a visible title and padding, and the palette is a
+   640px column with no title, pinned near the top third so it does not jump
+   as the results grow and shrink. Same scrim, same z-order, same float layer
+   (D-075), same motion tier (D-024). */
+.d3-cmd__scrim {
+  position: fixed;
+  inset: 0;
+  background: var(--scrim);
+  z-index: 40;
+  animation: d3-cmd-scrim-in var(--dur-3) var(--ease-out) backwards;
+}
+@keyframes d3-cmd-scrim-in { from { opacity: 0; } }
+@keyframes d3-cmd-scrim-out { to { opacity: 0; } }
+.d3-cmd__scrim[data-state='closed'] { animation: d3-cmd-scrim-out var(--motion-modal-exit) forwards; }
+
+.d3-cmd {
+  position: fixed;
+  top: 12vh;
+  /* Centred by margins rather than a transform, so the entrance can move it
+     without fighting the positioning. */
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  width: min(640px, calc(100vw - var(--space-32)));
+  max-height: min(560px, calc(88vh - var(--space-32)));
+  overflow: hidden;
+  /* Floating layer: surface-raised plus the float shadow (D-075). The
+     transparent border keeps the geometry; forced-colors and prefers-contrast:
+     more put the 3:1 border-float edge back (below). */
+  background: var(--color-surface-raised);
+  border: var(--border-width) solid transparent;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-float);
+  color: var(--color-fg);
+  /* The modal tier — it interrupts the page (D-024). */
+  animation: d3-cmd-in var(--motion-modal-enter) backwards;
+}
+@keyframes d3-cmd-in { from { opacity: 0; transform: translateY(var(--space-12)) scale(0.96); } }
+@keyframes d3-cmd-out { to { opacity: 0; transform: translateY(var(--space-6)) scale(0.98); } }
+.d3-cmd[data-state='closed'] { animation: d3-cmd-out var(--motion-modal-exit) forwards; }
+.d3-cmd:focus-visible { outline: none; }
+
+/* Reduced motion: it appears and goes, and nothing moves. `none` rather than a
+   near-zero duration: Radix unmounts at once when there is no animation. */
+@media (prefers-reduced-motion: reduce) {
+  .d3-cmd, .d3-cmd[data-state='closed'],
+  .d3-cmd__scrim, .d3-cmd__scrim[data-state='closed'] { animation: none; }
+}
+@media (forced-colors: active), (prefers-contrast: more) {
+  .d3-cmd { border-color: var(--color-border-float); box-shadow: none; }
+}
+
+/* ---------- the query row ---------- */
+.d3-cmd__q {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+  flex: none;
+  min-height: 56px;
+  padding: 0 var(--space-16) 0 var(--space-20);
+}
+.d3-cmd__glyph { display: inline-flex; flex: none; color: var(--color-fg-muted); }
+.d3-cmd__input {
+  flex: 1;
+  min-width: 0;
+  height: 32px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-fg);
+  font: inherit;
+  font-size: var(--text-16);
+  line-height: var(--leading-16);
+  letter-spacing: -0.01em;
+}
+/* One ring (D-023, D-062): the query row draws it, inset so the panel's
+   rounded edge cannot clip it, and the <input> inside never does — the same
+   hand-off Input and RecipientField make to their frames. Tab to a filter
+   chip and the ring moves there. */
+.d3-cmd__input:focus-visible { outline: none; }
+.d3-cmd__q:has(.d3-cmd__input:focus-visible) {
+  outline: var(--focus-width) solid var(--color-focus);
+  outline-offset: calc(-1 * var(--space-8));
+  border-radius: var(--radius-lg);
+}
+.d3-cmd__input::placeholder { color: var(--color-fg-faint); }
+.d3-cmd__busy { flex: none; }
+.d3-cmd__esc { flex: none; }
+
+/* ---------- filters ---------- */
+.d3-cmd__filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-6);
+  flex: none;
+  padding: 0 var(--space-16) var(--space-12) var(--space-20);
+}
+.d3-cmd__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
+  height: 26px;
+  margin: 0;
+  padding: 0 var(--space-12);
+  border: 0;
+  border-radius: var(--radius-full);
+  background: var(--color-bg);
+  color: var(--color-fg-muted);
+  font: inherit;
+  font-size: var(--text-12);
+  line-height: var(--leading-12);
+  font-weight: var(--weight-medium);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color var(--motion-hover), color var(--motion-hover);
+}
+.d3-cmd__chip:hover { background: var(--color-surface-hover); color: var(--color-fg); }
+.d3-cmd__chip b, .d3-cmd__chip strong { font-weight: var(--weight-semibold); color: var(--color-fg); }
+.d3-cmd__chip svg { flex: none; }
+/* Pressed is a fill and the accent — and aria-pressed, so not colour alone. */
+.d3-cmd__chip--on, .d3-cmd__chip--on:hover { background: var(--color-accent-muted); color: var(--color-accent); }
+.d3-cmd__chip:disabled { opacity: 0.42; cursor: not-allowed; }
+@media (forced-colors: active) {
+  .d3-cmd__chip { border: var(--border-width) solid ButtonText; }
+  .d3-cmd__chip--on { border-color: Highlight; }
+}
+
+/* ---------- results ---------- */
+.d3-cmd__results {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  /* Not --color-border: the same step as surface-raised in dark (Menu.css). */
+  border-top: var(--border-width) solid var(--color-bg);
+  overscroll-behavior: contain;
+}
+.d3-cmd__list { padding: var(--space-4) var(--space-8) var(--space-8); }
+.d3-cmd__group-label {
+  padding: var(--space-12) var(--space-12) var(--space-6);
+  color: var(--color-fg-muted);
+  font-size: var(--text-11);
+  line-height: var(--leading-11);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.02em;
+  user-select: none;
+}
+.d3-cmd__opt {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+  min-height: 40px;
+  margin: 0;
+  padding: var(--space-4) var(--space-12) var(--space-4) var(--space-6);
+  border-radius: var(--radius-sm);
+  color: var(--color-fg);
+  font-size: var(--text-13);
+  line-height: var(--leading-13);
+  cursor: pointer;
+}
+/* Focus stays in the input, so this is the indicator for the one option Enter
+   runs — keyboard and pointer alike. accent-muted, as the canvas draws it,
+   plus a 2px accent bar at the start edge: the fill alone is a whisper on a
+   white panel in light, and the bar is ≥3:1 on it in both themes. */
+.d3-cmd__opt--active { background: var(--color-accent-muted); }
+.d3-cmd__opt--active::before {
+  content: '';
+  position: absolute;
+  top: var(--space-8);
+  bottom: var(--space-8);
+  left: 0;
+  width: 2px;
+  border-radius: var(--radius-full);
+  background: var(--color-accent);
+}
+.d3-cmd__opt--disabled { cursor: not-allowed; }
+.d3-cmd__opt--disabled > * { opacity: 0.42; }
+@media (forced-colors: active) {
+  .d3-cmd__opt--active { outline: var(--focus-width) solid Highlight; outline-offset: calc(-1 * var(--focus-width)); }
+}
+
+.d3-cmd__leading {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  min-width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  color: var(--color-fg-muted);
+}
+/* An icon gets a tile; an avatar brings its own circle. */
+.d3-cmd__leading > svg {
+  box-sizing: content-box;
+  padding: var(--space-6);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg);
+  width: var(--icon-16);
+  height: var(--icon-16);
+}
+.d3-cmd__label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: var(--weight-medium);
+}
+/* The query, marked: a fill and a heavier weight, text in the row's own
+   colour — so it is not colour alone, and fg on the fill stays ≥4.5:1. On the
+   active row the fill would be the row's own, so it steps to a stronger mix of
+   the accent there (D-078). */
+.d3-cmd__mark {
+  padding: 0 1px;
+  border-radius: var(--radius-xs);
+  background: var(--color-accent-muted);
+  color: inherit;
+  font-weight: var(--weight-semibold);
+}
+.d3-cmd__opt--active .d3-cmd__mark { background: color-mix(in srgb, var(--color-accent) 20%, transparent); }
+@media (forced-colors: active) {
+  .d3-cmd__mark { background: Mark; color: MarkText; }
+}
+.d3-cmd__desc {
+  flex: none;
+  max-width: 40%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--color-fg-faint);
+  font-size: var(--text-12);
+  line-height: var(--leading-12);
+  font-variant-numeric: tabular-nums;
+}
+.d3-cmd__keys { display: inline-flex; gap: var(--space-2); flex: none; }
+
+/* ---------- empty and loading ---------- */
+.d3-cmd__empty {
+  margin: 0;
+  padding: var(--space-32) var(--space-20);
+  color: var(--color-fg-muted);
+  font-size: var(--text-13);
+  line-height: var(--leading-13);
+  text-align: center;
+}
+.d3-cmd__skeletons { display: flex; flex-direction: column; padding: var(--space-12) var(--space-8) var(--space-8); }
+.d3-cmd__skeleton {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+  min-height: 40px;
+  padding: 0 var(--space-12) 0 var(--space-6);
+}
+.d3-cmd__skeleton > .d3-skl--text { flex: none; }
+
+/* ---------- footer ---------- */
+.d3-cmd__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4) var(--space-20);
+  flex: none;
+  min-height: 40px;
+  padding: var(--space-6) var(--space-20);
+  border-top: var(--border-width) solid var(--color-bg);
+  color: var(--color-fg-muted);
+  font-size: var(--text-12);
+  line-height: var(--leading-12);
+}
+.d3-cmd__hint { display: inline-flex; align-items: center; gap: var(--space-2); }
+.d3-cmd__hint > span { margin-left: var(--space-2); }
+
+.d3-cmd__vh {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  border: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
