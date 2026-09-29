@@ -1,5 +1,5 @@
 export { AppShell } from './AppShell'
-export type { AppShellProps } from './AppShell'
+export type { AppShellProps, AppShellNavTone } from './AppShell'
 export { AppShellBrand } from './AppShellBrand'
 export type { AppShellBrandProps } from './AppShellBrand'
 export { useAppShell } from './AppShellContext'

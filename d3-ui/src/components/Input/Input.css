@@ -67,3 +67,45 @@
   font-variant-ligatures: none;
   tab-size: 2;
 }
+
+/* appearance="filled" (D-073). Opt-in; nothing above changes.
+
+   The outlined field reads as a heavy frame around a near-page fill, and at
+   focus it draws twice — an accent border and an offset ring. The filled field
+   is one tonal step below the surface it sits on, keeps the same 3:1 edge
+   (D-013: measured 3.92:1 against the bg fill in light, 4.29:1 in dark), and
+   at focus draws ONE thing: a 2px outline laid over that edge. The border
+   colour does not change on focus; the outline is the signal.
+
+   The fill is --color-bg, the step below --color-surface, which is where these
+   fields live: a recessed shell's main, a card, a sheet. --color-surface-raised
+   was rejected as a fill: the edge falls to 3.00:1 against it in dark.
+
+   One size, 36px with 14px text, because the calmer field is also the one you
+   read at a glance. It carries no size class, so it sits off the Button ramp
+   on purpose; put it beside a Button and use the outlined field instead. */
+.d3-inp--filled {
+  height: 36px;
+  padding: 0 var(--space-12);
+  font-size: var(--text-14);
+  background: var(--color-bg);
+}
+.d3-inp.d3-inp--filled:has(> .d3-inp__control:focus-visible),
+.d3-inp.d3-inp--filled:has(> .d3-inp__control:is([type='date'], [type='datetime-local'], [type='month'], [type='week'], [type='time'])):focus-within,
+.d3-inp.d3-inp--filled.d3-sel:focus-visible {
+  border-color: var(--color-border-field);
+  outline: var(--focus-width) solid var(--color-focus);
+  outline-offset: calc(-1 * var(--border-width));
+}
+/* Invalid keeps its danger edge, and the ring that covers it takes the colour. */
+.d3-inp.d3-inp--filled.d3-inp--invalid:has(> .d3-inp__control:focus-visible),
+.d3-inp.d3-inp--filled.d3-inp--invalid.d3-sel:focus-visible {
+  border-color: var(--color-danger);
+  outline-color: var(--color-danger);
+}
+.d3-inp--area.d3-inp--filled {
+  height: auto;
+  padding: var(--space-8) var(--space-12);
+}
+/* A keyboard hint in a filled field (SearchField's "/") sits on the next step up. */
+.d3-inp--filled .d3-kbd { background: var(--color-surface); }

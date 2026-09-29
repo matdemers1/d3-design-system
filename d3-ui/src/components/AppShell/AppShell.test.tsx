@@ -156,3 +156,18 @@ describe('AppShellBrand', () => {
     expect(link).toHaveClass('d3-shell-brand')
   })
 })
+
+describe('AppShell — navTone', () => {
+  it('the default is raised and adds nothing to the frame', () => {
+    media = mockMatchMedia({ [WIDE]: true })
+    const { container } = render(<Shell />)
+    const root = container.querySelector('.d3-shell')!
+    expect(root.className).toBe('d3-shell d3-shell--wide')
+  })
+
+  it.each([[true], [false]])('recessed marks the frame, wide=%s', (wide) => {
+    media = mockMatchMedia({ [WIDE]: wide })
+    const { container } = render(<Shell navTone="recessed" />)
+    expect(container.querySelector('.d3-shell')).toHaveClass('d3-shell--recessed')
+  })
+})

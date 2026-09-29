@@ -259,3 +259,58 @@ for (const theme of ['dark', 'light'] as const) {
     })
   }
 }
+
+/**
+ * navTone="recessed" (D-073) — a new case; every assertion above is about the
+ * default and is unchanged. The chrome sinks to bg, the page comes forward to
+ * surface, and nav hover and the current item move up a step so neither
+ * vanishes into bg (in light, surface-hover IS bg and accent-muted is 1.01:1).
+ */
+for (const scheme of ['dark', 'light'] as const) {
+  test.describe(`navTone="recessed" · ${scheme}`, () => {
+    test.use({ viewport: { width: 1280, height: 800 }, colorScheme: scheme })
+
+    test('sidebar on bg, main on surface; hover and current lift off the ground', async ({ page }) => {
+      const errors = watchErrors(page)
+      await page.goto(storyUrl('frame-appshell--recessed', scheme))
+      await settle(page)
+      expect(await page.evaluate(() => document.documentElement.getAttribute('data-theme'))).toBe(scheme)
+      await page.getByRole('link', { name: 'Search' }).hover()
+      await settle(page)
+      const got = await page.evaluate(() => {
+        const token = (name: string) => {
+          const probe = document.createElement('span')
+          probe.style.color = getComputedStyle(document.documentElement).getPropertyValue(name).trim()
+          document.body.append(probe)
+          const c = getComputedStyle(probe).color
+          probe.remove()
+          return c
+        }
+        const bg = (sel: string) => getComputedStyle(document.querySelector(sel)!).backgroundColor
+        return {
+          sidebar: bg('.d3-shell__sidebar'),
+          main: bg('.d3-shell__main'),
+          current: bg('.d3-snav__item[aria-current="page"]'),
+          hover: bg('.d3-snav__item[href="#search"]'),
+          border: getComputedStyle(document.querySelector('.d3-shell__sidebar')!).borderRightWidth,
+          t: { bg: token('--color-bg'), surface: token('--color-surface'), raised: token('--color-surface-raised') },
+        }
+      })
+      expect(got.sidebar).toBe(got.t.bg)
+      expect(got.main).toBe(got.t.surface)
+      expect(got.current).toBe(got.t.raised)
+      expect(got.hover).toBe(got.t.surface)
+      expect(got.border).toBe('0px')
+      // Neither state paints the ground colour it sits on.
+      expect(got.current).not.toBe(got.sidebar)
+      expect(got.hover).not.toBe(got.sidebar)
+      expect(errors, errors.join('\n')).toEqual([])
+    })
+
+    test('axe, recessed', async ({ page }) => {
+      await page.goto(storyUrl('frame-appshell--recessed', scheme))
+      await settle(page)
+      expect(await axe(page)).toEqual([])
+    })
+  })
+}

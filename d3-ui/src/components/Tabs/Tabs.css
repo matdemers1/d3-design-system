@@ -13,7 +13,7 @@
   scrollbar-width: thin;
 }
 
-/* The pill travels between tabs — Expressive tier, 280ms spring (D-024).
+/* The pill travels between tabs — 160ms ease-out (D-024, retuned in D-073).
    Position is written by the component as custom properties, so the transition
    is pure CSS and honours prefers-reduced-motion via the global rule. */
 .d3-tabs__glide {

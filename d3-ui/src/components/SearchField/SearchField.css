@@ -1,0 +1,9 @@
+/* The browser's own search chrome — a cancel glyph drawn in the platform's
+   colours — is replaced by nothing: Escape clears a search field natively, and
+   a second, off-palette control inside the frame is exactly the clutter the
+   filled field exists to remove. */
+.d3-search .d3-inp__control::-webkit-search-cancel-button,
+.d3-search .d3-inp__control::-webkit-search-decoration { appearance: none; }
+
+/* The hint is for an empty field. Once there is text, the key has done its job. */
+.d3-search:has(> .d3-inp__control:not(:placeholder-shown)) .d3-search__kbd { visibility: hidden; }

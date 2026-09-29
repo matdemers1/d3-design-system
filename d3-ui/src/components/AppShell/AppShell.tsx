@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react'
 import * as Dialog from '@radix-ui/react-dialog'
 import { cn } from '../../lib/cn'
+import { devOneOf } from '../../lib/dev'
 import { CloseGlyph, MenuGlyph, SidebarGlyph } from '../../lib/glyphs'
 import { IconButton } from '../IconButton/IconButton'
 import { Tooltip } from '../Tooltip/Tooltip'
@@ -22,8 +23,24 @@ export interface AppShellProps {
   defaultCollapsed?: boolean
   /** The `id` of `<main>`, which the skip link targets. */
   mainId?: string
+  /**
+   * Which of the two sits forward.
+   *
+   * - `raised` (default) — the sidebar is a tone step up from the page: the
+   *   sidebar on `surface`, the page on `bg`. Right for an app whose pages are
+   *   cards on a ground.
+   * - `recessed` — the navigation sinks and the content comes forward: the
+   *   sidebar (and the top bar below `lg`) on `bg`, `<main>` on `surface`.
+   *   Right for an app whose content *is* one working surface — a mail list
+   *   and reading pane — where chrome on the forward tone makes the content
+   *   look sunk. Nav hover and the current item move up a step with it, so
+   *   neither disappears into the ground (D-073).
+   */
+  navTone?: AppShellNavTone
   className?: string
 }
+
+export type AppShellNavTone = 'raised' | 'recessed'
 
 /** `lg` — the shell breakpoint (D-021). Below it the sidebar is a drawer. */
 const WIDE_QUERY = '(min-width: 1024px)'
@@ -73,8 +90,9 @@ function writeCollapsed(key: string, value: boolean) {
  */
 export function AppShell({
   brand, nav, footer, children, storageKey = 'd3.sidebar.collapsed', defaultCollapsed = false,
-  mainId = 'content', className,
+  mainId = 'content', navTone = 'raised', className,
 }: AppShellProps) {
+  if (process.env.NODE_ENV !== 'production') devOneOf('AppShell', 'navTone', navTone, ['raised', 'recessed'])
   const wide = useSyncExternalStore(subscribeWide, wideSnapshot, () => true)
   const [collapsedChoice, setCollapsedChoice] = useState<boolean>(
     () => (typeof window === 'undefined' ? null : readCollapsed(storageKey)) ?? defaultCollapsed,
@@ -112,7 +130,8 @@ export function AppShell({
   return (
     <div
       ref={setRoot}
-      className={cn('d3-shell', wide ? 'd3-shell--wide' : 'd3-shell--narrow', className)}
+      className={cn('d3-shell', wide ? 'd3-shell--wide' : 'd3-shell--narrow',
+        navTone === 'recessed' && 'd3-shell--recessed', className)}
       data-collapsed={collapsed || undefined}
     >
       <a
