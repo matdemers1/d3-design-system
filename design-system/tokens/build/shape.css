@@ -21,22 +21,74 @@
   --scrim: rgba(0, 0, 0, 0.58);
 }
 
-/* Elevation is tone; detachment is a boundary. There is no --shadow-* token,
-   and adding one is a design change, not a tweak (D-015, D-023).
+/* Elevation is tone; detachment is a boundary — and there are exactly two
+   shadows, each named for the one job it does (D-015, D-023, amended by D-075).
+   Adding a third is a design change, not a tweak.
 
-   Resting surface  → a tone step, no border.
-   Floating layer   → surface-raised + 1px border-float.
-   Modal            → the above, plus a scrim.
+   Resting surface   → a tone step, no border, no shadow.
+   Content sheet     → the recessed shell's <main>, and only that: a tone step
+                       plus --shadow-sheet, inset from the page on radius-lg.
+   Floating layer    → surface-raised + --shadow-float.
+   Modal             → the above, plus a scrim.
 
-   The boundary exists because in light mode the tonal ladder terminates at
-   white: a menu over a white card has no lighter step left. Running one
-   mechanism in both modes beats running two. */
+   Why a shadow for floating layers after all: the 1px border-float at 3:1 was
+   the one mechanism that worked in both modes, and it made every menu look
+   drawn with a pen. In light the ladder still ends at white, so --shadow-float
+   opens with a 1px ring in the divider colour — that ring, not the blur, is
+   what finds a white menu on a white card. In dark the raised tone already
+   separates, so the shadow is only depth.
 
+   border-float stays. Under forced-colors the UA drops every shadow, and
+   prefers-contrast: more asks for an edge rather than a blur, so both go back
+   to the 1px border-float boundary (each component writes that fallback). Focus
+   is never a shadow: it stays a 2px outline at a 2px offset (D-062).
+
+   The -light and -dark pairs are the sources, the way the primitives are in
+   color.css; nothing reads them directly, and the usage guard refuses them in
+   a box-shadow. They sit on every theme root, not only :root, because the light
+   float names var(--color-border), and a custom property substitutes var() on
+   the element that declares it. Declared on :root alone, a light island inside
+   a dark app would inherit a ring already resolved to the dark divider. */
+:root, [data-theme] {
+  --shadow-sheet-light: 0 1px 2px rgba(16, 17, 23, 0.05), 0 4px 16px rgba(16, 17, 23, 0.05);
+  --shadow-sheet-dark: 0 1px 2px rgba(0, 0, 0, 0.35);
+  --shadow-float-light: 0 0 0 1px var(--color-border), 0 8px 24px rgba(16, 17, 23, 0.12), 0 2px 6px rgba(16, 17, 23, 0.06);
+  --shadow-float-dark: 0 12px 32px rgba(0, 0, 0, 0.5), 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* The two names components read, switched with the same selectors color.css
+   uses: dark is the primary mode, an explicit data-theme wins, and the OS is
+   followed only when no theme has been set anywhere (D-011, D-037). */
+:root, [data-theme="dark"] {
+  --shadow-sheet: var(--shadow-sheet-dark);
+  --shadow-float: var(--shadow-float-dark);
+}
+[data-theme="light"] {
+  --shadow-sheet: var(--shadow-sheet-light);
+  --shadow-float: var(--shadow-float-light);
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) {
+    --shadow-sheet: var(--shadow-sheet-light);
+    --shadow-float: var(--shadow-float-light);
+  }
+}
+
+/* The floating recipe for an app's own layers. The border is kept, transparent,
+   so the box measures the same in every mode — and forced-colors paints a
+   transparent border in the system colour, so the edge comes back on its own. */
 .elevated,
 [data-elevation="floating"] {
   background: var(--color-surface-raised);
-  border: var(--border-width) solid var(--color-border-float);
-  box-shadow: none;
+  border: var(--border-width) solid transparent;
+  box-shadow: var(--shadow-float);
+}
+@media (forced-colors: active), (prefers-contrast: more) {
+  .elevated,
+  [data-elevation="floating"] {
+    border-color: var(--color-border-float);
+    box-shadow: none;
+  }
 }
 
 /* :focus-visible, never :focus — this is what keeps keyboard focus styling

@@ -60,7 +60,8 @@ export interface ToastProps extends Omit<React.HTMLAttributes<HTMLDivElement>, '
  *   reaching for Undo never races the timer (WCAG 2.2.1).
  * - **Escape** inside it closes it; if focus was inside when it left, focus
  *   goes back to where it came from rather than to the page body.
- * - A floating layer: `surface-raised` and a 3:1 boundary, no shadow (D-023).
+ * - A floating layer: `surface-raised` and the float shadow; a 3:1 `border-float`
+ *   edge returns under forced colours or more contrast (D-075).
  *   Rises 16px on `--motion-toast-enter`, leaves on `--motion-toast-exit`.
  */
 export const Toast = forwardRef<HTMLDivElement, ToastProps>(function Toast(

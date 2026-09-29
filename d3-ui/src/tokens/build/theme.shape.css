@@ -8,8 +8,12 @@
   --radius-lg: var(--radius-lg);
   --radius-full: var(--radius-full);
 
-  /* No --shadow-* keys: the system has no shadows. Tailwind's default
-     shadow utilities are switched off so shadow-md cannot be reached for. */
+  /* Tailwind's default shadow ramp stays switched off, so shadow-md cannot be
+     reached for. The system's two shadows (D-075) are deliberately NOT mapped
+     to utilities either: each belongs to named components, which read
+     var(--shadow-sheet) and var(--shadow-float) in their own CSS. A
+     shadow-float class would be an invitation to put it anywhere, and the
+     usage guard rejects every shadow-* class regardless. */
   --shadow-2xs: initial;
   --shadow-xs: initial;
   --shadow-sm: initial;

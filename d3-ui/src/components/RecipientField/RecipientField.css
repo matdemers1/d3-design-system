@@ -198,7 +198,10 @@
 .d3-rcp--disabled .d3-rcp__input { cursor: not-allowed; opacity: 0.42; }
 .d3-rcp--disabled .d3-rcp__label { opacity: 0.42; }
 
-/* ---------- the suggestion list: the menu panel (D-023) ---------- */
+/* ---------- the suggestion list: the menu panel (D-023, D-075) ----------
+   surface-raised plus the float shadow; the transparent border keeps the
+   geometry, and forced-colors and prefers-contrast: more put the 3:1
+   border-float edge back (below). */
 .d3-rcp__pop {
   position: absolute;
   /* Clear of the frame's focus ring: 2px offset + 2px ring. */
@@ -210,9 +213,9 @@
   max-width: min(420px, 100vw);
   padding: var(--space-4);
   background: var(--color-surface-raised);
-  border: var(--border-width) solid var(--color-border-float);
+  border: var(--border-width) solid transparent;
   border-radius: var(--radius-lg);
-  box-shadow: none;
+  box-shadow: var(--shadow-float);
   color: var(--color-fg);
   cursor: default;
   /* The menu tier: 200ms ease-out, no overshoot. It opens on every keystroke
@@ -224,6 +227,9 @@
 @keyframes d3-rcp-pop-in { from { opacity: 0; transform: translateY(-4px) scale(0.98); } }
 @media (prefers-reduced-motion: reduce) {
   .d3-rcp__pop { animation: d3-rcp-fade var(--motion-popover-enter) backwards; }
+}
+@media (forced-colors: active), (prefers-contrast: more) {
+  .d3-rcp__pop { border-color: var(--color-border-float); box-shadow: none; }
 }
 
 .d3-rcp__list {
