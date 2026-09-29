@@ -3,10 +3,8 @@
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  /* A single neutral treatment in v1 — no per-user colour. Hashing an id into a
-     hue would generate ~20 unmeasured colour pairs in a system whose premise is
-     that every pair is measured. Per-user tinting is v2, with a validated tint
-     ramp or not at all (D-030). */
+  /* Neutral by default (D-030). Per-name colour is opt-in through `tint`, using
+     six measured fill/ink pairs (D-081) — never an id hashed into a hue. */
   background: var(--color-surface-raised);
   color: var(--color-fg-muted);
   font-weight: var(--weight-semibold);
@@ -20,3 +18,12 @@
 .d3-avt--md { width: 32px; height: 32px; font-size: var(--text-12); }
 .d3-avt--lg { width: 40px; height: 40px; font-size: var(--text-14); }
 .d3-avt__img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* Tints are identity, not status (D-016, D-081). An image covers the fill, so
+   these only ever show behind initials. */
+.d3-avt--tint-1 { background: var(--color-avatar-1); color: var(--color-avatar-1-fg); }
+.d3-avt--tint-2 { background: var(--color-avatar-2); color: var(--color-avatar-2-fg); }
+.d3-avt--tint-3 { background: var(--color-avatar-3); color: var(--color-avatar-3-fg); }
+.d3-avt--tint-4 { background: var(--color-avatar-4); color: var(--color-avatar-4-fg); }
+.d3-avt--tint-5 { background: var(--color-avatar-5); color: var(--color-avatar-5-fg); }
+.d3-avt--tint-6 { background: var(--color-avatar-6); color: var(--color-avatar-6-fg); }

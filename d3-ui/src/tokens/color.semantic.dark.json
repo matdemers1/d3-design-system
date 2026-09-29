@@ -192,6 +192,102 @@
       "$extensions": {
         "d3.resolved": "#978cff"
       }
+    },
+    "avatar-1": {
+      "$type": "color",
+      "$value": "{color.violet.800}",
+      "$description": "initials-avatar fill, tint 1 (violet) \u2014 identity, never status",
+      "$extensions": {
+        "d3.resolved": "#29036e"
+      }
+    },
+    "avatar-1-fg": {
+      "$type": "color",
+      "$value": "{color.violet.300}",
+      "$description": "initials on avatar-1",
+      "$extensions": {
+        "d3.resolved": "#b8b4ff"
+      }
+    },
+    "avatar-2": {
+      "$type": "color",
+      "$value": "{color.red.800}",
+      "$description": "initials-avatar fill, tint 2 (red) \u2014 identity, never status",
+      "$extensions": {
+        "d3.resolved": "#51000c"
+      }
+    },
+    "avatar-2-fg": {
+      "$type": "color",
+      "$value": "{color.red.300}",
+      "$description": "initials on avatar-2",
+      "$extensions": {
+        "d3.resolved": "#ffa09c"
+      }
+    },
+    "avatar-3": {
+      "$type": "color",
+      "$value": "{color.green.800}",
+      "$description": "initials-avatar fill, tint 3 (green) \u2014 identity, never status",
+      "$extensions": {
+        "d3.resolved": "#00311c"
+      }
+    },
+    "avatar-3-fg": {
+      "$type": "color",
+      "$value": "{color.green.300}",
+      "$description": "initials on avatar-3",
+      "$extensions": {
+        "d3.resolved": "#70d6a1"
+      }
+    },
+    "avatar-4": {
+      "$type": "color",
+      "$value": "{color.pink.800}",
+      "$description": "initials-avatar fill, tint 4 (pink) \u2014 identity, never status",
+      "$extensions": {
+        "d3.resolved": "#45073c"
+      }
+    },
+    "avatar-4-fg": {
+      "$type": "color",
+      "$value": "{color.pink.300}",
+      "$description": "initials on avatar-4",
+      "$extensions": {
+        "d3.resolved": "#eba2db"
+      }
+    },
+    "avatar-5": {
+      "$type": "color",
+      "$value": "{color.blue.800}",
+      "$description": "initials-avatar fill, tint 5 (blue) \u2014 identity, never status",
+      "$extensions": {
+        "d3.resolved": "#00294b"
+      }
+    },
+    "avatar-5-fg": {
+      "$type": "color",
+      "$value": "{color.blue.300}",
+      "$description": "initials on avatar-5",
+      "$extensions": {
+        "d3.resolved": "#87c3ff"
+      }
+    },
+    "avatar-6": {
+      "$type": "color",
+      "$value": "{color.amber.800}",
+      "$description": "initials-avatar fill, tint 6 (amber) \u2014 identity, never status",
+      "$extensions": {
+        "d3.resolved": "#372400"
+      }
+    },
+    "avatar-6-fg": {
+      "$type": "color",
+      "$value": "{color.amber.300}",
+      "$description": "initials on avatar-6",
+      "$extensions": {
+        "d3.resolved": "#e7b45d"
+      }
     }
   }
 }

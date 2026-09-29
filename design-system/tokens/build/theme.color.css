@@ -30,6 +30,18 @@
   --color-danger: var(--color-danger);
   --color-info: var(--color-info);
   --color-focus: var(--color-focus);
+  --color-avatar-1: var(--color-avatar-1);
+  --color-avatar-1-fg: var(--color-avatar-1-fg);
+  --color-avatar-2: var(--color-avatar-2);
+  --color-avatar-2-fg: var(--color-avatar-2-fg);
+  --color-avatar-3: var(--color-avatar-3);
+  --color-avatar-3-fg: var(--color-avatar-3-fg);
+  --color-avatar-4: var(--color-avatar-4);
+  --color-avatar-4-fg: var(--color-avatar-4-fg);
+  --color-avatar-5: var(--color-avatar-5);
+  --color-avatar-5-fg: var(--color-avatar-5-fg);
+  --color-avatar-6: var(--color-avatar-6);
+  --color-avatar-6-fg: var(--color-avatar-6-fg);
 }
 
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
