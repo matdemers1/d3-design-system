@@ -1,0 +1,65 @@
+/* A number-forward tile. The value is the largest thing in it; the label and
+   footnote stay muted at 12px so a row of four reads as four numbers. */
+.d3-stat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-width: 0;
+  margin: 0;
+}
+.d3-stat__label {
+  font-size: var(--text-12);
+  font-weight: var(--weight-medium);
+  color: var(--color-fg-muted);
+}
+.d3-stat__value {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-6);
+  min-width: 0;
+  margin-top: var(--space-4);
+  color: var(--color-fg);
+  font-variant-numeric: tabular-nums;
+}
+.d3-stat__number {
+  font-size: var(--text-24);
+  line-height: var(--leading-24);
+  font-weight: var(--weight-title);
+  font-variant-numeric: tabular-nums;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.d3-stat__unit {
+  font-size: var(--text-14);
+  font-weight: var(--weight-medium);
+  color: var(--color-fg-muted);
+}
+.d3-stat__status { display: flex; margin-top: var(--space-2); }
+.d3-stat__foot {
+  font-size: var(--text-12);
+  color: var(--color-fg-muted);
+}
+
+/* A row of tiles, equal widths, split by hairlines (D-023's decorative border
+   role). Two columns below md, with a hairline between the rows too. */
+.d3-stat-group {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.d3-stat-group > .d3-stat {
+  padding: var(--space-16) var(--space-20);
+  border-left: var(--border-width) solid var(--color-border);
+}
+.d3-stat-group > .d3-stat:nth-child(odd) { border-left: 0; }
+.d3-stat-group > .d3-stat:nth-child(n + 3) { border-top: var(--border-width) solid var(--color-border); }
+
+@media (min-width: 768px) {
+  .d3-stat-group {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+  }
+  .d3-stat-group > .d3-stat:nth-child(odd) { border-left: var(--border-width) solid var(--color-border); }
+  .d3-stat-group > .d3-stat:first-child { border-left: 0; }
+  .d3-stat-group > .d3-stat:nth-child(n + 3) { border-top: 0; }
+}
