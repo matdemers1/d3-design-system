@@ -1,0 +1,41 @@
+/* Two Buttons in one pill. Height, type, colour and hover are Button's; this
+   file only joins them. */
+.d3-split {
+  display: inline-flex;
+  /* No gap and no margin: the halves touch, and spacing is the parent's. */
+  gap: 0;
+  margin: 0;
+  vertical-align: middle;
+}
+
+/* Outer corners keep Button's radius; the inner ones are square. */
+.d3-split .d3-split__main {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.d3-split .d3-split__chevron {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  /* Square-ish: the glyph plus room, same height as the main half. */
+  padding: 0;
+  /* The divider is a real 1px border on the chevron half, so it takes 1px of
+     the chevron's width rather than overlapping the main half. */
+  border-left: var(--border-width) solid var(--split-divider);
+}
+.d3-split--sm .d3-split__chevron { width: 28px; }
+.d3-split--md .d3-split__chevron { width: 34px; }
+.d3-split--lg .d3-split__chevron { width: 40px; }
+
+/* The divider has to read on the fill, in both themes. On primary that is a
+   translucent of the text colour that sits on the accent; on secondary the
+   field boundary, because --color-border is the same step as the fill in dark. */
+.d3-split--primary   { --split-divider: color-mix(in srgb, var(--color-accent-contrast) 35%, transparent); }
+.d3-split--secondary { --split-divider: var(--color-border-field); }
+
+/* The halves touch, so a focus ring drawn on one would be painted over by the
+   other. Lift the focused half so its whole ring is visible (D-023). */
+.d3-split .d3-btn { position: relative; }
+.d3-split .d3-btn:focus-visible { z-index: 1; }
+/* An open menu keeps the chevron looking held, as the trigger of what is open. */
+.d3-split--primary   .d3-split__chevron[aria-expanded='true'] { background: var(--color-accent-hover); }
+.d3-split--secondary .d3-split__chevron[aria-expanded='true'] { background: var(--color-surface-hover); }
