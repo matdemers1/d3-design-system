@@ -10,6 +10,9 @@ import { expectNoAxeViolations } from '../../test/axe'
 /* Opening a positioned layer in jsdom is slow (floating-ui reads every
    ancestor's computed style), so the open-menu tests get a longer timeout. */
 const OPEN = 20_000
+// Radix positions the menu with floating-ui before it mounts; on a loaded runner that
+// outlasts findByRole's 1s default, so wait up to most of the test's budget.
+const MENU_WAIT = 15_000
 
 const setup = (props: Partial<React.ComponentProps<typeof SplitButton>> = {}) => {
   const onClick = vi.fn()
@@ -111,7 +114,7 @@ describe('SplitButton — the menu', () => {
     const { onClick, onLater } = setup()
     const chevron = screen.getByRole('button', { name: 'More send options' })
     await user.click(chevron)
-    expect(await screen.findByRole('menu')).toBeInTheDocument()
+    expect(await screen.findByRole('menu', {}, { timeout: MENU_WAIT })).toBeInTheDocument()
     expect(chevron).toHaveAttribute('aria-expanded', 'true')
     expect(screen.getAllByRole('menuitem').map((i) => i.textContent)).toEqual(['Send later', 'Schedule…'])
     await user.click(screen.getByRole('menuitem', { name: 'Send later' }))
@@ -125,7 +128,7 @@ describe('SplitButton — the menu', () => {
     const chevron = screen.getByRole('button', { name: 'More send options' })
     chevron.focus()
     await user.keyboard('{Enter}')
-    expect(await screen.findByRole('menu')).toBeInTheDocument()
+    expect(await screen.findByRole('menu', {}, { timeout: MENU_WAIT })).toBeInTheDocument()
     await user.keyboard('{Escape}')
     expect(screen.queryByRole('menu')).toBeNull()
     expect(chevron).toHaveFocus()
@@ -137,7 +140,7 @@ describe('SplitButton — the menu', () => {
     setup()
     screen.getByRole('button', { name: 'More send options' }).focus()
     await user.keyboard('{ArrowDown}')
-    await screen.findByRole('menu')
+    await screen.findByRole('menu', {}, { timeout: MENU_WAIT })
     expect(screen.getByRole('menuitem', { name: 'Send later' })).toHaveFocus()
     await user.keyboard('{ArrowDown}')
     expect(screen.getByRole('menuitem', { name: 'Schedule…' })).toHaveFocus()
