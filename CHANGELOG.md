@@ -12,6 +12,8 @@ apps must not select on them.
   edge to edge: no 8px inset, no radius, no sheet shadow. With no ground beside it, the inset only took
   16px of width from every screen; found when Postroom's phone inbox measured 342px of usable width at
   390px. Wider screens are unchanged (D-075, amended).
+- **`Stat`** — a value breaks only between words: `overflow-wrap: anywhere` let a narrow tile shrink
+  "11:32 PM" to a column of characters. The unit now wraps under the number instead.
 
 ## v1.4.0 — 2026-09-29 · the finished-product layer (D-075 – D-083)
 
