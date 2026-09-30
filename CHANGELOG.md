@@ -4,6 +4,15 @@ Semver. The public surface is what `d3-ui/src/index.ts` exports plus the token
 names; CSS class names (`.d3-btn`, `.d3-seg`) are an implementation detail and
 apps must not select on them.
 
+## v1.4.1 — 2026-09-30
+
+### Fixed
+
+- **`AppShell navTone="recessed"` at phone width** — below `md` (768px) the content sheet now runs
+  edge to edge: no 8px inset, no radius, no sheet shadow. With no ground beside it, the inset only took
+  16px of width from every screen; found when Postroom's phone inbox measured 342px of usable width at
+  390px. Wider screens are unchanged (D-075, amended).
+
 ## v1.4.0 — 2026-09-29 · the finished-product layer (D-075 – D-083)
 
 **Two shadows and nine building blocks**, built for Postroom's redesign and usable by every app. No
