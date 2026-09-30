@@ -1408,6 +1408,8 @@ D-009's reason — "we own none of the focus-management or ARIA plumbing" — st
 
 **Verification:** `npm run check:tokens` holds `tokens/shape.json` and both copies of `build/shape.css` to the values above. `src/test/check-usage.test.ts` feeds the guard the two admitted forms, `none`, an inset ring and a custom property naming the token (all pass), and a raw shadow, the source tokens, an invented token, a fallback, a second layer, a shadow focus ring, an app-local shadow token and `shadow-*` utilities including `shadow-float` (all fail, citing D-075). `browser/elevation.spec.ts` sweeps every story in both themes and requires no computed `box-shadow` (on an element or its `::before`/`::after`) outside the list, and that each listed element's shadow equals its token; opens each floating layer in both themes (surface-raised, the float token, a transparent 1px border, the light ring in `--color-border`); reopens each under `forced-colors: active` and `prefers-contrast: more` (no shadow, 1px solid edge, `border-float` under more contrast); measures the recessed `<main>` (sheet token, 14px radius, inset) at and below `lg` and the default shell's `<main>` (no shadow); and checks a focused control draws an outline and no shadow. D-023's verification line is amended to match.
 
+
+**Amended in 1.4.1:** below `md` (768px) the sheet runs edge to edge — no inset, no radius, no `--shadow-sheet`. At phone width there is no ground left beside it, so the inset only took width from the content (Postroom's phone inbox, 342px usable of 390). `browser/elevation.spec.ts` measures it at 390px.
 ---
 
 ### D-076 · v1.4 · Switch: an immediate-effect toggle as a real `role="switch"` button

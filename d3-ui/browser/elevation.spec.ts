@@ -254,6 +254,20 @@ for (const scheme of ['dark', 'light'] as const) {
       expect(box.right).toBeLessThan(box.width)
     })
 
+    test('recessed main at phone width: edge to edge, square, no shadow (1.4.1)', async ({ page }) => {
+      await page.setViewportSize({ width: 390, height: 844 })
+      await page.goto(storyUrl('frame-appshell--recessed', scheme))
+      await settle(page)
+      const box = await page.locator('.d3-shell__main').evaluate((el) => {
+        // The story frame pads the shell, so measure the sheet against its own column, not the page.
+        const cs = getComputedStyle(el)
+        return { margin: [cs.marginTop, cs.marginRight, cs.marginBottom, cs.marginLeft], radius: cs.borderTopLeftRadius, shadow: cs.boxShadow }
+      })
+      expect(box.margin).toEqual(['0px', '0px', '0px', '0px'])
+      expect(box.radius).toBe('0px')
+      expect(box.shadow).toBe('none')
+    })
+
     test('the default shell keeps main shadow-free', async ({ page }) => {
       await page.goto(storyUrl('frame-appshell--default', scheme))
       await settle(page)

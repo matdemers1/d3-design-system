@@ -193,6 +193,17 @@
   margin: var(--space-8) var(--space-8) var(--space-8) 0;
 }
 .d3-shell--recessed.d3-shell--narrow .d3-shell__main { margin: 0 var(--space-8) var(--space-8); }
+/* At phone width the sheet IS the screen (D-075, amended in 1.4.1): with no ground left beside it, an
+   8px inset and a rounded edge only take width from the content, so the sheet runs edge to edge,
+   square, and without its shadow. md is the system's phone/tablet line (layout.json). */
+@media (max-width: 767.98px) {
+  .d3-shell--recessed .d3-shell__main,
+  .d3-shell--recessed.d3-shell--narrow .d3-shell__main {
+    margin: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+}
 
 .d3-shell--recessed .d3-shell__sidebar .d3-snav__item:hover { background: var(--color-surface); }
 .d3-shell--recessed .d3-shell__sidebar .d3-snav__item[aria-current='page'] {
