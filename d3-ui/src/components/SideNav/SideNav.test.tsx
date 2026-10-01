@@ -99,3 +99,60 @@ describe('SideNavItem', () => {
     expect(screen.getByRole('group', { name: 'Tend' })).toBeInTheDocument()
   })
 })
+
+/* The CSSOM, not getComputedStyle: jsdom resolves no custom properties and
+   computes nothing for pseudo-elements, so the rule as written is what can be
+   asserted (the same approach as CommandPalette.test.tsx). Quotes in attribute
+   selectors are normalised, since serialisers disagree on them. */
+function cssRules(): CSSRule[] {
+  const out: CSSRule[] = []
+  const walk = (list: CSSRuleList) => {
+    for (const r of Array.from(list)) {
+      out.push(r)
+      if ('cssRules' in r && (r as CSSGroupingRule).cssRules) walk((r as CSSGroupingRule).cssRules)
+    }
+  }
+  for (const sheet of Array.from(document.styleSheets)) {
+    try { walk(sheet.cssRules) } catch { /* cross-origin */ }
+  }
+  return out
+}
+const norm = (s: string) => s.replace(/"/g, "'").replace(/\s+/g, ' ').trim()
+function cssRule(selector: string, inMedia?: string): CSSStyleDeclaration | undefined {
+  const want = norm(selector)
+  const hit = cssRules().find((r) =>
+    r instanceof CSSStyleRule && r.selectorText.split(',').map(norm).includes(want) &&
+    (inMedia ? r.parentRule instanceof CSSMediaRule && r.parentRule.conditionText.includes(inMedia)
+      : !(r.parentRule instanceof CSSMediaRule))) as CSSStyleRule | undefined
+  return hit?.style
+}
+
+describe('SideNav — the current item is findable without its fill (D-084, PST-DA-049)', () => {
+  it('draws a 3px accent bar at the leading edge of the current item', () => {
+    render(<SideNav><SideNavItem href="#a" label="Ask" current /></SideNav>)
+    const bar = cssRule(".d3-snav__item[aria-current='page']::before")
+    expect(bar).toBeDefined()
+    expect(bar!.getPropertyValue('content')).toMatch(/^(''|"")$/)
+    expect(bar!.getPropertyValue('position')).toBe('absolute')
+    expect(bar!.getPropertyValue('left')).toBe('0')
+    expect(bar!.getPropertyValue('width')).toBe('3px')
+    expect(bar!.getPropertyValue('background')).toBe('var(--color-accent)')
+    // The item is its containing block, so the bar sits on the item's edge.
+    expect(cssRule('.d3-snav__item')!.getPropertyValue('position')).toBe('relative')
+  })
+
+  it('keeps the bar under forced colours, in a system colour', () => {
+    render(<SideNav><SideNavItem href="#a" label="Ask" current /></SideNav>)
+    const forced = cssRule(".d3-snav__item[aria-current='page']::before", 'forced-colors')
+    expect(forced).toBeDefined()
+    expect(forced!.getPropertyValue('background')).toBe('Highlight')
+  })
+
+  it('keeps the other two signals: semibold and the accent text', () => {
+    render(<SideNav><SideNavItem href="#a" label="Ask" current /></SideNav>)
+    const current = cssRule(".d3-snav__item[aria-current='page']")!
+    expect(current.getPropertyValue('font-weight')).toBe('var(--weight-semibold)')
+    expect(current.getPropertyValue('color')).toBe('var(--color-accent)')
+    expect(screen.getByRole('link', { name: 'Ask' })).toHaveAttribute('aria-current', 'page')
+  })
+})

@@ -22,7 +22,13 @@
 
 .d3-btn--primary        { background: var(--color-accent); color: var(--color-accent-contrast); }
 .d3-btn--primary:hover:not(:disabled)   { background: var(--color-accent-hover); }
+/* Secondary carries the field edge (D-084, amending D-013 and D-030). Its fill
+   alone is 1.04:1 against a light surface and 1.12:1 against bg, so in light
+   the button had no findable extent (PST-DA-057). border-field is 4.21:1 on
+   surface, 4.39:1 on surface-raised and 3.92:1 on bg in light; 3.91 / 3.00 /
+   4.29:1 in dark. Border-box, so the 34px height does not move. */
 .d3-btn--secondary      { background: var(--color-surface-raised); color: var(--color-fg);
+                          border: var(--border-width) solid var(--color-border-field);
                           font-weight: var(--weight-medium); }
 .d3-btn--secondary:hover:not(:disabled) { background: var(--color-surface-hover); }
 .d3-btn--ghost          { background: transparent; color: var(--color-fg-muted);
@@ -61,17 +67,20 @@
    stop meaning anything. A standalone toggle being on is the exception, which
    is exactly when D-016 says a hue is earned.
 
-   The ring is an inset shadow because `.d3-btn` sets `border: 0` — a
-   `border-color` here would have styled a border that does not exist, which is
-   what the first version of this rule did.
+   On ghost the ring is an inset shadow because ghost has no border — a
+   `border-color` there would style a border that does not exist, which is
+   what the first version of this rule did. Secondary has had a real border
+   since D-084, so its ring is that border turning accent: an inset ring inside
+   it would draw grey-then-violet.
 
    Defined for secondary and ghost; see the `pressed` prop for why not primary. */
 .d3-btn--secondary[aria-pressed='true'],
 .d3-btn--ghost[aria-pressed='true'] {
   background: var(--color-accent-muted);
   color: var(--color-accent);
-  box-shadow: inset 0 0 0 var(--border-width) var(--color-accent);
 }
+.d3-btn--secondary[aria-pressed='true'] { border-color: var(--color-accent); }
+.d3-btn--ghost[aria-pressed='true'] { box-shadow: inset 0 0 0 var(--border-width) var(--color-accent); }
 .d3-btn--secondary[aria-pressed='true']:hover:not(:disabled),
 .d3-btn--ghost[aria-pressed='true']:hover:not(:disabled) {
   background: var(--color-accent-muted);

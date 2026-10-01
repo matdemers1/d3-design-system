@@ -55,6 +55,31 @@ export const AllVariants: Story = {
   ),
 }
 
+/**
+ * `secondary` carries a 1px `--color-border-field` edge, so its extent is
+ * findable on every ground it sits on — in light its fill alone was 1.04:1
+ * against `surface` and 1.12:1 against `bg` (D-084, PST-DA-057). The edge is
+ * 3.92–4.39:1 in light and 3.00–4.29:1 in dark. Switch the toolbar theme to see
+ * both.
+ */
+export const SecondaryOnEveryGround: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+      {['var(--color-bg)', 'var(--color-surface)', 'var(--color-surface-raised)'].map((ground) => (
+        <div key={ground} style={{ background: ground, padding: 16, borderRadius: 'var(--radius-lg)' }}>
+          <Row>
+            <Button variant="secondary">Cancel</Button>
+            <Button variant="secondary" size="sm">Archive</Button>
+            <Button variant="secondary" pressed>Editing</Button>
+            <Button variant="primary">Save changes</Button>
+          </Row>
+        </div>
+      ))}
+    </div>
+  ),
+}
+
 // ---- sizes
 export const Sizes: Story = {
   parameters: { controls: { disable: true }, docs: { description: { story:

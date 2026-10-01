@@ -153,6 +153,9 @@ Every decision, what it rules out, and when it was made. Append-only.
 **Applies to:** all three Phase 2 directions, and to whatever is locked.
 **Rules out:** borderless fields; a single `border` token used for both dividers and controls (the mistake App C made at 1.35:1).
 
+> [!note] Amended 2026-10-01 by D-084
+> Two non-field controls now carry the 1px `border-field` edge, because tone alone left them unfindable: the **SegmentedControl thumb** (1.12:1 light / 1.43:1 dark against its track, PST-DA-048) and the **secondary Button** (1.04:1 against a light `surface`, PST-DA-057). The principle is unchanged — a boundary marks something that must be found — and these two turned out to be such things.
+
 ---
 
 ### D-014 · Palette validation is part of authoring, not review
@@ -933,6 +936,9 @@ Two judgements inside the script worth recording:
 
 **Totals: raw `<button>` 151 → 49 · 131 `@d3cloud/ui` elements in Bindery.**
 
+> [!note] Amended 2026-10-01 by D-084
+> The thumb on `surface-raised` (treatment A) keeps its fill and gains a 1px `border-field` edge, and the chosen label is semibold: on tone alone the thumb was 1.12:1 light / 1.43:1 dark against the track (PST-DA-048). Secondary Button now has a real border, so its pressed ring is that border turning accent; ghost keeps the inset ring.
+
 ---
 
 ### D-053 · The two underline tabs become `Tabs` — and the linked package was shipping a second React
@@ -1331,6 +1337,9 @@ All three are additive and part of 1.1.0; `Page` and `FormActions` have not been
 
 **`AppShell navTone="recessed"`.** The default (`raised`) is unchanged: sidebar on `surface`, page on `bg`. `recessed` inverts it: sidebar and the top bar below `lg` on `bg`, `<main>` on `surface`. It exists for an app whose content is one working surface — a list beside a reading pane — where raised chrome makes the content look sunk. Two tokens stop working on `bg` and are moved up a step **inside the recessed sidebar only**: in light `surface-hover` *is* `bg` (1.00:1) and `accent-muted` is 1.01:1 against it, so hover and the current item would vanish. Hover lifts to `surface` (1.07:1 light, 1.10:1 dark against `bg`); the current item to `surface-raised` (1.12:1 light, 1.43:1 dark) and keeps its accent text (8.15:1 / 4.71:1 on it) and semibold weight, which are the signals that do not depend on the fill. A quiet count on the current item drops to `bg` so it stays visible.
 
+> [!note] Amended 2026-10-01 by D-084
+> The recessed current item's 1.12:1 / 1.43:1 fill was not enough on its own (PST-DA-049). Every current SideNav item, recessed or not, now also carries a 3px `--color-accent` leading bar (≥4.71:1 against the fill and the ground in both themes).
+
 **`appearance="filled"` on Input, Textarea and Select, and `SearchField`.** 36px, 14px text, filled with `bg` one tonal step below the `surface` it sits on, the same 1px `border-field` edge (D-013), and at focus **one** 2px outline laid over that edge (offset −1px) with no border-colour change — the outlined field draws an accent border *and* an offset ring. Measured in the browser against the fill: **3.92:1 light, 4.29:1 dark.** `surface-raised` was rejected as the fill: the edge falls to 3.00:1 in dark. Inside a recessed sidebar (a `bg` container) the fill moves to `surface` (4.21:1 / 3.91:1). Filled has one size and carries no size class, so it sits off the Button ramp by design; beside a Button, use outlined. Invalid keeps its danger edge and the covering ring takes the danger colour. `SearchField` is the filled Input with `type="search"`, a search glyph and an optional key hint that sets `aria-keyshortcuts` and hides once there is text; the app binds the key.
 
 **`Toast`, `ToastRegion`, `useToast`.** The first v2 component D-028 deferred. A floating layer (`surface-raised`, 1px `border-float`, no shadow — D-023) fixed at the bottom centre so nothing reflows. **One at a time:** a newer toast replaces the one on screen with a hover-speed cross-fade rather than stacking. **Never takes focus.** Six seconds by default, paused while the pointer or focus is inside it, resuming with what was left (WCAG 2.2.1); `duration: 0` stays until closed. At most one action; its shortcut is drawn as a key hint and announced through `aria-keyshortcuts`, and the app binds the key, because only the app knows whether it is free. Escape inside it closes it and returns focus to where it came from. The region is a polite live region that exists before any toast, because a live region inserted with its content is not announced.
@@ -1477,6 +1486,8 @@ D-009's reason — "we own none of the focus-management or ARIA plumbing" — st
 - **The active result: `--color-accent-muted`, plus a 2px accent bar at its start edge.** `accent-muted` is the canvas's choice and is a stronger "Enter goes here" than the hover grey, but it is a whisper on a white panel in light — so the bar carries the indication: accent on `accent-muted` is 6.37:1 dark and 7.22:1 light. `surface-hover` was the alternative; in light it is the same step as `accent-muted` (#f0f2f7 vs #f0f0ff), so it would not have kept the mark visible either. On the active row, the mark steps to `color-mix(in srgb, var(--color-accent) 20%, transparent)` so it stays distinct from the row's own fill; `fg` on it is 11.8:1 dark and 12.1:1 light. Descriptions stay `fg-faint` (≥6.58:1 on the active fill). Under forced colours the active row gets a `Highlight` outline and the mark uses `Mark`/`MarkText`.
 - **One ring.** The query row draws the focus ring, inset 8px, and the `<input>` inside never does — the hand-off Input and RecipientField make to their frames. Tab to a filter chip and the ring moves to the chip.
 - **Motion.** The panel enters on `--motion-modal-enter` (rises 12px and settles from 0.96) and leaves on `--motion-modal-exit`; the scrim fades as Modal's does. Under `prefers-reduced-motion: reduce` both are `animation: none` — explicitly, beside the global rule — so it appears and goes, and Radix unmounts at once.
+  > [!note] Amended 2026-10-01 by D-084
+  > The palette now enters on `--motion-popover-enter` (200ms ease-out, a 6px drop from 0.98) and leaves on `--motion-menu-exit` (140ms), scrim included — the Confident tier, not the 420ms modal spring (PST-DA-068). Reduced motion is unchanged.
 - **The app owns the keyboard shortcut.** The library registers no `keydown` listener on `document` or `window` to open itself. The app binds ⌘K / Ctrl+K where it wants it, sets `open`, and puts `aria-keyshortcuts` on the button that opens it — the *App owns the shortcut* story shows the wiring. (While the palette is open, Radix's own Escape listener is live, as for every dialog.)
 
 **Rejected.**
@@ -1573,3 +1584,38 @@ D-009's reason — "we own none of the focus-management or ARIA plumbing" — st
 **Rules out.** *`position="static|fixed"`*: fixed positioning also needs the content above to reserve the bar's height, which only the caller knows, and a prop would make the wrong half of that look handled. The docs give the two correct recipes (a `100dvh` flex column, or `position: sticky; bottom: 0`). *A roving-tabindex toolbar*, above. *Rendering `null` above `lg` from JS*, above. *Wrapping long labels*: one line with an ellipsis keeps item heights equal; labels are single short words. *A `danger` tone*: the same reasoning as IconButton, since a destructive action carries a confirmation, and a red icon under a thumb is not one.
 
 **Proven.** Unit (9): labelled group, `ActionBar.Item` is `ActionBarItem`, ref forwarded, forced class only when asked, buttons named by their visible label with the icon hidden, keyboard tab and Enter, `href` renders a link, disabled button not clickable, disabled link loses its href, axe clean. Browser (`browser/actionbar.spec.ts`), in both themes at 390px on all four stories: every item at least 44 x 44, 22px icons, label below icon, equal widths, 1px top hairline, axe with contrast clean; and hidden at 1280px unless forced. The stories join the general axe, geometry and focus sweeps.
+
+---
+
+### D-084 · v1.4 patch · Four upstream fixes from Postroom's design audit: a current-item bar, a findable thumb, an edged secondary button, and a palette that moves like a popover
+**Date:** 2026-10-01
+**Prompted by:** Postroom's design audit (PST-DA-048, PST-DA-049, PST-DA-057, PST-DA-068) and DS-REQ-001. Each finding is a place where the library's own rule — elevation is tone (D-023), fields carry the boundary (D-013), the modal earns theatre (D-024) — produced something a user could not find or had to wait for. Foreman task DS-T-003. **Amends D-013, D-052, D-073 and D-078**, each of which carries a note pointing here. No export, prop, default or token changes; no token was added.
+
+**Measured** with the token values in `src/tokens/build/color.css` (WCAG 2.x relative luminance), light / dark:
+
+| Pair | Light | Dark |
+|---|---|---|
+| SideNav current fill `accent-muted` vs the `surface` sidebar | 1.08:1 | 1.04:1 |
+| Recessed current fill `surface-raised` vs the `bg` sidebar | 1.12:1 | 1.43:1 |
+| **Bar** `accent` vs `accent-muted` (default current fill) | **7.22:1** | **6.37:1** |
+| **Bar** `accent` vs `surface-raised` (recessed current fill) | **8.15:1** | **4.71:1** |
+| **Bar** `accent` vs `surface` / `bg` (the sidebar grounds) | 7.81 / 7.28:1 | 6.14 / 6.74:1 |
+| Thumb `surface-raised` vs track `bg` (before) | 1.12:1 | 1.43:1 |
+| **Thumb edge** `border-field` vs track `bg` | **3.92:1** | **4.29:1** |
+| Thumb `accent-muted` vs track `bg` (rejected) | 1.01:1 | 1.06:1 |
+| Secondary fill `surface-raised` vs `surface` / `bg` (before) | 1.04 / 1.12:1 | 1.30 / 1.43:1 |
+| **Secondary edge** `border-field` vs `surface` | **4.21:1** | **3.91:1** |
+| **Secondary edge** `border-field` vs `surface-raised` / `bg` | **4.39 / 3.92:1** | **3.00 / 4.29:1** |
+| Secondary edge `border-field` vs `surface-hover` (its hover fill) | 3.92:1 | 3.39:1 |
+
+**1 · SideNav: the current item carries a 3px accent leading bar (PST-DA-049).** `.d3-snav__item[aria-current=page]::before` — 3px wide, `--color-accent`, `radius-full`, inset `--space-8` from the item's top and bottom, at its leading edge; `Highlight` under forced colours. It is the same mark as CommandPalette's active result (2px there, inside a 640px panel row; 3px here, where the nav is the frame). It applies in both shell tones, so the recessed shell's `surface-raised` fill (D-073) keeps its job of separating the item from hover, and the bar does the finding. The tint, the accent text and semibold stay: the state is never carried by colour alone. The bar is a mark, not a border, so D-023's one-border-weight rule is untouched.
+
+**2 · SegmentedControl: the thumb has the field edge and the chosen label is semibold (PST-DA-048).** The thumb keeps `surface-raised` and gains `border: var(--border-width) solid var(--color-border-field)` — 3.92:1 light / 4.29:1 dark against the track, the same edge a filled field draws on the same `bg`. The thumb is border-box (`components.css`), so the measured width is still the segment's and the travel is unchanged. An `accent-muted` fill was the alternative the audit offered and was rejected: 1.01:1 / 1.06:1 against the track, and D-052's reason still holds — in a group where one option is always chosen, accent would be permanently lit. The checked label is `--weight-semibold`. Because semibold is wider than medium, every label reserves its semibold width with a hidden `::after` copy (`content: attr(data-label)`, zero height, `visibility: hidden`, so it is not in the accessibility tree), so choosing an option never nudges its neighbours or the thumb travelling to it. That adds one `<span class="d3-seg__label">` around the label text; counts stay regular weight.
+
+**3 · Button: `secondary` has a 1px `border-field` border (PST-DA-057).** Its fill alone was 1.04:1 against a light `surface`; the edge is 4.21:1 there, 4.39:1 on `surface-raised` and 3.92:1 on `bg` in light, and 3.00–4.29:1 in dark, where `surface-raised` is the floor exactly as it is for Switch (D-076). Border-box, so 28/34/40px heights do not move; the button is 2px wider. A pressed secondary now turns that border accent instead of drawing D-052's inset ring inside it (which would have read grey-then-violet); ghost has no border and keeps the inset ring. The other four variants stay borderless: primary and danger are solid hues, and the ghosts are text until hovered.
+
+**4 · CommandPalette: enters on `--motion-popover-enter`, not the modal spring (PST-DA-068).** 200ms ease-out, dropping 6px from 0.98 with no overshoot; leaves on `--motion-menu-exit` (140ms ease-in); the scrim follows both. D-078 put the palette on the modal tier because it is built like a modal, but D-024 assigns tiers by how often a thing is opened, and a ⌘K palette is opened dozens of times an hour — the menu family's reason for the Confident tier. Under `prefers-reduced-motion: reduce` it is still `animation: none` on the panel and the scrim. There is no `--motion-popover-exit`; the menu family's exit is the one Select and Menu use, so no token was invented.
+
+**Rejected.** *A thicker (2px) current-item outline* — D-023 has one border weight, and a ring around a nav item reads as focus. *An `accent-muted` segmented thumb* — measured above. *A border on every Button variant* — only secondary had no findable extent. *A new `--motion-popover-exit` token* — the menu exit already is that token in all but name.
+
+**Proven.** Unit: `SideNav.test.tsx` reads the bar rule from the CSSOM (empty content, absolute at `left: 0` in a relative item, 3px, `--color-accent`), the `Highlight` bar under forced colours, and the semibold accent current item; `SegmentedControl.test.tsx` the thumb's `border-field` edge on a `bg` track, the semibold checked label, the reserved `::after` copy, every label's `data-label` equal to its text, and options still named once; `Button.test.tsx` the secondary border, no border on the other variants, the pressed secondary's accent border with no inset ring and the ghost's inset ring kept; `CommandPalette.test.tsx` enter on `--motion-popover-enter` and exit on `--motion-menu-exit` for panel and scrim with no modal token, both tokens ≤200ms, reduced motion unchanged, and the 2px active-result bar the SideNav bar matches. Stories (toolbar theme for both modes): *Frame/SideNav · Current Item* (expanded and rail), *Layers/SegmentedControl · Chosen Option* (both sizes, and on `surface-raised`), *Primitives/Button · Secondary On Every Ground* (`bg`, `surface`, `surface-raised`, with a pressed secondary), *Layers/CommandPalette · Opens Like A Popover*. All join the axe, geometry and focus sweeps in both themes. **The pixel baselines in `browser/__screenshots__` that show a secondary Button or a SegmentedControl must be regenerated in the Playwright image** (`npm run test:browser:update`) and reviewed — they were not regenerated here.

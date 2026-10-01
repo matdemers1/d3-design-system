@@ -41,7 +41,9 @@ const meta = {
     'because these change what an already-loaded region shows. If a segment ever triggers a request, ' +
     'it is a `Tabs` in `manual` mode, not this.\n\n' +
     'Segments are content-width, so the thumb is **measured** rather than computed — the same ' +
-    'technique `Tabs` uses for its pill, on the same `--motion-tab-glide` token, so the two read as one idea.' } } },
+    'technique `Tabs` uses for its pill, on the same `--motion-tab-glide` token, so the two read as one idea.\n\n' +
+    'The thumb carries the field edge (`--color-border-field`, 3.92:1 light / 4.29:1 dark against the ' +
+    'track) and the chosen label is semibold, so the choice does not rest on a 1.12:1 fill (D-084).' } } },
 } satisfies Meta<typeof SegmentedControl>
 export default meta
 type Story = StoryObj<typeof meta>
@@ -111,6 +113,31 @@ export const WithDisabled: Story = {
  */
 export const ManualActivation: Story = {
   render: () => <Demo items={GROUPINGS} activationMode="manual" />,
+}
+
+/**
+ * Which one is chosen, findable in both themes: a 1px `border-field` edge on the
+ * thumb at ≥3:1 against the track (3.92:1 light, 4.29:1 dark), and a semibold
+ * label. Every label reserves its semibold width, so choosing never nudges the
+ * neighbours (D-084, PST-DA-048). Switch the toolbar theme to see both.
+ */
+export const ChosenOption: Story = {
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 16, alignItems: 'flex-start' }}>
+      <Demo items={GROUPINGS} size="md" label="Group by, medium" />
+      <Demo items={GROUPINGS} size="sm" label="Group by, small" />
+      <div style={{ background: 'var(--color-surface-raised)', padding: 16, borderRadius: 'var(--radius-lg)' }}>
+        <Demo
+          label="Folder"
+          items={[
+            { value: 'inbox', label: 'Inbox', count: 12 },
+            { value: 'later', label: 'Later' },
+            { value: 'done', label: 'Done' },
+          ]}
+        />
+      </div>
+    </div>
+  ),
 }
 
 function Dot() {

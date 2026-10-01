@@ -18,7 +18,14 @@
 
 /* Measured by the component and written as custom properties, so the travel is
    a plain CSS transition and inherits prefers-reduced-motion from the global
-   rule. Same token as the Tabs pill: the two should feel like one idea. */
+   rule. Same token as the Tabs pill: the two should feel like one idea.
+
+   The thumb carries the field edge (D-084, amending D-013 and D-052). On tone
+   alone it was 1.12:1 light / 1.43:1 dark against the track, so which option
+   was chosen rested on a fill nobody could find (PST-DA-048). border-field is
+   3.92:1 light / 4.29:1 dark against the track — the same edge a filled field
+   draws on the same bg. Border-box (components.css), so the measured width is
+   still the segment's. */
 .d3-seg__thumb {
   position: absolute;
   top: 2px;
@@ -27,6 +34,7 @@
   width: var(--d3-seg-w, 0px);
   transform: translateX(var(--d3-seg-x, 0px));
   background: var(--color-surface-raised);
+  border: var(--border-width) solid var(--color-border-field);
   border-radius: calc(var(--radius-md) - 3px);
   transition: transform var(--motion-tab-glide), width var(--motion-tab-glide);
   pointer-events: none;
@@ -59,7 +67,23 @@
 .d3-seg--sm .d3-seg__item { height: 24px; padding: 0 var(--space-8);  font-size: var(--text-11); }
 
 .d3-seg__item:hover:not(:disabled) { color: var(--color-fg); }
-.d3-seg__item[aria-checked='true'] { color: var(--color-fg); }
+.d3-seg__item[aria-checked='true'] { color: var(--color-fg); font-weight: var(--weight-semibold); }
+/* Semibold is wider than medium. The label reserves its semibold width with an
+   invisible copy, so choosing an option never nudges its neighbours or the
+   thumb that is travelling to it. */
+.d3-seg__label { display: inline-flex; flex-direction: column; align-items: center; }
+.d3-seg__label::after {
+  content: attr(data-label);
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  user-select: none;
+  pointer-events: none;
+  font-weight: var(--weight-semibold);
+}
+@media (forced-colors: active) {
+  .d3-seg__thumb { border-color: Highlight; }
+}
 .d3-seg__item:disabled { opacity: 0.4; cursor: not-allowed; }
 /* A disabled option is still telling you the option exists, so it stays
    readable rather than disappearing. */
