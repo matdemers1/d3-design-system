@@ -4,11 +4,12 @@ Semver. The public surface is what `d3-ui/src/index.ts` exports plus the token
 names; CSS class names (`.d3-btn`, `.d3-seg`) are an implementation detail and
 apps must not select on them.
 
-## Unreleased
+## v1.4.2 — 2026-10-01
 
 Four fixes from Postroom's design audit (D-084). No export, prop, default or token changed. A
 secondary Button is 2px wider (its new border) and a SegmentedControl option is as wide as its
-semibold label; heights are unchanged.
+semibold label; heights are unchanged. That small width change is shipped as a patch, as v1.4.1's
+edge-to-edge sheet was: it fixes non-text contrast (WCAG 1.4.11) and nothing an app passes changes.
 
 ### Fixed
 
@@ -22,6 +23,9 @@ semibold label; heights are unchanged.
 - **`Button variant="secondary"`** — a 1px `--color-border-field` border, 4.21:1 against a light
   `surface` where the fill alone was 1.04:1 (PST-DA-057). Heights do not move. A pressed secondary
   turns that border accent instead of drawing an inset ring inside it.
+
+- **`SplitButton variant="secondary"`** — the main half drops its right edge, so the divider beside
+  the chevron stays one hairline now that a secondary Button has its own border.
 
 ### Changed
 

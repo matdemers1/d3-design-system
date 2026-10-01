@@ -1587,7 +1587,7 @@ D-009's reason — "we own none of the focus-management or ARIA plumbing" — st
 
 ---
 
-### D-084 · v1.4 patch · Four upstream fixes from Postroom's design audit: a current-item bar, a findable thumb, an edged secondary button, and a palette that moves like a popover
+### D-084 · v1.4.2 · Four upstream fixes from Postroom's design audit: a current-item bar, a findable thumb, an edged secondary button, and a palette that moves like a popover
 **Date:** 2026-10-01
 **Prompted by:** Postroom's design audit (PST-DA-048, PST-DA-049, PST-DA-057, PST-DA-068) and DS-REQ-001. Each finding is a place where the library's own rule — elevation is tone (D-023), fields carry the boundary (D-013), the modal earns theatre (D-024) — produced something a user could not find or had to wait for. Foreman task DS-T-003. **Amends D-013, D-052, D-073 and D-078**, each of which carries a note pointing here. No export, prop, default or token changes; no token was added.
 
