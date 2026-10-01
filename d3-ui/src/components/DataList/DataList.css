@@ -145,4 +145,33 @@ a.d3-dlrow:focus-visible {
     margin-inline-start: 0;
     margin-top: var(--space-8);
   }
+  /* Under the text, a leading ghost action's own padding indented its label from
+     the text edge it now sits under (D-087). Its padding is taken back, so the
+     label lines up with the title; the hover fill reaches outward instead. */
+  .d3-dlrow__actions > .d3-btn--sm:is(.d3-btn--ghost, .d3-btn--danger-ghost):first-child { margin-inline-start: calc(var(--space-8) * -1); }
+  .d3-dlrow__actions > .d3-btn--md:is(.d3-btn--ghost, .d3-btn--danger-ghost):first-child { margin-inline-start: calc(var(--space-16) * -1); }
+  .d3-dlrow__actions > .d3-btn--lg:is(.d3-btn--ghost, .d3-btn--danger-ghost):first-child { margin-inline-start: calc(var(--space-20) * -1); }
+}
+
+/* On a card on the recessed sheet (D-085) the card has an edge, and a hairline
+   that stops 4px short of it read as neither flush nor aligned. There the list
+   sits in the card's content box like SettingsRow does: no bleed, so the
+   hairlines run exactly from content edge to content edge and the text starts on
+   the card title's edge. The hover fill still reaches out past the text — on a
+   pseudo-element behind the row, not on a negative margin under the hairline. */
+.d3-shell--recessed .d3-shell__main :where(.d3-crd) .d3-dlist { margin-inline: 0; }
+.d3-shell--recessed .d3-shell__main .d3-crd .d3-dlrow { padding-inline: 0; }
+.d3-shell--recessed .d3-shell__main .d3-crd a.d3-dlrow { position: relative; isolation: isolate; }
+.d3-shell--recessed .d3-shell__main .d3-crd a.d3-dlrow::before {
+  content: '';
+  position: absolute;
+  inset: 0 calc(var(--space-12) * -1);
+  z-index: -1;
+  border-radius: var(--radius-md);
+  transition: background-color var(--motion-hover);
+}
+.d3-shell--recessed .d3-shell__main .d3-crd a.d3-dlrow:hover { background: none; }
+.d3-shell--recessed .d3-shell__main .d3-crd a.d3-dlrow:hover::before { background: var(--color-surface-hover); }
+.d3-shell--recessed .d3-shell__main .d3-crd a.d3-dlrow:focus-visible {
+  outline-offset: calc(var(--space-12) - var(--focus-width));
 }

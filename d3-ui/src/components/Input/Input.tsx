@@ -14,7 +14,8 @@ export type InputSize = 'sm' | 'md' | 'lg'
  * one tonal step below the `surface` it usually sits on — with the same 3:1
  * edge, and a single 2px focus outline over that edge instead of an accent
  * border plus an offset ring. One size: `size` applies to `outlined` only.
- * Measured: the edge is 3.92:1 against the fill in light and 4.29:1 in dark.
+ * Measured: the edge is 3.04:1 against the fill in light (retuned in 1.5, D-085)
+ * and 4.29:1 in dark.
  */
 export type FieldAppearance = 'outlined' | 'filled'
 

@@ -1,6 +1,7 @@
 import { forwardRef } from 'react'
 import * as RadixSelect from '@radix-ui/react-select'
 import { cn } from '../../lib/cn'
+import { ChevronDownGlyph } from '../../lib/glyphs'
 import { currentStyleNonce } from '../../lib/styleNonce'
 import { useFormField } from '../FormField/FormFieldContext'
 import type { FieldAppearance } from '../Input/Input'
@@ -37,6 +38,7 @@ export interface SelectProps {
   /** Submitted with a native form, like the `<select>` this replaces. */
   name?: string
   required?: boolean
+  /** Replaces the default chevron glyph, for an app with its own icon set. */
   chevronIcon?: React.ReactNode
   checkIcon?: React.ReactNode
 }
@@ -89,7 +91,7 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
             applied: a long label widened the trigger, and "Select…" was drawn
             in full text colour, indistinguishable from a chosen value. */}
         <span className="d3-sel__value"><RadixSelect.Value placeholder={placeholder} /></span>
-        <RadixSelect.Icon className="d3-inp__affix">{chevronIcon ?? '▾'}</RadixSelect.Icon>
+        <RadixSelect.Icon className="d3-inp__affix">{chevronIcon ?? <ChevronDownGlyph />}</RadixSelect.Icon>
       </RadixSelect.Trigger>
       <RadixSelect.Portal>
         <RadixSelect.Content className="d3-sel__content" position="popper" sideOffset={6}>

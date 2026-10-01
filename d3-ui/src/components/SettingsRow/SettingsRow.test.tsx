@@ -133,3 +133,12 @@ describe('SettingsRow — in a Section', () => {
     expect(rows).toHaveLength(2)
   })
 })
+
+describe('SettingsRow — stack (D-087)', () => {
+  it('adds no class by default, and the stack class when asked', () => {
+    const { container, rerender } = render(<SettingsRow title="Theme" control={<Button>Change…</Button>} />)
+    expect(container.querySelector('.d3-setrow')).not.toHaveClass('d3-setrow--stack')
+    rerender(<SettingsRow title="Theme" stack control={<Button>Change…</Button>} />)
+    expect(container.querySelector('.d3-setrow')).toHaveClass('d3-setrow--stack')
+  })
+})

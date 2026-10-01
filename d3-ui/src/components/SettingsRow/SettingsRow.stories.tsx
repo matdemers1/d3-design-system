@@ -23,7 +23,9 @@ const meta = {
     'makes the title the control’s real `<label>`; `aria-labelledby={ids.labelledBy}` names a ' +
     'control that takes no `id`. A Button named by its own text ("Change…") is a plain node. A ' +
     'control left with no name is reported in development.\n\n' +
-    'Side by side from `md`; below it the control drops under the text. (The breakpoint follows ' +
+    'Side by side from `md`. Below it a control of 160px or less (a Switch, a short ' +
+    'SegmentedControl, a Badge) stays beside the text, and a wider one drops under it; `stack` ' +
+    'always drops it (D-087). (The breakpoint follows ' +
     'the viewport — view the narrow story at a phone width.) The Switch will replace the ' +
     'Checkbox in the toggle rows when it lands.' } } },
   decorators: [(S) => <div style={{ width: '100%', maxWidth: 640, margin: '0 auto' }}><S /></div>],

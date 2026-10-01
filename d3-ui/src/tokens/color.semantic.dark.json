@@ -33,12 +33,28 @@
         "d3.resolved": "#2c303b"
       }
     },
+    "surface-card": {
+      "$type": "color",
+      "$value": "{color.neutral.850}",
+      "$description": "a card on the recessed sheet (AppShell navTone=recessed) \u2014 with a 1px border edge",
+      "$extensions": {
+        "d3.resolved": "#1e212a"
+      }
+    },
     "surface-hover": {
       "$type": "color",
       "$value": "{color.neutral.800}",
       "$description": "row and item hover",
       "$extensions": {
         "d3.resolved": "#242731"
+      }
+    },
+    "fill-quiet": {
+      "$type": "color",
+      "$value": "{color.neutral.950}",
+      "$description": "the quiet fill of a chip or track on a card \u2014 neutral badge, quiet count, tab and segmented track",
+      "$extensions": {
+        "d3.resolved": "#101117"
       }
     },
     "border": {
@@ -115,10 +131,10 @@
     },
     "accent-muted": {
       "$type": "color",
-      "$value": "{color.violet.900}",
+      "$value": "{color.violet.tint-dark}",
       "$description": "accent tint \u2014 selection, active nav, bulk bar",
       "$extensions": {
-        "d3.resolved": "#1c0252"
+        "d3.resolved": "#32256d"
       }
     },
     "success": {

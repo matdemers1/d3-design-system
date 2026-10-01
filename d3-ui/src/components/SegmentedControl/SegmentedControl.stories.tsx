@@ -42,8 +42,9 @@ const meta = {
     'it is a `Tabs` in `manual` mode, not this.\n\n' +
     'Segments are content-width, so the thumb is **measured** rather than computed — the same ' +
     'technique `Tabs` uses for its pill, on the same `--motion-tab-glide` token, so the two read as one idea.\n\n' +
-    'The thumb carries the field edge (`--color-border-field`, 3.92:1 light / 4.29:1 dark against the ' +
-    'track) and the chosen label is semibold, so the choice does not rest on a 1.12:1 fill (D-084).' } } },
+    'The thumb carries the divider edge (`--color-border`) on a `--color-fill-quiet` track, and the ' +
+    'chosen label is semibold, so the choice does not rest on a 1.12:1 fill alone (D-084, D-085). The ' +
+    'field edge it carried in 1.4.2 made the chosen option read as focus-ringed.' } } },
 } satisfies Meta<typeof SegmentedControl>
 export default meta
 type Story = StoryObj<typeof meta>
@@ -116,9 +117,8 @@ export const ManualActivation: Story = {
 }
 
 /**
- * Which one is chosen, findable in both themes: a 1px `border-field` edge on the
- * thumb at ≥3:1 against the track (3.92:1 light, 4.29:1 dark), and a semibold
- * label. Every label reserves its semibold width, so choosing never nudges the
+ * Which one is chosen, findable in both themes: a raised thumb with a 1px divider
+ * edge on the quiet track (D-085), and a semibold label. Every label reserves its semibold width, so choosing never nudges the
  * neighbours (D-084, PST-DA-048). Switch the toolbar theme to see both.
  */
 export const ChosenOption: Story = {

@@ -156,6 +156,9 @@ Every decision, what it rules out, and when it was made. Append-only.
 > [!note] Amended 2026-10-01 by D-084
 > Two non-field controls now carry the 1px `border-field` edge, because tone alone left them unfindable: the **SegmentedControl thumb** (1.12:1 light / 1.43:1 dark against its track, PST-DA-048) and the **secondary Button** (1.04:1 against a light `surface`, PST-DA-057). The principle is unchanged — a boundary marks something that must be found — and these two turned out to be such things.
 
+> [!note] Amended 2026-10-01 by D-085
+> Light `border-field` is retuned to `#868b9a`, just clear of 3:1 (3.04:1 against a filled field's `bg` fill, 3.40:1 against a card); dark is unchanged, already at 3.00:1 against `surface-raised`. The SegmentedControl thumb moves back off the field edge to the divider edge. And on the recessed sheet a **Card carries a 1px `--color-border` edge** — the decorative divider, not the 3:1 field boundary: there the card's fill was 1.00:1 against the sheet and the group could not be seen.
+
 ---
 
 ### D-014 · Palette validation is part of authoring, not review
@@ -203,6 +206,9 @@ Every decision, what it rules out, and when it was made. Append-only.
 | blocked / failed | danger — the only other hue status may use |
 
 **Rules out:** a status palette with one hue per state; `success` green and `info` blue as routine status colours. `success`, `warning` and `info` remain in the token set for alerts, toasts, validation and inline messaging — they simply stop being how a table communicates state.
+
+> [!note] Amended 2026-10-01 by D-086
+> `warning` becomes a status hue too, for one meaning: **degraded, delayed, retrying — it needs a look, not action now** (StatusDot and Badge `tone="warning"`). Attention keeps the accent and its meaning here ("new, on you"). Healthy stays neutral, and `success` and `info` are still not status colours.
 **Consequence for Phase 4:** the Badge/Status component takes a semantic `tone` (`neutral` | `attention` | `danger`), not a free colour. Which statuses map to which tone is an app-level decision made once per app, not per call site.
 
 ---
@@ -1340,6 +1346,9 @@ All three are additive and part of 1.1.0; `Page` and `FormActions` have not been
 > [!note] Amended 2026-10-01 by D-084
 > The recessed current item's 1.12:1 / 1.43:1 fill was not enough on its own (PST-DA-049). Every current SideNav item, recessed or not, now also carries a 3px `--color-accent` leading bar (≥4.71:1 against the fill and the ground in both themes).
 
+> [!note] Amended 2026-10-01 by D-085
+> Inside the recessed `<main>` a Card is now `--color-surface-card` with a 1px `--color-border` edge (on `surface` it was 1.00:1 against the sheet), and below `md` the sheet itself drops to `bg` with the cards inset on it. The filled field's edge in light is now 3.04:1 against its fill (retuned `border-field`), not 3.92:1; dark is unchanged at 4.29:1.
+
 **`appearance="filled"` on Input, Textarea and Select, and `SearchField`.** 36px, 14px text, filled with `bg` one tonal step below the `surface` it sits on, the same 1px `border-field` edge (D-013), and at focus **one** 2px outline laid over that edge (offset −1px) with no border-colour change — the outlined field draws an accent border *and* an offset ring. Measured in the browser against the fill: **3.92:1 light, 4.29:1 dark.** `surface-raised` was rejected as the fill: the edge falls to 3.00:1 in dark. Inside a recessed sidebar (a `bg` container) the fill moves to `surface` (4.21:1 / 3.91:1). Filled has one size and carries no size class, so it sits off the Button ramp by design; beside a Button, use outlined. Invalid keeps its danger edge and the covering ring takes the danger colour. `SearchField` is the filled Input with `type="search"`, a search glyph and an optional key hint that sets `aria-keyshortcuts` and hides once there is text; the app binds the key.
 
 **`Toast`, `ToastRegion`, `useToast`.** The first v2 component D-028 deferred. A floating layer (`surface-raised`, 1px `border-float`, no shadow — D-023) fixed at the bottom centre so nothing reflows. **One at a time:** a newer toast replaces the one on screen with a hover-speed cross-fade rather than stacking. **Never takes focus.** Six seconds by default, paused while the pointer or focus is inside it, resuming with what was left (WCAG 2.2.1); `duration: 0` stays until closed. At most one action; its shortcut is drawn as a key hint and announced through `aria-keyshortcuts`, and the app binds the key, because only the app knows whether it is free. Escape inside it closes it and returns focus to where it came from. The region is a polite live region that exists before any toast, because a live region inserted with its content is not announced.
@@ -1419,6 +1428,9 @@ D-009's reason — "we own none of the focus-management or ARIA plumbing" — st
 
 
 **Amended in 1.4.1:** below `md` (768px) the sheet runs edge to edge — no inset, no radius, no `--shadow-sheet`. At phone width there is no ground left beside it, so the inset only took width from the content (Postroom's phone inbox, 342px usable of 390). `browser/elevation.spec.ts` measures it at 390px.
+
+> [!note] Amended 2026-10-01 by D-085
+> "Card unchanged" no longer holds inside the recessed sheet: there a Card is `--color-surface-card` with a 1px `--color-border` edge — still no shadow, so the two-shadow rule stands. Below `md` the edge-to-edge sheet paints `bg`, and the cards sit inset on it.
 ---
 
 ### D-076 · v1.4 · Switch: an immediate-effect toggle as a real `role="switch"` button
@@ -1539,6 +1551,9 @@ D-009's reason — "we own none of the focus-management or ARIA plumbing" — st
 
 **Proven.** Unit: dot is `aria-hidden` and the text present, neutral by default, each tone maps to its class, a bad tone warns, Stat reads label then value then unit, status reads after the value, `0` renders, and the stylesheet sets tabular figures on the value. Stories for all four tones, a services list, and a four-tile `StatGroup` are swept by axe in both themes by the Storybook suite.
 
+> [!note] Amended 2026-10-01 by D-086
+> StatusDot gains a fifth tone, `warning` — degraded, delayed, retrying: needs a look, not action now — on `--color-warning` (7.2–7.5:1 light, 7.0–9.1:1 dark on the resting surfaces). "A `success` or green tone" stays ruled out.
+
 ---
 
 ### D-081 · v1.4 · Avatar tints: six name-derived identity fills, measured, opt-in
@@ -1612,6 +1627,9 @@ D-009's reason — "we own none of the focus-management or ARIA plumbing" — st
 
 **2 · SegmentedControl: the thumb has the field edge and the chosen label is semibold (PST-DA-048).** The thumb keeps `surface-raised` and gains `border: var(--border-width) solid var(--color-border-field)` — 3.92:1 light / 4.29:1 dark against the track, the same edge a filled field draws on the same `bg`. The thumb is border-box (`components.css`), so the measured width is still the segment's and the travel is unchanged. An `accent-muted` fill was the alternative the audit offered and was rejected: 1.01:1 / 1.06:1 against the track, and D-052's reason still holds — in a group where one option is always chosen, accent would be permanently lit. The checked label is `--weight-semibold`. Because semibold is wider than medium, every label reserves its semibold width with a hidden `::after` copy (`content: attr(data-label)`, zero height, `visibility: hidden`, so it is not in the accessibility tree), so choosing an option never nudges its neighbours or the thumb travelling to it. That adds one `<span class="d3-seg__label">` around the label text; counts stay regular weight.
 
+> [!note] Amended 2026-10-01 by D-085
+> The thumb's edge is now `--color-border`, not `border-field`: at 3.92:1 the chosen option read as focus-ringed (Postroom settings X10a). The semibold label stays. Light `border-field` itself is retuned (3.04:1 on `bg`), so the secondary Button's light edge in the table above is now 3.26 / 3.40 / 3.04:1 on `surface` / `surface-raised` / `bg`; dark is unchanged. Dark `accent-muted` is lifted to `#32256d`, so the SideNav bar is 4.63:1 against the default current fill.
+
 **3 · Button: `secondary` has a 1px `border-field` border (PST-DA-057).** Its fill alone was 1.04:1 against a light `surface`; the edge is 4.21:1 there, 4.39:1 on `surface-raised` and 3.92:1 on `bg` in light, and 3.00–4.29:1 in dark, where `surface-raised` is the floor exactly as it is for Switch (D-076). Border-box, so 28/34/40px heights do not move; the button is 2px wider. A pressed secondary now turns that border accent instead of drawing D-052's inset ring inside it (which would have read grey-then-violet); ghost has no border and keeps the inset ring. The other four variants stay borderless: primary and danger are solid hues, and the ghosts are text until hovered.
 
 **4 · CommandPalette: enters on `--motion-popover-enter`, not the modal spring (PST-DA-068).** 200ms ease-out, dropping 6px from 0.98 with no overshoot; leaves on `--motion-menu-exit` (140ms ease-in); the scrim follows both. D-078 put the palette on the modal tier because it is built like a modal, but D-024 assigns tiers by how often a thing is opened, and a ⌘K palette is opened dozens of times an hour — the menu family's reason for the Confident tier. Under `prefers-reduced-motion: reduce` it is still `animation: none` on the panel and the scrim. There is no `--motion-popover-exit`; the menu family's exit is the one Select and Menu use, so no token was invented.
@@ -1619,3 +1637,103 @@ D-009's reason — "we own none of the focus-management or ARIA plumbing" — st
 **Rejected.** *A thicker (2px) current-item outline* — D-023 has one border weight, and a ring around a nav item reads as focus. *An `accent-muted` segmented thumb* — measured above. *A border on every Button variant* — only secondary had no findable extent. *A new `--motion-popover-exit` token* — the menu exit already is that token in all but name.
 
 **Proven.** Unit: `SideNav.test.tsx` reads the bar rule from the CSSOM (empty content, absolute at `left: 0` in a relative item, 3px, `--color-accent`), the `Highlight` bar under forced colours, and the semibold accent current item; `SegmentedControl.test.tsx` the thumb's `border-field` edge on a `bg` track, the semibold checked label, the reserved `::after` copy, every label's `data-label` equal to its text, and options still named once; `Button.test.tsx` the secondary border, no border on the other variants, the pressed secondary's accent border with no inset ring and the ghost's inset ring kept; `CommandPalette.test.tsx` enter on `--motion-popover-enter` and exit on `--motion-menu-exit` for panel and scrim with no modal token, both tokens ≤200ms, reduced motion unchanged, and the 2px active-result bar the SideNav bar matches. Stories (toolbar theme for both modes): *Frame/SideNav · Current Item* (expanded and rail), *Layers/SegmentedControl · Chosen Option* (both sizes, and on `surface-raised`), *Primitives/Button · Secondary On Every Ground* (`bg`, `surface`, `surface-raised`, with a pressed secondary), *Layers/CommandPalette · Opens Like A Popover*. All join the axe, geometry and focus sweeps in both themes. The pixel baselines in `browser/__screenshots__` that show a secondary Button or a SegmentedControl (14 files, both themes) were regenerated in the Playwright image (`npm run test:browser:update`) and reviewed. **SplitButton:** a secondary SplitButton's main half now drops its right edge, so the divider beside the chevron is that half's border and stays one hairline (the SplitButton decision's divider is unchanged for primary).
+
+---
+
+### D-085 · v1.5 · Cards that read on the recessed sheet: a card tone and an edge, a quiet fill, a lighter field edge and a lifted dark tint
+**Date:** 2026-10-01
+**Prompted by:** Postroom's P17 design critiques (settings X1–X3, X7–X10, X14; admin X1, X2) and DS-REQ-007. In `AppShell navTone="recessed"` the sheet is `surface` (D-073) and a Card was also `surface` — 1.00:1, no border, no shadow — so every `Section` on every Postroom settings and admin screen read as loose text indented 20px, and everything placed in a card had been tuned to a card nobody could see. Foreman task DS-T-2.1. **Amends D-013, D-073, D-075 and D-084**, each of which carries a note pointing here.
+
+**Question:** How does a card become a visible group on the recessed sheet, in both themes and on a phone, without a shadow (D-075 admits two and this is not one of them) and without moving anything in an app that does not use the recessed shell?
+
+**Chosen.** Everything that changes rendering is scoped to `.d3-shell--recessed .d3-shell__main`, except three token values and two component recipes listed under *global*.
+
+| Token | Light | Dark | Job |
+|---|---|---|---|
+| `--color-surface-card` (new) | `#ffffff` (white) | `#1e212a` (new primitive `neutral.850`) | a card on the recessed sheet |
+| `--color-fill-quiet` (new) | `#f0f2f7` (`neutral.100`, the bg value) | `#101117` (`neutral.950`, the bg value) | a chip or track on a card: neutral/danger Badge, quiet CountBadge, Tabs track, SegmentedControl track |
+| `--color-border-field` | **`#868b9a`** (new primitive `neutral.450`), was `#747888` | `#747888`, unchanged | form-control edge, ≥3:1 |
+| `--color-accent-muted` | `#f0f0ff`, unchanged | **`#32256d`** (new off-ramp primitive `violet.tint-dark`, oklch L 0.325 C 0.12), was `#1c0252` | selection tint |
+
+`neutral.450` and `neutral.850` are interpolated on the existing ramp (L and C halfway between their neighbours). `violet.tint-dark` is off the ramp on purpose: every ramp step at that lightness is fully saturated and reads as a blob, and a less saturated one is what makes the tint read as a tint.
+
+**Measured** (WCAG 2.x relative luminance; the browser spec `browser/cards.spec.ts` logs the same numbers from computed styles):
+
+| Pair | Light | Dark |
+|---|---|---|
+| Card vs sheet (`surface`) — before | 1.00:1 | 1.00:1 |
+| Card vs sheet — now | 1.04:1 | 1.07:1 |
+| **Card edge** `border` vs the card | **1.34:1** | **1.22:1** |
+| **Card edge** `border` vs the sheet | **1.29:1** | **1.30:1** |
+| **Quiet fill** vs the card (badge, count, tab track, segmented track) | **1.12:1** | **1.17:1** |
+| Quiet fill vs the sheet | 1.07:1 | 1.10:1 |
+| `fg-muted` / `danger` text on the quiet fill | 11.77 / 7.33:1 | 10.05 / 6.46:1 |
+| Raised thumb or on-card tab pill vs the quiet track | 1.12:1 (+ edge 1.20:1) | 1.43:1 |
+| **Field edge** vs the filled field's fill (`bg`) | **3.04:1** (was 3.92) | 4.29:1 |
+| **Field edge** vs the card | **3.40:1** (was 4.39) | 3.66:1 |
+| Field edge vs `surface` / `surface-raised` | 3.26 / 3.40:1 | 3.91 / **3.00:1** |
+| Switch: white thumb vs the off track (`border-field`) | 3.40:1 | — |
+| **Accent text on `accent-muted`** | 7.22:1 | **4.63:1** (was 6.37) |
+| **`accent-muted` vs the sheet** | 1.08:1 | **1.33:1** (was 1.04) |
+| `accent-muted` vs `surface-raised` | 1.13:1 | 1.03:1 |
+
+**1 · The card.** Inside the recessed main a Card (so every `Section surface="card"`) paints `--color-surface-card` with a 1px `--color-border` edge; a selected card keeps `accent-muted` and an interactive card still hovers to `surface-hover`. The edge, not the fill, draws the group — the fill steps are 1.04 / 1.07:1 — which is why the dark card sits between `surface` and `surface-raised` rather than at `surface-raised`: there the card would equal the `border` colour and the edge would vanish (1.00:1). Still no shadow. Outside the recessed shell a Card is exactly what it was.
+
+**2 · The phone.** Below `md` the recessed sheet already ran edge to edge (D-075 as amended in 1.4.1), so it was the screen, and a white card on it would have been invisible again. There the sheet drops to `bg`, the cards sit inset on it (the grouped-list pattern), and page padding (`--page-pad`) and card padding both drop to 16px — 326px of content on a 390px phone instead of 302. A filled field sitting directly on that `bg` sheet steps up to `surface`, as it does in the recessed sidebar (D-073); inside a card it is back on `bg`.
+
+**3 · The quiet fill is card-relative.** It is applied only inside a card on the recessed sheet. On the sheet itself neither choice works in light (white 1.03:1, the bg value 1.07:1), so the sheet-level recipe is left as it was. It equals the `bg` value in both themes today because `bg` is the step one below the card in both; it is a separate token because its job — "a quiet chip on a card" — is not the page ground's, and the dark value was chosen against the alternatives: `surface-raised` (`#2c303b`) is 1.22:1 on the card but is also the segmented thumb and is 1.03:1 from the lifted `accent-muted`, so a track in it would swallow both what rides on it. The SegmentedControl track reads the new token everywhere (no visible change, since its value is what the track already was).
+
+**4 · Tabs on a card.** With the track on the quiet fill, light `accent-muted` would be 1.01:1 against it. So on a card the Tabs pill takes the segmented recipe — `surface-raised` with the 1px divider edge — and the chosen tab keeps its accent text and semibold weight, the signals that never depended on the fill. Tabs anywhere else keep the accent-muted pill.
+
+**5 · The SegmentedControl thumb edge is `--color-border` (amends D-084 §2), everywhere.** D-084 gave it the field edge at 3.92:1, and the chosen option read as focus-ringed (settings X10a). The divider edge (1.20:1 against the track, on a 1.12:1 raised fill) plus the semibold `fg` label carries the choice; the label is the signal that does not depend on colour at all.
+
+**6 · The field edge is retuned to just clear 3:1 (amends D-013, D-073).** Light moves from 3.92:1 against the filled field's `bg` fill to **3.04:1**, and 4.39 → 3.40:1 against a white card — the lightest neutral on the ramp's line that still clears 3:1 against every ground a field sits on. **Dark does not move:** it is already at the floor, 3.00:1 against `surface-raised`, which is the ground of a Modal or Menu that holds a field and the fill of a secondary Button that carries the same edge. Lowering it would put a dark modal's fields under 3:1, so "lighter than today" is true in light only; dark is 4.29:1 against the fill and 3.66:1 against the card. Every control that reads `border-field` follows: Input, Select, Textarea, Checkbox, CodeInput, RecipientField, the secondary Button and its SplitButton divider, and the Switch's off track.
+
+**7 · Dark `accent-muted` is lifted (amends D-073's sidebar note and D-084's measurements).** `#1c0252` was 1.04:1 against the sheet — a selected tab or pill read as a hole, not a selection. `#32256d` is 1.33:1 against `surface` and 1.45:1 against `bg`, with accent text 4.63:1 and `fg` 11.57:1 on it. Everything that uses the tint moves with it: Tabs, pressed Buttons and IconButtons, a selected Card, an attention Badge, the SideNav current item in the default shell (its 3px accent bar is now 4.63:1 against it), a checked Select item. On `surface-raised` (a menu) the new tint is 1.03:1, so a checked Select item is carried by its tick, accent text and weight, as a chosen tab is.
+
+**8 · What sits in a card.** On a card on the recessed sheet: a Section's `h2` title is 16px on `--leading-16` (it stays an `h2`), because 20px under a 24px page title read as a second page; a DataList no longer bleeds into the card's padding, so its hairlines run exactly from content edge to content edge and its text starts on the title's edge — the hover fill still reaches 12px past the text on a pseudo-element behind the row, and the focus ring with it; a row-sized EmptyState drops its side padding to start on the same edge; a Table's sticky header paints the card's tone; ghost Button and IconButton hovers take the quiet fill instead of white-on-white. **Everywhere:** an EmptyState inside any Card paints no background of its own (outside the recessed shell the card and the empty state were the same `surface`, so nothing visible changes there).
+
+**9 · The long page keeps its ground.** `:root:has(.d3-shell--recessed)` and its `body` paint `--color-bg`, so a page taller than the viewport never shows another colour below the sidebar (settings X14). A selector rather than an effect writing to `<html>` (D-037): the shell's presence is the condition, it works before hydration, and it sits in `@layer d3-ui`, so an app's own unlayered `body` rule still wins. The sidebar was already `position: sticky; height: 100dvh`.
+
+**Rejected.** *A shadow on the card* — D-075 admits two shadows, and a card is a resting surface. *`surface-raised` as the dark card* — it equals the `border` colour, so the edge vanishes, and the card glares. *`surface-raised` as the dark quiet fill* (the critique's suggestion) — it is the thumb and is 1.03:1 from the lifted tint. *Recolouring the attention tone* (admin X4) — D-016 stands; the new `warning` tone (D-086) is the answer. *Lowering dark `border-field`* — above. *Applying any of the card rules outside the recessed shell* — four apps consume this library, and in the default shell a card already differs from its ground.
+
+**Proven.** `browser/cards.spec.ts` on a new story, *Frame/AppShell · Recessed With Cards*, in both themes at 1440 and 390: card fill is `surface-card` and differs from the sheet, a 1px `border` edge ≥1.2:1 against both, no shadow; every quiet chip and track is `fill-quiet` and ≥1.1:1 against the card with its text ≥4.5:1, and what rides on the tracks ≥1.1:1 against them, with the thumb edge equal to `border`; both filled fields' edges ≥3:1 against their fill and the card, the token ≥3:1 against `surface-raised`, and light below 3.2:1; the in-card `h2` is 16px under a 24px `h1`; the empty state's background is transparent and it starts on the content edge; every DataList hairline starts and ends on the card's content edge (±0.5px) and the row text on the title's; `html` and `body` compute to `bg`; at 390 the sheet is `bg`, the card 16px from each side with 16px padding, the page padding 16px and no horizontal overflow. The story joins the axe sweep (clean, both themes), geometry, focus and elevation sweeps, and a pixel baseline. `SegmentedControl.test.tsx` reads the new thumb edge and track from the CSSOM. Pixel baselines regenerated in the Playwright image and reviewed: the field edge and the Select chevron (FormField, Page composed, Button, guides, EmptyState, DataList), the thumb edge (SegmentedControl), the dark tint (Tabs, Badge, Button toggle, DataList), and the two new ones.
+
+---
+
+### D-086 · v1.5 · A `warning` tone for StatusDot and Badge: degraded, delayed, retrying
+**Date:** 2026-10-01
+**Prompted by:** Postroom's admin critique (X4): "Degraded", "Deferred" and "Failed" used the attention tone, which is the accent — so a status meant to make you look read as a link ("View dead jobs", "DNS & DKIM") and as the current nav item. The critique proposed recolouring `attention` to the warning hue. **Amends D-016 and D-080.**
+
+**Chosen.** Keep `attention` exactly as it is — the accent, for "new, or back on you" (D-016's triage example is unchanged) — and add a fifth StatusDot tone and a fourth Badge tone, **`warning`**, for **degraded, delayed or retrying: it needs a look, not action now.** StatusDot `warning` colours the dot and the word `--color-warning`; Badge `warning` is `--color-warning` text on `--color-warning-muted`. Both tokens already existed for Alert and validation (D-016 kept them "for alerts, toasts, validation and inline messaging"); this is their first use as a status.
+
+| Pair | Light | Dark |
+|---|---|---|
+| StatusDot `warning` text on `surface` / `surface-raised` / `surface-card` | 7.21 / 7.52 / 7.52:1 | 9.07 / 6.96 / 8.49:1 |
+| StatusDot `warning` text on `bg` | 6.72:1 | 9.94:1 |
+| Badge `warning` text on `warning-muted` | 6.70:1 | 9.05:1 |
+
+**Why a new tone rather than a recolour.** Recolouring `attention` would change every app's "new" and "needs triage" from violet to amber in a minor release, and it would make D-016's own worked example wrong. The two states are different: attention says *this is on you now*; warning says *something is not right, keep an eye on it*. D-016's rule — a status earns a hue only if seeing it should change what you do next — still holds: warning changes what you watch, and healthy stays neutral. It is still never colour alone: the word is the status (WCAG 1.4.1).
+
+**D-016 amended:** the hues a status may use are now accent (attention: new, on you), **warning (degraded, delayed, retrying — needs a look)** and danger (failed, blocked). `success` and `info` are still not status colours. **D-080 amended:** StatusDot's tones are `neutral | attention | warning | danger | idle`.
+
+**Rules out.** A `success` tone (still D-016). Using `warning` for anything that needs action now — that is `attention` or `danger`. A pulse on warning (D-080's calm rule).
+
+**Proven.** Unit: StatusDot maps `warning` to its class and does not warn; Badge renders `d3-bdg--warning`. Browser (`cards.spec.ts`): the computed colour of a `warning` StatusDot and its dot equal `--color-warning`, and the text is ≥4.5:1 on the card in both themes; the story is axe-clean in both.
+
+---
+
+### D-087 · v1.5 · Six layout fixes from the same critiques: table widths, a header that stretches only its primary, compact settings controls on a phone, a ghost action on the text edge, a drawn Select chevron, and a centred page
+**Date:** 2026-10-01
+**Prompted by:** Postroom's P17 critiques (admin X8, X11; settings X6, X11, 2.1 #7, 2.8 #7). Each is a place a component did something other than what its docs said, or something no caller could want.
+
+1. **`Table` column widths are lengths, percentages or `auto`.** `TableColumn.width` was documented as "any track size: `minmax(0, 1fr)`", but it lands on a `<col>`, where `minmax()` and `fr` are invalid and silently dropped — Postroom's Queue asked for `minmax(0, 1.4fr)` and got nothing, so "Next attempt" truncated beside 300px of air. A CSS-grid table was the alternative and was rejected: it gives up the table's own column sizing and cell semantics, which D-067 chose the element for. So the type is now `TableColumnWidth = 'auto' | `${number}${'px' | 'rem' | 'em' | 'ch' | '%'}``, exported; a track that reaches the component anyway (JavaScript, a cast) warns in development and is not written. This narrows a type, but only by values that never worked.
+2. **`PageHeader` stretches only a primary action on a phone.** Below 640px every action took `flex: 1`, so a lone "Refresh" became a 342px outlined slab — the heaviest thing on the screen. Now only a `primary` Button or SplitButton stretches; every other action keeps its own width at the trailing edge, and the row wraps if it must.
+3. **`SettingsRow` keeps a compact control beside its text on a phone.** Below `md` a Switch or a three-option SegmentedControl dropped under the text, left-aligned, which wasted a line and broke the row's shape. The row is now a wrapping flex row below `md` whose text basis is the row less 160px and the gap, so a control of 160px or less stays on the right and a wider one wraps underneath — a layout rule, not a measurement in JavaScript. A new `stack` prop drops the control underneath whatever its width. From `md` up nothing changes.
+4. **`DataListRow`'s first ghost action lines up with the text on a phone.** Below `sm` the actions drop under the text, and a ghost button's own padding indented "Sign out" 8px past the text edge it sat under. The first ghost or danger-ghost action takes its padding back with a negative inline-start margin of exactly its size's padding (8 / 16 / 20px); its hover fill reaches outward. No ⋯ menu was built: that is the app's call.
+5. **`Select` draws its chevron.** The default was a `▾` text character, drawn at about 8px by whatever font had the glyph. It is now the same SVG chevron SplitButton uses (moved to `lib/glyphs`), in both appearances; `chevronIcon` still replaces it.
+6. **`Page align="center"`** already existed; its docs said it was only for a page with no shell. They now also name the case it is for in a shell: a section whose pages are all one narrow column (settings), where every page centres and none jumps. The new story measures equal gutters (±1px).
+
+**Also checked and left alone.** *The dark avatar tints* (settings 2.1 #8, "muddy"): initials are 7.83–8.26:1 on their fills, the fill pairs are D-081's measured set, and a deep-tinted disc on a dark ground is low-luminance by design — identity, not status. Not clearly wrong, so not changed.
+
+**Proven.** Unit: `Table` writes rem/%/auto to its `<col>`s, rejects `minmax(0, 1.4fr)` and `1fr` in the type (`@ts-expect-error`, so the typecheck fails if the type ever admits them again), warns and writes no style at runtime; `SettingsRow` adds `d3-setrow--stack` only when asked; `Select` renders an SVG chevron in both appearances and still takes `chevronIcon`. Browser (`cards.spec.ts`, at 390px in both themes): the secondary header action is no wider than its label plus its padding while the primary ends on the row's right edge; the Theme, Message previews and Two-factor controls sit beside their text; the first "Sign out" label starts within 1px of the row title's text.

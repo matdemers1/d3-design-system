@@ -33,10 +33,26 @@
         "d3.resolved": "#ffffff"
       }
     },
+    "surface-card": {
+      "$type": "color",
+      "$value": "{color.white}",
+      "$description": "a card on the recessed sheet (AppShell navTone=recessed) \u2014 with a 1px border edge",
+      "$extensions": {
+        "d3.resolved": "#ffffff"
+      }
+    },
     "surface-hover": {
       "$type": "color",
       "$value": "{color.neutral.100}",
       "$description": "row and item hover",
+      "$extensions": {
+        "d3.resolved": "#f0f2f7"
+      }
+    },
+    "fill-quiet": {
+      "$type": "color",
+      "$value": "{color.neutral.100}",
+      "$description": "the quiet fill of a chip or track on a card \u2014 neutral badge, quiet count, tab and segmented track",
       "$extensions": {
         "d3.resolved": "#f0f2f7"
       }
@@ -51,10 +67,10 @@
     },
     "border-field": {
       "$type": "color",
-      "$value": "{color.neutral.500}",
+      "$value": "{color.neutral.450}",
       "$description": "form-control boundary \u2014 3:1, WCAG 1.4.11",
       "$extensions": {
-        "d3.resolved": "#747888"
+        "d3.resolved": "#868b9a"
       }
     },
     "border-float": {

@@ -18,7 +18,11 @@ export interface PageHeaderProps extends Omit<React.HTMLAttributes<HTMLDivElemen
   countNoun?: CountNoun
   /** One line. If it needs two it belongs on the page, not in the header. */
   description?: React.ReactNode
-  /** Right-aligned. At most one `primary`, per the Button spec. */
+  /**
+   * Right-aligned. At most one `primary`, per the Button spec. On a phone the
+   * primary stretches to the width of the row and every other action keeps its
+   * own width at the trailing edge.
+   */
   actions?: React.ReactNode
   /**
    * Leads the heading, decorative. Bindery repeats the sidebar's icon here, so a

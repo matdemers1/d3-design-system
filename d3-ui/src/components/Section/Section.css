@@ -52,3 +52,11 @@
   margin-top: var(--space-16);
   min-width: 0;
 }
+
+/* A card on the recessed sheet is a group under the page's 24px title, not a
+   second page: its h2 takes the 16px emphasis step, as a nested h3 does, and keeps
+   its h2 semantics (D-085). Twenty under twenty-four read as two titles. */
+.d3-shell--recessed .d3-shell__main .d3-crd > .d3-sec__head .d3-sec__title {
+  font-size: var(--text-16);
+  line-height: var(--leading-16);
+}

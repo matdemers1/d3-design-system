@@ -230,6 +230,33 @@ describe('Table', () => {
     })
   })
 
+  describe('column widths (D-087)', () => {
+    it('puts a length or a percentage on the column', () => {
+      const { container } = render(
+        <Table caption="Projects" rowKey={(r) => r.id} rows={rows}
+          columns={[{ ...columns[0]!, width: '12rem' }, { ...columns[1]!, width: '20%' }, { ...columns[2]!, width: 'auto' }]} />,
+      )
+      const cols = [...container.querySelectorAll('col')].map((c) => (c as HTMLElement).style.width)
+      expect(cols).toEqual(['12rem', '20%', 'auto'])
+    })
+
+    it('rejects a grid track in the type, and warns about one at runtime instead of dropping it silently', () => {
+      const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined)
+      const track: TableColumn<Row> = {
+        ...columns[0]!,
+        // @ts-expect-error — a <col> cannot take a grid track; the type says so.
+        width: 'minmax(0, 1.4fr)',
+      }
+      const { container } = render(<Table caption="Projects" rowKey={(r) => r.id} rows={rows} columns={[track]} />)
+      expect(warn).toHaveBeenCalledWith(expect.stringContaining('minmax(0, 1.4fr)'))
+      expect((container.querySelector('col') as HTMLElement).getAttribute('style')).toBeNull()
+      // @ts-expect-error — nor a bare fr.
+      const fr: TableColumn<Row> = { ...columns[1]!, width: '1fr' }
+      expect(fr.width).toBe('1fr')
+      warn.mockRestore()
+    })
+  })
+
   describe('development warnings', () => {
     it('warns about a table with no accessible name', () => {
       const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined)

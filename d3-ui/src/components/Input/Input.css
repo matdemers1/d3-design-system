@@ -73,7 +73,8 @@
    The outlined field reads as a heavy frame around a near-page fill, and at
    focus it draws twice — an accent border and an offset ring. The filled field
    is one tonal step below the surface it sits on, keeps the same 3:1 edge
-   (D-013: measured 3.92:1 against the bg fill in light, 4.29:1 in dark), and
+   (D-013: measured 3.04:1 against the bg fill in light since the 1.5 retune,
+   D-085, and 4.29:1 in dark), and
    at focus draws ONE thing: a 2px outline laid over that edge. The border
    colour does not change on focus; the outline is the signal.
 

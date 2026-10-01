@@ -25,6 +25,8 @@ const COMPOSITIONS = [
   // v1.1: a page built only from the layout exports, at D-021's rhythm.
   'layout-page--composed',
   'lists-datalist--with-actions',
+  // v1.5: cards on the recessed sheet, with what sits on them (D-085).
+  'frame-appshell--recessed-with-cards',
 ]
 
 test.skip(!process.env.D3_PIXEL_IMAGE,

@@ -15,10 +15,12 @@
   --p-neutral-200: #dbdee7;
   --p-neutral-300: #b9bdcb;
   --p-neutral-400: #999ead;
+  --p-neutral-450: #868b9a;
   --p-neutral-500: #747888;
   --p-neutral-600: #515563;
   --p-neutral-700: #2c303b;
   --p-neutral-800: #242731;
+  --p-neutral-850: #1e212a;
   --p-neutral-900: #191b23;
   --p-neutral-950: #101117;
   --p-neutral-975: #080a0d;
@@ -34,6 +36,8 @@
   --p-violet-900: #1c0252;
   --p-violet-950: #120239;
   --p-violet-975: #0a0225;
+  /* Off the ramp on purpose (D-085): the dark selection tint, oklch L 0.325 C 0.12. */
+  --p-violet-tint-dark: #32256d;
   --p-green-50: #eefff5;
   --p-green-100: #d8fce7;
   --p-green-200: #adf0ca;
@@ -107,7 +111,13 @@
   --color-bg: #101117;
   --color-surface: #191b23;
   --color-surface-raised: #2c303b;
+  /* A card on the recessed sheet (D-085): between surface and surface-raised, so the
+     1px border edge stays visible against it (1.22:1) and against the sheet (1.30:1). */
+  --color-surface-card: #1e212a;
   --color-surface-hover: #242731;
+  /* The quiet fill of a chip or track on a card (D-085): one step below the card,
+     1.17:1 against it, and 1.43:1 under a raised thumb or the accent-muted glide. */
+  --color-fill-quiet: #101117;
   --color-border: #2c303b;
   --color-border-field: #747888;
   --color-border-float: #747888;
@@ -117,7 +127,9 @@
   --color-accent: #978cff;
   --color-accent-hover: #b8b4ff;
   --color-accent-contrast: #0a0225;
-  --color-accent-muted: #1c0252;
+  /* Lifted in 1.5 (D-085): #1c0252 sat 1.04:1 on the sheet and read as a hole. Now
+     1.33:1 against surface, with accent text 4.63:1 on it. */
+  --color-accent-muted: #32256d;
   --color-success: #70d6a1;
   --color-danger-muted: #3c0006;
   --color-warning-muted: #271900;
@@ -149,9 +161,13 @@
   --color-bg: #f0f2f7;
   --color-surface: #f9fafd;
   --color-surface-raised: #ffffff;
+  --color-surface-card: #ffffff;
   --color-surface-hover: #f0f2f7;
+  --color-fill-quiet: #f0f2f7;
   --color-border: #dbdee7;
-  --color-border-field: #747888;
+  /* Retuned in 1.5 (D-085): just clear of 3:1 against the bg fill of a filled field
+     (3.04:1) and the card (3.40:1); #747888 was 3.92 / 4.39:1 and read as a heavy ring. */
+  --color-border-field: #868b9a;
   --color-border-float: #747888;
   --color-fg: #101117;
   --color-fg-muted: #2c303b;
@@ -193,9 +209,11 @@
     --color-bg: #f0f2f7;
     --color-surface: #f9fafd;
     --color-surface-raised: #ffffff;
+    --color-surface-card: #ffffff;
     --color-surface-hover: #f0f2f7;
+    --color-fill-quiet: #f0f2f7;
     --color-border: #dbdee7;
-    --color-border-field: #747888;
+    --color-border-field: #868b9a;
     --color-border-float: #747888;
     --color-fg: #101117;
     --color-fg-muted: #2c303b;

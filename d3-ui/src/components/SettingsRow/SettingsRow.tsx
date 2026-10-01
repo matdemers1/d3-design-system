@@ -41,6 +41,14 @@ export interface SettingsRowProps extends Omit<React.HTMLAttributes<HTMLDivEleme
    * `aria-labelledby={ids.labelledBy}` or by its own text.
    */
   htmlFor?: string | true
+  /**
+   * Below `md`, put the control under the text whatever its width. Without it a
+   * compact control (160px or less: a Switch, a short SegmentedControl, a small
+   * Button) stays on the right of the text on a phone, and a wider one drops
+   * underneath. Has no effect from `md` up, where the control is always beside
+   * the text.
+   */
+  stack?: boolean
 }
 
 const INTERACTIVE =
@@ -73,11 +81,12 @@ function unnamed(el: Element): boolean {
  * and works for any control. After mount, a control with no accessible name is
  * reported in development.
  *
- * Side by side from `md` (768px); below it the control drops under the text,
- * left-aligned.
+ * Side by side from `md` (768px). Below it a control of 160px or less stays
+ * beside the text and a wider one drops under it, left-aligned; `stack` always
+ * drops it.
  */
 export const SettingsRow = forwardRef<HTMLDivElement, SettingsRowProps>(function SettingsRow(
-  { title, description, control, htmlFor, className, id, ...rest }, ref,
+  { title, description, control, htmlFor, stack = false, className, id, ...rest }, ref,
 ) {
   if (process.env.NODE_ENV !== 'production') {
     if (title === undefined || title === null || title === '') {
@@ -117,7 +126,7 @@ export const SettingsRow = forwardRef<HTMLDivElement, SettingsRowProps>(function
 
   const TitleTag = forId ? 'label' : 'div'
   return (
-    <div ref={rowRef} id={id} className={cn('d3-setrow', className)} {...rest}>
+    <div ref={rowRef} id={id} className={cn('d3-setrow', stack && 'd3-setrow--stack', className)} {...rest}>
       <div className="d3-setrow__text">
         <TitleTag
           id={ids.titleId}

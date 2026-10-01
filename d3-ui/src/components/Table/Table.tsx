@@ -11,6 +11,23 @@ export interface TableSort {
   direction: SortDirection
 }
 
+/**
+ * A column width a table column can actually take: a length, a percentage, or
+ * `auto`.
+ *
+ * Not a grid track. The width lands on a `<col>`, where `minmax()` and `fr` are
+ * invalid CSS and are dropped without a word — which is how a column asked for
+ * `minmax(0, 1.4fr)` and got nothing, and a date column truncated beside 300px
+ * of air (D-087). The type now says so; give the label column `auto` and the
+ * others rem or %.
+ */
+export type TableColumnWidth =
+  | 'auto'
+  | `${number}${'px' | 'rem' | 'em' | 'ch' | '%'}`
+
+/** `fr` and `minmax()` — the grid-track syntax a `<col>` silently ignores. */
+const TRACK_ONLY = /\bfr\b|\dfr|minmax\(|fit-content\(|repeat\(/
+
 export interface TableColumn<Row> {
   /** Stable identity for the column. Used by `sort` and as the React key. */
   key: string
@@ -26,8 +43,12 @@ export interface TableColumn<Row> {
   sortable?: boolean | ((a: Row, b: Row) => number)
   /** `end` for the last column of actions, or a right-aligned count. */
   align?: 'start' | 'end'
-  /** Any track size: `12rem`, `minmax(0, 1fr)`, `auto`. */
-  width?: string
+  /**
+   * `12rem`, `20%`, `96px` or `auto`. A length or a percentage, never a grid
+   * track: `fr` and `minmax()` are invalid on a table column and were silently
+   * dropped, so they are rejected by the type and warned about at runtime.
+   */
+  width?: TableColumnWidth
   /**
    * Tabular figures, right-aligned. A column of numbers that do not line up at
    * the decimal is a column nobody can compare down (D-019's cousin).
@@ -183,6 +204,17 @@ function TableInner<Row>(props: TableProps<Row>, ref: React.Ref<HTMLDivElement>)
 
   if (process.env.NODE_ENV !== 'production') {
     if (columns.length === 0) devWarn('Table.columns', 'Table: `columns` is empty.')
+    for (const column of columns) {
+      const width = column.width as string | undefined
+      if (width && TRACK_ONLY.test(width)) {
+        devWarn(
+          `Table.width.${column.key}`,
+          `Table: column "${column.key}" has width "${width}". A table column takes a length, a ` +
+            'percentage or `auto` — `fr` and `minmax()` are grid tracks, invalid on a <col>, and the ' +
+            'browser drops them. Give the column that should take the slack `auto` and the others rem or %.',
+        )
+      }
+    }
     if (!caption && !rest['aria-label'] && !rest['aria-labelledby']) {
       devWarn(
         'Table.caption',
@@ -320,7 +352,8 @@ function TableInner<Row>(props: TableProps<Row>, ref: React.Ref<HTMLDivElement>)
         ) : null}
         <colgroup>
           {columns.map((column) => (
-            <col key={column.key} style={column.width ? { width: column.width } : undefined} />
+            <col key={column.key}
+              style={column.width && !TRACK_ONLY.test(column.width) ? { width: column.width } : undefined} />
           ))}
         </colgroup>
         <thead className="d3-tbl__head">

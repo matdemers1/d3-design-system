@@ -14,13 +14,15 @@ describe('Badge — the contract', () => {
     expect(screen.getByText('Blocked')).toBeInTheDocument()
   })
 
-  it('offers three tones and no colour prop', () => {
+  it('offers four tones and no colour prop — warning since 1.5 (D-086)', () => {
     const { rerender } = render(<Badge tone="neutral">A</Badge>)
     expect(screen.getByText('A').className).toContain('d3-bdg--neutral')
     rerender(<Badge tone="attention">A</Badge>)
     expect(screen.getByText('A').className).toContain('d3-bdg--attention')
     rerender(<Badge tone="danger">A</Badge>)
     expect(screen.getByText('A').className).toContain('d3-bdg--danger')
+    rerender(<Badge tone="warning">A</Badge>)
+    expect(screen.getByText('A').className).toContain('d3-bdg--warning')
   })
 })
 

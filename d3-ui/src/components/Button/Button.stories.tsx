@@ -59,7 +59,7 @@ export const AllVariants: Story = {
  * `secondary` carries a 1px `--color-border-field` edge, so its extent is
  * findable on every ground it sits on — in light its fill alone was 1.04:1
  * against `surface` and 1.12:1 against `bg` (D-084, PST-DA-057). The edge is
- * 3.92–4.39:1 in light and 3.00–4.29:1 in dark. Switch the toolbar theme to see
+ * 3.04–3.40:1 in light (retuned in 1.5, D-085) and 3.00–4.29:1 in dark. Switch the toolbar theme to see
  * both.
  */
 export const SecondaryOnEveryGround: Story = {

@@ -1,15 +1,25 @@
 /* One setting: what it is on the left, what you do about it on the right.
-   Stacked by default; side by side from md (768px), the same edge FilterBar
-   uses (a max-width: 767.98px block there, mobile-first here). */
+   Side by side from md (768px), the same edge FilterBar uses (a max-width:
+   767.98px block there, mobile-first here).
+
+   Below md a compact control — a Switch, a three-option SegmentedControl, a
+   small Button, at most 160px — stays on the right of the text, and anything
+   wider drops underneath it, left-aligned (D-087). That is a wrapping flex row,
+   not a measurement: the text's basis is the row less 160px and the gap, so a
+   control of 160px or less fits beside it and a wider one wraps. `stack` puts the
+   control underneath whatever its width. */
 .d3-setrow {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: var(--space-8) var(--space-16);
   padding: var(--space-16) 0;
   margin: 0;
   min-width: 0;
 }
+.d3-setrow > .d3-setrow__text { flex: 1 1 calc(100% - 160px - var(--space-16)); }
+.d3-setrow > .d3-setrow__control { flex: 0 1 auto; max-width: 100%; }
+.d3-setrow--stack > .d3-setrow__text { flex-basis: 100%; }
 /* A hairline between rows, not around them — D-023's decorative border role,
    as DescriptionList does. The row has no horizontal padding of its own, so
    the hairline runs the width of the card's content box and lines up with the
@@ -49,6 +59,6 @@
 }
 
 @media (min-width: 768px) {
-  .d3-setrow { grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-16) var(--space-24); }
+  .d3-setrow { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-16) var(--space-24); }
   .d3-setrow__control { flex-wrap: nowrap; justify-content: flex-end; }
 }

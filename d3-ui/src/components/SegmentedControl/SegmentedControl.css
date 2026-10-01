@@ -1,11 +1,12 @@
-/* The track is the page ground cut into the surface it sits on; the chosen
-   segment rides above it. Elevation is tone — there is no shadow here and
-   nowhere else in the system either. */
+/* The track is the quiet fill cut into the surface it sits on (--color-fill-quiet,
+   D-085 — the page ground's value today, named for the job); the chosen segment
+   rides above it. Elevation is tone — there is no shadow here and nowhere else in
+   the system either. */
 .d3-seg {
   position: relative;
   display: inline-flex;
   align-items: center;
-  background: var(--color-bg);
+  background: var(--color-fill-quiet);
   border: var(--border-width) solid var(--color-border);
   border-radius: var(--radius-md);
   padding: 2px;
@@ -20,12 +21,12 @@
    a plain CSS transition and inherits prefers-reduced-motion from the global
    rule. Same token as the Tabs pill: the two should feel like one idea.
 
-   The thumb carries the field edge (D-084, amending D-013 and D-052). On tone
-   alone it was 1.12:1 light / 1.43:1 dark against the track, so which option
-   was chosen rested on a fill nobody could find (PST-DA-048). border-field is
-   3.92:1 light / 4.29:1 dark against the track — the same edge a filled field
-   draws on the same bg. Border-box (components.css), so the measured width is
-   still the segment's. */
+   The thumb carries an edge (D-084, amending D-013 and D-052): on tone alone it
+   was 1.12:1 light / 1.43:1 dark against the track (PST-DA-048). D-084 used the
+   field edge, and at 3.92:1 the chosen option read as focus-ringed; since 1.5
+   (D-085) it is the divider edge, 1.20:1 light against the track on top of the
+   1.12:1 fill, and the chosen label's semibold fg is what names the choice.
+   Border-box (components.css), so the measured width is still the segment's. */
 .d3-seg__thumb {
   position: absolute;
   top: 2px;
@@ -34,7 +35,7 @@
   width: var(--d3-seg-w, 0px);
   transform: translateX(var(--d3-seg-x, 0px));
   background: var(--color-surface-raised);
-  border: var(--border-width) solid var(--color-border-field);
+  border: var(--border-width) solid var(--color-border);
   border-radius: calc(var(--radius-md) - 3px);
   transition: transform var(--motion-tab-glide), width var(--motion-tab-glide);
   pointer-events: none;
