@@ -31,6 +31,9 @@
    field boundary, because --color-border is the same step as the fill in dark. */
 .d3-split--primary   { --split-divider: color-mix(in srgb, var(--color-accent-contrast) 35%, transparent); }
 .d3-split--secondary { --split-divider: var(--color-border-field); }
+/* A secondary Button has its own 1px border now (D-084); the main half drops its right edge so the
+   divider beside the chevron stays one hairline, not two. */
+.d3-split--secondary .d3-split__main { border-right-width: 0; }
 
 /* The halves touch, so a focus ring drawn on one would be painted over by the
    other. Lift the focused half so its whole ring is visible (D-023). */
