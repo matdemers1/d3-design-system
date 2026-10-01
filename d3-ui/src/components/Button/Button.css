@@ -22,7 +22,7 @@
 
 .d3-btn--primary        { background: var(--color-accent); color: var(--color-accent-contrast); }
 .d3-btn--primary:hover:not(:disabled)   { background: var(--color-accent-hover); }
-/* Secondary carries the field edge (D-084, amending D-013 and D-030). Its fill
+/* Secondary carries the field edge (D-084, amending D-013 and D-052). Its fill
    alone is 1.04:1 against a light surface and 1.12:1 against bg, so in light
    the button had no findable extent (PST-DA-057). border-field is 4.21:1 on
    surface, 4.39:1 on surface-raised and 3.92:1 on bg in light; 3.91 / 3.00 /
