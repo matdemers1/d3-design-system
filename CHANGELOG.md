@@ -4,6 +4,71 @@ Semver. The public surface is what `d3-ui/src/index.ts` exports plus the token
 names; CSS class names (`.d3-btn`, `.d3-seg`) are an implementation detail and
 apps must not select on them.
 
+## v1.5.0 — 2026-10-01 · cards that read on the sheet (D-085 – D-087)
+
+Inside `AppShell navTone="recessed"` a Card painted the sheet's own colour, so every `Section` was
+invisible, and everything placed in one was tuned to a card nobody could see (DS-REQ-007). Most of
+this release is scoped to the recessed shell; what every app sees on the bump is under **Changed**.
+
+### Changed (every app)
+
+- **`--color-border-field`, light: `#747888` → `#868b9a`** — retuned to just clear 3:1: 3.04:1 against
+  a filled field's `bg` fill and 3.40:1 against a white card (it was 3.92 / 4.39:1 and read as a heavy
+  ring). Dark is unchanged, already at the 3.00:1 floor against `surface-raised`. Every control that
+  draws the field edge follows: Input, Select, Textarea, Checkbox, CodeInput, RecipientField, the
+  secondary Button and SplitButton divider, the Switch's off track (D-085).
+- **`--color-accent-muted`, dark: `#1c0252` → `#32256d`** — a selected tab, pressed toggle, selected
+  card or attention badge was 1.04:1 against the sheet and read as a hole; it is now 1.33:1, with
+  accent text 4.63:1 on it (D-085).
+- **`SegmentedControl`** — the thumb's edge is `--color-border`, not the field edge, which made the
+  chosen option look focus-ringed; the track reads `--color-fill-quiet` (the same value it had). The
+  semibold chosen label is unchanged (D-085, amending D-084).
+- **`PageHeader`** — on a phone only a `primary` action stretches; every other action keeps its own
+  width at the trailing edge (D-087).
+- **`SettingsRow`** — on a phone a control of 160px or less (a Switch, a short SegmentedControl, a
+  Badge) stays beside its text; a wider one still drops underneath (D-087).
+- **`DataListRow`** — on a phone the first ghost action under the text lines up with the text edge
+  instead of 8px past it (D-087).
+- **`Select`** — draws an SVG chevron instead of a `▾` text character, in both appearances
+  (D-087). `chevronIcon` still replaces it.
+- **`EmptyState`** inside any Card paints no background of its own (D-085).
+- **`Table` `TableColumn.width`** is typed `TableColumnWidth` — a length, a percentage or `auto`.
+  `fr` and `minmax()` were documented but invalid on a `<col>` and silently dropped; they are now a
+  type error and a development warning. Only values that never worked are rejected (D-087).
+
+### Added
+
+- **Tokens `--color-surface-card`** (light `#ffffff`, dark `#1e212a`) and **`--color-fill-quiet`**
+  (light `#f0f2f7`, dark `#101117`), with Tailwind theme entries; primitives `neutral.450`,
+  `neutral.850` and the off-ramp `violet.tint-dark` (D-085).
+- **`StatusDot tone="warning"`** and **`Badge tone="warning"`** — degraded, delayed, retrying: needs a
+  look, not action now. `attention` is unchanged (D-086, amending D-016).
+- **`SettingsRow stack`** — always put the control under the text below `md` (D-087).
+- **`TableColumnWidth`** type export.
+
+### Inside `AppShell navTone="recessed"` only
+
+- A **Card** (so every `Section`) is `--color-surface-card` with a 1px `--color-border` edge — 1.34 /
+  1.29:1 light, 1.22 / 1.30:1 dark against the card and the sheet. No shadow.
+- **Below `md`** the sheet paints `bg`, cards sit inset on it, and page and card padding are 16px; a
+  filled field directly on that sheet steps up to `surface`.
+- **On a card:** neutral and danger Badge, the quiet CountBadge, the Tabs track and (everywhere) the
+  SegmentedControl track use `--color-fill-quiet` (1.12:1 light / 1.17:1 dark against the card); the
+  Tabs pill is the raised tone with the divider edge; a Section's `h2` title is 16px; a DataList's
+  hairlines run from content edge to content edge with its hover on a pseudo-element; a row EmptyState
+  starts on the content edge; a Table's sticky header paints the card's tone; ghost hovers use the
+  quiet fill.
+- **`html` and `body`** paint `--color-bg` while a recessed shell is on the page, so a long page keeps
+  its ground below the sidebar.
+
+### Docs
+
+- `Page align="center"` is documented for a shell section whose pages are all one narrow column.
+- New story *Frame/AppShell · Recessed With Cards*, measured by `browser/cards.spec.ts` in both themes
+  at 1440 and 390, swept by axe, and a new pixel baseline. Fourteen existing baselines regenerated
+  in the Playwright image for the field edge, the chevron, the thumb edge and the dark tint, and
+  reviewed.
+
 ## v1.4.2 — 2026-10-01
 
 Four fixes from Postroom's design audit (D-084). No export, prop, default or token changed. A
