@@ -35,3 +35,11 @@
 .d3-es__body > :where(p, ul, ol) { margin: 0; }
 .d3-es__body > :where(p, ul, ol) + :where(p, ul, ol) { margin-top: var(--space-8); }
 
+
+/* Inside a card the card is the surface; an empty state painting its own would be
+   a second box inside the first (D-085). Its padding stays, so its rhythm does. */
+.d3-crd .d3-es { background: none; }
+/* On a card on the recessed sheet, where the card has an edge, a row-sized empty
+   state starts on the card's content edge like every other row in it, rather than
+   20px further in (D-085). */
+.d3-shell--recessed .d3-shell__main .d3-crd .d3-es--row { padding-inline: 0; }

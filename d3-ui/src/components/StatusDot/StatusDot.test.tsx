@@ -16,7 +16,7 @@ describe('StatusDot — the contract', () => {
     expect(screen.getByText('Running').className).toContain('d3-sdot--neutral')
   })
 
-  it.each(['neutral', 'attention', 'danger', 'idle'] as const)('maps tone %s to a class', (tone) => {
+  it.each(['neutral', 'attention', 'warning', 'danger', 'idle'] as const)('maps tone %s to a class', (tone) => {
     render(<StatusDot tone={tone}>{tone} text</StatusDot>)
     expect(screen.getByText(`${tone} text`).className).toContain(`d3-sdot--${tone}`)
   })
@@ -46,5 +46,16 @@ describe('StatusDot — development warnings', () => {
   it('does not warn on a valid tone', () => {
     render(<StatusDot tone="idle">Off</StatusDot>)
     expect(warn).not.toHaveBeenCalled()
+  })
+})
+
+describe('StatusDot — warning (D-086)', () => {
+  it('is a tone in the set, so it does not warn', () => {
+    __resetDevWarnings()
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    render(<StatusDot tone="warning">Delayed</StatusDot>)
+    expect(screen.getByText('Delayed').className).toContain('d3-sdot--warning')
+    expect(warn).not.toHaveBeenCalled()
+    warn.mockRestore()
   })
 })

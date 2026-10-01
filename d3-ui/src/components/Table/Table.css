@@ -158,3 +158,7 @@
   .d3-tbl { font-size: var(--text-13); line-height: var(--leading-13); }
   .d3-tbl__td { max-width: none; }
 }
+
+/* The sticky header covers rows scrolling under it, so it paints the ground it
+   sits on: on a card on the recessed sheet that is the card's tone (D-085). */
+.d3-shell--recessed .d3-shell__main .d3-crd .d3-tbl__th { background: var(--color-surface-card); }

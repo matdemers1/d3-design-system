@@ -24,8 +24,10 @@ export interface PageProps extends React.HTMLAttributes<HTMLElement> {
   /**
    * Where a page narrower than its space sits. `start` (the default) keeps every
    * page's title on the same edge beside the sidebar, so moving between a wide
-   * list and a narrow detail page does not make the content jump. `center` is
-   * for a page with no shell around it.
+   * list and a narrow detail page does not make the content jump. `center` puts
+   * the column in the middle of its container, with equal gutters: for a page
+   * with no shell around it, and for a section of the app whose pages are all one
+   * narrow column (settings), where every page centres and none jumps.
    */
   align?: PageAlign
 }

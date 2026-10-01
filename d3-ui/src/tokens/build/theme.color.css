@@ -10,7 +10,9 @@
   --color-bg: var(--color-bg);
   --color-surface: var(--color-surface);
   --color-surface-raised: var(--color-surface-raised);
+  --color-surface-card: var(--color-surface-card);
   --color-surface-hover: var(--color-surface-hover);
+  --color-fill-quiet: var(--color-fill-quiet);
   --color-border: var(--color-border);
   --color-border-field: var(--color-border-field);
   --color-border-float: var(--color-border-float);

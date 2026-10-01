@@ -17,6 +17,9 @@
 .d3-bdg--neutral   { background: var(--color-surface-raised); color: var(--color-fg-muted); }
 .d3-bdg--attention { background: var(--color-accent-muted);   color: var(--color-accent); }
 .d3-bdg--danger    { background: var(--color-surface-raised); color: var(--color-danger); }
+/* Warning (D-086, amending D-016): degraded, delayed, retrying — needs a look,
+   not action now. Text 6.70:1 light / 9.05:1 dark on its tint. */
+.d3-bdg--warning   { background: var(--color-warning-muted);  color: var(--color-warning); }
 
 .d3-bdg--count {
   background: var(--color-accent);
@@ -33,4 +36,11 @@
   min-width: 22px;
   justify-content: center;
   padding: 0 var(--space-8);
+}
+
+/* On a card on the recessed sheet (D-085) a white chip is a white chip on white.
+   The quiet fill is card-relative: one step below the card, 1.12:1 light /
+   1.17:1 dark, with fg-muted at 11.8 / 10.1:1 and danger at 7.3 / 6.5:1 on it. */
+.d3-shell--recessed .d3-shell__main .d3-crd :is(.d3-bdg--neutral, .d3-bdg--danger, .d3-bdg--count-quiet) {
+  background: var(--color-fill-quiet);
 }

@@ -77,3 +77,15 @@
   outline-offset: var(--focus-offset);
 }
 .d3-tabs__icon { display: flex; flex: none; }
+
+/* On a card on the recessed sheet (D-085) the white track was white on white. It
+   takes the quiet fill instead (1.12:1 light / 1.17:1 dark against the card). In
+   light the accent-muted pill would then be 1.01:1 against that track, so on a card
+   the pill is the segmented recipe — the raised tone with the divider edge (1.12:1
+   and 1.20:1 light, 1.43:1 dark) — and the accent stays on the chosen tab's text
+   and weight, which never depended on the fill. */
+.d3-shell--recessed .d3-shell__main .d3-crd .d3-tabs__list { background: var(--color-fill-quiet); }
+.d3-shell--recessed .d3-shell__main .d3-crd .d3-tabs__glide {
+  background: var(--color-surface-raised);
+  border: var(--border-width) solid var(--color-border);
+}

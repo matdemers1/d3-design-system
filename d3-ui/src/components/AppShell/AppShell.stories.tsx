@@ -12,6 +12,20 @@ import { ThemeProvider } from '../Theme/ThemeProvider'
 import { ThemeSwitch } from '../Theme/ThemeSwitch'
 import { PageHeader } from '../PageHeader/PageHeader'
 import { Button } from '../Button/Button'
+import { useState } from 'react'
+import { Page as PageLayout } from '../Page/Page'
+import { Section } from '../Section/Section'
+import { SettingsRow } from '../SettingsRow/SettingsRow'
+import { Badge, CountBadge } from '../Badge/Badge'
+import { StatusDot } from '../StatusDot/StatusDot'
+import { SegmentedControl } from '../SegmentedControl/SegmentedControl'
+import { Switch } from '../Switch/Switch'
+import { Tabs, TabPanel } from '../Tabs/Tabs'
+import { DataList, DataListRow } from '../DataList/DataList'
+import { EmptyState } from '../EmptyState/EmptyState'
+import { FormField } from '../FormField/FormField'
+import { Input } from '../Input/Input'
+import { Select } from '../Select/Select'
 
 const i = (I: typeof Search) => <I size={16} strokeWidth={1.8} />
 
@@ -140,5 +154,104 @@ export const Recessed: Story = {
         <Page />
       </AppShell>
     </ThemeProvider>
+  ),
+}
+
+const CLIENTS = [
+  { value: 'iphone', label: 'iPhone' },
+  { value: 'mac', label: 'Mac' },
+  { value: 'thunderbird', label: 'Thunderbird' },
+  { value: 'other', label: 'Other' },
+]
+
+function CardsPage() {
+  const [client, setClient] = useState('iphone')
+  const [theme, setTheme] = useState('system')
+  const [previews, setPreviews] = useState(true)
+  const [provider, setProvider] = useState('gmail')
+  return (
+    <PageLayout width="narrow" align="center">
+      <PageHeader title="Account" focusOnMount={false}
+        description="Who you are here, and how you sign in."
+        actions={<><Button>Export</Button><Button variant="primary">Save</Button></>} />
+      <Section title="Profile" description="What other people see.">
+        <SettingsRow title="Email address" description="Where mail to you arrives"
+          control={<Badge tone="neutral">Primary</Badge>} />
+        <SettingsRow title="Theme" description="Follows your device unless you choose"
+          control={(ids) => (
+            <SegmentedControl aria-label="Theme" size="sm" value={theme} onValueChange={setTheme}
+              aria-describedby={ids.describedBy}
+              items={[{ value: 'system', label: 'System' }, { value: 'light', label: 'Light' }, { value: 'dark', label: 'Dark' }]} />
+          )} />
+        <SettingsRow title="Message previews" description="A line of each message under its subject"
+          control={(ids) => (
+            <Switch aria-labelledby={ids.labelledBy} aria-describedby={ids.describedBy}
+              checked={previews} onCheckedChange={setPreviews} />
+          )} />
+        <SettingsRow title="Outbound mail" description="Retrying a deferred delivery"
+          control={<StatusDot tone="warning">Delayed</StatusDot>} />
+        <SettingsRow title="Two-factor" description="Asked at sign-in and before anything destructive"
+          control={<Badge tone="danger">Off</Badge>} />
+      </Section>
+      <Section title="Set up a device" description="Mail, calendars and contacts with an app password of their own.">
+        <Tabs aria-label="Device" items={CLIENTS} value={client} onValueChange={setClient}>
+          {CLIENTS.map((c) => (
+            <TabPanel key={c.value} value={c.value}>
+              <span style={{ fontSize: 13, color: 'var(--color-fg-muted)' }}>
+                One profile sets up {c.label}, with its own app password.
+              </span>
+            </TabPanel>
+          ))}
+        </Tabs>
+      </Section>
+      <Section title="Sessions" description="Where you are signed in now.">
+        <DataList aria-label="Sessions">
+          <DataListRow title="This browser" description="Chrome on macOS · signed in today"
+            meta={<CountBadge quiet count={3} label="open tabs" />} />
+          <DataListRow title="iPhone" description="Mail · signed in yesterday"
+            actions={<Button size="sm" variant="ghost">Sign out</Button>} />
+          <DataListRow title="Thunderbird" description="IMAP · signed in last week"
+            actions={<Button size="sm" variant="ghost">Sign out</Button>} />
+        </DataList>
+      </Section>
+      <Section title="Rules" description="Sort, flag or file new mail as it arrives.">
+        <EmptyState kind="empty" size="row" heading="No rules yet" headingLevel={3}
+          action={<Button size="sm">Add rule</Button>}>
+          Your first rule runs on the next message.
+        </EmptyState>
+      </Section>
+      <Section title="Import" description="Copy mail in from another account.">
+        <FormField label="Server">
+          <Input appearance="filled" defaultValue="imap.example.com" />
+        </FormField>
+        <FormField label="Provider">
+          <Select appearance="filled" value={provider} onValueChange={setProvider}
+            options={[{ value: 'gmail', label: 'Gmail' }, { value: 'icloud', label: 'iCloud' }, { value: 'other', label: 'Other' }]} />
+        </FormField>
+      </Section>
+    </PageLayout>
+  )
+}
+
+/**
+ * Cards on the recessed sheet (D-085, DS-REQ-007). Inside `navTone="recessed"` a Card — so every
+ * `Section` — is `--color-surface-card` with a 1px `--color-border` edge, because on the sheet's
+ * own `surface` it was 1.00:1 and invisible. On a card the quiet chips and tracks (neutral and
+ * danger Badge, quiet CountBadge, the Tabs track, the SegmentedControl track) sit on
+ * `--color-fill-quiet`; a Section's title takes the 16px step; an EmptyState paints no surface of
+ * its own; a DataList's hairlines run from content edge to content edge. Below `md` the sheet drops
+ * to `bg`, the cards sit inset on it, and the page and card both pad 16px. Resize to 390px to see
+ * the phone: only the primary header action stretches.
+ */
+export const RecessedWithCards: Story = {
+  parameters: { canvas: 'app' },
+  render: () => (
+    <>
+      <form id="story-sign-out" method="post" action="#" hidden />
+      <AppShell storageKey="d3.story.sidebar.cards" navTone="recessed" brand={<Brand />} nav={<Nav />}
+        footer={<Account />}>
+        <CardsPage />
+      </AppShell>
+    </>
   ),
 }

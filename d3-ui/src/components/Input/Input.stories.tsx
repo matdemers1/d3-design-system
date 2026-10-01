@@ -74,7 +74,7 @@ export const DateField: Story = {
 /**
  * `appearance="filled"` (D-073) — opt-in; the outlined field above is unchanged. 36px and 14px
  * text, filled with `bg` one step below the `surface` it sits on, the same 3:1 `border-field`
- * edge (3.92:1 light, 4.29:1 dark against the fill), and at focus a single 2px outline laid over
+ * edge (3.04:1 light since 1.5's retune (D-085), 4.29:1 dark against the fill), and at focus a single 2px outline laid over
  * that edge — no accent border, no offset ring. Textarea and Select take the same prop.
  */
 export const AppearanceFilled: Story = {

@@ -24,9 +24,10 @@
 .d3-btn--primary:hover:not(:disabled)   { background: var(--color-accent-hover); }
 /* Secondary carries the field edge (D-084, amending D-013 and D-052). Its fill
    alone is 1.04:1 against a light surface and 1.12:1 against bg, so in light
-   the button had no findable extent (PST-DA-057). border-field is 4.21:1 on
-   surface, 4.39:1 on surface-raised and 3.92:1 on bg in light; 3.91 / 3.00 /
-   4.29:1 in dark. Border-box, so the 34px height does not move. */
+   the button had no findable extent (PST-DA-057). border-field is 3.26:1 on
+   surface, 3.40:1 on surface-raised and 3.04:1 on bg in light (retuned in 1.5,
+   D-085); 3.91 / 3.00 / 4.29:1 in dark. Border-box, so the 34px height does
+   not move. */
 .d3-btn--secondary      { background: var(--color-surface-raised); color: var(--color-fg);
                           border: var(--border-width) solid var(--color-border-field);
                           font-weight: var(--weight-medium); }
@@ -85,4 +86,10 @@
 .d3-btn--ghost[aria-pressed='true']:hover:not(:disabled) {
   background: var(--color-accent-muted);
   filter: brightness(1.25);
+}
+
+/* A ghost's hover is the raised tone, which on a white card on the recessed sheet
+   is white on white; there it takes the card's quiet fill (D-085). */
+.d3-shell--recessed .d3-shell__main .d3-crd :is(.d3-btn--ghost, .d3-btn--danger-ghost):hover:not(:disabled):not([aria-pressed='true']) {
+  background: var(--color-fill-quiet);
 }

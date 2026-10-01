@@ -1,6 +1,7 @@
 import { forwardRef } from 'react'
 import { cn } from '../../lib/cn'
 import { devOneOf, devWarn } from '../../lib/dev'
+import { ChevronDownGlyph } from '../../lib/glyphs'
 import { Button } from '../Button/Button'
 import type { ButtonProps, ButtonSize } from '../Button/Button'
 import { Menu, MenuContent, MenuTrigger } from '../Menu/Menu'
@@ -29,17 +30,6 @@ export interface SplitButtonProps
   children?: React.ReactNode
   /** Applied to the wrapper that holds both halves, for layout. */
   className?: string
-}
-
-/* The library ships no icon set (see lib/glyphs), and this is the one glyph the
-   component cannot do without. */
-function ChevronDownGlyph({ size = 14 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
-      <path d="m6 9 6 6 6-6" />
-    </svg>
-  )
 }
 
 /**

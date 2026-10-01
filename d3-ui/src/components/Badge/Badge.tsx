@@ -3,14 +3,16 @@ import { cn } from '../../lib/cn'
 import { devOneOf, devWarn } from '../../lib/dev'
 import './Badge.css'
 
-export type BadgeTone = 'neutral' | 'attention' | 'danger'
+export type BadgeTone = 'neutral' | 'attention' | 'warning' | 'danger'
 export type BadgeSize = 'sm' | 'md'
 
 export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
   /**
    * `neutral` for anything in progress, parked or terminal. `attention` only
    * where seeing it should change what the user does next. `danger` for blocked
-   * or failed. There is no `color` prop, and no `success` or `info` tone.
+   * or failed. `warning` (1.5, D-086) for degraded, delayed or retrying — it
+   * needs a look, not action now. There is no `color` prop, and no `success` or
+   * `info` tone.
    */
   tone?: BadgeTone
   size?: BadgeSize
@@ -22,12 +24,12 @@ export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(function Badge(
   ref,
 ) {
   if (process.env.NODE_ENV !== 'production') {
-    devOneOf('Badge', 'tone', tone, ['neutral', 'attention', 'danger'])
+    devOneOf('Badge', 'tone', tone, ['neutral', 'attention', 'warning', 'danger'])
     // React's types allow `color` on any HTML element, so this type-checks and
     // silently sets a meaningless attribute. It is the prop every other library has.
     if ('color' in rest) {
       devWarn('Badge.color', 'Badge: there is no `color` prop — it is passed to the <span> and does nothing. ' +
-        'Use `tone` ("neutral", "attention" or "danger"). A status earns a hue only if seeing it changes what you do next.')
+        'Use `tone` ("neutral", "attention", "warning" or "danger"). A status earns a hue only if seeing it changes what you do next.')
     }
   }
   return (

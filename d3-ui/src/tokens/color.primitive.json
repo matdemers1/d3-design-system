@@ -42,6 +42,15 @@
           "d3.oklch-h": 272
         }
       },
+      "450": {
+        "$type": "color",
+        "$value": "#868b9a",
+        "$description": "Between 400 and 500 on the same ramp (L and C interpolated). Added in 1.5 (D-085) for the light field edge: the lightest neutral that still clears 3:1 against the bg fill of a filled field.",
+        "$extensions": {
+          "d3.oklch-l": 0.6375,
+          "d3.oklch-h": 272
+        }
+      },
       "500": {
         "$type": "color",
         "$value": "#747888",
@@ -71,6 +80,15 @@
         "$value": "#242731",
         "$extensions": {
           "d3.oklch-l": 0.275,
+          "d3.oklch-h": 272
+        }
+      },
+      "850": {
+        "$type": "color",
+        "$value": "#1e212a",
+        "$description": "Between 800 and 900 on the same ramp (L and C interpolated). Added in 1.5 (D-085) for the dark card on the recessed sheet.",
+        "$extensions": {
+          "d3.oklch-l": 0.249,
           "d3.oklch-h": 272
         }
       },
@@ -193,6 +211,16 @@
         "$value": "#0a0225",
         "$extensions": {
           "d3.oklch-l": 0.143,
+          "d3.oklch-h": 286
+        }
+      },
+      "tint-dark": {
+        "$type": "color",
+        "$value": "#32256d",
+        "$description": "Off the ramp on purpose (D-085): violet at oklch L 0.325 and C 0.12, lighter and less saturated than any ramp step at that lightness, so a dark selection tint reads as a tint and not a hole. Only the dark accent-muted uses it.",
+        "$extensions": {
+          "d3.oklch-l": 0.325,
+          "d3.oklch-c": 0.12,
           "d3.oklch-h": 286
         }
       }

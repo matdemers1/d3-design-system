@@ -185,13 +185,13 @@ function cssRule(selector: string, inMedia?: string): CSSStyleDeclaration | unde
 }
 
 describe('SegmentedControl — the chosen option is findable (D-084, PST-DA-048)', () => {
-  it('gives the thumb the field edge, which is 3:1 against the track in both themes', () => {
+  it('gives the thumb the divider edge on the quiet-fill track (D-085 amends D-084)', () => {
     render(<Harness />)
     const thumb = cssRule('.d3-seg__thumb')!
-    expect(thumb.getPropertyValue('border')).toBe('var(--border-width) solid var(--color-border-field)')
+    // Not the field edge: at 3.92:1 the chosen option read as focus-ringed.
+    expect(thumb.getPropertyValue('border')).toBe('var(--border-width) solid var(--color-border)')
     expect(thumb.getPropertyValue('background')).toBe('var(--color-surface-raised)')
-    // The track it sits in is bg — the ground border-field is measured against.
-    expect(cssRule('.d3-seg')!.getPropertyValue('background')).toBe('var(--color-bg)')
+    expect(cssRule('.d3-seg')!.getPropertyValue('background')).toBe('var(--color-fill-quiet)')
   })
 
   it('sets the checked label semibold, and reserves that width on every label', () => {

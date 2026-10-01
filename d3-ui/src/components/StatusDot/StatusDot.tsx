@@ -3,16 +3,18 @@ import { cn } from '../../lib/cn'
 import { devOneOf } from '../../lib/dev'
 import './StatusDot.css'
 
-export type StatusDotTone = 'neutral' | 'attention' | 'danger' | 'idle'
+export type StatusDotTone = 'neutral' | 'attention' | 'warning' | 'danger' | 'idle'
 export type StatusDotSize = 'sm' | 'md'
 
-const TONES = ['neutral', 'attention', 'danger', 'idle'] as const
+const TONES = ['neutral', 'attention', 'warning', 'danger', 'idle'] as const
 
 export interface StatusDotProps extends React.HTMLAttributes<HTMLSpanElement> {
   /**
    * `neutral` for anything healthy, running, in progress or done — the default.
-   * `attention` only where seeing it should change what you do next. `danger` for
-   * failed or blocked. `idle` for parked or switched off: a dimmer neutral.
+   * `attention` only where seeing it should change what you do next — new, or
+   * waiting on you. `warning` (1.5, D-086) for degraded, delayed or retrying: it
+   * needs a look, not action now. `danger` for failed or blocked. `idle` for
+   * parked or switched off: a dimmer neutral.
    * There is no `success` tone and no `color` prop (D-016).
    */
   tone?: StatusDotTone

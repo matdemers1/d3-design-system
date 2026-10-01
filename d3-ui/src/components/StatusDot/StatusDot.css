@@ -3,7 +3,8 @@
    green. The dot is decoration; the text carries the meaning.
 
    Text contrast on surface and surface-raised, light / dark:
-     fg-muted 12.6-13.2 / 7.0-9.2 · accent 7.8-8.2 / 4.7-6.1 · danger 7.9-8.2 / 4.5-5.9 */
+     fg-muted 12.6-13.2 / 7.0-9.2 · accent 7.8-8.2 / 4.7-6.1 · danger 7.9-8.2 / 4.5-5.9
+     warning 7.2-7.5 / 7.0-9.1 (and 7.52 / 8.49 on surface-card) */
 .d3-sdot {
   display: inline-flex;
   align-items: center;
@@ -28,6 +29,11 @@
 
 .d3-sdot--attention { color: var(--color-accent); }
 .d3-sdot--attention .d3-sdot__dot { background: var(--color-accent); }
+
+/* D-086: degraded, delayed, retrying — needs a look, not action now. Not the
+   accent: a violet word reads as a link, and attention keeps "new, on you". */
+.d3-sdot--warning { color: var(--color-warning); }
+.d3-sdot--warning .d3-sdot__dot { background: var(--color-warning); }
 
 .d3-sdot--danger { color: var(--color-danger); }
 .d3-sdot--danger .d3-sdot__dot { background: var(--color-danger); }
