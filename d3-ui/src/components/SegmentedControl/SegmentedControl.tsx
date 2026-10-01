@@ -180,7 +180,7 @@ export function SegmentedControl({
             className="d3-seg__item"
           >
             {item.icon ? <span className="d3-seg__icon" aria-hidden="true">{item.icon}</span> : null}
-            {item.label}
+            <span className="d3-seg__label" data-label={item.label}>{item.label}</span>
             {item.count !== undefined ? (
               <span className="d3-seg__count" aria-hidden="true">{item.count.toLocaleString()}</span>
             ) : null}

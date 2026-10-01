@@ -156,3 +156,60 @@ describe('activationMode — the fork that stops arrow keys firing requests', ()
     expect(screen.getByRole('radio', { name: 'Kind' })).toHaveAttribute('tabindex', '0')
   })
 })
+
+/* The CSSOM, not getComputedStyle: jsdom resolves no custom properties and
+   computes nothing for pseudo-elements, so the rule as written is what can be
+   asserted (the same approach as CommandPalette.test.tsx). Quotes in attribute
+   selectors are normalised, since serialisers disagree on them. */
+function cssRules(): CSSRule[] {
+  const out: CSSRule[] = []
+  const walk = (list: CSSRuleList) => {
+    for (const r of Array.from(list)) {
+      out.push(r)
+      if ('cssRules' in r && (r as CSSGroupingRule).cssRules) walk((r as CSSGroupingRule).cssRules)
+    }
+  }
+  for (const sheet of Array.from(document.styleSheets)) {
+    try { walk(sheet.cssRules) } catch { /* cross-origin */ }
+  }
+  return out
+}
+const norm = (s: string) => s.replace(/"/g, "'").replace(/\s+/g, ' ').trim()
+function cssRule(selector: string, inMedia?: string): CSSStyleDeclaration | undefined {
+  const want = norm(selector)
+  const hit = cssRules().find((r) =>
+    r instanceof CSSStyleRule && r.selectorText.split(',').map(norm).includes(want) &&
+    (inMedia ? r.parentRule instanceof CSSMediaRule && r.parentRule.conditionText.includes(inMedia)
+      : !(r.parentRule instanceof CSSMediaRule))) as CSSStyleRule | undefined
+  return hit?.style
+}
+
+describe('SegmentedControl — the chosen option is findable (D-084, PST-DA-048)', () => {
+  it('gives the thumb the field edge, which is 3:1 against the track in both themes', () => {
+    render(<Harness />)
+    const thumb = cssRule('.d3-seg__thumb')!
+    expect(thumb.getPropertyValue('border')).toBe('var(--border-width) solid var(--color-border-field)')
+    expect(thumb.getPropertyValue('background')).toBe('var(--color-surface-raised)')
+    // The track it sits in is bg — the ground border-field is measured against.
+    expect(cssRule('.d3-seg')!.getPropertyValue('background')).toBe('var(--color-bg)')
+  })
+
+  it('sets the checked label semibold, and reserves that width on every label', () => {
+    render(<Harness />)
+    expect(cssRule(".d3-seg__item[aria-checked='true']")!.getPropertyValue('font-weight'))
+      .toBe('var(--weight-semibold)')
+    const reserve = cssRule('.d3-seg__label::after')!
+    expect(reserve.getPropertyValue('content')).toBe('attr(data-label)')
+    expect(reserve.getPropertyValue('font-weight')).toBe('var(--weight-semibold)')
+    expect(reserve.getPropertyValue('visibility')).toBe('hidden')
+    for (const radio of screen.getAllByRole('radio')) {
+      const label = radio.querySelector('.d3-seg__label')!
+      expect(label.getAttribute('data-label')).toBe(label.textContent)
+    }
+  })
+
+  it('names each option once — the reserved copy is not part of the name', () => {
+    render(<Harness />)
+    expect(screen.getByRole('radio', { name: 'Correspondent' })).toBeInTheDocument()
+  })
+})

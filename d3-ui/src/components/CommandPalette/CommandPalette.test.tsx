@@ -360,10 +360,38 @@ const style = (selector: string, inMedia?: string) => rules().find((r) =>
     : !(r.parentRule instanceof CSSMediaRule))) as CSSStyleRule | undefined
 
 describe('CommandPalette — motion and the float layer', () => {
-  it('enters on the modal tier and leaves on its exit token', () => {
-    expect(style('.d3-cmd')?.style.getPropertyValue('animation')).toContain('var(--motion-modal-enter)')
-    expect(style(".d3-cmd[data-state='closed']")?.style.getPropertyValue('animation') ??
-      style('.d3-cmd[data-state="closed"]')?.style.getPropertyValue('animation')).toContain('var(--motion-modal-exit)')
+  it('enters on the popover tier, not the 420ms modal spring (D-084, PST-DA-068)', () => {
+    const enter = style('.d3-cmd')?.style.getPropertyValue('animation')
+    expect(enter).toContain('var(--motion-popover-enter)')
+    expect(enter).not.toContain('modal')
+    const exit = style(".d3-cmd[data-state='closed']")?.style.getPropertyValue('animation') ??
+      style('.d3-cmd[data-state="closed"]')?.style.getPropertyValue('animation')
+    expect(exit).toContain('var(--motion-menu-exit)')
+    expect(exit).not.toContain('modal')
+    // The scrim moves with the panel.
+    expect(style('.d3-cmd__scrim')?.style.getPropertyValue('animation')).toContain('var(--motion-popover-enter)')
+    const scrimExit = style(".d3-cmd__scrim[data-state='closed']")?.style.getPropertyValue('animation') ??
+      style('.d3-cmd__scrim[data-state="closed"]')?.style.getPropertyValue('animation')
+    expect(scrimExit).toContain('var(--motion-menu-exit)')
+  })
+
+  it('moves on tokens of 200ms or less', () => {
+    const ms = (name: string) => {
+      const root = rules().find((r) => r instanceof CSSStyleRule && r.selectorText === ':root' &&
+        r.style.getPropertyValue(name)) as CSSStyleRule | undefined
+      const v = root?.style.getPropertyValue(name).trim() ?? ''
+      const m = /^(\d+)ms\b/.exec(v)
+      expect(m, `${name} = ${v}`).not.toBeNull()
+      return Number(m![1])
+    }
+    expect(ms('--motion-popover-enter')).toBeLessThanOrEqual(200)
+    expect(ms('--motion-menu-exit')).toBeLessThanOrEqual(200)
+  })
+
+  it('marks the active result with a 2px accent bar', () => {
+    const bar = style('.d3-cmd__opt--active::before')!.style
+    expect(bar.getPropertyValue('width')).toBe('2px')
+    expect(bar.getPropertyValue('background')).toBe('var(--color-accent)')
   })
 
   it('does not move at all under reduced motion', () => {

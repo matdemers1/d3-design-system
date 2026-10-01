@@ -64,3 +64,59 @@ describe('pressed — a toggle is a button that stays down', () => {
     expect(screen.getByRole('button', { name: 'Save' })).not.toHaveAttribute('aria-pressed')
   })
 })
+
+/* The CSSOM, not getComputedStyle: jsdom resolves no custom properties and
+   computes nothing for pseudo-elements, so the rule as written is what can be
+   asserted (the same approach as CommandPalette.test.tsx). Quotes in attribute
+   selectors are normalised, since serialisers disagree on them. */
+function cssRules(): CSSRule[] {
+  const out: CSSRule[] = []
+  const walk = (list: CSSRuleList) => {
+    for (const r of Array.from(list)) {
+      out.push(r)
+      if ('cssRules' in r && (r as CSSGroupingRule).cssRules) walk((r as CSSGroupingRule).cssRules)
+    }
+  }
+  for (const sheet of Array.from(document.styleSheets)) {
+    try { walk(sheet.cssRules) } catch { /* cross-origin */ }
+  }
+  return out
+}
+const norm = (s: string) => s.replace(/"/g, "'").replace(/\s+/g, ' ').trim()
+function cssRule(selector: string, inMedia?: string): CSSStyleDeclaration | undefined {
+  const want = norm(selector)
+  const hit = cssRules().find((r) =>
+    r instanceof CSSStyleRule && r.selectorText.split(',').map(norm).includes(want) &&
+    (inMedia ? r.parentRule instanceof CSSMediaRule && r.parentRule.conditionText.includes(inMedia)
+      : !(r.parentRule instanceof CSSMediaRule))) as CSSStyleRule | undefined
+  return hit?.style
+}
+/** A property as declared on a selector, across every rule that names it. */
+function declared(selector: string, prop: string): string {
+  const want = norm(selector)
+  return cssRules().filter((r): r is CSSStyleRule =>
+    r instanceof CSSStyleRule && !(r.parentRule instanceof CSSMediaRule) &&
+    r.selectorText.split(',').map(norm).includes(want))
+    .map((r) => r.style.getPropertyValue(prop)).filter(Boolean).pop() ?? ''
+}
+
+describe('Button — secondary has a findable edge (D-084, PST-DA-057)', () => {
+  it('draws a 1px border-field border on secondary, and none on the other variants', () => {
+    render(<Button variant="secondary">Cancel</Button>)
+    expect(cssRule('.d3-btn--secondary')!.getPropertyValue('border'))
+      .toBe('var(--border-width) solid var(--color-border-field)')
+    expect(cssRule('.d3-btn')!.getPropertyValue('border')).toBe('0')
+    for (const v of ['primary', 'ghost', 'danger', 'danger-ghost']) {
+      expect(cssRule(`.d3-btn--${v}`)!.getPropertyValue('border')).toBe('')
+    }
+  })
+
+  it('turns that border accent when pressed, rather than drawing a ring inside it', () => {
+    render(<Button variant="secondary" pressed>Live</Button>)
+    expect(declared(".d3-btn--secondary[aria-pressed='true']", 'border-color')).toBe('var(--color-accent)')
+    expect(declared(".d3-btn--secondary[aria-pressed='true']", 'box-shadow')).toBe('')
+    // Ghost has no border, so it keeps the inset ring.
+    expect(declared(".d3-btn--ghost[aria-pressed='true']", 'box-shadow'))
+      .toBe('inset 0 0 0 var(--border-width) var(--color-accent)')
+  })
+})

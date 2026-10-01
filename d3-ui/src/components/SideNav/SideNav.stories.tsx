@@ -13,7 +13,8 @@ const meta = {
   parameters: { docs: { description: { component:
     'The app\'s primary navigation, for the `nav` slot of `AppShell`: a `<nav>` landmark, a list, ' +
     'and groups that are named for assistive technology by their visible titles.\n\n' +
-    '- `current` sets `aria-current="page"` — the accent tint, semibold, and announced.\n' +
+    '- `current` sets `aria-current="page"` — the accent tint, a 3px accent bar at the leading edge, ' +
+    'semibold, and announced. The bar is what finds it: the tint alone is about 1.1:1 (D-084).\n' +
     '- `count` is work waiting there. It joins the link\'s name ("Review, 3 items") and renders ' +
     'as a `CountBadge`; on a collapsed rail it is a dot.\n' +
     '- `asChild` takes a router\'s own link element, so client-side navigation keeps working.\n' +
@@ -85,5 +86,36 @@ export const WithARouterLink: Story = {
       <SideNavItem asChild icon={i(Sparkles)} label="Ask" current><RouterLink to="#ask" /></SideNavItem>
       <SideNavItem asChild icon={i(Search)} label="Search"><RouterLink to="#search" /></SideNavItem>
     </SideNav>
+  ),
+}
+
+/**
+ * The current item carries a 3px accent bar at its leading edge — the same mark
+ * as the active CommandPalette result. The tint under it is 1.08:1 light and
+ * 1.04:1 dark against the sidebar, so the bar, the semibold label and
+ * `aria-current` are what say where you are; the bar is at least 4.71:1 against
+ * the fill and the ground in both themes, here and on a recessed sidebar
+ * (D-084, PST-DA-049). Switch the toolbar theme to see both.
+ */
+export const CurrentItem: Story = {
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+      <div>
+        <SideNav aria-label="Expanded">
+          <SideNavItem href="#inbox" icon={i(Import)} label="Inbox" count={4} />
+          <SideNavItem href="#review" icon={i(ClipboardCheck)} label="Review" current />
+          <SideNavItem href="#search" icon={i(Search)} label="Search" />
+        </SideNav>
+      </div>
+      <AppShellContext.Provider value={{ collapsed: true, drawer: false }}>
+        <div style={{ width: 40 }}>
+          <SideNav aria-label="Collapsed">
+            <SideNavItem href="#inbox" icon={i(Import)} label="Inbox" count={4} />
+            <SideNavItem href="#review" icon={i(ClipboardCheck)} label="Review" current />
+            <SideNavItem href="#search" icon={i(Search)} label="Search" />
+          </SideNav>
+        </div>
+      </AppShellContext.Provider>
+    </div>
   ),
 }

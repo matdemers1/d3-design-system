@@ -42,12 +42,31 @@
 }
 .d3-snav__item:hover { background: var(--color-surface-hover); color: var(--color-fg); }
 /* Where you are: the accent tint, the same "this one is on" as a pressed
-   Button and a checked option. Colour is not the only signal — the current
-   item is also semibold, and announced as the current page. */
+   Button and an active CommandPalette result. Colour is not the only signal —
+   the current item is also semibold, carries a leading bar, and is announced
+   as the current page. */
 .d3-snav__item[aria-current='page'] {
   background: var(--color-accent-muted);
   color: var(--color-accent);
   font-weight: var(--weight-semibold);
+}
+/* …and a 3px accent bar at the leading edge, the same mark as the active
+   CommandPalette result (D-084). The fill is a whisper: accent-muted is 1.08:1
+   light / 1.04:1 dark against the sidebar, and the recessed shell's
+   surface-raised is 1.12:1 / 1.43:1 against bg (PST-DA-049). The bar is
+   ≥4.71:1 against the fill and the ground in both themes and both tones. */
+.d3-snav__item[aria-current='page']::before {
+  content: '';
+  position: absolute;
+  top: var(--space-8);
+  bottom: var(--space-8);
+  left: 0;
+  width: 3px;
+  border-radius: var(--radius-full);
+  background: var(--color-accent);
+}
+@media (forced-colors: active) {
+  .d3-snav__item[aria-current='page']::before { forced-color-adjust: none; background: Highlight; }
 }
 .d3-snav__item:focus-visible {
   outline: var(--focus-width) solid var(--color-focus);

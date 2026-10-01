@@ -93,7 +93,11 @@ const meta = {
     'and wrap, Home/End jump to the ends, Enter runs the active result and closes, Esc closes.\n\n' +
     'The palette does not search: the app passes `groups` already filtered for `query`, and the ' +
     'palette marks the match. **It listens for no global keys** — the app binds ⌘K itself ' +
-    '(see *App owns the shortcut*).' } } },
+    '(see *App owns the shortcut*).\n\n' +
+    '**It moves like a popover, not a modal** (D-084): in on `--motion-popover-enter` (200ms ' +
+    'ease-out, a 6px drop, no overshoot), out on `--motion-menu-exit` (140ms). It is opened dozens ' +
+    'of times an hour, which is D-024\'s reason for the menu family\'s Confident tier. Under reduced ' +
+    'motion it appears and goes with no animation at all.' } } },
 } satisfies Meta<typeof CommandPalette>
 export default meta
 type Story = StoryObj<typeof meta>
@@ -186,4 +190,30 @@ export const AppOwnsTheShortcut: Story = {
     'The library adds no global key listener. The app registers ⌘K / Ctrl+K on `window`, ' +
     'toggles `open`, and clears the query on close — and puts `aria-keyshortcuts` on the ' +
     'button that opens it.' } } },
+}
+
+/** Open it, close it, open it again — in both themes. */
+export const OpensLikeAPopover: Story = {
+  render: function Render() {
+    const [open, setOpen] = useState(false)
+    const [query, setQuery] = useState('')
+    const groups = useMailGroups(query)
+    return (
+      <>
+        <Button variant="secondary" onClick={() => setOpen(true)}>Open the palette</Button>
+        <CommandPalette
+          label="Search mail and commands"
+          open={open}
+          onOpenChange={(o) => { setOpen(o); if (!o) setQuery('') }}
+          query={query}
+          onQueryChange={setQuery}
+          groups={groups}
+        />
+      </>
+    )
+  },
+  parameters: { docs: { description: { story:
+    'The panel and its scrim land in 200ms on `--motion-popover-enter` and leave in 140ms on ' +
+    '`--motion-menu-exit` — the Confident tier the Select list and the Menu use, not the ' +
+    "Modal's 420ms spring (D-084, PST-DA-068)." } } },
 }

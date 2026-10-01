@@ -4,17 +4,17 @@
    a centred 380px card with a visible title and padding, and the palette is a
    640px column with no title, pinned near the top third so it does not jump
    as the results grow and shrink. Same scrim, same z-order, same float layer
-   (D-075), same motion tier (D-024). */
+   (D-075). Not the same motion tier: the palette moves like a popover (D-084). */
 .d3-cmd__scrim {
   position: fixed;
   inset: 0;
   background: var(--scrim);
   z-index: 40;
-  animation: d3-cmd-scrim-in var(--dur-3) var(--ease-out) backwards;
+  animation: d3-cmd-scrim-in var(--motion-popover-enter) backwards;
 }
 @keyframes d3-cmd-scrim-in { from { opacity: 0; } }
 @keyframes d3-cmd-scrim-out { to { opacity: 0; } }
-.d3-cmd__scrim[data-state='closed'] { animation: d3-cmd-scrim-out var(--motion-modal-exit) forwards; }
+.d3-cmd__scrim[data-state='closed'] { animation: d3-cmd-scrim-out var(--motion-menu-exit) forwards; }
 
 .d3-cmd {
   position: fixed;
@@ -38,12 +38,15 @@
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-float);
   color: var(--color-fg);
-  /* The modal tier — it interrupts the page (D-024). */
-  animation: d3-cmd-in var(--motion-modal-enter) backwards;
+  /* The Confident tier, not the modal's 420ms spring (D-084, PST-DA-068). A
+     palette is opened dozens of times an hour, which is D-024's whole reason
+     for the menu carve-out: it lands in 200ms ease-out, dropping 6px with no
+     overshoot like every other popover, and leaves on the menu family's 140ms. */
+  animation: d3-cmd-in var(--motion-popover-enter) backwards;
 }
-@keyframes d3-cmd-in { from { opacity: 0; transform: translateY(var(--space-12)) scale(0.96); } }
-@keyframes d3-cmd-out { to { opacity: 0; transform: translateY(var(--space-6)) scale(0.98); } }
-.d3-cmd[data-state='closed'] { animation: d3-cmd-out var(--motion-modal-exit) forwards; }
+@keyframes d3-cmd-in { from { opacity: 0; transform: translateY(calc(-1 * var(--space-6))) scale(0.98); } }
+@keyframes d3-cmd-out { to { opacity: 0; transform: translateY(calc(-1 * var(--space-4))) scale(0.98); } }
+.d3-cmd[data-state='closed'] { animation: d3-cmd-out var(--motion-menu-exit) forwards; }
 .d3-cmd:focus-visible { outline: none; }
 
 /* Reduced motion: it appears and goes, and nothing moves. `none` rather than a
