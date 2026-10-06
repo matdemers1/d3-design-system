@@ -16,8 +16,8 @@ So the rules here are gates, not guidance.
 ## Layout
 
 ```
-design-system/     the record — the audit, the brief, 87 decisions, tokens, explorations
-d3-ui/             the library — @d3cloud/ui, 49 components, 1,297 tests (v1.5.0)
+design-system/     the record — the audit, the brief, 90 decisions, tokens, explorations
+d3-ui/             the library — @d3cloud/ui, 50 components, 1,333 tests (v1.7.0)
 ```
 
 They share a repository because the library's checks run from
@@ -63,8 +63,8 @@ Two gates run on every verify:
 
 ## Status
 
-**v1.5.0** is the current release (2026-10-01). Releases are git tags with a
-GitHub release carrying the packed tarball — `v1.1.0` through `v1.5.0` so far —
+**v1.7.0** is the current release (2026-10-06). Releases are git tags with a
+GitHub release carrying the packed tarball — `v1.1.0` through `v1.7.0` so far (v1.6 is reserved for the canvas-ready work, DS-P-1) —
 and that tarball URL is how apps install it; the package is not on npm. The
 [CHANGELOG](CHANGELOG.md) records each one.
 
