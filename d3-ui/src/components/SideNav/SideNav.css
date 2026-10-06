@@ -109,5 +109,7 @@
 @media (pointer: coarse) {
   .d3-snav__item,
   .d3-snav--collapsed .d3-snav__item { min-height: 44px; }
-  .d3-snav--collapsed .d3-snav__item { min-width: 44px; }
+  /* The rail's content box is 40px; a 44px target grows 2px into the padding
+     on each side so the icon column stays centred on the 64px rail. */
+  .d3-snav--collapsed .d3-snav__item { min-width: 44px; margin-inline: calc(var(--space-2) * -1); }
 }
