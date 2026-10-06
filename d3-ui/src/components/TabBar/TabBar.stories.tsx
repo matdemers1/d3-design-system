@@ -14,6 +14,10 @@ const meta = {
   tags: ['autodocs'],
   args: { 'aria-label': 'Primary' },
   parameters: {
+    // `canvas: 'app'` renders the story in the full-viewport app canvas (no padding, no
+    // centring) so the bar spans the 390px frame; the default centred swatch would
+    // shrink-wrap it to its content.
+    canvas: 'app',
     layout: 'fullscreen',
     viewport: { viewports: PHONE, defaultViewport: 'phone' },
     docs: { description: { component:
@@ -34,10 +38,11 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-/** Pins the bar to the bottom of a phone-height page, the way an app would. */
+/** Pins the bar to the bottom of a phone-height page, the way an app would: exactly
+ *  100dvh (not a minimum), content scrolls, the bar is last and always in view. */
 const Page = ({ children }: { children: React.ReactNode }) => (
-  <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100dvh', background: 'var(--color-bg)', color: 'var(--color-fg)' }}>
-    <div style={{ flex: 1, padding: 'var(--space-16)', fontSize: 'var(--text-14)' }}>Apps content</div>
+  <div style={{ display: 'flex', flexDirection: 'column', height: '100dvh', background: 'var(--color-bg)', color: 'var(--color-fg)' }}>
+    <div style={{ flex: 1, minHeight: 0, overflow: 'auto', padding: 'var(--space-16)', fontSize: 'var(--text-14)' }}>Apps content</div>
     {children}
   </div>
 )
