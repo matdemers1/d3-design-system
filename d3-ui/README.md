@@ -1,6 +1,6 @@
 # @d3cloud/ui
 
-The D3 Cloud component library. Consumed by **Bindery**, **App B**, **App C** and (last) **App A**.
+The D3 Cloud component library. Consumed by **Bindery**, **D3 Auth**, **Foreman**, **Postroom**, **Shipyard**, **D3 Floorspec**, **d3cloud.io** and **D3 QR**.
 
 Design work, decisions and specs live in the workspace at `design-system/` — `AUDIT.md`, `BRIEF.md`, `DECISIONS.md` and the exploration pages. This repo is what ships.
 
@@ -42,7 +42,7 @@ imported by a component, and it sits in `@layer base`, so an app's own
 import '@d3cloud/ui/base.css'     // optional — replaces every app's own html, body rule
 ```
 
-`tokens.css` is plain CSS. **The components do not require Tailwind** — App C does not use it. Apps that do want matching utilities add:
+`tokens.css` is plain CSS. **The components do not require Tailwind** — D3 Auth, Foreman, Postroom, Shipyard and D3 Floorspec do not use it. Apps that do want matching utilities add:
 
 ```js
 import '@d3cloud/ui/theme.css'    // optional — Tailwind v4 preset
