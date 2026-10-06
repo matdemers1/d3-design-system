@@ -106,7 +106,10 @@
     overflow: hidden;
     /* Clear of the home indicator, never tighter than the panel's own padding. */
     padding-bottom: max(var(--space-20), env(safe-area-inset-bottom));
-    animation: d3-sheet-in var(--motion-modal-enter) backwards;
+    /* The drawer curve, not the dialog's spring: the spring overshoots, and a
+       panel anchored to an edge that overshoots lifts off it and shows a strip
+       of page beneath. */
+    animation: d3-sheet-in var(--motion-drawer) backwards;
   }
   .d3-modal[data-state='closed'] { animation: d3-sheet-out var(--motion-modal-exit) forwards; }
 
@@ -142,8 +145,8 @@
   /* Two long buttons wrap onto a second line rather than overflow the sheet. */
   .d3-modal__footer { flex-wrap: wrap; }
 }
-/* A sheet rises from the bottom edge rather than settling in from the centre.
-   The same expressive tokens as the dialog; leaving is again quicker. */
+/* A sheet rises from the bottom edge rather than settling in from the centre,
+   on the drawer curve; leaving uses the dialog's exit and is again quicker. */
 @keyframes d3-sheet-in {
   from { transform: translateY(100%); }
 }
