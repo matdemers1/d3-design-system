@@ -41,3 +41,12 @@
 .d3-shell--recessed .d3-shell__main .d3-crd .d3-ibtn:not(.d3-ibtn--secondary):hover:not(:disabled):not([aria-pressed='true']) {
   background: var(--color-fill-quiet);
 }
+
+/* Coarse pointer: a square thumb target, never under 44 x 44 (WCAG 2.5.5).
+   min-* beats the smaller width/height above, so a fine pointer keeps the
+   desktop sizes (DS-P-3, DS-REQ-009/012). */
+@media (pointer: coarse) {
+  .d3-ibtn--sm,
+  .d3-ibtn--md,
+  .d3-ibtn--lg { min-width: 44px; min-height: 44px; }
+}
