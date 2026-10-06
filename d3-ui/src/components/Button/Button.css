@@ -93,3 +93,13 @@
 .d3-shell--recessed .d3-shell__main .d3-crd :is(.d3-btn--ghost, .d3-btn--danger-ghost):hover:not(:disabled):not([aria-pressed='true']) {
   background: var(--color-fill-quiet);
 }
+
+/* A thumb is not a cursor. Under a coarse primary pointer every size reaches
+   44px (WCAG 2.5.5, the platform minimum) — the sm and md that Shipyard's audit
+   found too small for a phone. min-height wins over the smaller height above, so
+   desktop density is untouched under a fine pointer (DS-P-3, DS-REQ-009/012). */
+@media (pointer: coarse) {
+  .d3-btn--sm,
+  .d3-btn--md,
+  .d3-btn--lg { min-height: 44px; }
+}

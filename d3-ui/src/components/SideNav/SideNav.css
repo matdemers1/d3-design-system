@@ -102,3 +102,12 @@
   clip-path: inset(50%);
   white-space: nowrap;
 }
+
+/* Coarse pointer: every row, and every rail target, is at least 44px tall
+   (WCAG 2.5.5); the rail's square targets are 44 wide too, which still fits the
+   64px rail. A fine pointer keeps the desktop 36/40px rows (DS-P-3, DS-REQ-009/012). */
+@media (pointer: coarse) {
+  .d3-snav__item,
+  .d3-snav--collapsed .d3-snav__item { min-height: 44px; }
+  .d3-snav--collapsed .d3-snav__item { min-width: 44px; }
+}

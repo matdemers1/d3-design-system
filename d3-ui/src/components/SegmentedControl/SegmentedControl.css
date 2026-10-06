@@ -103,3 +103,12 @@
 /* Same rule as the Tabs count: weight, not opacity. Opacity here happened to
    clear 4.5:1 and was one palette change away from not doing so. */
 .d3-seg__item[aria-checked='true'] .d3-seg__count { color: var(--color-fg-muted); }
+
+/* Coarse pointer: each option is a 44px-tall thumb target (WCAG 2.5.5), so the
+   track grows to 48px around it. The thumb is pinned top/bottom to the track
+   rather than given a height, so it grows with the items and still lines up with
+   the chosen one. A fine pointer keeps the desktop heights (DS-P-3, DS-REQ-009/012). */
+@media (pointer: coarse) {
+  .d3-seg--sm .d3-seg__item,
+  .d3-seg--md .d3-seg__item { min-height: 44px; }
+}
