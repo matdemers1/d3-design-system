@@ -92,13 +92,25 @@ describe('TabBar', () => {
   describe('development warnings', () => {
     afterEach(() => vi.restoreAllMocks())
 
-    it('warns when there are fewer than three or more than five destinations', () => {
+    it('warns when there are more than five destinations', () => {
       const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
       render(
         <TabBar aria-label="Primary">
           {['A', 'B', 'C', 'D', 'E', 'F'].map((l) => <TabBar.Item key={l} href={`/${l}`} icon={icon} label={l} />)}
         </TabBar>,
       )
+      expect(warn).toHaveBeenCalledWith(expect.stringContaining('three to five'))
+    })
+
+    it('warns when there are fewer than three destinations', () => {
+      const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+      render(
+        <TabBar aria-label="Primary">
+          <TabBar.Item href="/a" icon={icon} label="A" />
+          <TabBar.Item href="/b" icon={icon} label="B" />
+        </TabBar>,
+      )
+      expect(warn).toHaveBeenCalledWith(expect.stringContaining('has 2 destinations'))
       expect(warn).toHaveBeenCalledWith(expect.stringContaining('three to five'))
     })
   })
