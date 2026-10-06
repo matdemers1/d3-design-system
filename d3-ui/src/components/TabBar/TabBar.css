@@ -1,0 +1,97 @@
+/* A phone bar: hidden from lg (the AppShell breakpoint) up unless forced. Done in
+   CSS rather than by not rendering, so there is no flash and no hydration
+   mismatch on a server-rendered phone page. `display: none` also removes it from
+   the accessibility tree, so a hidden bar is not a second copy of the navigation. */
+.d3-tbar {
+  display: flex;
+  align-items: stretch;
+  gap: var(--space-4);
+  /* The larger of the usual padding and the home indicator's inset, so a label
+     never sits under it. The inset is non-zero only with viewport-fit=cover. */
+  padding: var(--space-4) var(--space-8) max(var(--space-8), env(safe-area-inset-bottom));
+  background: var(--color-surface);
+  border-top: var(--border-width) solid var(--color-border);
+}
+@media (min-width: 1024px) {
+  .d3-tbar:not(.d3-tbar--force) { display: none; }
+}
+
+/* Equal shares, and never under 44 x 44 (WCAG 2.5.5, and the platform minimum
+   for a thumb). `flex: 1 1 0` with `min-width: 0` on the label keeps a long
+   label from stealing width from its neighbours. */
+.d3-tbar__item {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  margin: 0;
+  padding: var(--space-4) var(--space-2);
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--color-fg-muted);
+  font-size: var(--text-11);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-11);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color var(--motion-hover), color var(--motion-hover);
+}
+.d3-tbar__item:hover,
+.d3-tbar__item:active { background: var(--color-surface-hover); }
+
+/* The current tab: accent and semibold, and a short bar at the top edge — the
+   same mark as SideNav's current item (D-084), turned to the horizontal. The
+   bar means the state is not colour alone, and it survives forced-colors,
+   where the text colour is overridden. */
+.d3-tbar__item[aria-current='page'] {
+  color: var(--color-accent);
+  font-weight: var(--weight-semibold);
+}
+.d3-tbar__item[aria-current='page']::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: calc(50% - 10px);
+  width: 20px;
+  height: 2px;
+  border-radius: var(--radius-full);
+  background: var(--color-accent);
+}
+@media (forced-colors: active) {
+  .d3-tbar__item[aria-current='page']::before { forced-color-adjust: none; background: Highlight; }
+}
+
+/* The badge is positioned against the glyph wrapper, not the item, so it hangs
+   off the icon's own corner. `left: 100%` puts its box wholly outside the
+   22px icon box — it annotates the icon without covering it. */
+.d3-tbar__glyph { position: relative; display: flex; flex: none; }
+.d3-tbar__icon {
+  display: flex;
+  flex: none;
+  width: 22px;
+  height: 22px;
+}
+.d3-tbar__icon > svg { width: 100%; height: 100%; }
+.d3-tbar__badge {
+  position: absolute;
+  top: calc(-1 * var(--space-8));
+  left: 100%;
+}
+
+.d3-tbar__label {
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.d3-tbar__item:focus-visible {
+  outline: var(--focus-width) solid var(--color-focus);
+  outline-offset: var(--focus-offset);
+}

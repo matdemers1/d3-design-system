@@ -76,5 +76,8 @@ export * from './components/CommandPalette'
 export { PasswordStrength } from './components/PasswordStrength'
 export type { PasswordStrengthProps, PasswordStrengthScore } from './components/PasswordStrength'
 
+// v1.7 — phone-ready (DS-P-3)
+export * from './components/TabBar'
+
 // Strict CSP: the nonce for the styles Radix injects while a layer is open (D-072)
 export { setStyleNonce, readStyleNonce } from './lib/styleNonce'
