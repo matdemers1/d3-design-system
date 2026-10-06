@@ -54,3 +54,14 @@ it('spans its container when flush, and keeps its tone', () => {
   expect(alert.classList.contains('d3-alrt--flush')).toBe(true)
   expect(alert.classList.contains('d3-alrt--warning')).toBe(true)
 })
+
+describe('Alert — actions', () => {
+  it('renders the actions in their own container (it wraps, proven in browser/sheet.spec.ts)', () => {
+    const { container } = render(
+      <Alert tone="info" actions={<><button>One</button><button>Two</button></>}>Read-only.</Alert>,
+    )
+    const row = container.querySelector('.d3-alrt__actions')
+    expect(row).not.toBeNull()
+    expect(row!.querySelectorAll('button')).toHaveLength(2)
+  })
+})

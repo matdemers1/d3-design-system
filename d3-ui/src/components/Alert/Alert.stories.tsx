@@ -10,6 +10,8 @@ const ICONS = {
   info: <Info size={17} strokeWidth={1.9} />,
 }
 
+const PHONE = { phone: { name: 'Phone 390', styles: { width: '390px', height: '844px' }, type: 'mobile' as const } }
+
 const meta = {
   title: 'Layers/Alert',
   component: Alert,
@@ -89,4 +91,22 @@ export const Flush: Story = {
       </div>
     </div>
   ),
+}
+
+export const LongActionsPhone: Story = {
+  args: { tone: 'danger', icon: ICONS.danger, title: 'The deployment failed',
+    children: 'The stack did not become healthy within five minutes, so it was rolled back.',
+    actions: (
+      <>
+        <Button size="sm">Retry the failed deployment now</Button>
+        <Button size="sm" variant="secondary">Open the deployment log</Button>
+      </>
+    ) },
+  decorators: [(S) => <div style={{ width: '100%' }}><S /></div>],
+  parameters: {
+    layout: 'padded',
+    viewport: { viewports: PHONE, defaultViewport: 'phone' },
+    docs: { description: { story:
+      'The action row wraps rather than overflowing: two long labels at 390px sit on two lines.' } },
+  },
 }

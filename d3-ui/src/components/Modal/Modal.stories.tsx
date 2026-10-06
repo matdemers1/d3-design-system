@@ -5,6 +5,20 @@ import { Button } from '../Button/Button'
 import { FormField } from '../FormField/FormField'
 import { Select } from '../Select/Select'
 
+// Below 600px a Modal is a bottom sheet, so those stories are judged at 390px.
+const PHONE = { phone: { name: 'Phone 390', styles: { width: '390px', height: '844px' }, type: 'mobile' as const } }
+
+const LONG_BODY = (
+  <>
+    {Array.from({ length: 12 }, (_, i) => (
+      <p key={i} style={{ margin: '0 0 12px', fontSize: 13, lineHeight: '20px' }}>
+        Run {i + 1} of the nightly replication finished with warnings: 14 objects were skipped because
+        they changed while the snapshot was being taken, and will be picked up on the next pass.
+      </p>
+    ))}
+  </>
+)
+
 const meta = {
   title: 'Layers/Modal',
   component: Modal,
@@ -101,4 +115,57 @@ export const RichDescription: Story = {
   parameters: { docs: { description: { story:
     '`description` takes rich content — the name in bold, an identifier in mono, two paragraphs. ' +
     'It renders in a `div`, so block content is valid, and remains the dialog\'s accessible description.' } } },
+}
+
+export const PhoneSheet: Story = {
+  args: { open: true, title: 'Review the nightly run',
+    description: 'Read the whole run before you acknowledge it. Acknowledging clears the alert for everyone.' },
+  render: (args) => (
+    <Modal
+      {...args}
+      footer={
+        <>
+          <ModalClose><Button variant="ghost">Cancel</Button></ModalClose>
+          <Button>Acknowledge run</Button>
+        </>
+      }
+    >
+      {LONG_BODY}
+    </Modal>
+  ),
+  parameters: {
+    layout: 'fullscreen',
+    viewport: { viewports: PHONE, defaultViewport: 'phone' },
+    docs: { description: { story:
+      'Below 600px the Modal is a **bottom sheet**: anchored to the bottom edge at full width with ' +
+      'rounded top corners and a grabber, rising from the edge. The description and children scroll ' +
+      'inside the body while the footer stays pinned, and a close button is visible. The grabber is ' +
+      'decorative — the sheet does not drag. From 600px it is the centred dialog it always was.' } },
+  },
+}
+
+export const PhoneSheetDestructive: Story = {
+  args: { open: true, destructive: true, title: 'Dismiss 3 items',
+    description: 'They leave the inbox and stay searchable. This can be undone from the audit log.' },
+  render: (args) => (
+    <Modal
+      {...args}
+      footer={
+        <>
+          <ModalClose><Button variant="ghost">Cancel</Button></ModalClose>
+          <ModalClose><Button variant="danger">Dismiss 3 items</Button></ModalClose>
+        </>
+      }
+    >
+      {LONG_BODY}
+    </Modal>
+  ),
+  parameters: {
+    layout: 'fullscreen',
+    viewport: { viewports: PHONE, defaultViewport: 'phone' },
+    docs: { description: { story:
+      'The destructive sheet: the scrim does not dismiss it and focus lands on the panel, not the ' +
+      'danger button — but the close button is still there, because leaving without choosing is ' +
+      'always allowed.' } },
+  },
 }

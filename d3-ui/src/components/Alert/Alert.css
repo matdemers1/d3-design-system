@@ -12,7 +12,9 @@
 .d3-alrt__title { font-size: var(--text-13); font-weight: var(--weight-semibold); margin: 0 0 2px; }
 .d3-alrt__message { font-size: var(--text-12); color: var(--color-fg-muted); margin: 0;
   line-height: var(--leading-12); }
-.d3-alrt__actions { margin-top: var(--space-8); display: flex; gap: var(--space-8); }
+/* Wraps (DS-REQ-011): two long labels on a phone went past the alert's edge.
+   The gap is the row gap too, so a wrapped action sits one step below. */
+.d3-alrt__actions { margin-top: var(--space-8); display: flex; flex-wrap: wrap; gap: var(--space-8); }
 
 /* A banner spans its container instead of sitting inside it. It keeps the
    raised ground — elevation is tone — and trades its radius for a boundary at
