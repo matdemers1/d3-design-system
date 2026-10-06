@@ -16,8 +16,8 @@ So the rules here are gates, not guidance.
 ## Layout
 
 ```
-design-system/     the record — the audit, the brief, 55 decisions, tokens, explorations
-d3-ui/             the library — @d3cloud/ui, 21 components, 361 tests
+design-system/     the record — the audit, the brief, 87 decisions, tokens, explorations
+d3-ui/             the library — @d3cloud/ui, 49 components, 1,297 tests (v1.5.0)
 ```
 
 They share a repository because the library's checks run from
@@ -36,8 +36,10 @@ They share a repository because the library's checks run from
 
 Dark-first, OKLCH-derived colour with one violet accent. A 7-step type scale on
 Inter, self-hosted because no app previously loaded the face it declared.
-**Elevation is tone and detachment is a boundary — there is no shadow token in
-this system.** Colour is spent on meaning rather than decoration: three badge
+**Elevation is tone, not a shadow ramp: there are exactly two shadow tokens,
+`--shadow-sheet` (the recessed shell's content sheet) and `--shadow-float`
+(floating layers), each named for its one job, and the usage guard admits no
+others** (D-075, DS-ADR-001). Colour is spent on meaning rather than decoration: three badge
 tones, not seven. Motion is expressive and tokenised, and under
 `prefers-reduced-motion` it slows rather than freezing, because a frozen spinner
 reads as a hung request.
@@ -48,7 +50,7 @@ reads as a hung request.
 cd d3-ui
 npm install
 npm run dev        # Storybook on :6006
-npm run verify     # tokens → usage → typecheck → 361 tests → build → dist check
+npm run verify     # tokens → usage → typecheck → tests → build → dist check
 ```
 
 Two gates run on every verify:
@@ -56,16 +58,22 @@ Two gates run on every verify:
 - **`check-tokens.mjs`** — the JSON sources and the built stylesheets must agree,
   and the copy vendored into the library must match the original.
 - **`check-usage.mjs`** — bans raw hex, raw Tailwind palette classes, off-scale
-  values, primitive tokens and shadows. Run it against any app:
+  values, primitive tokens and any shadow other than the two. Run it against any app:
   `npx d3-check-usage src`
 
 ## Status
 
-Phases 0–7 complete. **Bindery is migrated**; App A, App C, App B
-and the personal site are not yet. No `v0.1.0` tag has been cut.
+**v1.5.0** is the current release (2026-10-01). Releases are git tags with a
+GitHub release carrying the packed tarball — `v1.1.0` through `v1.5.0` so far —
+and that tarball URL is how apps install it; the package is not on npm. The
+[CHANGELOG](CHANGELOG.md) records each one.
+
+Consumed by **Bindery**, **D3 Auth** (console), **Foreman**, **Postroom**,
+**Shipyard**, **D3 Floorspec**, **d3cloud.io** and **D3 QR**. Planned work is
+tracked as project `DS` in [Foreman](https://foreman.d3cloud.io).
 
 ## Licence
 
-The fonts in `design-system/tokens/fonts/` are Inter and JetBrains Mono under the
-SIL Open Font License 1.1, and their licence texts travel with them. The rest of
-this repository carries no licence, which means all rights reserved.
+[Apache-2.0](LICENSE), like the other public D3 Cloud repositories. The fonts in
+`design-system/tokens/fonts/` are Inter and JetBrains Mono under the SIL Open Font
+License 1.1, and their licence texts travel with them.
