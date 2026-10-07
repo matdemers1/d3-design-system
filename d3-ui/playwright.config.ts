@@ -13,6 +13,10 @@ import { defineConfig, devices } from '@playwright/test'
  * that fails on a laptop gets switched off — so `npm run test:browser` runs in
  * that image, and the geometry checks carry the coverage.
  */
+// D3_SB_PORT lets several checkouts (parallel worktrees) each serve their own
+// Storybook without one silently reusing another's server.
+const port = Number(process.env.D3_SB_PORT ?? 6007)
+
 export default defineConfig({
   testDir: 'browser',
   fullyParallel: true,
@@ -20,7 +24,7 @@ export default defineConfig({
   retries: 0,
   reporter: process.env.CI ? [['list'], ['html', { open: 'never' }]] : 'list',
   use: {
-    baseURL: 'http://127.0.0.1:6007',
+    baseURL: `http://127.0.0.1:${port}`,
     viewport: { width: 1000, height: 800 },
     deviceScaleFactor: 1,
   },
@@ -37,8 +41,8 @@ export default defineConfig({
   snapshotPathTemplate: '{testDir}/__screenshots__/{arg}{ext}',
   projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'], viewport: { width: 1000, height: 800 }, deviceScaleFactor: 1 } }],
   webServer: {
-    command: 'node scripts/serve-static.mjs storybook-static 6007',
-    url: 'http://127.0.0.1:6007/index.json',
+    command: `node scripts/serve-static.mjs storybook-static ${port}`,
+    url: `http://127.0.0.1:${port}/index.json`,
     reuseExistingServer: !process.env.CI,
   },
 })

@@ -139,3 +139,65 @@ describe('Modal — the contract App B has never met', () => {
     expect(dlg.querySelector('.d3-modal__desc')).toBeNull()
   })
 })
+
+describe('Modal — the phone sheet structure', () => {
+  // jsdom applies Modal.css but not its media queries, so the close button is
+  // `display: none` here, as on a desktop, and has no computed accessible name.
+  // It is found by class and its `aria-label` read; browser/sheet.spec.ts shows
+  // it, named, on a phone.
+  const closeBtn = () => document.querySelector<HTMLButtonElement>('.d3-modal__close')!
+
+  it('wraps the description and children in one body region; the head and footer stay outside it', async () => {
+    render(
+      <Modal open title="Review" description="Read it first." footer={<Button>Done</Button>}>
+        <p data-testid="child">Long content</p>
+      </Modal>,
+    )
+    const dlg = await screen.findByRole('dialog')
+    const body = dlg.querySelector('.d3-modal__body')!
+    expect(body).not.toBeNull()
+    expect(body.querySelector('.d3-modal__desc')).not.toBeNull()
+    expect(body.contains(screen.getByTestId('child'))).toBe(true)
+    expect(body.closest('.d3-modal__head')).toBeNull()
+    expect(dlg.querySelector('.d3-modal__footer')!.parentElement).toBe(dlg)
+    expect(dlg.querySelector('.d3-modal__head')!.parentElement).toBe(dlg)
+    expect(body.parentElement).toBe(dlg)
+  })
+
+  it('keeps aria-describedby on the description inside the body', async () => {
+    render(<Modal open title="Review" description="Read it first."><p>x</p></Modal>)
+    const dlg = await screen.findByRole('dialog')
+    const desc = dlg.querySelector('.d3-modal__body .d3-modal__desc')!
+    expect(dlg.getAttribute('aria-describedby')).toBe(desc.id)
+  })
+
+  it('has a close button, named Close, in the head after the title', async () => {
+    render(<Modal open title="Review" />)
+    const dlg = await screen.findByRole('dialog')
+    const close = closeBtn()
+    expect(close).toHaveAttribute('aria-label', 'Close')
+    expect(dlg.querySelector('.d3-modal__head')!.contains(close)).toBe(true)
+  })
+
+  it('closes the dialog from the close button', async () => {
+    const user = userEvent.setup()
+    const onOpenChange = vi.fn()
+    render(<Modal open onOpenChange={onOpenChange} title="Review" />)
+    await screen.findByRole('dialog')
+    await user.click(closeBtn())
+    expect(onOpenChange).toHaveBeenCalledWith(false)
+  })
+
+  it('takes a translated close label', async () => {
+    render(<Modal open title="Review" closeLabel="Fermer" />)
+    await screen.findByRole('dialog')
+    expect(closeBtn()).toHaveAttribute('aria-label', 'Fermer')
+  })
+
+  it('still sends focus to the panel, not the close button or the danger button, when destructive', async () => {
+    render(<Modal open destructive title="Dismiss" footer={<Button variant="danger">Dismiss 3</Button>} />)
+    const dlg = await screen.findByRole('dialog')
+    await waitFor(() => expect(dlg).toHaveFocus())
+  })
+})
+

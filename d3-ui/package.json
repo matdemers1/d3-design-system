@@ -1,6 +1,6 @@
 {
   "name": "@d3cloud/ui",
-  "version": "1.5.0",
+  "version": "1.7.0",
   "description": "The D3 Cloud component library. Consumed by Bindery, D3 Auth, Foreman, Postroom, Shipyard, D3 Floorspec, d3cloud.io and D3 QR.",
   "type": "module",
   "license": "Apache-2.0",

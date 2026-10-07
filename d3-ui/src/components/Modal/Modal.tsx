@@ -1,6 +1,9 @@
 import * as Dialog from '@radix-ui/react-dialog'
+import { useEffect, useState } from 'react'
 import { cn } from '../../lib/cn'
 import { devWarn } from '../../lib/dev'
+import { CloseGlyph } from '../../lib/glyphs'
+import { IconButton } from '../IconButton/IconButton'
 import './Modal.css'
 
 export type ModalSize = 'sm' | 'md' | 'lg'
@@ -26,7 +29,38 @@ export interface ModalProps {
    * dismiss it, and focus does not land on the destructive button.
    */
   destructive?: boolean
+  /**
+   * The accessible name of the close control, which shows below 600px where a
+   * Modal is a bottom sheet and a phone has no Escape key. Translate it with
+   * the rest of the app.
+   */
+  closeLabel?: string
   className?: string
+}
+
+/**
+ * Whether an element's content is taller than its box — which, for the phone
+ * sheet's body, is exactly when it needs to be a keyboard tab stop (WCAG 2.1.1;
+ * axe `scrollable-region-focusable`). Measured rather than assumed because a
+ * permanent `tabindex` would also be a candidate for the dialog's initial focus
+ * at desktop width, where the body is `display: contents` and measures zero.
+ */
+function useScrolls(el: HTMLElement | null) {
+  const [scrolls, setScrolls] = useState(false)
+  useEffect(() => {
+    if (!el) return
+    const measure = () => setScrolls(el.scrollHeight > el.clientHeight + 1)
+    measure()
+    if (typeof ResizeObserver === 'undefined') return
+    const ro = new ResizeObserver(measure)
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [el])
+  // Content that changes without the body's own box changing.
+  useEffect(() => {
+    if (el) setScrolls(el.scrollHeight > el.clientHeight + 1)
+  })
+  return scrolls
 }
 
 /**
@@ -38,8 +72,10 @@ export interface ModalProps {
  */
 export function Modal({
   open, onOpenChange, trigger, title, description, children, footer,
-  size = 'md', destructive = false, className,
+  size = 'md', destructive = false, closeLabel = 'Close', className,
 }: ModalProps) {
+  const [bodyEl, setBodyEl] = useState<HTMLDivElement | null>(null)
+  const bodyScrolls = useScrolls(bodyEl)
   if (process.env.NODE_ENV !== 'production') {
     if (!title) {
       devWarn('Modal.title', 'Modal: `title` is required. It is the dialog\'s accessible name, so without it ' +
@@ -76,16 +112,33 @@ export function Modal({
         >
           <div className="d3-modal__head">
             <Dialog.Title className="d3-modal__title">{title}</Dialog.Title>
+            {/* Shown only below 600px (Modal.css), where the panel is a bottom
+                sheet and the scrim is a thin strip a thumb can miss. From 600px
+                it is display: none, so it is neither seen nor in the a11y tree
+                and the desktop dialog is exactly what it was. */}
+            <Dialog.Close asChild>
+              <IconButton
+                size="sm"
+                label={closeLabel}
+                icon={<CloseGlyph size={16} />}
+                className="d3-modal__close"
+              />
+            </Dialog.Close>
           </div>
-          {description !== undefined && description !== null && description !== false && description !== '' ? (
-            // A div, not Radix's default <p>: a description may be paragraphs or a
-            // list, and a <p> cannot hold either (the same fix as Alert, D-050).
-            // Radix still gives it the id the dialog's aria-describedby points at.
-            <Dialog.Description asChild>
-              <div className="d3-modal__desc">{description}</div>
-            </Dialog.Description>
-          ) : null}
-          {children}
+          {/* The body is the part of a phone sheet that scrolls, so the footer can
+              stay pinned. From 600px it is `display: contents`, with no box of its own,
+              and the whole panel scrolls as it always has. */}
+          <div className="d3-modal__body" ref={setBodyEl} tabIndex={bodyScrolls ? 0 : undefined}>
+            {description !== undefined && description !== null && description !== false && description !== '' ? (
+              // A div, not Radix's default <p>: a description may be paragraphs or a
+              // list, and a <p> cannot hold either (the same fix as Alert, D-050).
+              // Radix still gives it the id the dialog's aria-describedby points at.
+              <Dialog.Description asChild>
+                <div className="d3-modal__desc">{description}</div>
+              </Dialog.Description>
+            ) : null}
+            {children}
+          </div>
           {footer ? <div className="d3-modal__footer">{footer}</div> : null}
         </Dialog.Content>
       </Dialog.Portal>

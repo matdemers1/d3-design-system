@@ -1737,3 +1737,45 @@ D-009's reason — "we own none of the focus-management or ARIA plumbing" — st
 **Also checked and left alone.** *The dark avatar tints* (settings 2.1 #8, "muddy"): initials are 7.83–8.26:1 on their fills, the fill pairs are D-081's measured set, and a deep-tinted disc on a dark ground is low-luminance by design — identity, not status. Not clearly wrong, so not changed.
 
 **Proven.** Unit: `Table` writes rem/%/auto to its `<col>`s, rejects `minmax(0, 1.4fr)` and `1fr` in the type (`@ts-expect-error`, so the typecheck fails if the type ever admits them again), warns and writes no style at runtime; `SettingsRow` adds `d3-setrow--stack` only when asked; `Select` renders an SVG chevron in both appearances and still takes `chevronIcon`. Browser (`cards.spec.ts`, at 390px in both themes): the secondary header action is no wider than its label plus its padding while the primary ends on the row's right edge; the Theme, Message previews and Two-factor controls sit beside their text; the first "Sign out" label starts within 1px of the row title's text.
+
+---
+
+### D-088 · v1.7 · TabBar: a phone bottom bar of three to five destinations
+**Date:** 2026-10-06
+**Prompted by:** Shipyard's design audit (SHP-AUD-001) and SHP-ADR-006 — the phone console has three destinations, Apps, Activity and Settings, and the library had a bottom bar only for *actions* (ActionBar, D-083). DS-REQ-008.
+
+**Chosen.** `TabBar` and `TabBar.Item` (also exported as `TabBarItem`). The bar is a `<nav>` with a required `aria-label`; every item is an `<a>` with an icon (22px, `aria-hidden`) over a visible `--text-11` medium label, sharing the width equally (`flex: 1 1 0`) and never under 44 x 44px. The current item carries `aria-current="page"` (never `"false"`), turns `--color-accent` and semibold, and draws a 20 x 2px accent mark at its top — `Highlight` under forced colours, so the state is not colour alone. An optional `count` renders a `CountBadge` (sm, max 99) outside the icon's top-right corner, `aria-hidden`, with the count folded into the link's name once ("Activity, 3 new", or `countLabel`). The bar sits on `surface` with a 1px `--color-border` top hairline and pads its bottom by `max(var(--space-8), env(safe-area-inset-bottom))`. Hidden from `lg` (1024px) up unless `forceVisible`. Development warnings for fewer than three or more than five items.
+
+**Why a sibling and not an ActionBar mode.** ActionBar is a labelled `group` of buttons in tab order because its items are actions; a bar of destinations is navigation and should be a landmark whose current item is announced as the current page. One component with a mode would make the semantics a prop that is easy to get wrong.
+
+**Rules out.** A sixth destination (the label width at 390px is the limit; more belongs in a menu). Icon-only items. A `button` item — a destination is a link.
+
+**Proven.** Unit (13): nav named by its label, links named by label plus count, exactly one `aria-current`, `3` and `99+`, no badge for 0 or none, ref forwarded, forced class, both warnings, axe. Browser (`tabbar.spec.ts`), in both themes at 390x844 on the app canvas: the bar spans 390px at left 0, labels visible inside the viewport, equal item shares within 1px, every item at least 44 x 44, the badge clear of the icon and of every other item, one current item, the safe-area clause present in the stylesheet, the current mark visible under forced colours; hidden at 1280px unless forced. Figma: *TabBar item* and *TabBar* on the Design Language's Navigation & Menus page.
+
+**Open.** With five destinations a `99+` count is wider than the space beside the icon and reaches into the next item (DS-T-006).
+
+---
+
+### D-089 · v1.7 · A coarse pointer gets 44px targets; a fine pointer keeps desktop density
+**Date:** 2026-10-06
+**Prompted by:** the same audit: on a phone a 34px Button, 28px IconButton, 28px SegmentedControl option and 36px SideNav row are below the 44px a thumb needs (WCAG 2.5.5). DS-REQ-009, DS-REQ-012.
+
+**Chosen.** Under `@media (pointer: coarse)` only: Button (every size) and SegmentedControl items take `min-height: 44px`; IconButton takes 44 x 44; SideNav rows take 44px, and the collapsed rail's square targets 44 x 44, growing 2px into the rail's padding on each side so the icon column stays centred on the 64px rail. `min-height` beats the smaller `height`, so no desktop rule changes; the SegmentedControl thumb follows its item.
+
+**Why the media query and not a breakpoint.** Width is not the problem — a narrow desktop window does not need fat targets, and a tablet at 1024px does. The input is the problem, and `pointer: coarse` names it.
+
+**Rules out.** An invisible hit-area pseudo-element that keeps the visual size — the target would be 44px and look 28px, and the next control's hit area would overlap it in a dense row.
+
+**Proven.** Browser (`coarse.spec.ts`) in a `hasTouch` + `isMobile` Chromium context at 390px, which reports `pointer: coarse`: every visible `.d3-btn`, `.d3-ibtn`, `.d3-seg__item` and `.d3-snav__item` on 14 stories in both themes is at least 44 tall (IconButton and rail items 44 wide), each story asserting it found some; the thumb aligns with the checked item; under a fine pointer Button is 28/34/40, IconButton 28/34/40 square, SegmentedControl 24/28, rail 40. A sweep of all 317 stories found none under 44. The pixel baselines, taken under a fine pointer, are unchanged.
+
+---
+
+### D-090 · v1.7 · On a phone a Modal is a bottom sheet with a pinned footer; Alert actions wrap
+**Date:** 2026-10-06
+**Prompted by:** the same audit: a centred 380px Modal on a phone scrolled its footer away under long content, so the confirming button left the screen; and an Alert's two long actions ran past its edge, which Shipyard patched locally (`.shp-alert-actions`, SHP-DA-018). DS-REQ-010, DS-REQ-011, DS-REQ-013.
+
+**Chosen.** Below 600px the Modal is anchored to the bottom edge at full width with `--radius-lg` top corners, a decorative 36 x 4 grabber, and bottom padding clear of the home indicator. It enters from the bottom on `--motion-drawer` — not the dialog's spring, which overshoots and lifted the edge-anchored panel off the edge — and leaves on `--motion-modal-exit`. The description and children sit in a body region that scrolls while the head and footer stay put; the footer wraps. A close IconButton (`closeLabel`, default "Close") shows in the head. The body becomes a tab stop only while it actually overflows. From 600px nothing changes: the body is `display: contents`, the close button `display: none`, and the pixel baselines are identical. `.d3-alrt__actions` wraps at every width.
+
+**Rules out.** Drag-to-dismiss — the grabber is a shape that says "sheet", nothing more. A close button on the desktop dialog, which has Escape and a scrim.
+
+**Proven.** Unit: the body wraps description and children, `aria-describedby` still resolves, the close control closes and takes `closeLabel`, destructive focus unchanged. Browser (`sheet.spec.ts`) at 390x844 in both themes: the panel's bottom is the viewport's, full width, top corners rounded and bottom square, grabber drawn, close visible; scrolling the body to its end leaves the footer's rect unchanged and inside the viewport; axe clean. At 1000px the panel is centred and the close button hidden, and initial focus is still the first control. The Alert story at 390px has no horizontal overflow and its second action wraps. Verified separately at 599 and 600px, with short content (no scroll, no tab stop) and on the exit animation.

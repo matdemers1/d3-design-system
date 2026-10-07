@@ -4,6 +4,30 @@ Semver. The public surface is what `d3-ui/src/index.ts` exports plus the token
 names; CSS class names (`.d3-btn`, `.d3-seg`) are an implementation detail and
 apps must not select on them.
 
+## v1.7.0 — 2026-10-06 · phone-ready (D-088 – D-090)
+
+The pieces a phone-first console needs, found by Shipyard's design audit (SHP-AUD-001). v1.6 is
+reserved for the canvas-ready browser bundle (DS-P-1), which has not shipped.
+
+### Added
+
+- **`TabBar`, `TabBar.Item` / `TabBarItem`** — a phone bottom bar of three to five destinations: a
+  `<nav>` of links, icon over label, the current one `aria-current="page"` with an accent mark, an
+  optional count as a CountBadge, safe-area padding, hidden from `lg` up unless `forceVisible`
+  (D-088).
+- **`Modal closeLabel`** — the accessible name of the close control the phone sheet shows (D-090).
+
+### Changed (every app)
+
+- **Under `pointer: coarse`** Button, IconButton, SegmentedControl options and SideNav rows are at
+  least 44px tall (IconButton and the collapsed rail 44 x 44). A fine pointer is unchanged (D-089).
+- **`Modal` below 600px** is a bottom sheet: anchored to the bottom edge, full width, a grabber, the
+  body scrolls while the footer stays pinned, and a close button in the head. From 600px it renders
+  exactly as before. The description and children now sit inside a `.d3-modal__body` wrapper
+  (D-090).
+- **`Alert`** — the actions row wraps instead of overflowing. Shipyard's `.shp-alert-actions`
+  workaround can go (D-090).
+
 ## v1.5.0 — 2026-10-01 · cards that read on the sheet (D-085 – D-087)
 
 Inside `AppShell navTone="recessed"` a Card painted the sheet's own colour, so every `Section` was
